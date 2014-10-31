@@ -416,6 +416,15 @@ namespace BSA_Browser
             this.Close();
         }
 
+        private void menuItem2_Popup(object sender, EventArgs e)
+        {
+            bool hasSelectedItems = lvFiles.SelectedItems.Count > 0;
+
+            copyPathMenuItem.Enabled = hasSelectedItems;
+            copyFolderPathMenuItem.Enabled = hasSelectedItems;
+            copyFileNameMenuItem.Enabled = hasSelectedItems;
+        }
+
         private void copyPathMenuItem_Click(object sender, EventArgs e)
         {
             StringBuilder builder = new StringBuilder();
@@ -480,18 +489,12 @@ namespace BSA_Browser
 
         private void contextMenu1_Popup(object sender, EventArgs e)
         {
-            extractFallout3MenuItem1.Enabled = true;
-            extractFalloutNewVegasMenuItem1.Enabled = true;
-            extractOblivionMenuItem1.Enabled = true;
-            extractSkyrimMenuItem1.Enabled = true;
+            bool hasSelectedItems = lvFiles.SelectedItems.Count > 0;
 
-            if (lvFiles.SelectedItems.Count == 0)
-            {
-                extractFallout3MenuItem1.Enabled = false;
-                extractFalloutNewVegasMenuItem1.Enabled = false;
-                extractOblivionMenuItem1.Enabled = false;
-                extractSkyrimMenuItem1.Enabled = false;
-            }
+            menuItem1.Enabled = hasSelectedItems;
+            copyPathMenuItem1.Enabled = hasSelectedItems;
+            copyFolderPathMenuItem1.Enabled = hasSelectedItems;
+            copyFileNameMenuItem1.Enabled = hasSelectedItems;
         }
 
         private void menuItem1_Popup(object sender, EventArgs e)

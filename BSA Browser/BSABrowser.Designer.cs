@@ -334,6 +334,7 @@
             this.copyFolderPathMenuItem,
             this.copyFileNameMenuItem});
             this.menuItem2.Text = "Edit";
+            this.menuItem2.Popup += new System.EventHandler(this.menuItem2_Popup);
             // 
             // copyPathMenuItem
             // 
