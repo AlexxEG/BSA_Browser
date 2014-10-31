@@ -339,7 +339,7 @@
             // 
             this.copyPathMenuItem.Index = 0;
             this.copyPathMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlC;
-            this.copyPathMenuItem.Text = "Copy";
+            this.copyPathMenuItem.Text = "Copy Path";
             this.copyPathMenuItem.Click += new System.EventHandler(this.copyPathMenuItem_Click);
             // 
             // copyFolderPathMenuItem
