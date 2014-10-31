@@ -8,17 +8,17 @@ Requires .NET Framework 4.0
 
 ## Features
 
- - Extract single or all files
- - Sort by Folder name, File name, File size, Offset & File extension
+ - Browse & extract file(s) from BSA
+ - Sort by folder, file name, file size, offset or extension
+ - Sort ascending or descending
  - Filter files (optional Regex)
 
 **New**
 
- - Browse multiple .BSA files
+ - Browse multiple .BSA files simultaneously
  - Recent Files
- - Quick export (See Tools -> Options)
- - Sort ascending & descending
- - Copy Path/Copy Folder Path/Copy File name
+ - Quick export (See Tools -> Options menu)
+ - Copy Path, Folder Path or File name
  
 ## Original Version
 
