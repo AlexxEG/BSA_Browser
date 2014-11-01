@@ -20,8 +20,8 @@ namespace BSA_Browser
 
     public partial class BSABrowser : Form
     {
-        private bool Compressed;
-        private bool ContainsFileNameBlobs;
+        private bool Compressed; // ToDo: Don't use same value for every open archive
+        private bool ContainsFileNameBlobs; // ToDo: Don't use same value for every open archive
         ColumnHeader m_SortingColumn;
 
         public BSABrowser()
