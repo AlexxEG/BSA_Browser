@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("BSA Browser")]
 [assembly: AssemblyDescription("A .BSA Browser/Extractor")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("FOMM")]
+[assembly: AssemblyCompany("Alexander Ellingsen")]
 [assembly: AssemblyProduct("BSA Browser")]
-[assembly: AssemblyCopyright("Copyright ©  2010, 2014 Timeslip, Q, AlexxEG")]
+[assembly: AssemblyCopyright("Copyright ©  2010, 2014 Timeslip, Q, Alexander Ellingsen")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
