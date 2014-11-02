@@ -49,7 +49,7 @@
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.fileMenuItem = new System.Windows.Forms.MenuItem();
             this.openArchiveMnuItem = new System.Windows.Forms.MenuItem();
-            this.closeSelArchiveMenuItem = new System.Windows.Forms.MenuItem();
+            this.closeSelectedArchiveMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem6 = new System.Windows.Forms.MenuItem();
             this.recentFilesMenuItem = new System.Windows.Forms.MenuItem();
             this.emptyListMenuItem = new System.Windows.Forms.MenuItem();
@@ -270,7 +270,7 @@
             this.fileMenuItem.Index = 0;
             this.fileMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.openArchiveMnuItem,
-            this.closeSelArchiveMenuItem,
+            this.closeSelectedArchiveMenuItem,
             this.menuItem6,
             this.recentFilesMenuItem,
             this.menuItem10,
@@ -284,11 +284,11 @@
             this.openArchiveMnuItem.Text = "Open Archive...";
             this.openArchiveMnuItem.Click += new System.EventHandler(this.openArchiveMenuItem_Click);
             // 
-            // closeSelArchiveMenuItem
+            // closeSelectedArchiveMenuItem
             // 
-            this.closeSelArchiveMenuItem.Index = 1;
-            this.closeSelArchiveMenuItem.Text = "Close Sel. Archive";
-            this.closeSelArchiveMenuItem.Click += new System.EventHandler(this.closeSelArchiveMenuItem_Click);
+            this.closeSelectedArchiveMenuItem.Index = 1;
+            this.closeSelectedArchiveMenuItem.Text = "Close Selected Archive";
+            this.closeSelectedArchiveMenuItem.Click += new System.EventHandler(this.closeSelectedArchiveMenuItem_Click);
             // 
             // menuItem6
             // 
@@ -508,7 +508,7 @@
         private System.Windows.Forms.MenuItem extractSkyrimMenuItem1;
         private System.Windows.Forms.MenuItem fileMenuItem;
         private System.Windows.Forms.MenuItem openArchiveMnuItem;
-        private System.Windows.Forms.MenuItem closeSelArchiveMenuItem;
+        private System.Windows.Forms.MenuItem closeSelectedArchiveMenuItem;
         private System.Windows.Forms.MenuItem menuItem6;
         private System.Windows.Forms.MenuItem recentFilesMenuItem;
         private System.Windows.Forms.MenuItem emptyListMenuItem;

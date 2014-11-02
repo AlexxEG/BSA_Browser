@@ -326,7 +326,7 @@ namespace BSA_Browser
                 OpenArchive(OpenBSA.FileName, true);
         }
 
-        private void closeSelArchiveMenuItem_Click(object sender, EventArgs e)
+        private void closeSelectedArchiveMenuItem_Click(object sender, EventArgs e)
         {
             if (tvFolders.SelectedNode == null)
                 return;
