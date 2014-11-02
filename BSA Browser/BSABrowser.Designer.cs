@@ -73,6 +73,8 @@
             this.copyFolderPathMenuItem1 = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem1 = new System.Windows.Forms.MenuItem();
             this.cbDesc = new System.Windows.Forms.CheckBox();
+            this.helpMenuItem = new System.Windows.Forms.MenuItem();
+            this.aboutMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -263,7 +265,8 @@
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.fileMenuItem,
             this.menuItem2,
-            this.toolsMenuItem});
+            this.toolsMenuItem,
+            this.helpMenuItem});
             // 
             // fileMenuItem
             // 
@@ -450,6 +453,19 @@
             this.cbDesc.UseVisualStyleBackColor = true;
             this.cbDesc.CheckedChanged += new System.EventHandler(this.cbDesc_CheckedChanged);
             // 
+            // helpMenuItem
+            // 
+            this.helpMenuItem.Index = 3;
+            this.helpMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.aboutMenuItem});
+            this.helpMenuItem.Text = "Help";
+            // 
+            // aboutMenuItem
+            // 
+            this.aboutMenuItem.Index = 0;
+            this.aboutMenuItem.Text = "About BSA Browser";
+            this.aboutMenuItem.Click += new System.EventHandler(this.aboutMenuItem_Click);
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -527,6 +543,8 @@
         private System.Windows.Forms.MenuItem copyPathMenuItem;
         private System.Windows.Forms.MenuItem copyFolderPathMenuItem;
         private System.Windows.Forms.MenuItem copyFileNameMenuItem;
+        private System.Windows.Forms.MenuItem helpMenuItem;
+        private System.Windows.Forms.MenuItem aboutMenuItem;
     }
 }
 

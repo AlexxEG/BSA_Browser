@@ -877,6 +877,14 @@ namespace BSA_Browser
                 lvFiles.EndUpdate();
             }
         }
+
+        private void aboutMenuItem_Click(object sender, EventArgs e)
+        {
+            using (AboutBox ab = new AboutBox())
+            {
+                ab.ShowDialog(this);
+            }
+        }
     }
 
     public class BSASorter : System.Collections.IComparer
