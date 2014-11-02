@@ -92,39 +92,20 @@ namespace BSA_Browser
                 SaveSingleDialog.FileName = fe.FileName;
 
                 if (SaveSingleDialog.ShowDialog() == DialogResult.OK)
-                    fe.Extract(SaveSingleDialog.FileName, false, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
+                    ExtractFiles(SaveSingleDialog.FileName, false, false, fe);
             }
             else
             {
                 if (SaveAllDialog.ShowDialog() == DialogResult.OK)
                 {
-                    ProgressForm pf = new ProgressForm("Unpacking archive", false);
-                    pf.EnableCancel();
-                    pf.SetProgressRange(lvFiles.SelectedItems.Count);
-                    pf.Show();
-                    int count = 0;
+                    BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
-                    try
+                    for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
                     {
-                        foreach (ListViewItem lvi in lvFiles.SelectedItems)
-                        {
-                            BSAFileEntry fe = (BSAFileEntry)lvi.Tag;
-                            fe.Extract(SaveAllDialog.SelectedPath, true, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
-                            pf.UpdateProgress(count++);
-                            Application.DoEvents();
-                        }
-                    }
-                    catch (fommException)
-                    {
-                        MessageBox.Show("Operation cancelled", "Message");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error");
+                        files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
                     }
 
-                    pf.Unblock();
-                    pf.Close();
+                    ExtractFiles(SaveAllDialog.SelectedPath, true, true, files);
                 }
             }
         }
@@ -134,35 +115,11 @@ namespace BSA_Browser
             if (tvFolders.SelectedNode == null)
                 return;
 
-            BSAFileEntry[] Files = (BSAFileEntry[])GetRootNode(tvFolders.SelectedNode).Files;
+            BSAFileEntry[] files = (BSAFileEntry[])GetRootNode(tvFolders.SelectedNode).Files;
+
             if (SaveAllDialog.ShowDialog() == DialogResult.OK)
             {
-                ProgressForm pf = new ProgressForm("Unpacking archive", false);
-                pf.EnableCancel();
-                pf.SetProgressRange(Files.Length);
-                pf.Show();
-                int count = 0;
-
-                try
-                {
-                    foreach (BSAFileEntry fe in Files)
-                    {
-                        fe.Extract(SaveAllDialog.SelectedPath, true, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
-                        pf.UpdateProgress(count++);
-                        Application.DoEvents();
-                    }
-                }
-                catch (fommCancelException)
-                {
-                    MessageBox.Show("Operation cancelled", "Message");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error");
-                }
-
-                pf.Unblock();
-                pf.Close();
+                ExtractFiles(SaveAllDialog.SelectedPath, true, true, files);
             }
         }
 
@@ -507,126 +464,54 @@ namespace BSA_Browser
 
         private void extractFallout3MenuItem1_Click(object sender, EventArgs e)
         {
-            ProgressForm pf = new ProgressForm("Unpacking archive", false);
-            pf.EnableCancel();
-            pf.SetProgressRange(lvFiles.SelectedItems.Count);
-            pf.Show();
-            int count = 0;
+            string path = Settings.Default.Fallout3_QuickExportPath + "\\Data\\";
+            BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
-            try
+            for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
             {
-                foreach (ListViewItem lvi in lvFiles.SelectedItems)
-                {
-                    BSAFileEntry fe = (BSAFileEntry)lvi.Tag;
-                    fe.Extract(Settings.Default.Fallout3_QuickExportPath + @"\Data\", true, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
-                    pf.UpdateProgress(count++);
-                    Application.DoEvents();
-                }
-            }
-            catch (fommException)
-            {
-                MessageBox.Show("Operation cancelled", "Message");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
+                files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
             }
 
-            pf.Unblock();
-            pf.Close();
+            ExtractFiles(path, true, true, files);
         }
 
         private void extractFalloutNewVegasMenuItem1_Click(object sender, EventArgs e)
         {
-            ProgressForm pf = new ProgressForm("Unpacking archive", false);
-            pf.EnableCancel();
-            pf.SetProgressRange(lvFiles.SelectedItems.Count);
-            pf.Show();
-            int count = 0;
+            string path = Settings.Default.FalloutNV_QuickExportPath + "\\Data\\";
+            BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
-            try
+            for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
             {
-                foreach (ListViewItem lvi in lvFiles.SelectedItems)
-                {
-                    BSAFileEntry fe = (BSAFileEntry)lvi.Tag;
-                    fe.Extract(Settings.Default.FalloutNV_QuickExportPath + @"\Data\", true, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
-                    pf.UpdateProgress(count++);
-                    Application.DoEvents();
-                }
-            }
-            catch (fommException)
-            {
-                MessageBox.Show("Operation cancelled", "Message");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
+                files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
             }
 
-            pf.Unblock();
-            pf.Close();
+            ExtractFiles(path, true, true, files);
         }
 
         private void extractOblivionMenuItem1_Click(object sender, EventArgs e)
         {
-            ProgressForm pf = new ProgressForm("Unpacking archive", false);
-            pf.EnableCancel();
-            pf.SetProgressRange(lvFiles.SelectedItems.Count);
-            pf.Show();
-            int count = 0;
+            string path = Settings.Default.Oblivion_QuickExportPath + "\\Data\\";
+            BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
-            try
+            for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
             {
-                foreach (ListViewItem lvi in lvFiles.SelectedItems)
-                {
-                    BSAFileEntry fe = (BSAFileEntry)lvi.Tag;
-                    fe.Extract(Settings.Default.Oblivion_QuickExportPath + @"\Data\", true, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
-                    pf.UpdateProgress(count++);
-                    Application.DoEvents();
-                }
-            }
-            catch (fommException)
-            {
-                MessageBox.Show("Operation cancelled", "Message");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
+                files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
             }
 
-            pf.Unblock();
-            pf.Close();
+            ExtractFiles(path, true, true, files);
         }
 
         private void extractSkyrimMenuItem1_Click(object sender, EventArgs e)
         {
-            ProgressForm pf = new ProgressForm("Unpacking archive", false);
-            pf.EnableCancel();
-            pf.SetProgressRange(lvFiles.SelectedItems.Count);
-            pf.Show();
-            int count = 0;
+            string path = Settings.Default.Skyrim_QuickExportPath + "\\Data\\";
+            BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
-            try
+            for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
             {
-                foreach (ListViewItem lvi in lvFiles.SelectedItems)
-                {
-                    BSAFileEntry fe = (BSAFileEntry)lvi.Tag;
-                    fe.Extract(Settings.Default.Skyrim_QuickExportPath + @"\Data\", true, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
-                    pf.UpdateProgress(count++);
-                    Application.DoEvents();
-                }
-            }
-            catch (fommException)
-            {
-                MessageBox.Show("Operation cancelled", "Message");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
+                files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
             }
 
-            pf.Unblock();
-            pf.Close();
+            ExtractFiles(path, true, true, files);
         }
 
         private void copyPathMenuItem1_Click(object sender, EventArgs e)
@@ -729,6 +614,48 @@ namespace BSA_Browser
         {
             lvFiles.Items.Clear();
             tvFolders.Nodes.Clear();
+        }
+
+        private void ExtractFiles(string path, bool useFolderName, bool gui, params BSAFileEntry[] files)
+        {
+            ProgressForm pf = null;
+            int count = 0;
+
+            if (gui)
+            {
+                pf = new ProgressForm("Unpacking archive", false);
+                pf.EnableCancel();
+                pf.SetProgressRange(files.Length);
+                pf.Show();
+            }
+
+            try
+            {
+                foreach (BSAFileEntry fe in files)
+                {
+                    fe.Extract(path, useFolderName, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
+
+                    if (gui)
+                    {
+                        pf.UpdateProgress(count++);
+                        Application.DoEvents();
+                    }
+                }
+            }
+            catch (fommException)
+            {
+                MessageBox.Show("Operation cancelled", "Message");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+
+            if (gui)
+            {
+                pf.Unblock();
+                pf.Close();
+            }
         }
 
         internal void OpenArchive(string path, bool addToRecentFiles = false)
