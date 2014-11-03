@@ -447,6 +447,14 @@ namespace BSA_Browser
             }
         }
 
+        private void aboutMenuItem_Click(object sender, EventArgs e)
+        {
+            using (AboutBox ab = new AboutBox())
+            {
+                ab.ShowDialog(this);
+            }
+        }
+
         #endregion
 
         #region contextMenu1
@@ -882,14 +890,6 @@ namespace BSA_Browser
                 lvFiles.Items.AddRange((tvFolders.SelectedNode.FirstNode as BSATreeNode).Items);
                 lvFiles.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
                 lvFiles.EndUpdate();
-            }
-        }
-
-        private void aboutMenuItem_Click(object sender, EventArgs e)
-        {
-            using (AboutBox ab = new AboutBox())
-            {
-                ab.ShowDialog(this);
             }
         }
     }
