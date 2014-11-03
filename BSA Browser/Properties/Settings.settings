@@ -6,7 +6,7 @@
       <Value Profile="(Default)">161, 161</Value>
     </Setting>
     <Setting Name="BSABrowser_Size" Type="System.Drawing.Size" Scope="User">
-      <Value Profile="(Default)">615, 446</Value>
+      <Value Profile="(Default)">650, 400</Value>
     </Setting>
     <Setting Name="LastBSAUnpackPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\</Value>

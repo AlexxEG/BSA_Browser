@@ -37,7 +37,7 @@ namespace BSA_Browser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("615, 446")]
+        [global::System.Configuration.DefaultSettingValueAttribute("650, 400")]
         public global::System.Drawing.Size BSABrowser_Size {
             get {
                 return ((global::System.Drawing.Size)(this["BSABrowser_Size"]));

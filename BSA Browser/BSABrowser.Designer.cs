@@ -93,7 +93,7 @@
             this.lvFiles.Location = new System.Drawing.Point(0, 0);
             this.lvFiles.Name = "lvFiles";
             this.lvFiles.ShowItemToolTips = true;
-            this.lvFiles.Size = new System.Drawing.Size(517, 307);
+            this.lvFiles.Size = new System.Drawing.Size(499, 261);
             this.lvFiles.TabIndex = 0;
             this.lvFiles.UseCompatibleStateImageBehavior = false;
             this.lvFiles.View = System.Windows.Forms.View.Details;
@@ -110,7 +110,7 @@
             // btnOpen
             // 
             this.btnOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOpen.Location = new System.Drawing.Point(12, 322);
+            this.btnOpen.Location = new System.Drawing.Point(12, 276);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 0;
@@ -122,7 +122,7 @@
             // 
             this.btnExtractAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExtractAll.Enabled = false;
-            this.btnExtractAll.Location = new System.Drawing.Point(273, 322);
+            this.btnExtractAll.Location = new System.Drawing.Point(273, 276);
             this.btnExtractAll.Name = "btnExtractAll";
             this.btnExtractAll.Size = new System.Drawing.Size(75, 23);
             this.btnExtractAll.TabIndex = 3;
@@ -140,7 +140,7 @@
             // 
             this.btnExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExtract.Enabled = false;
-            this.btnExtract.Location = new System.Drawing.Point(192, 322);
+            this.btnExtract.Location = new System.Drawing.Point(192, 276);
             this.btnExtract.Name = "btnExtract";
             this.btnExtract.Size = new System.Drawing.Size(75, 23);
             this.btnExtract.TabIndex = 2;
@@ -169,7 +169,7 @@
             "File size",
             "Offset",
             "File extension"});
-            this.cmbSortOrder.Location = new System.Drawing.Point(442, 323);
+            this.cmbSortOrder.Location = new System.Drawing.Point(420, 277);
             this.cmbSortOrder.Name = "cmbSortOrder";
             this.cmbSortOrder.Size = new System.Drawing.Size(121, 21);
             this.cmbSortOrder.TabIndex = 5;
@@ -178,7 +178,7 @@
             // btnSort
             // 
             this.btnSort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSort.Location = new System.Drawing.Point(569, 322);
+            this.btnSort.Location = new System.Drawing.Point(547, 276);
             this.btnSort.Name = "btnSort";
             this.btnSort.Size = new System.Drawing.Size(75, 23);
             this.btnSort.TabIndex = 6;
@@ -190,7 +190,7 @@
             // 
             this.btnPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnPreview.Enabled = false;
-            this.btnPreview.Location = new System.Drawing.Point(111, 322);
+            this.btnPreview.Location = new System.Drawing.Point(111, 276);
             this.btnPreview.Name = "btnPreview";
             this.btnPreview.Size = new System.Drawing.Size(75, 23);
             this.btnPreview.TabIndex = 1;
@@ -201,7 +201,7 @@
             // txtSearch
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtSearch.Location = new System.Drawing.Point(12, 354);
+            this.txtSearch.Location = new System.Drawing.Point(12, 308);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(336, 20);
             this.txtSearch.TabIndex = 4;
@@ -211,7 +211,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(354, 357);
+            this.label1.Location = new System.Drawing.Point(354, 311);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 13);
             this.label1.TabIndex = 7;
@@ -223,7 +223,7 @@
             this.tvFolders.HideSelection = false;
             this.tvFolders.Location = new System.Drawing.Point(0, 0);
             this.tvFolders.Name = "tvFolders";
-            this.tvFolders.Size = new System.Drawing.Size(111, 307);
+            this.tvFolders.Size = new System.Drawing.Size(107, 261);
             this.tvFolders.TabIndex = 0;
             this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
             this.tvFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterSelect);
@@ -244,15 +244,15 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.lvFiles);
-            this.splitContainer1.Size = new System.Drawing.Size(632, 307);
-            this.splitContainer1.SplitterDistance = 111;
+            this.splitContainer1.Size = new System.Drawing.Size(610, 261);
+            this.splitContainer1.SplitterDistance = 107;
             this.splitContainer1.TabIndex = 10;
             // 
             // cbRegex
             // 
             this.cbRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbRegex.AutoSize = true;
-            this.cbRegex.Location = new System.Drawing.Point(401, 356);
+            this.cbRegex.Location = new System.Drawing.Point(401, 310);
             this.cbRegex.Name = "cbRegex";
             this.cbRegex.Size = new System.Drawing.Size(74, 17);
             this.cbRegex.TabIndex = 8;
@@ -458,7 +458,7 @@
             this.cbDesc.AutoSize = true;
             this.cbDesc.Checked = true;
             this.cbDesc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDesc.Location = new System.Drawing.Point(385, 326);
+            this.cbDesc.Location = new System.Drawing.Point(363, 280);
             this.cbDesc.Name = "cbDesc";
             this.cbDesc.Size = new System.Drawing.Size(51, 17);
             this.cbDesc.TabIndex = 11;
@@ -470,7 +470,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(656, 386);
+            this.ClientSize = new System.Drawing.Size(634, 340);
             this.Controls.Add(this.cbDesc);
             this.Controls.Add(this.cbRegex);
             this.Controls.Add(this.splitContainer1);
