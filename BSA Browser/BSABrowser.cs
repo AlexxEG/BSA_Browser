@@ -884,7 +884,10 @@ namespace BSA_Browser
                 ListViewItem lvi = new ListViewItem(Path.Combine(file.Folder, file.FileName));
 
                 lvi.Tag = file;
-                lvi.ToolTipText = "File size: " + FormatBytes(file.Size) + "\nFile offset: " + FormatBytes(file.Offset) + (file.Compressed ? "\nCompressed" : "\nUncompressed");
+                lvi.ToolTipText =
+                    "File size: " + FormatBytes(file.Size) + "\n" +
+                    "File offset: " + file.Offset + " bytes\n" +
+                    (file.Compressed ? "Compressed" : "Uncompressed");
                 bsaNode.Items[i] = lvi;
             }
 
