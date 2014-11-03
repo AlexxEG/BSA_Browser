@@ -62,6 +62,8 @@
             this.copyFileNameMenuItem = new System.Windows.Forms.MenuItem();
             this.toolsMenuItem = new System.Windows.Forms.MenuItem();
             this.optionsMenuItem = new System.Windows.Forms.MenuItem();
+            this.helpMenuItem = new System.Windows.Forms.MenuItem();
+            this.aboutMenuItem = new System.Windows.Forms.MenuItem();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.extractFallout3MenuItem1 = new System.Windows.Forms.MenuItem();
@@ -73,8 +75,6 @@
             this.copyFolderPathMenuItem1 = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem1 = new System.Windows.Forms.MenuItem();
             this.cbDesc = new System.Windows.Forms.CheckBox();
-            this.helpMenuItem = new System.Windows.Forms.MenuItem();
-            this.aboutMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -93,7 +93,7 @@
             this.lvFiles.Location = new System.Drawing.Point(0, 0);
             this.lvFiles.Name = "lvFiles";
             this.lvFiles.ShowItemToolTips = true;
-            this.lvFiles.Size = new System.Drawing.Size(470, 307);
+            this.lvFiles.Size = new System.Drawing.Size(517, 307);
             this.lvFiles.TabIndex = 0;
             this.lvFiles.UseCompatibleStateImageBehavior = false;
             this.lvFiles.View = System.Windows.Forms.View.Details;
@@ -169,7 +169,7 @@
             "File size",
             "Offset",
             "File extension"});
-            this.cmbSortOrder.Location = new System.Drawing.Point(385, 323);
+            this.cmbSortOrder.Location = new System.Drawing.Point(442, 323);
             this.cmbSortOrder.Name = "cmbSortOrder";
             this.cmbSortOrder.Size = new System.Drawing.Size(121, 21);
             this.cmbSortOrder.TabIndex = 5;
@@ -178,7 +178,7 @@
             // btnSort
             // 
             this.btnSort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSort.Location = new System.Drawing.Point(512, 322);
+            this.btnSort.Location = new System.Drawing.Point(569, 322);
             this.btnSort.Name = "btnSort";
             this.btnSort.Size = new System.Drawing.Size(75, 23);
             this.btnSort.TabIndex = 6;
@@ -223,7 +223,7 @@
             this.tvFolders.HideSelection = false;
             this.tvFolders.Location = new System.Drawing.Point(0, 0);
             this.tvFolders.Name = "tvFolders";
-            this.tvFolders.Size = new System.Drawing.Size(101, 307);
+            this.tvFolders.Size = new System.Drawing.Size(111, 307);
             this.tvFolders.TabIndex = 0;
             this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
             this.tvFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterSelect);
@@ -244,8 +244,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.lvFiles);
-            this.splitContainer1.Size = new System.Drawing.Size(575, 307);
-            this.splitContainer1.SplitterDistance = 101;
+            this.splitContainer1.Size = new System.Drawing.Size(632, 307);
+            this.splitContainer1.SplitterDistance = 111;
             this.splitContainer1.TabIndex = 10;
             // 
             // cbRegex
@@ -371,6 +371,19 @@
             this.optionsMenuItem.Text = "Options...";
             this.optionsMenuItem.Click += new System.EventHandler(this.optionsMenuItem_Click);
             // 
+            // helpMenuItem
+            // 
+            this.helpMenuItem.Index = 3;
+            this.helpMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.aboutMenuItem});
+            this.helpMenuItem.Text = "Help";
+            // 
+            // aboutMenuItem
+            // 
+            this.aboutMenuItem.Index = 0;
+            this.aboutMenuItem.Text = "About BSA Browser";
+            this.aboutMenuItem.Click += new System.EventHandler(this.aboutMenuItem_Click);
+            // 
             // contextMenu1
             // 
             this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
@@ -441,11 +454,11 @@
             // 
             // cbDesc
             // 
-            this.cbDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbDesc.AutoSize = true;
             this.cbDesc.Checked = true;
             this.cbDesc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDesc.Location = new System.Drawing.Point(481, 356);
+            this.cbDesc.Location = new System.Drawing.Point(385, 326);
             this.cbDesc.Name = "cbDesc";
             this.cbDesc.Size = new System.Drawing.Size(51, 17);
             this.cbDesc.TabIndex = 11;
@@ -453,24 +466,11 @@
             this.cbDesc.UseVisualStyleBackColor = true;
             this.cbDesc.CheckedChanged += new System.EventHandler(this.cbDesc_CheckedChanged);
             // 
-            // helpMenuItem
-            // 
-            this.helpMenuItem.Index = 3;
-            this.helpMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.aboutMenuItem});
-            this.helpMenuItem.Text = "Help";
-            // 
-            // aboutMenuItem
-            // 
-            this.aboutMenuItem.Index = 0;
-            this.aboutMenuItem.Text = "About BSA Browser";
-            this.aboutMenuItem.Click += new System.EventHandler(this.aboutMenuItem_Click);
-            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(599, 386);
+            this.ClientSize = new System.Drawing.Size(656, 386);
             this.Controls.Add(this.cbDesc);
             this.Controls.Add(this.cbRegex);
             this.Controls.Add(this.splitContainer1);
@@ -484,7 +484,7 @@
             this.Controls.Add(this.btnSort);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.mainMenu1;
-            this.MinimumSize = new System.Drawing.Size(590, 150);
+            this.MinimumSize = new System.Drawing.Size(639, 180);
             this.Name = "BSABrowser";
             this.Text = "BSA Browser";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BSABrowser_FormClosing);
