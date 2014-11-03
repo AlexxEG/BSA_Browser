@@ -546,133 +546,6 @@ namespace BSA_Browser
 
         #endregion
 
-        private string FormatBytes(long bytes)
-        {
-            const int scale = 1024;
-            string[] orders = new string[] { "GB", "MB", "KB", "Bytes" };
-            long max = (long)Math.Pow(scale, orders.Length - 1);
-
-            foreach (string order in orders)
-            {
-                if (bytes > max)
-                    return string.Format("{0:##.##} {1}", decimal.Divide(bytes, max), order);
-
-                max /= scale;
-            }
-            return "0 Bytes";
-        }
-
-        private BSATreeNode GetRootNode(TreeNode node)
-        {
-            TreeNode rootNode = node;
-            while (rootNode.Parent != null)
-                rootNode = rootNode.Parent;
-            return (BSATreeNode)rootNode;
-        }
-
-        private bool RecentListContains(string file)
-        {
-            foreach (MenuItem item in recentFilesMenuItem.MenuItems)
-                if (item.Tag != null && item.Tag.ToString() == file) return true;
-            return false;
-        }
-
-        private MenuItem RecentListGetItemByString(string file)
-        {
-            foreach (MenuItem item in recentFilesMenuItem.MenuItems)
-                if (item.Tag != null && item.Tag.ToString() == file) return item;
-
-            return null;
-        }
-
-        private void AddToRecentFiles(string file)
-        {
-            if (string.IsNullOrEmpty(file))
-                return;
-
-            if (RecentListContains(file))
-            {
-                MenuItem item = RecentListGetItemByString(file);
-
-                if (item == null)
-                    return;
-
-                int index = recentFilesMenuItem.MenuItems.IndexOf(item);
-                recentFilesMenuItem.MenuItems.Remove(item);
-                recentFilesMenuItem.MenuItems.Add(2, item);
-            }
-            else
-            {
-                MenuItem newItem = new MenuItem(Path.GetFileName(file), new EventHandler(recentFiles_Click));
-                newItem.Tag = file;
-                recentFilesMenuItem.MenuItems.Add(2, newItem);
-            }
-        }
-
-        private void CloseArchive(BSATreeNode bsaNode)
-        {
-            if (GetRootNode(tvFolders.SelectedNode) == bsaNode)
-                lvFiles.Items.Clear();
-
-            if (bsaNode.BinaryReader != null)
-                bsaNode.BinaryReader.Close();
-            tvFolders.Nodes.Remove(bsaNode);
-            if (tvFolders.GetNodeCount(false) == 0)
-            {
-                btnPreview.Enabled = false;
-                btnExtract.Enabled = false;
-                btnExtractAll.Enabled = false;
-            }
-        }
-
-        private void CloseArchives()
-        {
-            lvFiles.Items.Clear();
-            tvFolders.Nodes.Clear();
-        }
-
-        private void ExtractFiles(string path, bool useFolderName, bool gui, params BSAFileEntry[] files)
-        {
-            ProgressForm pf = null;
-            int count = 0;
-
-            if (gui)
-            {
-                pf = new ProgressForm("Unpacking archive", false);
-                pf.EnableCancel();
-                pf.SetProgressRange(files.Length);
-                pf.Show();
-            }
-
-            try
-            {
-                foreach (BSAFileEntry fe in files)
-                {
-                    fe.Extract(path, useFolderName, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
-
-                    if (gui)
-                    {
-                        pf.UpdateProgress(count++);
-                        Application.DoEvents();
-                    }
-                }
-            }
-            catch (fommException)
-            {
-                MessageBox.Show("Operation cancelled", "Message");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-            }
-
-            if (gui)
-            {
-                pf.Unblock();
-                pf.Close();
-            }
-        }
-
         public void OpenArchive(string path, bool addToRecentFiles = false)
         {
             BSAFileEntry[] Files;
@@ -857,6 +730,133 @@ namespace BSA_Browser
                 AddToRecentFiles(path);
 
             tvFolders.SelectedNode = newNode;
+        }
+
+        private void AddToRecentFiles(string file)
+        {
+            if (string.IsNullOrEmpty(file))
+                return;
+
+            if (RecentListContains(file))
+            {
+                MenuItem item = RecentListGetItemByString(file);
+
+                if (item == null)
+                    return;
+
+                int index = recentFilesMenuItem.MenuItems.IndexOf(item);
+                recentFilesMenuItem.MenuItems.Remove(item);
+                recentFilesMenuItem.MenuItems.Add(2, item);
+            }
+            else
+            {
+                MenuItem newItem = new MenuItem(Path.GetFileName(file), new EventHandler(recentFiles_Click));
+                newItem.Tag = file;
+                recentFilesMenuItem.MenuItems.Add(2, newItem);
+            }
+        }
+
+        private void CloseArchive(BSATreeNode bsaNode)
+        {
+            if (GetRootNode(tvFolders.SelectedNode) == bsaNode)
+                lvFiles.Items.Clear();
+
+            if (bsaNode.BinaryReader != null)
+                bsaNode.BinaryReader.Close();
+            tvFolders.Nodes.Remove(bsaNode);
+            if (tvFolders.GetNodeCount(false) == 0)
+            {
+                btnPreview.Enabled = false;
+                btnExtract.Enabled = false;
+                btnExtractAll.Enabled = false;
+            }
+        }
+
+        private void CloseArchives()
+        {
+            lvFiles.Items.Clear();
+            tvFolders.Nodes.Clear();
+        }
+
+        private void ExtractFiles(string path, bool useFolderName, bool gui, params BSAFileEntry[] files)
+        {
+            ProgressForm pf = null;
+            int count = 0;
+
+            if (gui)
+            {
+                pf = new ProgressForm("Unpacking archive", false);
+                pf.EnableCancel();
+                pf.SetProgressRange(files.Length);
+                pf.Show();
+            }
+
+            try
+            {
+                foreach (BSAFileEntry fe in files)
+                {
+                    fe.Extract(path, useFolderName, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
+
+                    if (gui)
+                    {
+                        pf.UpdateProgress(count++);
+                        Application.DoEvents();
+                    }
+                }
+            }
+            catch (fommException)
+            {
+                MessageBox.Show("Operation cancelled", "Message");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+
+            if (gui)
+            {
+                pf.Unblock();
+                pf.Close();
+            }
+        }
+
+        private string FormatBytes(long bytes)
+        {
+            const int scale = 1024;
+            string[] orders = new string[] { "GB", "MB", "KB", "Bytes" };
+            long max = (long)Math.Pow(scale, orders.Length - 1);
+
+            foreach (string order in orders)
+            {
+                if (bytes > max)
+                    return string.Format("{0:##.##} {1}", decimal.Divide(bytes, max), order);
+
+                max /= scale;
+            }
+            return "0 Bytes";
+        }
+
+        private BSATreeNode GetRootNode(TreeNode node)
+        {
+            TreeNode rootNode = node;
+            while (rootNode.Parent != null)
+                rootNode = rootNode.Parent;
+            return (BSATreeNode)rootNode;
+        }
+
+        private bool RecentListContains(string file)
+        {
+            foreach (MenuItem item in recentFilesMenuItem.MenuItems)
+                if (item.Tag != null && item.Tag.ToString() == file) return true;
+            return false;
+        }
+
+        private MenuItem RecentListGetItemByString(string file)
+        {
+            foreach (MenuItem item in recentFilesMenuItem.MenuItems)
+                if (item.Tag != null && item.Tag.ToString() == file) return item;
+
+            return null;
         }
 
         private void SaveRecentFiles()
