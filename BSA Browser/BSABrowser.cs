@@ -636,8 +636,8 @@ namespace BSA_Browser
 
                     newNode.BinaryReader.BaseStream.Position += 4;
                     uint flags = newNode.BinaryReader.ReadUInt32();
-                    if ((flags & 0x004) > 0) newNode.Compressed = true; else newNode.Compressed = false;
-                    if ((flags & 0x100) > 0 && version == 0x68) newNode.ContainsFileNameBlobs = true; else newNode.ContainsFileNameBlobs = false;
+                    newNode.Compressed = ((flags & 0x004) > 0);
+                    newNode.ContainsFileNameBlobs = ((flags & 0x100) > 0 && version == 0x68);
                     int FolderCount = newNode.BinaryReader.ReadInt32();
                     int FileCount = newNode.BinaryReader.ReadInt32();
                     newNode.BinaryReader.BaseStream.Position += 12;
