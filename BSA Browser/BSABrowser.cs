@@ -29,6 +29,13 @@ namespace BSA_Browser
             InitializeComponent();
             lvFiles.ContextMenu = contextMenu1;
 
+            if (Properties.Settings.Default.UpdateSettings)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpdateSettings = false;
+                Properties.Settings.Default.Save();
+            }
+
             string path = Properties.Settings.Default.LastBSAUnpackPath;
 
             if (!string.IsNullOrEmpty(path))
