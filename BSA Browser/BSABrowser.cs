@@ -20,8 +20,6 @@ namespace BSA_Browser
 
     public partial class BSABrowser : Form
     {
-        private bool Compressed; // ToDo: Don't use same value for every open archive
-        private bool ContainsFileNameBlobs; // ToDo: Don't use same value for every open archive
         ColumnHeader m_SortingColumn;
 
         public BSABrowser()
@@ -160,7 +158,9 @@ namespace BSA_Browser
                     case ".txt":
                     case ".xml":
                         string path = Program.CreateTempDirectory();
-                        fe.Extract(Path.Combine(path, fe.FileName), false, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
+                        BSATreeNode root = GetRootNode(tvFolders.SelectedNode);
+
+                        fe.Extract(Path.Combine(path, fe.FileName), false, root.BinaryReader, root.ContainsFileNameBlobs);
                         System.Diagnostics.Process.Start(Path.Combine(path, fe.FileName));
                         break;
                     default:
@@ -202,7 +202,9 @@ namespace BSA_Browser
             {
                 BSAFileEntry fe = (BSAFileEntry)item.Tag;
                 string path = Path.Combine(Program.CreateTempDirectory(), fe.FileName);
-                fe.Extract(path, false, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
+                BSATreeNode root = GetRootNode(tvFolders.SelectedNode);
+
+                fe.Extract(path, false, root.BinaryReader, root.ContainsFileNameBlobs);
                 sc.Add(path);
             }
 
@@ -634,8 +636,8 @@ namespace BSA_Browser
 
                     newNode.BinaryReader.BaseStream.Position += 4;
                     uint flags = newNode.BinaryReader.ReadUInt32();
-                    if ((flags & 0x004) > 0) Compressed = true; else Compressed = false;
-                    if ((flags & 0x100) > 0 && version == 0x68) ContainsFileNameBlobs = true; else ContainsFileNameBlobs = false;
+                    if ((flags & 0x004) > 0) newNode.Compressed = true; else newNode.Compressed = false;
+                    if ((flags & 0x100) > 0 && version == 0x68) newNode.ContainsFileNameBlobs = true; else newNode.ContainsFileNameBlobs = false;
                     int FolderCount = newNode.BinaryReader.ReadInt32();
                     int FileCount = newNode.BinaryReader.ReadInt32();
                     newNode.BinaryReader.BaseStream.Position += 12;
@@ -663,7 +665,7 @@ namespace BSA_Browser
                         {
                             newNode.BinaryReader.BaseStream.Position += 8;
                             uint size = newNode.BinaryReader.ReadUInt32();
-                            bool comp = Compressed;
+                            bool comp = newNode.Compressed;
 
                             if ((size & (1 << 30)) != 0)
                             {
@@ -793,9 +795,11 @@ namespace BSA_Browser
 
             try
             {
+                BSATreeNode root = GetRootNode(tvFolders.SelectedNode);
+
                 foreach (BSAFileEntry fe in files)
                 {
-                    fe.Extract(path, useFolderName, GetRootNode(tvFolders.SelectedNode).BinaryReader, ContainsFileNameBlobs);
+                    fe.Extract(path, useFolderName, root.BinaryReader, root.ContainsFileNameBlobs);
 
                     if (gui)
                     {

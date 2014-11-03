@@ -10,6 +10,9 @@ namespace BSA_Browser
         public ListViewItem[] AllItems { get; set; }
         public BinaryReader BinaryReader { get; set; }
 
+        public bool Compressed { get; set; }
+        public bool ContainsFileNameBlobs { get; set; }
+
         public BSATreeNode(string text)
         {
             this.Text = text;
