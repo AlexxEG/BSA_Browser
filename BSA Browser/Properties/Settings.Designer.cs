@@ -25,30 +25,6 @@ namespace BSA_Browser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("161, 161")]
-        public global::System.Drawing.Point BSABrowser_Location {
-            get {
-                return ((global::System.Drawing.Point)(this["BSABrowser_Location"]));
-            }
-            set {
-                this["BSABrowser_Location"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("650, 400")]
-        public global::System.Drawing.Size BSABrowser_Size {
-            get {
-                return ((global::System.Drawing.Size)(this["BSABrowser_Size"]));
-            }
-            set {
-                this["BSABrowser_Size"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
         public string LastBSAUnpackPath {
             get {
@@ -56,18 +32,6 @@ namespace BSA_Browser.Properties {
             }
             set {
                 this["LastBSAUnpackPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("150")]
-        public int BSABrowser_SplitterDistance {
-            get {
-                return ((int)(this["BSABrowser_SplitterDistance"]));
-            }
-            set {
-                this["BSABrowser_SplitterDistance"] = value;
             }
         }
         
@@ -199,6 +163,17 @@ namespace BSA_Browser.Properties {
             }
             set {
                 this["UpdateSettings"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::BSA_Browser.Classes.WindowStates WindowStates {
+            get {
+                return ((global::BSA_Browser.Classes.WindowStates)(this["WindowStates"]));
+            }
+            set {
+                this["WindowStates"] = value;
             }
         }
     }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using BSA_Browser.Classes;
 using BSA_Browser.Properties;
 
 namespace BSA_Browser
@@ -61,9 +62,21 @@ namespace BSA_Browser
 
         private void BSABrowser_Load(object sender, EventArgs e)
         {
-            this.Location = Properties.Settings.Default.BSABrowser_Location;
-            this.Size = Properties.Settings.Default.BSABrowser_Size;
-            splitContainer1.SplitterDistance = Properties.Settings.Default.BSABrowser_SplitterDistance;
+            // Initialize WindowStates if null
+            if (Properties.Settings.Default.WindowStates == null)
+            {
+                Properties.Settings.Default.WindowStates = new WindowStates();
+            }
+
+            // Add this form if it doesn't exists
+            if (!Properties.Settings.Default.WindowStates.Contains(this.Name))
+            {
+                Properties.Settings.Default.WindowStates.Add(this.Name);
+            }
+
+            // Restore window state
+            Properties.Settings.Default.WindowStates[this.Name].RestoreForm(this);
+
             cmbSortOrder.SelectedIndex = 0;
         }
 
@@ -73,10 +86,8 @@ namespace BSA_Browser
                 CloseArchives();
 
             SaveRecentFiles();
-            Properties.Settings.Default.BSABrowser_Location = this.Location;
-            Properties.Settings.Default.BSABrowser_Size = this.Size;
+            Properties.Settings.Default.WindowStates[this.Name].SaveForm(this);
             Properties.Settings.Default.LastBSAUnpackPath = SaveAllDialog.SelectedPath;
-            Properties.Settings.Default.BSABrowser_SplitterDistance = splitContainer1.SplitterDistance;
             Properties.Settings.Default.Save();
         }
 

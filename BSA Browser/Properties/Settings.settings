@@ -2,17 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BSA_Browser.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="BSABrowser_Location" Type="System.Drawing.Point" Scope="User">
-      <Value Profile="(Default)">161, 161</Value>
-    </Setting>
-    <Setting Name="BSABrowser_Size" Type="System.Drawing.Size" Scope="User">
-      <Value Profile="(Default)">650, 400</Value>
-    </Setting>
     <Setting Name="LastBSAUnpackPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\</Value>
-    </Setting>
-    <Setting Name="BSABrowser_SplitterDistance" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">150</Value>
     </Setting>
     <Setting Name="RecentFiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
@@ -46,6 +37,9 @@
     </Setting>
     <Setting Name="UpdateSettings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="WindowStates" Type="BSA_Browser.Classes.WindowStates" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
