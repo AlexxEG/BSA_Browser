@@ -546,7 +546,7 @@ namespace BSA_Browser
 
         #endregion
 
-        public string FormatBytes(long bytes)
+        private string FormatBytes(long bytes)
         {
             const int scale = 1024;
             string[] orders = new string[] { "GB", "MB", "KB", "Bytes" };
@@ -673,7 +673,7 @@ namespace BSA_Browser
             }
         }
 
-        internal void OpenArchive(string path, bool addToRecentFiles = false)
+        public void OpenArchive(string path, bool addToRecentFiles = false)
         {
             BSAFileEntry[] Files;
             BSATreeNode newNode = new BSATreeNode(Path.GetFileNameWithoutExtension(path));
