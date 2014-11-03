@@ -196,7 +196,7 @@ namespace BSA_Browser
                 return;
 
             DataObject obj = new DataObject();
-            System.Collections.Specialized.StringCollection sc = new System.Collections.Specialized.StringCollection();
+            StringCollection sc = new StringCollection();
 
             foreach (ListViewItem item in lvFiles.SelectedItems)
             {
@@ -272,7 +272,7 @@ namespace BSA_Browser
                 return;
 
             e.Node.Nodes.Clear();
-            System.Collections.Generic.Dictionary<string, TreeNode> nodes = new System.Collections.Generic.Dictionary<string, TreeNode>();
+            Dictionary<string, TreeNode> nodes = new Dictionary<string, TreeNode>();
             GetRootNode(e.Node).AllItems = (ListViewItem[])GetRootNode(e.Node).Items.Clone();
 
             foreach (ListViewItem lvi in GetRootNode(e.Node).AllItems)
@@ -316,7 +316,7 @@ namespace BSA_Browser
                 GetRootNode(e.Node).Items = GetRootNode(e.Node).AllItems;
             else
             {
-                System.Collections.Generic.List<ListViewItem> lvis = new System.Collections.Generic.List<ListViewItem>(GetRootNode(e.Node).AllItems.Length);
+                List<ListViewItem> lvis = new List<ListViewItem>(GetRootNode(e.Node).AllItems.Length);
                 foreach (ListViewItem lvi in GetRootNode(e.Node).AllItems)
                     if (lvi.Text.StartsWith(s)) lvis.Add(lvi);
 
@@ -553,10 +553,10 @@ namespace BSA_Browser
 
             try
             {
-                newNode.BinaryReader = new BinaryReader(File.OpenRead(path), System.Text.Encoding.Default);
+                newNode.BinaryReader = new BinaryReader(File.OpenRead(path), Encoding.Default);
                 //if(Program.ReadCString(br)!="BSA") throw new fommException("File was not a valid BSA archive");
                 uint type = newNode.BinaryReader.ReadUInt32();
-                System.Text.StringBuilder sb = new System.Text.StringBuilder(64);
+                StringBuilder sb = new StringBuilder(64);
                 if (type != 0x00415342 && type != 0x00000100)
                 {
                     //Might be a fallout 2 dat
