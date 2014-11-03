@@ -22,27 +22,28 @@ namespace BSA_Browser
     public partial class BSABrowser : Form
     {
         ColumnHeader m_SortingColumn;
+        Settings _settings = Properties.Settings.Default;
 
         public BSABrowser()
         {
             InitializeComponent();
             lvFiles.ContextMenu = contextMenu1;
 
-            if (Properties.Settings.Default.UpdateSettings)
+            if (_settings.UpdateSettings)
             {
-                Properties.Settings.Default.Upgrade();
-                Properties.Settings.Default.UpdateSettings = false;
-                Properties.Settings.Default.Save();
+                _settings.Upgrade();
+                _settings.UpdateSettings = false;
+                _settings.Save();
             }
 
-            string path = Properties.Settings.Default.LastBSAUnpackPath;
+            string path = _settings.LastBSAUnpackPath;
 
             if (!string.IsNullOrEmpty(path))
                 SaveAllDialog.SelectedPath = path;
 
-            if (Properties.Settings.Default.RecentFiles != null)
+            if (_settings.RecentFiles != null)
             {
-                foreach (string item in Properties.Settings.Default.RecentFiles)
+                foreach (string item in _settings.RecentFiles)
                     AddToRecentFiles(item);
             }
 
@@ -63,19 +64,19 @@ namespace BSA_Browser
         private void BSABrowser_Load(object sender, EventArgs e)
         {
             // Initialize WindowStates if null
-            if (Properties.Settings.Default.WindowStates == null)
+            if (_settings.WindowStates == null)
             {
-                Properties.Settings.Default.WindowStates = new WindowStates();
+                _settings.WindowStates = new WindowStates();
             }
 
             // Add this form if it doesn't exists
-            if (!Properties.Settings.Default.WindowStates.Contains(this.Name))
+            if (!_settings.WindowStates.Contains(this.Name))
             {
-                Properties.Settings.Default.WindowStates.Add(this.Name);
+                _settings.WindowStates.Add(this.Name);
             }
 
             // Restore window state
-            Properties.Settings.Default.WindowStates[this.Name].RestoreForm(this);
+            _settings.WindowStates[this.Name].RestoreForm(this);
 
             cmbSortOrder.SelectedIndex = 0;
         }
@@ -86,9 +87,9 @@ namespace BSA_Browser
                 CloseArchives();
 
             SaveRecentFiles();
-            Properties.Settings.Default.WindowStates[this.Name].SaveForm(this);
-            Properties.Settings.Default.LastBSAUnpackPath = SaveAllDialog.SelectedPath;
-            Properties.Settings.Default.Save();
+            _settings.WindowStates[this.Name].SaveForm(this);
+            _settings.LastBSAUnpackPath = SaveAllDialog.SelectedPath;
+            _settings.Save();
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
@@ -452,11 +453,11 @@ namespace BSA_Browser
             OptionsForm of = new OptionsForm();
             if (of.ShowDialog(this) == DialogResult.OK)
             {
-                Settings.Default.Fallout3_QuickExportPath = of.txtFallout3Path.Text;
-                Settings.Default.FalloutNV_QuickExportPath = of.txtFalloutNVPath.Text;
-                Settings.Default.Oblivion_QuickExportPath = of.txtOblivionPath.Text;
-                Settings.Default.Skyrim_QuickExportPath = of.txtSkyrimPath.Text;
-                Settings.Default.Save();
+                _settings.Fallout3_QuickExportPath = of.txtFallout3Path.Text;
+                _settings.FalloutNV_QuickExportPath = of.txtFalloutNVPath.Text;
+                _settings.Oblivion_QuickExportPath = of.txtOblivionPath.Text;
+                _settings.Skyrim_QuickExportPath = of.txtSkyrimPath.Text;
+                _settings.Save();
             }
         }
 
@@ -484,15 +485,15 @@ namespace BSA_Browser
 
         private void menuItem1_Popup(object sender, EventArgs e)
         {
-            extractFallout3MenuItem1.Enabled = Settings.Default.Fallout3_QuickExportEnable;
-            extractFalloutNewVegasMenuItem1.Enabled = Settings.Default.Fallout3_QuickExportEnable;
-            extractOblivionMenuItem1.Enabled = Settings.Default.Fallout3_QuickExportEnable;
-            extractSkyrimMenuItem1.Enabled = Settings.Default.Fallout3_QuickExportEnable;
+            extractFallout3MenuItem1.Enabled = _settings.Fallout3_QuickExportEnable;
+            extractFalloutNewVegasMenuItem1.Enabled = _settings.Fallout3_QuickExportEnable;
+            extractOblivionMenuItem1.Enabled = _settings.Fallout3_QuickExportEnable;
+            extractSkyrimMenuItem1.Enabled = _settings.Fallout3_QuickExportEnable;
         }
 
         private void extractFallout3MenuItem1_Click(object sender, EventArgs e)
         {
-            string path = Settings.Default.Fallout3_QuickExportPath + "\\Data\\";
+            string path = _settings.Fallout3_QuickExportPath + "\\Data\\";
             BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
             for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
@@ -505,7 +506,7 @@ namespace BSA_Browser
 
         private void extractFalloutNewVegasMenuItem1_Click(object sender, EventArgs e)
         {
-            string path = Settings.Default.FalloutNV_QuickExportPath + "\\Data\\";
+            string path = _settings.FalloutNV_QuickExportPath + "\\Data\\";
             BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
             for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
@@ -518,7 +519,7 @@ namespace BSA_Browser
 
         private void extractOblivionMenuItem1_Click(object sender, EventArgs e)
         {
-            string path = Settings.Default.Oblivion_QuickExportPath + "\\Data\\";
+            string path = _settings.Oblivion_QuickExportPath + "\\Data\\";
             BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
             for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
@@ -531,7 +532,7 @@ namespace BSA_Browser
 
         private void extractSkyrimMenuItem1_Click(object sender, EventArgs e)
         {
-            string path = Settings.Default.Skyrim_QuickExportPath + "\\Data\\";
+            string path = _settings.Skyrim_QuickExportPath + "\\Data\\";
             BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
             for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
@@ -876,13 +877,13 @@ namespace BSA_Browser
 
         private void SaveRecentFiles()
         {
-            if (Settings.Default.RecentFiles == null)
-                Settings.Default.RecentFiles = new StringCollection();
+            if (_settings.RecentFiles == null)
+                _settings.RecentFiles = new StringCollection();
 
-            Settings.Default.RecentFiles.Clear();
+            _settings.RecentFiles.Clear();
 
             for (int i = recentFilesMenuItem.MenuItems.Count - 1; i != 1; i--)
-                Settings.Default.RecentFiles.Add(recentFilesMenuItem.MenuItems[i].Tag.ToString());
+                _settings.RecentFiles.Add(recentFilesMenuItem.MenuItems[i].Tag.ToString());
         }
 
         private void UpdateFileList(BSATreeNode bsaNode)
