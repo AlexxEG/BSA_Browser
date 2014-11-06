@@ -1,0 +1,15 @@
+[1.1]
+
+- Fix issue using latest opened archive properties (Compressed etc.) for every archive
+- Improved "Options" UI
+- Improved saving/restoring window state
+- Removed 'Sort' button. Sort by default and save sorting preferences
+- Add simple "About" box to new "Help" menu
+- Show version in window title
+- Don't format file offset, display full value
+- Rename "Close Sel. Archive" to "Close Selected Archive"
+
+
+[1.0]
+
+- Initial release
