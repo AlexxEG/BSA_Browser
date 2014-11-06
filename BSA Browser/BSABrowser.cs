@@ -909,6 +909,9 @@ namespace BSA_Browser
         /// </summary>
         private BSATreeNode GetSelectedArchive()
         {
+            if (tvFolders.SelectedNode == null)
+                return null;
+
             return GetRootNode(tvFolders.SelectedNode);
         }
 
