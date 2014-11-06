@@ -349,9 +349,6 @@ namespace BSA_Browser
 
         private void closeSelectedArchiveMenuItem_Click(object sender, EventArgs e)
         {
-            if (tvFolders.SelectedNode == null)
-                return;
-
             if (GetSelectedArchive() == null)
                 return;
 
