@@ -132,7 +132,7 @@ namespace BSA_Browser
             if (tvFolders.SelectedNode == null)
                 return;
 
-            BSAFileEntry[] files = (BSAFileEntry[])GetRootNode(tvFolders.SelectedNode).Files;
+            BSAFileEntry[] files = (BSAFileEntry[])GetSelectedArchive().Files;
 
             if (SaveAllDialog.ShowDialog() == DialogResult.OK)
             {
@@ -170,7 +170,7 @@ namespace BSA_Browser
                     case ".txt":
                     case ".xml":
                         string path = Program.CreateTempDirectory();
-                        BSATreeNode root = GetRootNode(tvFolders.SelectedNode);
+                        BSATreeNode root = GetSelectedArchive();
 
                         fe.Extract(Path.Combine(path, fe.FileName), false, root.BinaryReader, root.ContainsFileNameBlobs);
                         System.Diagnostics.Process.Start(Path.Combine(path, fe.FileName));
@@ -214,7 +214,7 @@ namespace BSA_Browser
             {
                 BSAFileEntry fe = (BSAFileEntry)item.Tag;
                 string path = Path.Combine(Program.CreateTempDirectory(), fe.FileName);
-                BSATreeNode root = GetRootNode(tvFolders.SelectedNode);
+                BSATreeNode root = GetSelectedArchive();
 
                 fe.Extract(path, false, root.BinaryReader, root.ContainsFileNameBlobs);
                 sc.Add(path);
@@ -249,11 +249,11 @@ namespace BSA_Browser
 
                 lvFiles.BeginUpdate();
                 lvFiles.Items.Clear();
-                List<ListViewItem> lvis = new List<ListViewItem>(GetRootNode(tvFolders.SelectedNode).Files.Length);
+                List<ListViewItem> lvis = new List<ListViewItem>(GetSelectedArchive().Files.Length);
 
-                for (int i = 0; i < GetRootNode(tvFolders.SelectedNode).Items.Length; i++)
-                    if (regex.IsMatch(GetRootNode(tvFolders.SelectedNode).Items[i].Text))
-                        lvis.Add(GetRootNode(tvFolders.SelectedNode).Items[i]);
+                for (int i = 0; i < GetSelectedArchive().Items.Length; i++)
+                    if (regex.IsMatch(GetSelectedArchive().Items[i].Text))
+                        lvis.Add(GetSelectedArchive().Items[i]);
 
                 lvFiles.Items.AddRange(lvis.ToArray());
                 lvFiles.EndUpdate();
@@ -265,14 +265,14 @@ namespace BSA_Browser
                 lvFiles.Items.Clear();
 
                 if (str.Length == 0)
-                    lvFiles.Items.AddRange(GetRootNode(tvFolders.SelectedNode).Items);
+                    lvFiles.Items.AddRange(GetSelectedArchive().Items);
                 else
                 {
-                    List<ListViewItem> lvis = new List<ListViewItem>(GetRootNode(tvFolders.SelectedNode).Files.Length);
+                    List<ListViewItem> lvis = new List<ListViewItem>(GetSelectedArchive().Files.Length);
 
-                    for (int i = 0; i < GetRootNode(tvFolders.SelectedNode).Items.Length; i++)
-                        if (GetRootNode(tvFolders.SelectedNode).Items[i].Text.Contains(str))
-                            lvis.Add(GetRootNode(tvFolders.SelectedNode).Items[i]);
+                    for (int i = 0; i < GetSelectedArchive().Items.Length; i++)
+                        if (GetSelectedArchive().Items[i].Text.Contains(str))
+                            lvis.Add(GetSelectedArchive().Items[i]);
 
                     lvFiles.Items.AddRange(lvis.ToArray());
                 }
@@ -352,10 +352,10 @@ namespace BSA_Browser
             if (tvFolders.SelectedNode == null)
                 return;
 
-            if (GetRootNode(tvFolders.SelectedNode) == null)
+            if (GetSelectedArchive() == null)
                 return;
 
-            CloseArchive(GetRootNode(tvFolders.SelectedNode));
+            CloseArchive(GetSelectedArchive());
         }
 
         private void recentFilesMenuItem_Popup(object sender, EventArgs e)
@@ -772,7 +772,7 @@ namespace BSA_Browser
 
         private void CloseArchive(BSATreeNode bsaNode)
         {
-            if (GetRootNode(tvFolders.SelectedNode) == bsaNode)
+            if (GetSelectedArchive() == bsaNode)
                 lvFiles.Items.Clear();
 
             if (bsaNode.BinaryReader != null)
@@ -807,7 +807,7 @@ namespace BSA_Browser
 
             try
             {
-                BSATreeNode root = GetRootNode(tvFolders.SelectedNode);
+                BSATreeNode root = GetSelectedArchive();
 
                 foreach (BSAFileEntry fe in files)
                 {
@@ -858,6 +858,11 @@ namespace BSA_Browser
             while (rootNode.Parent != null)
                 rootNode = rootNode.Parent;
             return (BSATreeNode)rootNode;
+        }
+
+        private BSATreeNode GetSelectedArchive()
+        {
+            return GetSelectedArchive();
         }
 
         private bool RecentListContains(string file)
