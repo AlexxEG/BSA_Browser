@@ -808,7 +808,12 @@ namespace BSA_Browser
         {
             lvFiles.Items.Clear();
 
-            // ToDo: Close BinaryReaders.
+            foreach (BSATreeNode node in tvFolders.Nodes)
+            {
+                if (node.BinaryReader != null)
+                    node.BinaryReader.Close();
+            }
+            
             tvFolders.Nodes.Clear();
         }
 
