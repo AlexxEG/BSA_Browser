@@ -942,8 +942,8 @@ namespace BSA_Browser
         {
             if (_settings.RecentFiles == null)
                 _settings.RecentFiles = new StringCollection();
-
-            _settings.RecentFiles.Clear();
+            else
+                _settings.RecentFiles.Clear();
 
             for (int i = recentFilesMenuItem.MenuItems.Count - 1; i != 1; i--)
                 _settings.RecentFiles.Add(recentFilesMenuItem.MenuItems[i].Tag.ToString());
