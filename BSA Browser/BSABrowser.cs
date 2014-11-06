@@ -813,7 +813,7 @@ namespace BSA_Browser
                 if (node.BinaryReader != null)
                     node.BinaryReader.Close();
             }
-            
+
             tvFolders.Nodes.Clear();
         }
 
@@ -905,7 +905,7 @@ namespace BSA_Browser
         /// </summary>
         private BSATreeNode GetSelectedArchive()
         {
-            return GetSelectedArchive();
+            return GetRootNode(tvFolders.SelectedNode);
         }
 
         /// <summary>
