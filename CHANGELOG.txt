@@ -8,6 +8,7 @@
 - Show version in window title
 - Don't format file offset, display full value
 - Rename "Close Sel. Archive" to "Close Selected Archive"
+- Installer: .bsa association is optional now
 
 
 [1.0]
