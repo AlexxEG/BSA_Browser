@@ -560,6 +560,11 @@ namespace BSA_Browser
 
         #endregion
 
+        /// <summary>
+        /// Opens the given BSA archive, adding it to the TreeView and making it browsable.
+        /// </summary>
+        /// <param name="path">The BSA archive's file path.</param>
+        /// <param name="addToRecentFiles">True if BSA archive should be added to recent files list.</param>
         public void OpenArchive(string path, bool addToRecentFiles = false)
         {
             BSAFileEntry[] Files;
@@ -746,6 +751,10 @@ namespace BSA_Browser
             tvFolders.SelectedNode = newNode;
         }
 
+        /// <summary>
+        /// Adds the given file to the recent files list. If it already exists in the list, it gets bumped up to the top.
+        /// </summary>
+        /// <param name="file">The file to add.</param>
         private void AddToRecentFiles(string file)
         {
             if (string.IsNullOrEmpty(file))
@@ -770,6 +779,10 @@ namespace BSA_Browser
             }
         }
 
+        /// <summary>
+        /// Closes the given BSA archive, removing it from the TreeView.
+        /// </summary>
+        /// <param name="bsaNode"></param>
         private void CloseArchive(BSATreeNode bsaNode)
         {
             if (GetSelectedArchive() == bsaNode)
@@ -777,7 +790,9 @@ namespace BSA_Browser
 
             if (bsaNode.BinaryReader != null)
                 bsaNode.BinaryReader.Close();
+
             tvFolders.Nodes.Remove(bsaNode);
+
             if (tvFolders.GetNodeCount(false) == 0)
             {
                 btnPreview.Enabled = false;
@@ -786,12 +801,24 @@ namespace BSA_Browser
             }
         }
 
+        /// <summary>
+        /// Closes all open archives, clearing the TreeView.
+        /// </summary>
         private void CloseArchives()
         {
             lvFiles.Items.Clear();
+
+            // ToDo: Close BinaryReaders.
             tvFolders.Nodes.Clear();
         }
 
+        /// <summary>
+        /// Extracts the given file(s) to the given path.
+        /// </summary>
+        /// <param name="path">The path to extract files to.</param>
+        /// <param name="useFolderName">True to use full folder path for files, false to extract straight to path.</param>
+        /// <param name="gui">True to show a progression dialog.</param>
+        /// <param name="files">The files in the selected BSA archive to extract.</param>
         private void ExtractFiles(string path, bool useFolderName, bool gui, params BSAFileEntry[] files)
         {
             ProgressForm pf = null;
@@ -836,6 +863,10 @@ namespace BSA_Browser
             }
         }
 
+        /// <summary>
+        /// Formats the given file size to a more readable string.
+        /// </summary>
+        /// <param name="bytes">The file size to format.</param>
         private string FormatBytes(long bytes)
         {
             const int scale = 1024;
@@ -852,6 +883,10 @@ namespace BSA_Browser
             return "0 Bytes";
         }
 
+        /// <summary>
+        /// Returns the root node of the given TreeNode.
+        /// </summary>
+        /// <param name="node">The TreeNode to get root node from.</param>
         private BSATreeNode GetRootNode(TreeNode node)
         {
             TreeNode rootNode = node;
@@ -860,11 +895,18 @@ namespace BSA_Browser
             return (BSATreeNode)rootNode;
         }
 
+        /// <summary>
+        /// Returns the selected BSA archive.
+        /// </summary>
         private BSATreeNode GetSelectedArchive()
         {
             return GetSelectedArchive();
         }
 
+        /// <summary>
+        /// Returns true if recent files list contains the given file, false otherwise.
+        /// </summary>
+        /// <param name="file">The file to check.</param>
         private bool RecentListContains(string file)
         {
             foreach (MenuItem item in recentFilesMenuItem.MenuItems)
@@ -872,6 +914,10 @@ namespace BSA_Browser
             return false;
         }
 
+        /// <summary>
+        /// Returns the given file's MenuItem.
+        /// </summary>
+        /// <param name="file">The file to get MenuItem from.</param>
         private MenuItem RecentListGetItemByString(string file)
         {
             foreach (MenuItem item in recentFilesMenuItem.MenuItems)
@@ -880,6 +926,9 @@ namespace BSA_Browser
             return null;
         }
 
+        /// <summary>
+        /// Saves the recent files list to Settings.
+        /// </summary>
         private void SaveRecentFiles()
         {
             if (_settings.RecentFiles == null)
@@ -891,6 +940,10 @@ namespace BSA_Browser
                 _settings.RecentFiles.Add(recentFilesMenuItem.MenuItems[i].Tag.ToString());
         }
 
+        /// <summary>
+        /// Updates BSA archive file list.
+        /// </summary>
+        /// <param name="bsaNode">The BSA archive to update.</param>
         private void UpdateFileList(BSATreeNode bsaNode)
         {
             bsaNode.Items = new ListViewItem[bsaNode.Files.Length];
