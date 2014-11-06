@@ -27,6 +27,7 @@ namespace BSA_Browser
         public BSABrowser()
         {
             InitializeComponent();
+            this.Text += " (" + Program.GetVersion() + ")";
             lvFiles.ContextMenu = contextMenu1;
 
             if (_settings.UpdateSettings)

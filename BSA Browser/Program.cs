@@ -42,6 +42,13 @@ namespace BSA_Browser
             }
             throw new fommException("Could not create temp folder because directory is full");
         }
+
+        public static string GetVersion()
+        {
+            Version v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+
+            return string.Format("{0}.{1}", v.Major, v.Minor);
+        }
     }
 
     /// <summary>
