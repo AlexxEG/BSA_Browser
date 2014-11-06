@@ -398,7 +398,7 @@ namespace BSA_Browser
             this.Close();
         }
 
-        private void menuItem2_Popup(object sender, EventArgs e)
+        private void editMenuItem_Popup(object sender, EventArgs e)
         {
             bool hasSelectedItems = lvFiles.SelectedItems.Count > 0;
 

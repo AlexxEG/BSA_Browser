@@ -56,7 +56,7 @@
             this.menuItem9 = new System.Windows.Forms.MenuItem();
             this.menuItem10 = new System.Windows.Forms.MenuItem();
             this.exitMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.editMenuItem = new System.Windows.Forms.MenuItem();
             this.copyPathMenuItem = new System.Windows.Forms.MenuItem();
             this.copyFolderPathMenuItem = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem = new System.Windows.Forms.MenuItem();
@@ -264,7 +264,7 @@
             // 
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.fileMenuItem,
-            this.menuItem2,
+            this.editMenuItem,
             this.toolsMenuItem,
             this.helpMenuItem});
             // 
@@ -329,15 +329,15 @@
             this.exitMenuItem.Text = "Exit";
             this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
             // 
-            // menuItem2
+            // editMenuItem
             // 
-            this.menuItem2.Index = 1;
-            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.editMenuItem.Index = 1;
+            this.editMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.copyPathMenuItem,
             this.copyFolderPathMenuItem,
             this.copyFileNameMenuItem});
-            this.menuItem2.Text = "Edit";
-            this.menuItem2.Popup += new System.EventHandler(this.menuItem2_Popup);
+            this.editMenuItem.Text = "Edit";
+            this.editMenuItem.Popup += new System.EventHandler(this.editMenuItem_Popup);
             // 
             // copyPathMenuItem
             // 
@@ -539,7 +539,7 @@
         private System.Windows.Forms.MenuItem copyPathMenuItem1;
         private System.Windows.Forms.MenuItem copyFolderPathMenuItem1;
         private System.Windows.Forms.MenuItem copyFileNameMenuItem1;
-        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem editMenuItem;
         private System.Windows.Forms.MenuItem copyPathMenuItem;
         private System.Windows.Forms.MenuItem copyFolderPathMenuItem;
         private System.Windows.Forms.MenuItem copyFileNameMenuItem;
