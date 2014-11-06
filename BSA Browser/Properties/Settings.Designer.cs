@@ -176,5 +176,29 @@ namespace BSA_Browser.Properties {
                 this["WindowStates"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SortDesc {
+            get {
+                return ((bool)(this["SortDesc"]));
+            }
+            set {
+                this["SortDesc"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("FolderName")]
+        public global::BSA_Browser.BSASortOrder SortType {
+            get {
+                return ((global::BSA_Browser.BSASortOrder)(this["SortType"]));
+            }
+            set {
+                this["SortType"] = value;
+            }
+        }
     }
 }

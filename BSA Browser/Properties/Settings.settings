@@ -41,5 +41,11 @@
     <Setting Name="WindowStates" Type="BSA_Browser.Classes.WindowStates" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="SortDesc" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SortType" Type="BSA_Browser.BSASortOrder" Scope="User">
+      <Value Profile="(Default)">FolderName</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -48,6 +48,10 @@ namespace BSA_Browser
                     AddToRecentFiles(item);
             }
 
+            // Set lvFiles sorter
+            BSASorter.SetSorter(_settings.SortType, _settings.SortDesc);
+            lvFiles.ListViewItemSorter = new BSASorter();
+
             Program.SetWindowTheme(tvFolders.Handle, "explorer", null);
             Program.SendMessage(lvFiles.Handle, 0x127, 0x10001, 0);
             Program.SetWindowTheme(lvFiles.Handle, "explorer", null);
@@ -79,7 +83,9 @@ namespace BSA_Browser
             // Restore window state
             _settings.WindowStates[this.Name].RestoreForm(this);
 
-            cmbSortOrder.SelectedIndex = 0;
+            // Restore sorting preferences
+            cmbSortOrder.SelectedIndex = (int)_settings.SortType;
+            cbDesc.Checked = _settings.SortDesc;
         }
 
         private void BSABrowser_FormClosing(object sender, FormClosingEventArgs e)
@@ -141,12 +147,6 @@ namespace BSA_Browser
             }
         }
 
-        private void btnSort_Click(object sender, EventArgs e)
-        {
-            lvFiles.ListViewItemSorter = new BSASorter();
-            lvFiles.ListViewItemSorter = null;
-        }
-
         private void btnPreview_Click(object sender, EventArgs e)
         {
             if (lvFiles.SelectedItems.Count == 0)
@@ -191,11 +191,15 @@ namespace BSA_Browser
         private void cmbSortOrder_SelectedIndexChanged(object sender, EventArgs e)
         {
             BSASorter.SetSorter((BSASortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
+            lvFiles.Sort();
+            _settings.SortType = (BSASortOrder)cmbSortOrder.SelectedIndex;
         }
 
         private void cbDesc_CheckedChanged(object sender, EventArgs e)
         {
             BSASorter.SetSorter((BSASortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
+            lvFiles.Sort();
+            _settings.SortDesc = cbDesc.Checked;
         }
 
         private void lvFiles_Enter(object sender, EventArgs e)

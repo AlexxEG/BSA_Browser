@@ -39,7 +39,6 @@
             this.SaveAllDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.SaveSingleDialog = new System.Windows.Forms.SaveFileDialog();
             this.cmbSortOrder = new System.Windows.Forms.ComboBox();
-            this.btnSort = new System.Windows.Forms.Button();
             this.btnPreview = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -169,22 +168,11 @@
             "File size",
             "Offset",
             "File extension"});
-            this.cmbSortOrder.Location = new System.Drawing.Point(420, 277);
+            this.cmbSortOrder.Location = new System.Drawing.Point(501, 278);
             this.cmbSortOrder.Name = "cmbSortOrder";
             this.cmbSortOrder.Size = new System.Drawing.Size(121, 21);
             this.cmbSortOrder.TabIndex = 5;
             this.cmbSortOrder.SelectedIndexChanged += new System.EventHandler(this.cmbSortOrder_SelectedIndexChanged);
-            // 
-            // btnSort
-            // 
-            this.btnSort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSort.Location = new System.Drawing.Point(547, 276);
-            this.btnSort.Name = "btnSort";
-            this.btnSort.Size = new System.Drawing.Size(75, 23);
-            this.btnSort.TabIndex = 6;
-            this.btnSort.Text = "Sort";
-            this.btnSort.UseVisualStyleBackColor = true;
-            this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
             // 
             // btnPreview
             // 
@@ -458,7 +446,7 @@
             this.cbDesc.AutoSize = true;
             this.cbDesc.Checked = true;
             this.cbDesc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDesc.Location = new System.Drawing.Point(363, 280);
+            this.cbDesc.Location = new System.Drawing.Point(444, 280);
             this.cbDesc.Name = "cbDesc";
             this.cbDesc.Size = new System.Drawing.Size(51, 17);
             this.cbDesc.TabIndex = 11;
@@ -481,7 +469,6 @@
             this.Controls.Add(this.btnExtract);
             this.Controls.Add(this.btnExtractAll);
             this.Controls.Add(this.cmbSortOrder);
-            this.Controls.Add(this.btnSort);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.mainMenu1;
             this.MinimumSize = new System.Drawing.Size(639, 180);
@@ -509,7 +496,6 @@
         private System.Windows.Forms.FolderBrowserDialog SaveAllDialog;
         private System.Windows.Forms.SaveFileDialog SaveSingleDialog;
         private System.Windows.Forms.ComboBox cmbSortOrder;
-        private System.Windows.Forms.Button btnSort;
         private System.Windows.Forms.Button btnPreview;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label label1;
