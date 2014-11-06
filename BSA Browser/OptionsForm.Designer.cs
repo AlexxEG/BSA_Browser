@@ -28,199 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            "",
+            "Fallout 3",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            "",
+            "Fallout New Vegas",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
+            "",
+            "Oblivion",
+            ""}, -1);
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
+            "",
+            "Skyrim",
+            ""}, -1);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionsForm));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnBrowse1 = new System.Windows.Forms.Button();
-            this.txtFallout3Path = new System.Windows.Forms.TextBox();
-            this.chbFallout3 = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnBrowse2 = new System.Windows.Forms.Button();
-            this.txtFalloutNVPath = new System.Windows.Forms.TextBox();
-            this.chbFalloutNV = new System.Windows.Forms.CheckBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnBrowse3 = new System.Windows.Forms.Button();
-            this.chbOblivion = new System.Windows.Forms.CheckBox();
-            this.txtOblivionPath = new System.Windows.Forms.TextBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.chbSkyrim = new System.Windows.Forms.CheckBox();
-            this.btnBrowse4 = new System.Windows.Forms.Button();
-            this.txtSkyrimPath = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.lvQuickExtract = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label1 = new System.Windows.Forms.Label();
+            this.contextMenu1 = new System.Windows.Forms.ContextMenu();
+            this.setPathMenuItem = new System.Windows.Forms.MenuItem();
+            this.clearPathMenuItem = new System.Windows.Forms.MenuItem();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.groupBox5.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.btnBrowse1);
-            this.groupBox1.Controls.Add(this.txtFallout3Path);
-            this.groupBox1.Controls.Add(this.chbFallout3);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(573, 46);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Fallout 3 Path";
-            // 
-            // btnBrowse1
-            // 
-            this.btnBrowse1.Location = new System.Drawing.Point(536, 17);
-            this.btnBrowse1.Name = "btnBrowse1";
-            this.btnBrowse1.Size = new System.Drawing.Size(31, 23);
-            this.btnBrowse1.TabIndex = 1;
-            this.btnBrowse1.Text = "...";
-            this.btnBrowse1.UseVisualStyleBackColor = true;
-            this.btnBrowse1.Click += new System.EventHandler(this.btnBrowse1_Click);
-            // 
-            // txtFallout3Path
-            // 
-            this.txtFallout3Path.BackColor = System.Drawing.Color.White;
-            this.txtFallout3Path.Location = new System.Drawing.Point(27, 19);
-            this.txtFallout3Path.Name = "txtFallout3Path";
-            this.txtFallout3Path.ReadOnly = true;
-            this.txtFallout3Path.Size = new System.Drawing.Size(503, 20);
-            this.txtFallout3Path.TabIndex = 0;
-            // 
-            // chbFallout3
-            // 
-            this.chbFallout3.AutoSize = true;
-            this.chbFallout3.Location = new System.Drawing.Point(6, 22);
-            this.chbFallout3.Name = "chbFallout3";
-            this.chbFallout3.Size = new System.Drawing.Size(15, 14);
-            this.chbFallout3.TabIndex = 10;
-            this.chbFallout3.UseVisualStyleBackColor = true;
-            this.chbFallout3.CheckedChanged += new System.EventHandler(this.chbFallout3_CheckedChanged);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.btnBrowse2);
-            this.groupBox2.Controls.Add(this.txtFalloutNVPath);
-            this.groupBox2.Controls.Add(this.chbFalloutNV);
-            this.groupBox2.Location = new System.Drawing.Point(12, 64);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(573, 46);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Fallout New Vegas Path";
-            // 
-            // btnBrowse2
-            // 
-            this.btnBrowse2.Location = new System.Drawing.Point(536, 17);
-            this.btnBrowse2.Name = "btnBrowse2";
-            this.btnBrowse2.Size = new System.Drawing.Size(31, 23);
-            this.btnBrowse2.TabIndex = 3;
-            this.btnBrowse2.Text = "...";
-            this.btnBrowse2.UseVisualStyleBackColor = true;
-            this.btnBrowse2.Click += new System.EventHandler(this.btnBrowse2_Click);
-            // 
-            // txtFalloutNVPath
-            // 
-            this.txtFalloutNVPath.BackColor = System.Drawing.Color.White;
-            this.txtFalloutNVPath.Location = new System.Drawing.Point(27, 19);
-            this.txtFalloutNVPath.Name = "txtFalloutNVPath";
-            this.txtFalloutNVPath.ReadOnly = true;
-            this.txtFalloutNVPath.Size = new System.Drawing.Size(503, 20);
-            this.txtFalloutNVPath.TabIndex = 2;
-            // 
-            // chbFalloutNV
-            // 
-            this.chbFalloutNV.AutoSize = true;
-            this.chbFalloutNV.Location = new System.Drawing.Point(6, 22);
-            this.chbFalloutNV.Name = "chbFalloutNV";
-            this.chbFalloutNV.Size = new System.Drawing.Size(15, 14);
-            this.chbFalloutNV.TabIndex = 11;
-            this.chbFalloutNV.UseVisualStyleBackColor = true;
-            this.chbFalloutNV.CheckedChanged += new System.EventHandler(this.chbFalloutNV_CheckedChanged);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.btnBrowse3);
-            this.groupBox3.Controls.Add(this.chbOblivion);
-            this.groupBox3.Controls.Add(this.txtOblivionPath);
-            this.groupBox3.Location = new System.Drawing.Point(12, 116);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(573, 46);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Oblivion Path";
-            // 
-            // btnBrowse3
-            // 
-            this.btnBrowse3.Location = new System.Drawing.Point(536, 17);
-            this.btnBrowse3.Name = "btnBrowse3";
-            this.btnBrowse3.Size = new System.Drawing.Size(31, 23);
-            this.btnBrowse3.TabIndex = 5;
-            this.btnBrowse3.Text = "...";
-            this.btnBrowse3.UseVisualStyleBackColor = true;
-            this.btnBrowse3.Click += new System.EventHandler(this.btnBrowse3_Click);
-            // 
-            // chbOblivion
-            // 
-            this.chbOblivion.AutoSize = true;
-            this.chbOblivion.Location = new System.Drawing.Point(6, 22);
-            this.chbOblivion.Name = "chbOblivion";
-            this.chbOblivion.Size = new System.Drawing.Size(15, 14);
-            this.chbOblivion.TabIndex = 12;
-            this.chbOblivion.UseVisualStyleBackColor = true;
-            this.chbOblivion.CheckedChanged += new System.EventHandler(this.chbOblivion_CheckedChanged);
-            // 
-            // txtOblivionPath
-            // 
-            this.txtOblivionPath.BackColor = System.Drawing.Color.White;
-            this.txtOblivionPath.Location = new System.Drawing.Point(27, 19);
-            this.txtOblivionPath.Name = "txtOblivionPath";
-            this.txtOblivionPath.ReadOnly = true;
-            this.txtOblivionPath.Size = new System.Drawing.Size(503, 20);
-            this.txtOblivionPath.TabIndex = 4;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.chbSkyrim);
-            this.groupBox4.Controls.Add(this.btnBrowse4);
-            this.groupBox4.Controls.Add(this.txtSkyrimPath);
-            this.groupBox4.Location = new System.Drawing.Point(12, 168);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(573, 46);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Skyrim Path";
-            // 
-            // chbSkyrim
-            // 
-            this.chbSkyrim.AutoSize = true;
-            this.chbSkyrim.Location = new System.Drawing.Point(6, 22);
-            this.chbSkyrim.Name = "chbSkyrim";
-            this.chbSkyrim.Size = new System.Drawing.Size(15, 14);
-            this.chbSkyrim.TabIndex = 13;
-            this.chbSkyrim.UseVisualStyleBackColor = true;
-            this.chbSkyrim.CheckedChanged += new System.EventHandler(this.chbSkyrim_CheckedChanged);
-            // 
-            // btnBrowse4
-            // 
-            this.btnBrowse4.Location = new System.Drawing.Point(536, 17);
-            this.btnBrowse4.Name = "btnBrowse4";
-            this.btnBrowse4.Size = new System.Drawing.Size(31, 23);
-            this.btnBrowse4.TabIndex = 7;
-            this.btnBrowse4.Text = "...";
-            this.btnBrowse4.UseVisualStyleBackColor = true;
-            this.btnBrowse4.Click += new System.EventHandler(this.btnBrowse4_Click);
-            // 
-            // txtSkyrimPath
-            // 
-            this.txtSkyrimPath.BackColor = System.Drawing.Color.White;
-            this.txtSkyrimPath.Location = new System.Drawing.Point(27, 19);
-            this.txtSkyrimPath.Name = "txtSkyrimPath";
-            this.txtSkyrimPath.ReadOnly = true;
-            this.txtSkyrimPath.Size = new System.Drawing.Size(503, 20);
-            this.txtSkyrimPath.TabIndex = 6;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(429, 242);
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.Location = new System.Drawing.Point(416, 326);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 8;
@@ -230,60 +80,186 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(510, 242);
+            this.btnCancel.Location = new System.Drawing.Point(497, 326);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 9;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.lvQuickExtract);
+            this.groupBox5.Controls.Add(this.label1);
+            this.groupBox5.Location = new System.Drawing.Point(6, 7);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(540, 269);
+            this.groupBox5.TabIndex = 10;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Quick Extract";
+            // 
+            // lvQuickExtract
+            // 
+            this.lvQuickExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvQuickExtract.CheckBoxes = true;
+            this.lvQuickExtract.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.lvQuickExtract.FullRowSelect = true;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem2.StateImageIndex = 0;
+            listViewItem3.StateImageIndex = 0;
+            listViewItem4.StateImageIndex = 0;
+            this.lvQuickExtract.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4});
+            this.lvQuickExtract.Location = new System.Drawing.Point(6, 109);
+            this.lvQuickExtract.Name = "lvQuickExtract";
+            this.lvQuickExtract.Size = new System.Drawing.Size(528, 154);
+            this.lvQuickExtract.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.lvQuickExtract.TabIndex = 1;
+            this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
+            this.lvQuickExtract.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Enabled";
+            this.columnHeader1.Width = 27;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Game";
+            this.columnHeader2.Width = 101;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Path";
+            this.columnHeader3.Width = 392;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Location = new System.Drawing.Point(6, 22);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(528, 84);
+            this.label1.TabIndex = 0;
+            this.label1.Text = resources.GetString("label1.Text");
+            // 
+            // contextMenu1
+            // 
+            this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.setPathMenuItem,
+            this.clearPathMenuItem});
+            this.contextMenu1.Popup += new System.EventHandler(this.contextMenu1_Popup);
+            // 
+            // setPathMenuItem
+            // 
+            this.setPathMenuItem.Index = 0;
+            this.setPathMenuItem.Text = "Set Path";
+            this.setPathMenuItem.Click += new System.EventHandler(this.setPathMenuItem_Click);
+            // 
+            // clearPathMenuItem
+            // 
+            this.clearPathMenuItem.Index = 1;
+            this.clearPathMenuItem.Text = "Clear Path";
+            this.clearPathMenuItem.Click += new System.EventHandler(this.clearPathMenuItem_Click);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(560, 308);
+            this.tabControl1.TabIndex = 11;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(552, 282);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "General";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.groupBox5);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(552, 282);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Quick Extract";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(3, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(546, 276);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "No options yet";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(597, 277);
+            this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "OptionsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button btnBrowse1;
-        public System.Windows.Forms.TextBox txtFallout3Path;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnBrowse2;
-        public System.Windows.Forms.TextBox txtFalloutNVPath;
-        private System.Windows.Forms.Button btnBrowse3;
-        public System.Windows.Forms.TextBox txtOblivionPath;
-        private System.Windows.Forms.Button btnBrowse4;
-        public System.Windows.Forms.TextBox txtSkyrimPath;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-        private System.Windows.Forms.CheckBox chbFallout3;
-        private System.Windows.Forms.CheckBox chbFalloutNV;
-        private System.Windows.Forms.CheckBox chbOblivion;
-        private System.Windows.Forms.CheckBox chbSkyrim;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.ListView lvQuickExtract;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ContextMenu contextMenu1;
+        private System.Windows.Forms.MenuItem setPathMenuItem;
+        private System.Windows.Forms.MenuItem clearPathMenuItem;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.Label label2;
     }
 }

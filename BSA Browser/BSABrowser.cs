@@ -451,14 +451,13 @@ namespace BSA_Browser
 
         private void optionsMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsForm of = new OptionsForm();
-            if (of.ShowDialog(this) == DialogResult.OK)
+            using (OptionsForm of = new OptionsForm())
             {
-                _settings.Fallout3_QuickExportPath = of.txtFallout3Path.Text;
-                _settings.FalloutNV_QuickExportPath = of.txtFalloutNVPath.Text;
-                _settings.Oblivion_QuickExportPath = of.txtOblivionPath.Text;
-                _settings.Skyrim_QuickExportPath = of.txtSkyrimPath.Text;
-                _settings.Save();
+                if (of.ShowDialog(this) == DialogResult.OK)
+                {
+                    of.Save();
+                    _settings.Save();
+                }
             }
         }
 
@@ -487,13 +486,19 @@ namespace BSA_Browser
         private void menuItem1_Popup(object sender, EventArgs e)
         {
             extractFallout3MenuItem1.Enabled = _settings.Fallout3_QuickExportEnable;
-            extractFalloutNewVegasMenuItem1.Enabled = _settings.Fallout3_QuickExportEnable;
-            extractOblivionMenuItem1.Enabled = _settings.Fallout3_QuickExportEnable;
-            extractSkyrimMenuItem1.Enabled = _settings.Fallout3_QuickExportEnable;
+            extractFalloutNewVegasMenuItem1.Enabled = _settings.FalloutNV_QuickExportEnable;
+            extractOblivionMenuItem1.Enabled = _settings.Oblivion_QuickExportEnable;
+            extractSkyrimMenuItem1.Enabled = _settings.Skyrim_QuickExportEnable;
         }
 
         private void extractFallout3MenuItem1_Click(object sender, EventArgs e)
         {
+            if (!Directory.Exists(_settings.Fallout3_QuickExportPath))
+            {
+                MessageBox.Show(this, "Fallout 3 path doesn't exists, or is not set.");
+                return;
+            }
+
             string path = _settings.Fallout3_QuickExportPath + "\\Data\\";
             BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
@@ -507,6 +512,12 @@ namespace BSA_Browser
 
         private void extractFalloutNewVegasMenuItem1_Click(object sender, EventArgs e)
         {
+            if (!Directory.Exists(_settings.FalloutNV_QuickExportPath))
+            {
+                MessageBox.Show(this, "Fallout New Vegas path doesn't exists, or is not set.");
+                return;
+            }
+
             string path = _settings.FalloutNV_QuickExportPath + "\\Data\\";
             BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
@@ -520,6 +531,12 @@ namespace BSA_Browser
 
         private void extractOblivionMenuItem1_Click(object sender, EventArgs e)
         {
+            if (!Directory.Exists(_settings.Oblivion_QuickExportPath))
+            {
+                MessageBox.Show(this, "Oblivion path doesn't exists, or is not set.");
+                return;
+            }
+
             string path = _settings.Oblivion_QuickExportPath + "\\Data\\";
             BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
@@ -533,6 +550,12 @@ namespace BSA_Browser
 
         private void extractSkyrimMenuItem1_Click(object sender, EventArgs e)
         {
+            if (!Directory.Exists(_settings.Skyrim_QuickExportPath))
+            {
+                MessageBox.Show(this, "Skyrim path doesn't exists, or is not set.");
+                return;
+            }
+
             string path = _settings.Skyrim_QuickExportPath + "\\Data\\";
             BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 

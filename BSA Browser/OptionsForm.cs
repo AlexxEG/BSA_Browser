@@ -1,7 +1,7 @@
-﻿using BSA_Browser.Properties;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using BSA_Browser.Properties;
 
 namespace BSA_Browser
 {
@@ -11,22 +11,19 @@ namespace BSA_Browser
         {
             InitializeComponent();
 
-            txtFallout3Path.Text = Properties.Settings.Default.Fallout3_QuickExportPath;
-            txtFalloutNVPath.Text = Properties.Settings.Default.FalloutNV_QuickExportPath;
-            txtOblivionPath.Text = Properties.Settings.Default.Oblivion_QuickExportPath;
-            txtSkyrimPath.Text = Properties.Settings.Default.Skyrim_QuickExportPath;
+            lvQuickExtract.ContextMenu = contextMenu1;
 
-            chbFallout3.Checked = Properties.Settings.Default.Fallout3_QuickExportEnable;
-            txtFallout3Path.Enabled = Properties.Settings.Default.Fallout3_QuickExportEnable;
+            // Restore enabled from Settings
+            lvQuickExtract.Items[0].Checked = Settings.Default.Fallout3_QuickExportEnable;
+            lvQuickExtract.Items[1].Checked = Settings.Default.FalloutNV_QuickExportEnable;
+            lvQuickExtract.Items[2].Checked = Settings.Default.Oblivion_QuickExportEnable;
+            lvQuickExtract.Items[3].Checked = Settings.Default.Skyrim_QuickExportEnable;
 
-            chbFalloutNV.Checked = Properties.Settings.Default.FalloutNV_QuickExportEnable;
-            txtFalloutNVPath.Enabled = Properties.Settings.Default.FalloutNV_QuickExportEnable;
-
-            chbOblivion.Checked = Properties.Settings.Default.Oblivion_QuickExportEnable;
-            txtOblivionPath.Enabled = Properties.Settings.Default.Oblivion_QuickExportEnable;
-
-            chbSkyrim.Checked = Properties.Settings.Default.Skyrim_QuickExportEnable;
-            txtSkyrimPath.Enabled = Properties.Settings.Default.Skyrim_QuickExportEnable;
+            // Restore game paths from Settings
+            lvQuickExtract.Items[0].SubItems[2].Text = Settings.Default.Fallout3_QuickExportPath;
+            lvQuickExtract.Items[1].SubItems[2].Text = Settings.Default.FalloutNV_QuickExportPath;
+            lvQuickExtract.Items[2].SubItems[2].Text = Settings.Default.Oblivion_QuickExportPath;
+            lvQuickExtract.Items[3].SubItems[2].Text = Settings.Default.Skyrim_QuickExportPath;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -34,64 +31,89 @@ namespace BSA_Browser
             this.DialogResult = DialogResult.OK;
         }
 
-        private void btnBrowse1_Click(object sender, EventArgs e)
+        private void contextMenu1_Popup(object sender, EventArgs e)
         {
-            if (Directory.Exists(txtFallout3Path.Text))
-                folderBrowserDialog1.SelectedPath = txtFallout3Path.Text;
+            // Reset MenuItems
+            setPathMenuItem.Enabled = clearPathMenuItem.Enabled = true;
+
+            if (lvQuickExtract.SelectedItems.Count == 0)
+            {
+                setPathMenuItem.Enabled = false;
+                clearPathMenuItem.Enabled = false;
+            }
+            else if (lvQuickExtract.SelectedItems.Count > 1)
+            {
+                // Disable 'Set Path' if there is multiple selected items.
+                setPathMenuItem.Enabled = false;
+            }
+        }
+
+        private void setPathMenuItem_Click(object sender, EventArgs e)
+        {
+            ListViewItem item = lvQuickExtract.SelectedItems[0];
+
+            if (Directory.Exists(item.SubItems[2].Text))
+                folderBrowserDialog1.SelectedPath = item.SubItems[2].Text;
 
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-                txtFallout3Path.Text = folderBrowserDialog1.SelectedPath;
+            {
+                item.SubItems[2].Text = folderBrowserDialog1.SelectedPath;
+            }
         }
 
-        private void btnBrowse2_Click(object sender, EventArgs e)
+        private void clearPathMenuItem_Click(object sender, EventArgs e)
         {
-            if (Directory.Exists(txtFalloutNVPath.Text))
-                folderBrowserDialog1.SelectedPath = txtFalloutNVPath.Text;
-
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-                txtFalloutNVPath.Text = folderBrowserDialog1.SelectedPath;
+            foreach (ListViewItem item in lvQuickExtract.SelectedItems)
+            {
+                item.SubItems[2].Text = string.Empty;
+            }
         }
 
-        private void btnBrowse3_Click(object sender, EventArgs e)
+        public void Save()
         {
-            if (Directory.Exists(txtOblivionPath.Text))
-                folderBrowserDialog1.SelectedPath = txtOblivionPath.Text;
-
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-                txtOblivionPath.Text = folderBrowserDialog1.SelectedPath;
+            foreach (ListViewItem item in lvQuickExtract.Items)
+            {
+                UpdateEnabled(item, item.Checked);
+                UpdateGamePath(item, item.SubItems[2].Text);
+            }
         }
 
-        private void btnBrowse4_Click(object sender, EventArgs e)
+        private void UpdateEnabled(ListViewItem item, bool enabled)
         {
-            if (Directory.Exists(txtSkyrimPath.Text))
-                folderBrowserDialog1.SelectedPath = txtSkyrimPath.Text;
-
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-                txtSkyrimPath.Text = folderBrowserDialog1.SelectedPath;
+            switch (item.Index)
+            {
+                case 0: // Fallout 3
+                    Settings.Default.Fallout3_QuickExportEnable = enabled;
+                    break;
+                case 1: // Fallout New Vegas
+                    Settings.Default.FalloutNV_QuickExportEnable = enabled;
+                    break;
+                case 2: // Oblivion
+                    Settings.Default.Oblivion_QuickExportEnable = enabled;
+                    break;
+                case 3: // Skyrim
+                    Settings.Default.Skyrim_QuickExportEnable = enabled;
+                    break;
+            }
         }
 
-        private void chbFallout3_CheckedChanged(object sender, EventArgs e)
+        private void UpdateGamePath(ListViewItem item, string path)
         {
-            Settings.Default.Fallout3_QuickExportEnable = chbFallout3.Checked;
-            txtFallout3Path.Enabled = chbFallout3.Checked;
-        }
-
-        private void chbFalloutNV_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.Default.FalloutNV_QuickExportEnable = chbFalloutNV.Checked;
-            txtFalloutNVPath.Enabled = chbFalloutNV.Checked;
-        }
-
-        private void chbOblivion_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.Default.Oblivion_QuickExportEnable = chbOblivion.Checked;
-            txtOblivionPath.Enabled = chbOblivion.Checked;
-        }
-
-        private void chbSkyrim_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.Default.Skyrim_QuickExportEnable = chbSkyrim.Checked;
-            txtSkyrimPath.Enabled = chbSkyrim.Checked;
+            switch (item.Index)
+            {
+                case 0: // Fallout 3
+                    Settings.Default.Fallout3_QuickExportPath = path;
+                    break;
+                case 1: // Fallout New Vegas
+                    Settings.Default.FalloutNV_QuickExportPath = path;
+                    break;
+                case 2: // Oblivion
+                    Settings.Default.Oblivion_QuickExportPath = path;
+                    break;
+                case 3: // Skyrim
+                    Settings.Default.Skyrim_QuickExportPath = path;
+                    break;
+            }
         }
     }
 }
