@@ -375,18 +375,22 @@ namespace BSA_Browser
         private void recentFiles_Click(object sender, EventArgs e)
         {
             MenuItem item = (MenuItem)sender;
-            //fileToolStripMenuItem.DropDown.Close();
+            string file = item.Tag.ToString();
 
-            if (File.Exists(item.Tag.ToString()))
+            if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
-                OpenArchive(item.Tag.ToString());
-                recentFilesMenuItem.MenuItems.Remove(item);
-                recentFilesMenuItem.MenuItems.Add(2, item);
+                OpenArchive(file, true);
             }
             else
-                if (MessageBox.Show(this, "\"" + item.Tag.ToString() + "\" dosen't exist anymore." + Environment.NewLine + Environment.NewLine +
-                                          "Want to remove from recent list?", "Lost File", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                string message = string.Format("\"{1}\" doesn't exist anymore.{0}{0}" +
+                    "Do you want to remove it from the recent files list?", Environment.NewLine, item.Tag.ToString());
+
+                if (MessageBox.Show(this, message, "Lost File", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
                     recentFilesMenuItem.MenuItems.Remove(item);
+                }
+            }
         }
 
         private void exitMenuItem_Click(object sender, EventArgs e)
