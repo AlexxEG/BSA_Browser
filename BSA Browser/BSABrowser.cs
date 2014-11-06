@@ -231,8 +231,7 @@ namespace BSA_Browser
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (!(tvFolders.GetNodeCount(false) > 0) ||
-                tvFolders.SelectedNode == null)
+            if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
                 return;
 
             string str = txtSearch.Text;
