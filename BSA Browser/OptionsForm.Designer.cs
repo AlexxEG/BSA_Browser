@@ -59,8 +59,8 @@
             this.clearPathMenuItem = new System.Windows.Forms.MenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -130,6 +130,8 @@
             this.lvQuickExtract.TabIndex = 1;
             this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
             this.lvQuickExtract.View = System.Windows.Forms.View.Details;
+            this.lvQuickExtract.SelectedIndexChanged += new System.EventHandler(this.lvQuickExtract_SelectedIndexChanged);
+            this.lvQuickExtract.Enter += new System.EventHandler(this.lvQuickExtract_Enter);
             // 
             // columnHeader1
             // 
@@ -200,17 +202,6 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.groupBox5);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(552, 282);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Quick Extract";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // label2
             // 
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -221,6 +212,17 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "No options yet";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.groupBox5);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(552, 282);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Quick Extract";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 

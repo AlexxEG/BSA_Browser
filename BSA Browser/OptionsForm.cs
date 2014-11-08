@@ -24,6 +24,10 @@ namespace BSA_Browser
             lvQuickExtract.Items[1].SubItems[2].Text = Settings.Default.FalloutNV_QuickExportPath;
             lvQuickExtract.Items[2].SubItems[2].Text = Settings.Default.Oblivion_QuickExportPath;
             lvQuickExtract.Items[3].SubItems[2].Text = Settings.Default.Skyrim_QuickExportPath;
+
+            Program.SendMessage(lvQuickExtract.Handle, 0x127, 0x10001, 0);
+            Program.SendMessage(lvQuickExtract.Handle, 0x1000 + 54, 0x00010000, 0x00010000);
+            Program.SetWindowTheme(lvQuickExtract.Handle, "explorer", null);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -67,6 +71,16 @@ namespace BSA_Browser
             {
                 item.SubItems[2].Text = string.Empty;
             }
+        }
+
+        private void lvQuickExtract_Enter(object sender, EventArgs e)
+        {
+            Program.SendMessage(lvQuickExtract.Handle, 0x127, 0x10001, 0);
+        }
+
+        private void lvQuickExtract_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Program.SendMessage(lvQuickExtract.Handle, 0x127, 0x10001, 0);
         }
 
         public void Save()
