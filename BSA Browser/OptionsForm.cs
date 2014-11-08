@@ -85,49 +85,15 @@ namespace BSA_Browser
 
         public void Save()
         {
-            foreach (ListViewItem item in lvQuickExtract.Items)
-            {
-                UpdateEnabled(item, item.Checked);
-                UpdateGamePath(item, item.SubItems[2].Text);
-            }
-        }
+            Settings.Default.Fallout3_QuickExportEnable = lvQuickExtract.Items[0].Checked;
+            Settings.Default.FalloutNV_QuickExportEnable = lvQuickExtract.Items[1].Checked;
+            Settings.Default.Oblivion_QuickExportEnable = lvQuickExtract.Items[2].Checked;
+            Settings.Default.Skyrim_QuickExportEnable = lvQuickExtract.Items[3].Checked;
 
-        private void UpdateEnabled(ListViewItem item, bool enabled)
-        {
-            switch (item.Index)
-            {
-                case 0: // Fallout 3
-                    Settings.Default.Fallout3_QuickExportEnable = enabled;
-                    break;
-                case 1: // Fallout New Vegas
-                    Settings.Default.FalloutNV_QuickExportEnable = enabled;
-                    break;
-                case 2: // Oblivion
-                    Settings.Default.Oblivion_QuickExportEnable = enabled;
-                    break;
-                case 3: // Skyrim
-                    Settings.Default.Skyrim_QuickExportEnable = enabled;
-                    break;
-            }
-        }
-
-        private void UpdateGamePath(ListViewItem item, string path)
-        {
-            switch (item.Index)
-            {
-                case 0: // Fallout 3
-                    Settings.Default.Fallout3_QuickExportPath = path;
-                    break;
-                case 1: // Fallout New Vegas
-                    Settings.Default.FalloutNV_QuickExportPath = path;
-                    break;
-                case 2: // Oblivion
-                    Settings.Default.Oblivion_QuickExportPath = path;
-                    break;
-                case 3: // Skyrim
-                    Settings.Default.Skyrim_QuickExportPath = path;
-                    break;
-            }
+            Settings.Default.Fallout3_QuickExportPath = lvQuickExtract.Items[0].SubItems[2].Text;
+            Settings.Default.FalloutNV_QuickExportPath = lvQuickExtract.Items[1].SubItems[2].Text;
+            Settings.Default.Oblivion_QuickExportPath = lvQuickExtract.Items[2].SubItems[2].Text;
+            Settings.Default.Skyrim_QuickExportPath = lvQuickExtract.Items[3].SubItems[2].Text;
         }
     }
 }
