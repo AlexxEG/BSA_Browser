@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace BSA_Browser
 {
@@ -24,6 +25,8 @@ namespace BSA_Browser
         [STAThread]
         static void Main(string[] args)
         {
+            Application.SetCompatibleTextRenderingDefault(false);
+
             App myApp = new App();
             myApp.Run(args);
         }
