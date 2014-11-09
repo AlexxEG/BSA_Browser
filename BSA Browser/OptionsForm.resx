@@ -136,7 +136,7 @@
     <value>True</value>
   </metadata>
   <data name="label1.Text" xml:space="preserve">
-    <value>Enable/disable quick extract for the game. Quick extract can extract files to the selected game folder, maintaining the folder path, by using the right click menu.
+    <value>Enable/disable quick extract for the selected game. Quick extract can extract files to a game folder, maintaining the folder path, by using the right click menu.
 
 Game path should be set to the game root folder, not the 'Data' folder.
 
