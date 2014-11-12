@@ -92,5 +92,5 @@ namespace BSA_Browser
         }
     }
 
-    class fommException : Exception { public fommException(string msg) : base(msg) { } }
+    public class fommException : Exception { public fommException(string msg) : base(msg) { } }
 }
