@@ -74,6 +74,7 @@
             this.copyFolderPathMenuItem1 = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem1 = new System.Windows.Forms.MenuItem();
             this.cbDesc = new System.Windows.Forms.CheckBox();
+            this.lFileCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -454,11 +455,23 @@
             this.cbDesc.UseVisualStyleBackColor = true;
             this.cbDesc.CheckedChanged += new System.EventHandler(this.cbDesc_CheckedChanged);
             // 
+            // lFileCount
+            // 
+            this.lFileCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lFileCount.Location = new System.Drawing.Point(522, 315);
+            this.lFileCount.Margin = new System.Windows.Forms.Padding(3);
+            this.lFileCount.Name = "lFileCount";
+            this.lFileCount.Size = new System.Drawing.Size(100, 13);
+            this.lFileCount.TabIndex = 12;
+            this.lFileCount.Text = "0 files";
+            this.lFileCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 340);
+            this.Controls.Add(this.lFileCount);
             this.Controls.Add(this.cbDesc);
             this.Controls.Add(this.cbRegex);
             this.Controls.Add(this.splitContainer1);
@@ -531,6 +544,7 @@
         private System.Windows.Forms.MenuItem copyFileNameMenuItem;
         private System.Windows.Forms.MenuItem helpMenuItem;
         private System.Windows.Forms.MenuItem aboutMenuItem;
+        private System.Windows.Forms.Label lFileCount;
     }
 }
 

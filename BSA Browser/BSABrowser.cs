@@ -282,6 +282,8 @@ namespace BSA_Browser
                 }
                 lvFiles.EndUpdate();
             }
+
+            lFileCount.Text = string.Format("{0:n0} files", lvFiles.Items.Count);
         }
 
         private void tvFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
