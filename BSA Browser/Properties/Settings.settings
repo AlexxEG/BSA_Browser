@@ -47,5 +47,8 @@
     <Setting Name="SortType" Type="BSA_Browser.BSASortOrder" Scope="User">
       <Value Profile="(Default)">FolderName</Value>
     </Setting>
+    <Setting Name="CustomPaths" Type="BSA_Browser.Classes.CustomPaths" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

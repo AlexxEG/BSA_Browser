@@ -200,5 +200,16 @@ namespace BSA_Browser.Properties {
                 this["SortType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::BSA_Browser.Classes.CustomPaths CustomPaths {
+            get {
+                return ((global::BSA_Browser.Classes.CustomPaths)(this["CustomPaths"]));
+            }
+            set {
+                this["CustomPaths"] = value;
+            }
+        }
     }
 }
