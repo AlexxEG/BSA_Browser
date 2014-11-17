@@ -53,6 +53,11 @@ namespace BSA_Browser
             btnCancel.Enabled = true;
         }
 
+        public int GetProgressPercentage()
+        {
+            return ((int)(100 * (float)pbProgress.Value / (float)pbProgress.Maximum));
+        }
+
         /// <summary>
         /// Sets the ProgressBar maximum value. 
         /// </summary>

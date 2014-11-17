@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -23,11 +24,13 @@ namespace BSA_Browser
     {
         ColumnHeader m_SortingColumn;
         Settings _settings = Properties.Settings.Default;
+        string untouchedTitle;
 
         public BSABrowser()
         {
             InitializeComponent();
             this.Text += " (" + Program.GetVersion() + ")";
+            untouchedTitle = this.Text;
             lvFiles.ContextMenu = contextMenu1;
 
             if (_settings.UpdateSettings)
@@ -856,47 +859,111 @@ namespace BSA_Browser
         /// <param name="files">The files in the selected BSA archive to extract.</param>
         private void ExtractFiles(string path, bool useFolderName, bool gui, params BSAFileEntry[] files)
         {
-            ProgressForm pf = null;
-            int count = 0;
-
             if (gui)
             {
                 pf = new ProgressForm("Unpacking archive", false);
                 pf.EnableCancel();
+                pf.Parent = this;
                 pf.SetProgressRange(files.Length);
+                pf.Canceled += delegate { bw.CancelAsync(); };
                 pf.Show();
+
+                bw = new BackgroundWorker();
+                bw.WorkerReportsProgress = true;
+                bw.WorkerSupportsCancellation = true;
+                bw.DoWork += bw_DoWork;
+                bw.ProgressChanged += bw_ProgressChanged;
+                bw.RunWorkerCompleted += bw_RunWorkerCompleted;
+                bw.RunWorkerAsync(new object[] { path, useFolderName, files, GetSelectedArchive() });
             }
+            else
+            {
+                try
+                {
+                    BSATreeNode root = GetSelectedArchive();
+
+                    foreach (BSAFileEntry fe in files)
+                    {
+                        path = useFolderName ? path : Path.Combine(path, fe.FileName);
+
+                        fe.Extract(path, useFolderName, root.BinaryReader, root.ContainsFileNameBlobs);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error");
+                }
+            }
+        }
+
+        #region ExtractFiles variables
+
+        BackgroundWorker bw;
+        ProgressForm pf;
+
+        private void bw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            object[] arguments = e.Argument as object[];
+
+            string path = (arguments)[0] as string;
+            bool useFolderName = bool.Parse((arguments)[1].ToString());
+            BSAFileEntry[] files = (arguments)[2] as BSAFileEntry[];
+            BSATreeNode root = (arguments)[3] as BSATreeNode;
 
             try
             {
-                BSATreeNode root = GetSelectedArchive();
+                int count = 0;
 
                 foreach (BSAFileEntry fe in files)
                 {
-                    fe.Extract(path, useFolderName, root.BinaryReader, root.ContainsFileNameBlobs);
-
-                    if (gui)
+                    if (bw.CancellationPending)
                     {
-                        pf.UpdateProgress(count++);
-                        Application.DoEvents();
+                        e.Result = false;
+                        break;
                     }
+
+                    fe.Extract(path, useFolderName, root.BinaryReader, root.ContainsFileNameBlobs);
+                    bw.ReportProgress(count++);
                 }
-            }
-            catch (fommException)
-            {
-                MessageBox.Show("Operation cancelled", "Message");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error");
-            }
-
-            if (gui)
-            {
-                pf.Unblock();
-                pf.Close();
+                e.Result = ex;
             }
         }
+
+        private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            pf.UpdateProgress(e.ProgressPercentage);
+            this.Text = string.Format("{0}% - {1}", pf.GetProgressPercentage(), untouchedTitle);
+        }
+
+        private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            pf.Unblock();
+            pf.Close();
+            pf.Dispose();
+            pf = null;
+
+            bw.Dispose();
+            bw = null;
+
+            this.Text = untouchedTitle;
+
+            if (e.Result is bool)
+            {
+                if (!(bool)e.Result)
+                {
+                    MessageBox.Show("Operation cancelled", "Message");
+                }
+            }
+            else if (e.Result is Exception)
+            {
+                MessageBox.Show(((Exception)e.Result).Message, "Error");
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Formats the given file size to a more readable string.
