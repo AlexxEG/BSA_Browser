@@ -60,102 +60,6 @@ namespace BSA_Browser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Fallout3_QuickExportEnable {
-            get {
-                return ((bool)(this["Fallout3_QuickExportEnable"]));
-            }
-            set {
-                this["Fallout3_QuickExportEnable"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Fallout3_QuickExportPath {
-            get {
-                return ((string)(this["Fallout3_QuickExportPath"]));
-            }
-            set {
-                this["Fallout3_QuickExportPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool FalloutNV_QuickExportEnable {
-            get {
-                return ((bool)(this["FalloutNV_QuickExportEnable"]));
-            }
-            set {
-                this["FalloutNV_QuickExportEnable"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FalloutNV_QuickExportPath {
-            get {
-                return ((string)(this["FalloutNV_QuickExportPath"]));
-            }
-            set {
-                this["FalloutNV_QuickExportPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Oblivion_QuickExportEnable {
-            get {
-                return ((bool)(this["Oblivion_QuickExportEnable"]));
-            }
-            set {
-                this["Oblivion_QuickExportEnable"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Oblivion_QuickExportPath {
-            get {
-                return ((string)(this["Oblivion_QuickExportPath"]));
-            }
-            set {
-                this["Oblivion_QuickExportPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Skyrim_QuickExportEnable {
-            get {
-                return ((bool)(this["Skyrim_QuickExportEnable"]));
-            }
-            set {
-                this["Skyrim_QuickExportEnable"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Skyrim_QuickExportPath {
-            get {
-                return ((string)(this["Skyrim_QuickExportPath"]));
-            }
-            set {
-                this["Skyrim_QuickExportPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool UpdateSettings {
             get {
@@ -203,12 +107,12 @@ namespace BSA_Browser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::BSA_Browser.Classes.CustomPaths CustomPaths {
+        public global::BSA_Browser.Classes.QuickExtractPaths QuickExtractPaths {
             get {
-                return ((global::BSA_Browser.Classes.CustomPaths)(this["CustomPaths"]));
+                return ((global::BSA_Browser.Classes.QuickExtractPaths)(this["QuickExtractPaths"]));
             }
             set {
-                this["CustomPaths"] = value;
+                this["QuickExtractPaths"] = value;
             }
         }
     }

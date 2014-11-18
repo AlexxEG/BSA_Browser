@@ -51,6 +51,11 @@ namespace BSA_Browser
                     AddToRecentFiles(item);
             }
 
+            if (_settings.QuickExtractPaths == null)
+                _settings.QuickExtractPaths = new QuickExtractPaths();
+
+            this.LoadQuickExtractPaths();
+
             // Set lvFiles sorter
             BSASorter.SetSorter(_settings.SortType, _settings.SortDesc);
             lvFiles.ListViewItemSorter = new BSASorter();
@@ -464,7 +469,7 @@ namespace BSA_Browser
             {
                 if (of.ShowDialog(this) == DialogResult.OK)
                 {
-                    of.Save();
+                    of.SaveChanges();
                     _settings.Save();
                 }
             }
@@ -486,29 +491,31 @@ namespace BSA_Browser
         {
             bool hasSelectedItems = lvFiles.SelectedItems.Count > 0;
 
-            menuItem1.Enabled = hasSelectedItems;
+            quickExtractsMenuItem.Enabled = hasSelectedItems;
             copyPathMenuItem1.Enabled = hasSelectedItems;
             copyFolderPathMenuItem1.Enabled = hasSelectedItems;
             copyFileNameMenuItem1.Enabled = hasSelectedItems;
         }
 
-        private void menuItem1_Popup(object sender, EventArgs e)
+        private void quickExtractMenuItem_Click(object sender, EventArgs e)
         {
-            extractFallout3MenuItem1.Enabled = _settings.Fallout3_QuickExportEnable;
-            extractFalloutNewVegasMenuItem1.Enabled = _settings.FalloutNV_QuickExportEnable;
-            extractOblivionMenuItem1.Enabled = _settings.Oblivion_QuickExportEnable;
-            extractSkyrimMenuItem1.Enabled = _settings.Skyrim_QuickExportEnable;
-        }
+            MenuItem menuItem = sender as MenuItem;
+            QuickExtractPath path = menuItem.Tag as QuickExtractPath;
 
-        private void extractFallout3MenuItem1_Click(object sender, EventArgs e)
-        {
-            if (!Directory.Exists(_settings.Fallout3_QuickExportPath))
+            if (!Directory.Exists(path.Path))
             {
-                MessageBox.Show(this, "Fallout 3 path doesn't exists, or is not set.");
-                return;
+                DialogResult result = MessageBox.Show(
+                    this,
+                    string.Format("{0} path doesn't exists anymore. Do you want to create it?", path.Name),
+                    "Quick Extract",
+                    MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.No)
+                    return;
+
+                Directory.CreateDirectory(path.Path);
             }
 
-            string path = _settings.Fallout3_QuickExportPath + "\\Data\\";
             BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
             for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
@@ -516,64 +523,7 @@ namespace BSA_Browser
                 files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
             }
 
-            ExtractFiles(path, true, true, files);
-        }
-
-        private void extractFalloutNewVegasMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (!Directory.Exists(_settings.FalloutNV_QuickExportPath))
-            {
-                MessageBox.Show(this, "Fallout New Vegas path doesn't exists, or is not set.");
-                return;
-            }
-
-            string path = _settings.FalloutNV_QuickExportPath + "\\Data\\";
-            BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
-
-            for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
-            {
-                files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
-            }
-
-            ExtractFiles(path, true, true, files);
-        }
-
-        private void extractOblivionMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (!Directory.Exists(_settings.Oblivion_QuickExportPath))
-            {
-                MessageBox.Show(this, "Oblivion path doesn't exists, or is not set.");
-                return;
-            }
-
-            string path = _settings.Oblivion_QuickExportPath + "\\Data\\";
-            BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
-
-            for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
-            {
-                files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
-            }
-
-            ExtractFiles(path, true, true, files);
-        }
-
-        private void extractSkyrimMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (!Directory.Exists(_settings.Skyrim_QuickExportPath))
-            {
-                MessageBox.Show(this, "Skyrim path doesn't exists, or is not set.");
-                return;
-            }
-
-            string path = _settings.Skyrim_QuickExportPath + "\\Data\\";
-            BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
-
-            for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
-            {
-                files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
-            }
-
-            ExtractFiles(path, true, true, files);
+            ExtractFiles(path.Path, path.UseFolderPath, true, files);
         }
 
         private void copyPathMenuItem1_Click(object sender, EventArgs e)
@@ -863,10 +813,9 @@ namespace BSA_Browser
             {
                 pf = new ProgressForm("Unpacking archive", false);
                 pf.EnableCancel();
-                pf.Parent = this;
                 pf.SetProgressRange(files.Length);
                 pf.Canceled += delegate { bw.CancelAsync(); };
-                pf.Show();
+                pf.Show(this);
 
                 bw = new BackgroundWorker();
                 bw.WorkerReportsProgress = true;
@@ -922,6 +871,7 @@ namespace BSA_Browser
                         break;
                     }
 
+                    path = useFolderName ? path : Path.Combine(path, fe.FileName);
                     fe.Extract(path, useFolderName, root.BinaryReader, root.ContainsFileNameBlobs);
                     bw.ReportProgress(count++);
                 }
@@ -1006,6 +956,23 @@ namespace BSA_Browser
                 return null;
 
             return GetRootNode(tvFolders.SelectedNode);
+        }
+
+        /// <summary>
+        /// Loads quick extract paths into Quick Extract menu item.
+        /// </summary>
+        private void LoadQuickExtractPaths()
+        {
+            quickExtractsMenuItem.MenuItems.Clear();
+
+            foreach (QuickExtractPath path in _settings.QuickExtractPaths)
+            {
+                MenuItem menuItem = new MenuItem(path.Name, quickExtractMenuItem_Click);
+
+                menuItem.Tag = path;
+
+                quickExtractsMenuItem.MenuItems.Add(menuItem);
+            }
         }
 
         /// <summary>

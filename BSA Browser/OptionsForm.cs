@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using BSA_Browser.Classes;
+using BSA_Browser.Dialogs;
 using BSA_Browser.Properties;
 
 namespace BSA_Browser
@@ -11,19 +13,14 @@ namespace BSA_Browser
         {
             InitializeComponent();
 
-            lvQuickExtract.ContextMenu = contextMenu1;
+            foreach (QuickExtractPath path in Settings.Default.QuickExtractPaths)
+            {
+                ListViewItem item = new ListViewItem(path.Name);
+                item.SubItems.Add(path.Path);
+                item.SubItems.Add(path.UseFolderPath ? "x" : string.Empty);
 
-            // Restore enabled from Settings
-            lvQuickExtract.Items[0].Checked = Settings.Default.Fallout3_QuickExportEnable;
-            lvQuickExtract.Items[1].Checked = Settings.Default.FalloutNV_QuickExportEnable;
-            lvQuickExtract.Items[2].Checked = Settings.Default.Oblivion_QuickExportEnable;
-            lvQuickExtract.Items[3].Checked = Settings.Default.Skyrim_QuickExportEnable;
-
-            // Restore game paths from Settings
-            lvQuickExtract.Items[0].SubItems[2].Text = Settings.Default.Fallout3_QuickExportPath;
-            lvQuickExtract.Items[1].SubItems[2].Text = Settings.Default.FalloutNV_QuickExportPath;
-            lvQuickExtract.Items[2].SubItems[2].Text = Settings.Default.Oblivion_QuickExportPath;
-            lvQuickExtract.Items[3].SubItems[2].Text = Settings.Default.Skyrim_QuickExportPath;
+                lvQuickExtract.Items.Add(item);
+            }
 
             Program.SendMessage(lvQuickExtract.Handle, 0x127, 0x10001, 0);
             Program.SendMessage(lvQuickExtract.Handle, 0x1000 + 54, 0x00010000, 0x00010000);
@@ -33,44 +30,6 @@ namespace BSA_Browser
         private void btnOK_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
-        }
-
-        private void contextMenu1_Popup(object sender, EventArgs e)
-        {
-            // Reset MenuItems
-            setPathMenuItem.Enabled = clearPathMenuItem.Enabled = true;
-
-            if (lvQuickExtract.SelectedItems.Count == 0)
-            {
-                setPathMenuItem.Enabled = false;
-                clearPathMenuItem.Enabled = false;
-            }
-            else if (lvQuickExtract.SelectedItems.Count > 1)
-            {
-                // Disable 'Set Path' if there is multiple selected items.
-                setPathMenuItem.Enabled = false;
-            }
-        }
-
-        private void setPathMenuItem_Click(object sender, EventArgs e)
-        {
-            ListViewItem item = lvQuickExtract.SelectedItems[0];
-
-            if (Directory.Exists(item.SubItems[2].Text))
-                folderBrowserDialog1.SelectedPath = item.SubItems[2].Text;
-
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                item.SubItems[2].Text = folderBrowserDialog1.SelectedPath;
-            }
-        }
-
-        private void clearPathMenuItem_Click(object sender, EventArgs e)
-        {
-            foreach (ListViewItem item in lvQuickExtract.SelectedItems)
-            {
-                item.SubItems[2].Text = string.Empty;
-            }
         }
 
         private void lvQuickExtract_Enter(object sender, EventArgs e)
@@ -83,17 +42,64 @@ namespace BSA_Browser
             Program.SendMessage(lvQuickExtract.Handle, 0x127, 0x10001, 0);
         }
 
-        public void Save()
+        private void btnAdd_Click(object sender, EventArgs e)
         {
-            Settings.Default.Fallout3_QuickExportEnable = lvQuickExtract.Items[0].Checked;
-            Settings.Default.FalloutNV_QuickExportEnable = lvQuickExtract.Items[1].Checked;
-            Settings.Default.Oblivion_QuickExportEnable = lvQuickExtract.Items[2].Checked;
-            Settings.Default.Skyrim_QuickExportEnable = lvQuickExtract.Items[3].Checked;
+            using (QuickExtractDialog cpd = new QuickExtractDialog())
+            {
+                if (cpd.ShowDialog(this) == DialogResult.Cancel)
+                    return;
 
-            Settings.Default.Fallout3_QuickExportPath = lvQuickExtract.Items[0].SubItems[2].Text;
-            Settings.Default.FalloutNV_QuickExportPath = lvQuickExtract.Items[1].SubItems[2].Text;
-            Settings.Default.Oblivion_QuickExportPath = lvQuickExtract.Items[2].SubItems[2].Text;
-            Settings.Default.Skyrim_QuickExportPath = lvQuickExtract.Items[3].SubItems[2].Text;
+                QuickExtractPath path = new QuickExtractPath(cpd.PathName, cpd.Path, cpd.UseFolderPath);
+                ListViewItem newItem = new ListViewItem(cpd.PathName);
+
+                newItem.SubItems.Add(cpd.Path);
+                newItem.SubItems.Add(cpd.UseFolderPath ? "x" : string.Empty);
+                newItem.Tag = path;
+
+                lvQuickExtract.Items.Add(newItem);
+                Settings.Default.QuickExtractPaths.Add(path);
+            }
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            if (lvQuickExtract.SelectedItems.Count == 0)
+                return;
+
+            using (QuickExtractDialog cpd = new QuickExtractDialog())
+            {
+                ListViewItem item = (ListViewItem)lvQuickExtract.SelectedItems[0];
+                QuickExtractPath path = (QuickExtractPath)item.Tag;
+
+                if (cpd.ShowDialog(this, path) == DialogResult.Cancel)
+                    return;
+
+                path.Name = cpd.PathName;
+                path.Path = cpd.Path;
+                path.UseFolderPath = cpd.UseFolderPath;
+
+                item.Text = cpd.PathName;
+                item.SubItems[1].Text = cpd.Path;
+                item.SubItems[1].Text = cpd.UseFolderPath ? "x" : string.Empty;
+
+                Settings.Default.QuickExtractPaths[item.Index] = path;
+            }
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if (lvQuickExtract.SelectedItems.Count == 0)
+                return;
+
+            int index = lvQuickExtract.SelectedItems[0].Index;
+
+            lvQuickExtract.Items.RemoveAt(index);
+            Settings.Default.QuickExtractPaths.RemoveAt(index);
+        }
+
+        public void SaveChanges()
+        {
+
         }
     }
 }

@@ -11,30 +11,6 @@
     <Setting Name="RecentFiles_MaxFiles" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
-    <Setting Name="Fallout3_QuickExportEnable" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="Fallout3_QuickExportPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="FalloutNV_QuickExportEnable" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="FalloutNV_QuickExportPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="Oblivion_QuickExportEnable" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="Oblivion_QuickExportPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="Skyrim_QuickExportEnable" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="Skyrim_QuickExportPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="UpdateSettings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -47,7 +23,7 @@
     <Setting Name="SortType" Type="BSA_Browser.BSASortOrder" Scope="User">
       <Value Profile="(Default)">FolderName</Value>
     </Setting>
-    <Setting Name="CustomPaths" Type="BSA_Browser.Classes.CustomPaths" Scope="User">
+    <Setting Name="QuickExtractPaths" Type="BSA_Browser.Classes.QuickExtractPaths" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

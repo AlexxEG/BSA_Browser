@@ -64,11 +64,7 @@
             this.helpMenuItem = new System.Windows.Forms.MenuItem();
             this.aboutMenuItem = new System.Windows.Forms.MenuItem();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.extractFallout3MenuItem1 = new System.Windows.Forms.MenuItem();
-            this.extractFalloutNewVegasMenuItem1 = new System.Windows.Forms.MenuItem();
-            this.extractOblivionMenuItem1 = new System.Windows.Forms.MenuItem();
-            this.extractSkyrimMenuItem1 = new System.Windows.Forms.MenuItem();
+            this.quickExtractsMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.copyPathMenuItem1 = new System.Windows.Forms.MenuItem();
             this.copyFolderPathMenuItem1 = new System.Windows.Forms.MenuItem();
@@ -376,47 +372,17 @@
             // contextMenu1
             // 
             this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem1,
+            this.quickExtractsMenuItem,
             this.menuItem5,
             this.copyPathMenuItem1,
             this.copyFolderPathMenuItem1,
             this.copyFileNameMenuItem1});
             this.contextMenu1.Popup += new System.EventHandler(this.contextMenu1_Popup);
             // 
-            // menuItem1
+            // quickExtractsMenuItem
             // 
-            this.menuItem1.Index = 0;
-            this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.extractFallout3MenuItem1,
-            this.extractFalloutNewVegasMenuItem1,
-            this.extractOblivionMenuItem1,
-            this.extractSkyrimMenuItem1});
-            this.menuItem1.Text = "Extract to...";
-            this.menuItem1.Popup += new System.EventHandler(this.menuItem1_Popup);
-            // 
-            // extractFallout3MenuItem1
-            // 
-            this.extractFallout3MenuItem1.Index = 0;
-            this.extractFallout3MenuItem1.Text = "Extract to Fallout 3";
-            this.extractFallout3MenuItem1.Click += new System.EventHandler(this.extractFallout3MenuItem1_Click);
-            // 
-            // extractFalloutNewVegasMenuItem1
-            // 
-            this.extractFalloutNewVegasMenuItem1.Index = 1;
-            this.extractFalloutNewVegasMenuItem1.Text = "Extract to Fallout New Vegas";
-            this.extractFalloutNewVegasMenuItem1.Click += new System.EventHandler(this.extractFalloutNewVegasMenuItem1_Click);
-            // 
-            // extractOblivionMenuItem1
-            // 
-            this.extractOblivionMenuItem1.Index = 2;
-            this.extractOblivionMenuItem1.Text = "Extract to Oblivion";
-            this.extractOblivionMenuItem1.Click += new System.EventHandler(this.extractOblivionMenuItem1_Click);
-            // 
-            // extractSkyrimMenuItem1
-            // 
-            this.extractSkyrimMenuItem1.Index = 3;
-            this.extractSkyrimMenuItem1.Text = "Extract to Skyrim";
-            this.extractSkyrimMenuItem1.Click += new System.EventHandler(this.extractSkyrimMenuItem1_Click);
+            this.quickExtractsMenuItem.Index = 0;
+            this.quickExtractsMenuItem.Text = "Quick extract...";
             // 
             // menuItem5
             // 
@@ -517,10 +483,6 @@
         private System.Windows.Forms.CheckBox cbRegex;
         private System.Windows.Forms.MainMenu mainMenu1;
         private System.Windows.Forms.ContextMenu contextMenu1;
-        private System.Windows.Forms.MenuItem extractFallout3MenuItem1;
-        private System.Windows.Forms.MenuItem extractFalloutNewVegasMenuItem1;
-        private System.Windows.Forms.MenuItem extractOblivionMenuItem1;
-        private System.Windows.Forms.MenuItem extractSkyrimMenuItem1;
         private System.Windows.Forms.MenuItem fileMenuItem;
         private System.Windows.Forms.MenuItem openArchiveMnuItem;
         private System.Windows.Forms.MenuItem closeSelectedArchiveMenuItem;
@@ -533,7 +495,7 @@
         private System.Windows.Forms.MenuItem toolsMenuItem;
         private System.Windows.Forms.MenuItem optionsMenuItem;
         private System.Windows.Forms.CheckBox cbDesc;
-        private System.Windows.Forms.MenuItem menuItem1;
+        private System.Windows.Forms.MenuItem quickExtractsMenuItem;
         private System.Windows.Forms.MenuItem menuItem5;
         private System.Windows.Forms.MenuItem copyPathMenuItem1;
         private System.Windows.Forms.MenuItem copyFolderPathMenuItem1;

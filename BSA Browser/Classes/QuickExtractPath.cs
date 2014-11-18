@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace BSA_Browser.Classes
 {
-    public class CustomPath : IXmlSerializable
+    public class QuickExtractPath : IXmlSerializable
     {
         public string Name { get; set; }
         public string Path { get; set; }
@@ -13,11 +13,11 @@ namespace BSA_Browser.Classes
         /// <summary>
         /// Used by IXmlSerializable.
         /// </summary>
-        public CustomPath()
+        public QuickExtractPath()
         {
         }
 
-        public CustomPath(string name, string path, bool useFolderPath)
+        public QuickExtractPath(string name, string path, bool useFolderPath)
         {
             this.Name = name;
             this.Path = path;
@@ -35,7 +35,7 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
-        /// Reads Xml when the <see cref="CustomPath"/> is to be deserialized 
+        /// Reads Xml when the <see cref="QuickExtractPath"/> is to be deserialized 
         /// from a stream.</summary>
         /// <param name="reader">The stream from which the object will be deserialized.</param>
         void IXmlSerializable.ReadXml(XmlReader reader)
@@ -48,7 +48,7 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
-        /// Writes Xml articulating the current state of the <see cref="CustomPath"/>
+        /// Writes Xml articulating the current state of the <see cref="QuickExtractPath"/>
         /// object.</summary>
         /// <param name="writer">The stream to which this object will be serialized.</param>
         void IXmlSerializable.WriteXml(XmlWriter writer)

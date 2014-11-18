@@ -81,10 +81,16 @@
     </Compile>
     <Compile Include="Classes\BSAFileEntry.cs" />
     <Compile Include="Classes\BSATreeNode.cs" />
-    <Compile Include="Classes\CustomPath.cs" />
-    <Compile Include="Classes\CustomPaths.cs" />
+    <Compile Include="Classes\QuickExtractPath.cs" />
+    <Compile Include="Classes\QuickExtractPaths.cs" />
     <Compile Include="Classes\WindowState.cs" />
     <Compile Include="Classes\WindowStates.cs" />
+    <Compile Include="Dialogs\QuickExtractDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\QuickExtractDialog.Designer.cs">
+      <DependentUpon>QuickExtractDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +149,9 @@
     <EmbeddedResource Include="BSABrowser.resx">
       <DependentUpon>BSABrowser.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\QuickExtractDialog.resx">
+      <DependentUpon>QuickExtractDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -162,7 +171,6 @@
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

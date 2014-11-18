@@ -28,35 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
-            "",
-            "Fallout 3",
-            ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
-            "",
-            "Fallout New Vegas",
-            ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
-            "",
-            "Oblivion",
-            ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
-            "",
-            "Skyrim",
-            ""}, -1);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionsForm));
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btnRemove = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.lvQuickExtract = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
-            this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-            this.setPathMenuItem = new System.Windows.Forms.MenuItem();
-            this.clearPathMenuItem = new System.Windows.Forms.MenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
@@ -94,6 +78,9 @@
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.btnRemove);
+            this.groupBox5.Controls.Add(this.btnEdit);
+            this.groupBox5.Controls.Add(this.btnAdd);
             this.groupBox5.Controls.Add(this.lvQuickExtract);
             this.groupBox5.Controls.Add(this.label1);
             this.groupBox5.Location = new System.Drawing.Point(6, 7);
@@ -103,29 +90,52 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Quick Extract";
             // 
+            // btnRemove
+            // 
+            this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnRemove.Location = new System.Drawing.Point(168, 240);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(75, 23);
+            this.btnRemove.TabIndex = 4;
+            this.btnRemove.Text = "Remove";
+            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnEdit.Location = new System.Drawing.Point(87, 240);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnEdit.TabIndex = 3;
+            this.btnEdit.Text = "Edit...";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnAdd.Location = new System.Drawing.Point(6, 240);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.TabIndex = 2;
+            this.btnAdd.Text = "Add...";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
             // lvQuickExtract
             // 
             this.lvQuickExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvQuickExtract.CheckBoxes = true;
             this.lvQuickExtract.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
             this.lvQuickExtract.FullRowSelect = true;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.StateImageIndex = 0;
-            listViewItem3.StateImageIndex = 0;
-            listViewItem4.StateImageIndex = 0;
-            this.lvQuickExtract.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3,
-            listViewItem4});
             this.lvQuickExtract.Location = new System.Drawing.Point(6, 109);
             this.lvQuickExtract.Name = "lvQuickExtract";
-            this.lvQuickExtract.Size = new System.Drawing.Size(528, 154);
+            this.lvQuickExtract.Size = new System.Drawing.Size(528, 125);
             this.lvQuickExtract.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvQuickExtract.TabIndex = 1;
             this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
@@ -135,18 +145,19 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "Enabled";
-            this.columnHeader1.Width = 27;
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 120;
             // 
             // columnHeader2
             // 
-            this.columnHeader2.Text = "Game";
-            this.columnHeader2.Width = 101;
+            this.columnHeader2.Text = "Path";
+            this.columnHeader2.Width = 282;
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "Path";
-            this.columnHeader3.Width = 392;
+            this.columnHeader3.Text = "Maintain folder path";
+            this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader3.Width = 120;
             // 
             // label1
             // 
@@ -158,25 +169,6 @@
             this.label1.Size = new System.Drawing.Size(528, 84);
             this.label1.TabIndex = 0;
             this.label1.Text = resources.GetString("label1.Text");
-            // 
-            // contextMenu1
-            // 
-            this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.setPathMenuItem,
-            this.clearPathMenuItem});
-            this.contextMenu1.Popup += new System.EventHandler(this.contextMenu1_Popup);
-            // 
-            // setPathMenuItem
-            // 
-            this.setPathMenuItem.Index = 0;
-            this.setPathMenuItem.Text = "Set Path";
-            this.setPathMenuItem.Click += new System.EventHandler(this.setPathMenuItem_Click);
-            // 
-            // clearPathMenuItem
-            // 
-            this.clearPathMenuItem.Index = 1;
-            this.clearPathMenuItem.Text = "Clear Path";
-            this.clearPathMenuItem.Click += new System.EventHandler(this.clearPathMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -255,13 +247,13 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ContextMenu contextMenu1;
-        private System.Windows.Forms.MenuItem setPathMenuItem;
-        private System.Windows.Forms.MenuItem clearPathMenuItem;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Button btnAdd;
     }
 }

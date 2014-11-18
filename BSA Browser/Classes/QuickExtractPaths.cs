@@ -5,9 +5,9 @@ using System.Xml.Serialization;
 
 namespace BSA_Browser.Classes
 {
-    public class CustomPaths : List<CustomPath>, IXmlSerializable
+    public class QuickExtractPaths : List<QuickExtractPath>, IXmlSerializable
     {
-        public CustomPaths()
+        public QuickExtractPaths()
         {
         }
 
@@ -22,7 +22,7 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
-        /// Reads Xml when the <see cref="CustomPaths"/> is to be deserialized 
+        /// Reads Xml when the <see cref="QuickExtractPaths"/> is to be deserialized 
         /// from a stream.</summary>
         /// <param name="reader">The stream from which the object will be deserialized.</param>
         void IXmlSerializable.ReadXml(XmlReader reader)
@@ -34,25 +34,25 @@ namespace BSA_Browser.Classes
             if (booIsEmpty)
                 return;
 
-            while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "CustomPath")
+            while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "QuickExtractPath")
             {
-                XmlSerializer xsrCustomPath = new XmlSerializer(typeof(CustomPath));
+                XmlSerializer xsrQuickExtractPath = new XmlSerializer(typeof(QuickExtractPath));
 
-                this.Add((CustomPath)xsrCustomPath.Deserialize(reader));
+                this.Add((QuickExtractPath)xsrQuickExtractPath.Deserialize(reader));
             }
         }
 
         /// <summary>
-        /// Writes Xml articulating the current state of the <see cref="CustomPaths"/>
+        /// Writes Xml articulating the current state of the <see cref="QuickExtractPaths"/>
         /// object.</summary>
         /// <param name="writer">The stream to which this object will be serialized.</param>
         void IXmlSerializable.WriteXml(System.Xml.XmlWriter writer)
         {
-            foreach (CustomPath kvpCustomPath in this)
+            foreach (QuickExtractPath kvpQuickExtractPath in this)
             {
-                XmlSerializer xsrLocationInfo = new XmlSerializer(typeof(CustomPath));
+                XmlSerializer xsrLocationInfo = new XmlSerializer(typeof(QuickExtractPath));
 
-                xsrLocationInfo.Serialize(writer, kvpCustomPath);
+                xsrLocationInfo.Serialize(writer, kvpQuickExtractPath);
             }
         }
 
