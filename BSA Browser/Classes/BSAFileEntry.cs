@@ -55,9 +55,9 @@ namespace BSA_Browser
             Compressed = realSize != 0;
         }
 
-        internal void Extract(string path, bool UseFolderName, BinaryReader br, bool SkipName)
+        internal void Extract(string path, bool UseFolderPath, BinaryReader br, bool SkipName)
         {
-            if (UseFolderName)
+            if (UseFolderPath)
                 path += @"\" + Folder + @"\" + FileName;
 
             if (!Directory.Exists(Path.GetDirectoryName(path)))

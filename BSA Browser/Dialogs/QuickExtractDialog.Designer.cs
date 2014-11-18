@@ -30,7 +30,7 @@
         {
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtPath = new System.Windows.Forms.TextBox();
-            this.chbUseFolderName = new System.Windows.Forms.CheckBox();
+            this.chbUseFolderPath = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
@@ -60,15 +60,15 @@
             this.txtPath.Size = new System.Drawing.Size(288, 20);
             this.txtPath.TabIndex = 1;
             // 
-            // chbUseFolderName
+            // chbUseFolderPath
             // 
-            this.chbUseFolderName.AutoSize = true;
-            this.chbUseFolderName.Location = new System.Drawing.Point(53, 64);
-            this.chbUseFolderName.Name = "chbUseFolderName";
-            this.chbUseFolderName.Size = new System.Drawing.Size(119, 17);
-            this.chbUseFolderName.TabIndex = 2;
-            this.chbUseFolderName.Text = "Maintain folder path";
-            this.chbUseFolderName.UseVisualStyleBackColor = true;
+            this.chbUseFolderPath.AutoSize = true;
+            this.chbUseFolderPath.Location = new System.Drawing.Point(53, 64);
+            this.chbUseFolderPath.Name = "chbUseFolderPath";
+            this.chbUseFolderPath.Size = new System.Drawing.Size(119, 17);
+            this.chbUseFolderPath.TabIndex = 2;
+            this.chbUseFolderPath.Text = "Maintain folder path";
+            this.chbUseFolderPath.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -157,7 +157,7 @@
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.chbUseFolderName);
+            this.Controls.Add(this.chbUseFolderPath);
             this.Controls.Add(this.txtPath);
             this.Controls.Add(this.txtName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -173,7 +173,7 @@
 
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.TextBox txtPath;
-        private System.Windows.Forms.CheckBox chbUseFolderName;
+        private System.Windows.Forms.CheckBox chbUseFolderPath;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnOK;

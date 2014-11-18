@@ -24,7 +24,7 @@ namespace BSA_Browser.Dialogs
         {
             get
             {
-                return chbUseFolderName.Checked;
+                return chbUseFolderPath.Checked;
             }
         }
 
@@ -37,7 +37,7 @@ namespace BSA_Browser.Dialogs
         {
             txtName.Text = path.Name;
             txtPath.Text = path.Path;
-            chbUseFolderName.Checked = path.UseFolderPath;
+            chbUseFolderPath.Checked = path.UseFolderPath;
 
             return this.ShowDialog(owner);
         }
