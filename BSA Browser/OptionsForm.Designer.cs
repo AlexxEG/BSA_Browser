@@ -133,9 +133,9 @@
             this.columnHeader2,
             this.columnHeader3});
             this.lvQuickExtract.FullRowSelect = true;
-            this.lvQuickExtract.Location = new System.Drawing.Point(6, 109);
+            this.lvQuickExtract.Location = new System.Drawing.Point(6, 62);
             this.lvQuickExtract.Name = "lvQuickExtract";
-            this.lvQuickExtract.Size = new System.Drawing.Size(528, 125);
+            this.lvQuickExtract.Size = new System.Drawing.Size(528, 172);
             this.lvQuickExtract.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvQuickExtract.TabIndex = 1;
             this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
@@ -166,9 +166,10 @@
             this.label1.Location = new System.Drawing.Point(6, 22);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(528, 84);
+            this.label1.Size = new System.Drawing.Size(528, 37);
             this.label1.TabIndex = 0;
-            this.label1.Text = resources.GetString("label1.Text");
+            this.label1.Text = "Add custom quick extract paths. Quick extract can extract files to a selected fol" +
+    "der, optionally maintaining the folder path, by using the right click menu.";
             // 
             // tabControl1
             // 
