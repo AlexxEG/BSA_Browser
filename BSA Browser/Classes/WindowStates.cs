@@ -52,7 +52,7 @@ namespace BSA_Browser.Classes
             if (booIsEmpty)
                 return;
 
-            // Move to first WindowState start element, if any. Reading is then taking over by the WindowState class.
+            // Move to first WindowState start element, if any.
             if (reader.MoveToContent() != XmlNodeType.Element)
                 return;
 
