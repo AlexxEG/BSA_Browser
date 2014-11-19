@@ -27,6 +27,22 @@ namespace BSA_Browser
             Program.SetWindowTheme(lvQuickExtract.Handle, "explorer", null);
         }
 
+        private void OptionsForm_Load(object sender, EventArgs e)
+        {
+            if (!Settings.Default.WindowStates.Contains(this.Name))
+            {
+                Settings.Default.WindowStates.Add(this.Name);
+            }
+
+            // Restore only columns.
+            Settings.Default.WindowStates[this.Name].RestoreForm(this);
+        }
+
+        private void OptionsForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Settings.Default.WindowStates[this.Name].SaveForm(this);
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
