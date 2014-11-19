@@ -52,15 +52,18 @@ namespace BSA_Browser.Classes
             if (booIsEmpty)
                 return;
 
-            while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "WindowState")
+            // Move to first WindowState start element, if any. Reading is then taking over by the WindowState class.
+            if (reader.MoveToContent() != XmlNodeType.Element)
+                return;
+
+            do
             {
                 string strWindowName = reader["name"];
 
                 XmlSerializer xsrWindowState = new XmlSerializer(typeof(WindowState));
                 windowStates.Add(strWindowName, (WindowState)xsrWindowState.Deserialize(reader));
-
-                windowStates.ToString();
             }
+            while (reader.Read() && reader.NodeType == XmlNodeType.Element);
         }
 
         /// <summary>

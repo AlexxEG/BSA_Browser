@@ -168,7 +168,7 @@ namespace BSA_Browser.Classes
             this.Size = new Size(int.Parse(reader.GetAttribute("width")), int.Parse(reader.GetAttribute("height")));
             this.FormWindowState = (FormWindowState)Enum.Parse(typeof(FormWindowState), reader.GetAttribute("windowState"), true);
 
-            while (reader.Read())
+            while (reader.Read() && reader.NodeType == XmlNodeType.Element)
             {
                 switch (reader.LocalName)
                 {
