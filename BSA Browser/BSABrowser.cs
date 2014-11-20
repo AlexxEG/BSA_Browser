@@ -124,7 +124,11 @@ namespace BSA_Browser
                 SaveSingleDialog.FileName = fe.FileName;
 
                 if (SaveSingleDialog.ShowDialog() == DialogResult.OK)
-                    ExtractFiles(SaveSingleDialog.FileName, false, false, fe);
+                {
+                    BSATreeNode node = GetSelectedArchive();
+
+                    fe.Extract(SaveSingleDialog.FileName, false, node.BinaryReader, node.ContainsFileNameBlobs);
+                }
             }
             else
             {
