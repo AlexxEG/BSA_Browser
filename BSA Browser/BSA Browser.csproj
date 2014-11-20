@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Classes\BSAFileEntry.cs" />
     <Compile Include="Classes\BSATreeNode.cs" />
+    <Compile Include="Classes\OpenFolderDialog.cs" />
     <Compile Include="Classes\QuickExtractPath.cs" />
     <Compile Include="Classes\QuickExtractPaths.cs" />
     <Compile Include="Classes\WindowState.cs" />

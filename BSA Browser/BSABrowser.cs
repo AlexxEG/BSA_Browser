@@ -25,6 +25,7 @@ namespace BSA_Browser
         ColumnHeader m_SortingColumn;
         Settings _settings = Properties.Settings.Default;
         string untouchedTitle;
+        OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
 
         public BSABrowser()
         {
@@ -43,7 +44,7 @@ namespace BSA_Browser
             string path = _settings.LastBSAUnpackPath;
 
             if (!string.IsNullOrEmpty(path))
-                SaveAllDialog.SelectedPath = path;
+                _openFolderDialog.InitialFolder = path;
 
             if (_settings.RecentFiles != null)
             {
@@ -103,7 +104,7 @@ namespace BSA_Browser
 
             SaveRecentFiles();
             _settings.WindowStates[this.Name].SaveForm(this);
-            _settings.LastBSAUnpackPath = SaveAllDialog.SelectedPath;
+            _settings.LastBSAUnpackPath = _openFolderDialog.Folder;
             _settings.Save();
         }
 
@@ -135,7 +136,7 @@ namespace BSA_Browser
             }
             else
             {
-                if (SaveAllDialog.ShowDialog() == DialogResult.OK)
+                if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
                 {
                     BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
@@ -144,7 +145,7 @@ namespace BSA_Browser
                         files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
                     }
 
-                    ExtractFiles(SaveAllDialog.SelectedPath, true, true, files);
+                    ExtractFiles(_openFolderDialog.Folder, false, true, files);
                 }
             }
         }
@@ -156,9 +157,9 @@ namespace BSA_Browser
 
             BSAFileEntry[] files = (BSAFileEntry[])GetSelectedArchive().Files;
 
-            if (SaveAllDialog.ShowDialog() == DialogResult.OK)
+            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                ExtractFiles(SaveAllDialog.SelectedPath, true, true, files);
+                ExtractFiles(_openFolderDialog.Folder, true, true, files);
             }
         }
 
