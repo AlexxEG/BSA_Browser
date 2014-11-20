@@ -810,11 +810,11 @@ namespace BSA_Browser
         /// <summary>
         /// Extracts the given file(s) to the given path.
         /// </summary>
-        /// <param name="path">The path to extract files to.</param>
+        /// <param name="folder">The path to extract files to.</param>
         /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
         /// <param name="gui">True to show a progression dialog.</param>
         /// <param name="files">The files in the selected BSA archive to extract.</param>
-        private void ExtractFiles(string path, bool useFolderPath, bool gui, params BSAFileEntry[] files)
+        private void ExtractFiles(string folder, bool useFolderPath, bool gui, params BSAFileEntry[] files)
         {
             if (gui)
             {
@@ -830,7 +830,7 @@ namespace BSA_Browser
                 bw.DoWork += bw_DoWork;
                 bw.ProgressChanged += bw_ProgressChanged;
                 bw.RunWorkerCompleted += bw_RunWorkerCompleted;
-                bw.RunWorkerAsync(new object[] { path, useFolderPath, files, GetSelectedArchive() });
+                bw.RunWorkerAsync(new object[] { folder, useFolderPath, files, GetSelectedArchive() });
             }
             else
             {
@@ -840,7 +840,7 @@ namespace BSA_Browser
 
                     foreach (BSAFileEntry fe in files)
                     {
-                        path = useFolderPath ? path : Path.Combine(path, fe.FileName);
+                        string path = useFolderPath ? folder : Path.Combine(folder, fe.FileName);
 
                         fe.Extract(path, useFolderPath, root.BinaryReader, root.ContainsFileNameBlobs);
                     }
@@ -861,7 +861,7 @@ namespace BSA_Browser
         {
             object[] arguments = e.Argument as object[];
 
-            string path = (arguments)[0] as string;
+            string folder = (arguments)[0] as string;
             bool useFolderPath = bool.Parse((arguments)[1].ToString());
             BSAFileEntry[] files = (arguments)[2] as BSAFileEntry[];
             BSATreeNode root = (arguments)[3] as BSATreeNode;
@@ -878,7 +878,8 @@ namespace BSA_Browser
                         break;
                     }
 
-                    path = useFolderPath ? path : Path.Combine(path, fe.FileName);
+                    string path = useFolderPath ? folder : Path.Combine(folder, fe.FileName);
+
                     fe.Extract(path, useFolderPath, root.BinaryReader, root.ContainsFileNameBlobs);
                     bw.ReportProgress(count++);
                 }
