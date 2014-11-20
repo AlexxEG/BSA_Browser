@@ -127,6 +127,9 @@ namespace BSA_Browser
                 {
                     BSATreeNode node = GetSelectedArchive();
 
+                    /* Don't use ExtractFiles method because this method of extracting includes the filename. 
+                     * Normally "path" parameter is only the folder to extract to, not the full file path, and because of this
+                     * the ExtractFiles will create a folder with the same name as the extracted file which we do not want. */
                     fe.Extract(SaveSingleDialog.FileName, false, node.BinaryReader, node.ContainsFileNameBlobs);
                 }
             }
