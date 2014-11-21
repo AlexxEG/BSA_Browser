@@ -23,7 +23,6 @@ namespace BSA_Browser
     public partial class BSABrowser : Form
     {
         ColumnHeader m_SortingColumn;
-        Settings _settings = Properties.Settings.Default;
         string untouchedTitle;
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
 
@@ -34,31 +33,31 @@ namespace BSA_Browser
             untouchedTitle = this.Text;
             lvFiles.ContextMenu = contextMenu1;
 
-            if (_settings.UpdateSettings)
+            if (Settings.Default.UpdateSettings)
             {
-                _settings.Upgrade();
-                _settings.UpdateSettings = false;
-                _settings.Save();
+                Settings.Default.Upgrade();
+                Settings.Default.UpdateSettings = false;
+                Settings.Default.Save();
             }
 
-            string path = _settings.LastBSAUnpackPath;
+            string path = Settings.Default.LastBSAUnpackPath;
 
             if (!string.IsNullOrEmpty(path))
                 _openFolderDialog.InitialFolder = path;
 
-            if (_settings.RecentFiles != null)
+            if (Settings.Default.RecentFiles != null)
             {
-                foreach (string item in _settings.RecentFiles)
+                foreach (string item in Settings.Default.RecentFiles)
                     AddToRecentFiles(item);
             }
 
-            if (_settings.QuickExtractPaths == null)
-                _settings.QuickExtractPaths = new QuickExtractPaths();
+            if (Settings.Default.QuickExtractPaths == null)
+                Settings.Default.QuickExtractPaths = new QuickExtractPaths();
 
             this.LoadQuickExtractPaths();
 
             // Set lvFiles sorter
-            BSASorter.SetSorter(_settings.SortType, _settings.SortDesc);
+            BSASorter.SetSorter(Settings.Default.SortType, Settings.Default.SortDesc);
             lvFiles.ListViewItemSorter = new BSASorter();
 
             Program.SetWindowTheme(tvFolders.Handle, "explorer", null);
@@ -78,23 +77,23 @@ namespace BSA_Browser
         private void BSABrowser_Load(object sender, EventArgs e)
         {
             // Initialize WindowStates if null
-            if (_settings.WindowStates == null)
+            if (Settings.Default.WindowStates == null)
             {
-                _settings.WindowStates = new WindowStates();
+                Settings.Default.WindowStates = new WindowStates();
             }
 
             // Add this form if it doesn't exists
-            if (!_settings.WindowStates.Contains(this.Name))
+            if (!Settings.Default.WindowStates.Contains(this.Name))
             {
-                _settings.WindowStates.Add(this.Name);
+                Settings.Default.WindowStates.Add(this.Name);
             }
 
             // Restore window state
-            _settings.WindowStates[this.Name].RestoreForm(this);
+            Settings.Default.WindowStates[this.Name].RestoreForm(this);
 
             // Restore sorting preferences
-            cmbSortOrder.SelectedIndex = (int)_settings.SortType;
-            cbDesc.Checked = _settings.SortDesc;
+            cmbSortOrder.SelectedIndex = (int)Settings.Default.SortType;
+            cbDesc.Checked = Settings.Default.SortDesc;
         }
 
         private void BSABrowser_FormClosing(object sender, FormClosingEventArgs e)
@@ -103,9 +102,10 @@ namespace BSA_Browser
                 CloseArchives();
 
             SaveRecentFiles();
-            _settings.WindowStates[this.Name].SaveForm(this);
-            _settings.LastBSAUnpackPath = _openFolderDialog.Folder;
-            _settings.Save();
+
+            Settings.Default.WindowStates[this.Name].SaveForm(this);
+            Settings.Default.LastBSAUnpackPath = _openFolderDialog.Folder;
+            Settings.Default.Save();
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
@@ -208,14 +208,14 @@ namespace BSA_Browser
         {
             BSASorter.SetSorter((BSASortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
             lvFiles.Sort();
-            _settings.SortType = (BSASortOrder)cmbSortOrder.SelectedIndex;
+            Settings.Default.SortType = (BSASortOrder)cmbSortOrder.SelectedIndex;
         }
 
         private void cbDesc_CheckedChanged(object sender, EventArgs e)
         {
             BSASorter.SetSorter((BSASortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
             lvFiles.Sort();
-            _settings.SortDesc = cbDesc.Checked;
+            Settings.Default.SortDesc = cbDesc.Checked;
         }
 
         private void lvFiles_Enter(object sender, EventArgs e)
@@ -478,7 +478,7 @@ namespace BSA_Browser
                 if (of.ShowDialog(this) == DialogResult.OK)
                 {
                     of.SaveChanges();
-                    _settings.Save();
+                    Settings.Default.Save();
                 }
             }
         }
@@ -974,7 +974,7 @@ namespace BSA_Browser
         {
             quickExtractsMenuItem.MenuItems.Clear();
 
-            foreach (QuickExtractPath path in _settings.QuickExtractPaths)
+            foreach (QuickExtractPath path in Settings.Default.QuickExtractPaths)
             {
                 MenuItem menuItem = new MenuItem(path.Name, quickExtractMenuItem_Click);
 
@@ -1012,13 +1012,13 @@ namespace BSA_Browser
         /// </summary>
         private void SaveRecentFiles()
         {
-            if (_settings.RecentFiles == null)
-                _settings.RecentFiles = new StringCollection();
+            if (Settings.Default.RecentFiles == null)
+                Settings.Default.RecentFiles = new StringCollection();
             else
-                _settings.RecentFiles.Clear();
+                Settings.Default.RecentFiles.Clear();
 
             for (int i = recentFilesMenuItem.MenuItems.Count - 1; i != 1; i--)
-                _settings.RecentFiles.Add(recentFilesMenuItem.MenuItems[i].Tag.ToString());
+                Settings.Default.RecentFiles.Add(recentFilesMenuItem.MenuItems[i].Tag.ToString());
         }
 
         /// <summary>
