@@ -73,7 +73,7 @@ namespace BSA_Browser
                 newItem.SubItems.Add(cpd.UseFolderPath ? "Yes" : "No");
                 newItem.Tag = path;
 
-                lvQuickExtract.Items.Add(newItem);
+                lvQuickExtract.Items.Insert(lvQuickExtract.Items.Count, newItem);
                 Settings.Default.QuickExtractPaths.Add(path);
             }
         }

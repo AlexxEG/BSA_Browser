@@ -136,7 +136,6 @@
             this.lvQuickExtract.Location = new System.Drawing.Point(6, 62);
             this.lvQuickExtract.Name = "lvQuickExtract";
             this.lvQuickExtract.Size = new System.Drawing.Size(528, 172);
-            this.lvQuickExtract.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvQuickExtract.TabIndex = 1;
             this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
             this.lvQuickExtract.View = System.Windows.Forms.View.Details;
