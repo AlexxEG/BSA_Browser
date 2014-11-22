@@ -18,6 +18,7 @@ namespace BSA_Browser
                 ListViewItem item = new ListViewItem(path.Name);
                 item.SubItems.Add(path.Path);
                 item.SubItems.Add(path.UseFolderPath ? "Yes" : "No");
+                item.Tag = path;
 
                 lvQuickExtract.Items.Add(item);
             }
