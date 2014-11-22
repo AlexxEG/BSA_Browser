@@ -17,7 +17,7 @@ namespace BSA_Browser
             {
                 ListViewItem item = new ListViewItem(path.Name);
                 item.SubItems.Add(path.Path);
-                item.SubItems.Add(path.UseFolderPath ? "x" : string.Empty);
+                item.SubItems.Add(path.UseFolderPath ? "Yes" : "No");
 
                 lvQuickExtract.Items.Add(item);
             }
@@ -69,7 +69,7 @@ namespace BSA_Browser
                 ListViewItem newItem = new ListViewItem(cpd.PathName);
 
                 newItem.SubItems.Add(cpd.Path);
-                newItem.SubItems.Add(cpd.UseFolderPath ? "x" : string.Empty);
+                newItem.SubItems.Add(cpd.UseFolderPath ? "Yes" : "No");
                 newItem.Tag = path;
 
                 lvQuickExtract.Items.Add(newItem);
@@ -96,7 +96,7 @@ namespace BSA_Browser
 
                 item.Text = cpd.PathName;
                 item.SubItems[1].Text = cpd.Path;
-                item.SubItems[1].Text = cpd.UseFolderPath ? "x" : string.Empty;
+                item.SubItems[1].Text = cpd.UseFolderPath ? "Yes" : "No";
 
                 Settings.Default.QuickExtractPaths[item.Index] = path;
             }
