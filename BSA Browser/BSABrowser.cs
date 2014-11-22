@@ -339,6 +339,8 @@ namespace BSA_Browser
                     path = newpath;
                 }
             }
+
+            this.SortNodes(e.Node);
         }
 
         private void tvFolders_AfterSelect(object sender, TreeViewEventArgs e)
@@ -1023,6 +1025,27 @@ namespace BSA_Browser
         }
 
         /// <summary>
+        /// Sorts all nodes in given TreeNode.
+        /// </summary>
+        /// <param name="rootNode">The TreeNode whose children is to be sorted.</param>
+        private void SortNodes(TreeNode rootNode)
+        {
+            foreach (TreeNode node in rootNode.Nodes)
+            {
+                TreeNode[] nodes = new TreeNode[node.Nodes.Count];
+
+                node.Nodes.CopyTo(nodes, 0);
+
+                Array.Sort<TreeNode>(nodes, new TreeNodeSorter());
+
+                node.Nodes.Clear();
+                node.Nodes.AddRange(nodes);
+
+                SortNodes(node);
+            }
+        }
+
+        /// <summary>
         /// Updates BSA archive file list.
         /// </summary>
         /// <param name="bsaNode">The BSA archive to update.</param>
@@ -1083,6 +1106,35 @@ namespace BSA_Browser
                                     string.Compare(Path.GetExtension(fb.FileName), Path.GetExtension(fa.FileName));
                 default:
                     return 0;
+            }
+        }
+    }
+
+    public class TreeNodeSorter : Comparer<TreeNode>
+    {
+        public override int Compare(TreeNode a, TreeNode b)
+        {
+            if (a == null)
+            {
+                if (b == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                if (b == null)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return a.Text.CompareTo(b.Text);
+                }
             }
         }
     }
