@@ -74,7 +74,6 @@ namespace BSA_Browser
                 newItem.Tag = path;
 
                 lvQuickExtract.Items.Insert(lvQuickExtract.Items.Count, newItem);
-                Settings.Default.QuickExtractPaths.Add(path);
             }
         }
 
@@ -98,8 +97,6 @@ namespace BSA_Browser
                 item.Text = cpd.PathName;
                 item.SubItems[1].Text = cpd.Path;
                 item.SubItems[1].Text = cpd.UseFolderPath ? "Yes" : "No";
-
-                Settings.Default.QuickExtractPaths[item.Index] = path;
             }
         }
 
@@ -111,12 +108,16 @@ namespace BSA_Browser
             int index = lvQuickExtract.SelectedItems[0].Index;
 
             lvQuickExtract.Items.RemoveAt(index);
-            Settings.Default.QuickExtractPaths.RemoveAt(index);
         }
 
         public void SaveChanges()
         {
+            Settings.Default.QuickExtractPaths.Clear();
 
+            foreach (ListViewItem item in lvQuickExtract.Items)
+            {
+                Settings.Default.QuickExtractPaths.Add((QuickExtractPath)item.Tag);
+            }
         }
     }
 }
