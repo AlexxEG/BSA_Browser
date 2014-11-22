@@ -86,6 +86,9 @@
     <Compile Include="Classes\QuickExtractPaths.cs" />
     <Compile Include="Classes\WindowState.cs" />
     <Compile Include="Classes\WindowStates.cs" />
+    <Compile Include="Controls\ReorderableItemListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Dialogs\QuickExtractDialog.cs">
       <SubType>Form</SubType>
     </Compile>
