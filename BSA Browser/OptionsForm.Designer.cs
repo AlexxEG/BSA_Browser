@@ -125,6 +125,7 @@
             // 
             // lvQuickExtract
             // 
+            this.lvQuickExtract.AllowDrop = true;
             this.lvQuickExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -133,9 +134,10 @@
             this.columnHeader2,
             this.columnHeader3});
             this.lvQuickExtract.FullRowSelect = true;
-            this.lvQuickExtract.Location = new System.Drawing.Point(6, 62);
+            this.lvQuickExtract.Location = new System.Drawing.Point(6, 85);
             this.lvQuickExtract.Name = "lvQuickExtract";
-            this.lvQuickExtract.Size = new System.Drawing.Size(528, 172);
+            this.lvQuickExtract.ShowGroups = false;
+            this.lvQuickExtract.Size = new System.Drawing.Size(528, 149);
             this.lvQuickExtract.TabIndex = 1;
             this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
             this.lvQuickExtract.View = System.Windows.Forms.View.Details;
@@ -165,10 +167,9 @@
             this.label1.Location = new System.Drawing.Point(6, 22);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(528, 37);
+            this.label1.Size = new System.Drawing.Size(528, 60);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Add custom quick extract paths. Quick extract can extract files to a selected fol" +
-    "der, optionally maintaining the folder path, by using the right click menu.";
+            this.label1.Text = resources.GetString("label1.Text");
             // 
             // tabControl1
             // 

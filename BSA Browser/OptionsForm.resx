@@ -144,6 +144,11 @@
   <metadata name="label1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Add custom quick extract paths. Quick extract can extract files to a selected folder, optionally maintaining the folder path, by using the right click menu.
+
+Drag items to reorder quick extract paths.</value>
+  </data>
   <metadata name="tabControl1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
