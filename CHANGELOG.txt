@@ -1,3 +1,16 @@
+[1.2]
+
+- Add currently shown files counter
+- Add ability to create custom quick extract paths
+- Show extracting progress in title
+- Improve folder browser dialog
+- Enable visual styles for Options list
+- Extract files straight to selected folder when using "Extract" button
+- Fix font rendering
+- Fix Progress window "Cancel" button
+- Fix file exists error when extracting more than one file from "Extract" button
+
+
 [1.1]
 
 - Fix issue using latest opened archive properties (Compressed etc.) for every archive
