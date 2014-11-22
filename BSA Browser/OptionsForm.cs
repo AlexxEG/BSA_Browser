@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using BSA_Browser.Classes;
@@ -37,6 +38,16 @@ namespace BSA_Browser
 
             // Restore only columns.
             Settings.Default.WindowStates[this.Name].RestoreForm(this);
+
+            // Center form to Owner
+            if (this.Owner != null)
+            {
+                Point location = new Point(
+                    Owner.Location.X + Owner.Width / 2 - Width / 2,
+                    Owner.Location.Y + Owner.Height / 2 - Height / 2);
+
+                this.Location = location;
+            }
         }
 
         private void OptionsForm_FormClosing(object sender, FormClosingEventArgs e)
