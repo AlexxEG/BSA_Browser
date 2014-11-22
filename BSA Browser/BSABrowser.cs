@@ -479,6 +479,7 @@ namespace BSA_Browser
                 {
                     of.SaveChanges();
                     Settings.Default.Save();
+                    this.LoadQuickExtractPaths();
                 }
             }
         }
