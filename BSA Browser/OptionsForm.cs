@@ -107,7 +107,7 @@ namespace BSA_Browser
 
                 item.Text = cpd.PathName;
                 item.SubItems[1].Text = cpd.Path;
-                item.SubItems[1].Text = cpd.UseFolderPath ? "Yes" : "No";
+                item.SubItems[2].Text = cpd.UseFolderPath ? "Yes" : "No";
             }
         }
 
