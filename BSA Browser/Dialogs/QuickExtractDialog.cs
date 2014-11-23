@@ -44,10 +44,10 @@ namespace BSA_Browser.Dialogs
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            using (OpenFolderDialog ofd = new OpenFolderDialog())
             {
-                if (fbd.ShowDialog(this) == DialogResult.OK)
-                    txtPath.Text = fbd.SelectedPath;
+                if (ofd.ShowDialog(this) == DialogResult.OK)
+                    txtPath.Text = ofd.Folder;
             }
         }
 
