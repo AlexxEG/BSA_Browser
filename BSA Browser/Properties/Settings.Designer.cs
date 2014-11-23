@@ -115,5 +115,17 @@ namespace BSA_Browser.Properties {
                 this["QuickExtractPaths"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SortBSADirectories {
+            get {
+                return ((bool)(this["SortBSADirectories"]));
+            }
+            set {
+                this["SortBSADirectories"] = value;
+            }
+        }
     }
 }

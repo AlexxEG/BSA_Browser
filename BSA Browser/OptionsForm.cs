@@ -14,6 +14,8 @@ namespace BSA_Browser
         {
             InitializeComponent();
 
+            chbSortBSADirectories.Checked = Settings.Default.SortBSADirectories;
+
             foreach (QuickExtractPath path in Settings.Default.QuickExtractPaths)
             {
                 ListViewItem item = new ListViewItem(path.Name);
@@ -123,6 +125,8 @@ namespace BSA_Browser
 
         public void SaveChanges()
         {
+            Settings.Default.SortBSADirectories = chbSortBSADirectories.Checked;
+
             Settings.Default.QuickExtractPaths.Clear();
 
             foreach (ListViewItem item in lvQuickExtract.Items)

@@ -340,7 +340,10 @@ namespace BSA_Browser
                 }
             }
 
-            this.SortNodes(e.Node);
+            if (Settings.Default.SortBSADirectories)
+            {
+                this.SortNodes(e.Node);
+            }
         }
 
         private void tvFolders_AfterSelect(object sender, TreeViewEventArgs e)
