@@ -115,7 +115,7 @@ namespace BSA_Browser.Properties {
                 this["QuickExtractPaths"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
@@ -125,6 +125,18 @@ namespace BSA_Browser.Properties {
             }
             set {
                 this["SortBSADirectories"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ExtractMaintainFolderStructure {
+            get {
+                return ((bool)(this["ExtractMaintainFolderStructure"]));
+            }
+            set {
+                this["ExtractMaintainFolderStructure"] = value;
             }
         }
     }

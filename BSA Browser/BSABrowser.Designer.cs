@@ -36,7 +36,6 @@
             this.btnExtractAll = new System.Windows.Forms.Button();
             this.OpenBSA = new System.Windows.Forms.OpenFileDialog();
             this.btnExtract = new System.Windows.Forms.Button();
-            this.SaveSingleDialog = new System.Windows.Forms.SaveFileDialog();
             this.cmbSortOrder = new System.Windows.Forms.ComboBox();
             this.btnPreview = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -142,12 +141,6 @@
             this.btnExtract.Text = "Extract";
             this.btnExtract.UseVisualStyleBackColor = true;
             this.btnExtract.Click += new System.EventHandler(this.btnExtract_Click);
-            // 
-            // SaveSingleDialog
-            // 
-            this.SaveSingleDialog.Filter = "All files|*.*";
-            this.SaveSingleDialog.RestoreDirectory = true;
-            this.SaveSingleDialog.Title = "Save to";
             // 
             // cmbSortOrder
             // 
@@ -467,7 +460,6 @@
         private System.Windows.Forms.OpenFileDialog OpenBSA;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button btnExtract;
-        private System.Windows.Forms.SaveFileDialog SaveSingleDialog;
         private System.Windows.Forms.ComboBox cmbSortOrder;
         private System.Windows.Forms.Button btnPreview;
         private System.Windows.Forms.TextBox txtSearch;

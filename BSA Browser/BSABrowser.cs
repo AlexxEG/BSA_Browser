@@ -119,34 +119,18 @@ namespace BSA_Browser
             if (lvFiles.SelectedItems.Count == 0)
                 return;
 
-            if (lvFiles.SelectedItems.Count == 1)
+            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                BSAFileEntry fe = (BSAFileEntry)lvFiles.SelectedItems[0].Tag;
-                SaveSingleDialog.FileName = fe.FileName;
+                BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
-                if (SaveSingleDialog.ShowDialog() == DialogResult.OK)
+                for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
                 {
-                    BSATreeNode node = GetSelectedArchive();
-
-                    /* Don't use ExtractFiles method because this method of extracting includes the filename. 
-                     * Normally "path" parameter is only the folder to extract to, not the full file path, and because of this
-                     * the ExtractFiles will create a folder with the same name as the extracted file which we do not want. */
-                    fe.Extract(SaveSingleDialog.FileName, false, node.BinaryReader, node.ContainsFileNameBlobs);
+                    files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
                 }
-            }
-            else
-            {
-                if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
-                {
-                    BSAFileEntry[] files = new BSAFileEntry[lvFiles.SelectedItems.Count];
 
-                    for (int i = 0; i < lvFiles.SelectedItems.Count; i++)
-                    {
-                        files[i] = (BSAFileEntry)lvFiles.SelectedItems[i].Tag;
-                    }
+                bool useFolderPath = Settings.Default.ExtractMaintainFolderStructure;
 
-                    ExtractFiles(_openFolderDialog.Folder, false, true, files);
-                }
+                ExtractFiles(_openFolderDialog.Folder, useFolderPath, true, files);
             }
         }
 
