@@ -229,6 +229,15 @@ namespace BSA_Browser
             lvFiles.DoDragDrop(obj, DragDropEffects.Move);
         }
 
+        private void lvFiles_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                foreach (ListViewItem item in lvFiles.Items)
+                    item.Selected = true;
+            }
+        }
+
         private void lvFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
             Program.SendMessage(lvFiles.Handle, 0x127, 0x10001, 0);
