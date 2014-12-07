@@ -42,9 +42,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.chbExtractMaintainFolderStructure = new System.Windows.Forms.CheckBox();
             this.chbSortBSADirectories = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.chbExtractMaintainFolderStructure = new System.Windows.Forms.CheckBox();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -196,14 +196,24 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // chbExtractMaintainFolderStructure
+            // 
+            this.chbExtractMaintainFolderStructure.AutoSize = true;
+            this.chbExtractMaintainFolderStructure.Location = new System.Drawing.Point(13, 13);
+            this.chbExtractMaintainFolderStructure.Name = "chbExtractMaintainFolderStructure";
+            this.chbExtractMaintainFolderStructure.Size = new System.Drawing.Size(275, 17);
+            this.chbExtractMaintainFolderStructure.TabIndex = 1;
+            this.chbExtractMaintainFolderStructure.Text = "Maintain folder structure when using \"Extract\" button";
+            this.chbExtractMaintainFolderStructure.UseVisualStyleBackColor = true;
+            // 
             // chbSortBSADirectories
             // 
             this.chbSortBSADirectories.AutoSize = true;
             this.chbSortBSADirectories.Location = new System.Drawing.Point(13, 36);
             this.chbSortBSADirectories.Name = "chbSortBSADirectories";
-            this.chbSortBSADirectories.Size = new System.Drawing.Size(327, 17);
+            this.chbSortBSADirectories.Size = new System.Drawing.Size(333, 17);
             this.chbSortBSADirectories.TabIndex = 0;
-            this.chbSortBSADirectories.Text = "Sort directories in .BSA archives (Requires reboot to take effect)";
+            this.chbSortBSADirectories.Text = "Sort directories in .BSA archives (Reopen archives to take effect)";
             this.chbSortBSADirectories.UseVisualStyleBackColor = true;
             // 
             // tabPage2
@@ -216,16 +226,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Quick Extract";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // chbExtractMaintainFolderStructure
-            // 
-            this.chbExtractMaintainFolderStructure.AutoSize = true;
-            this.chbExtractMaintainFolderStructure.Location = new System.Drawing.Point(13, 13);
-            this.chbExtractMaintainFolderStructure.Name = "chbExtractMaintainFolderStructure";
-            this.chbExtractMaintainFolderStructure.Size = new System.Drawing.Size(275, 17);
-            this.chbExtractMaintainFolderStructure.TabIndex = 1;
-            this.chbExtractMaintainFolderStructure.Text = "Maintain folder structure when using \"Extract\" button";
-            this.chbExtractMaintainFolderStructure.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
