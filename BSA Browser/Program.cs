@@ -50,7 +50,7 @@ namespace BSA_Browser
         {
             Version v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
-            return string.Format("{0}.{1}", v.Major, v.Minor);
+            return string.Format("{0}.{1}.{0}", v.Major, v.Minor, v.Build);
         }
     }
 
