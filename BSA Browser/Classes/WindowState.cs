@@ -61,6 +61,28 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
+        /// Makes sure the location is within the screen's working area.
+        /// </summary>
+        /// <param name="form">The <see cref="System.Windows.Forms.Form"/> to restore.</param>
+        /// <param name="location">The location to check.</param>
+        public Point CheckLocation(Form form, Point location)
+        {
+            Size screenSize = Screen.FromHandle(form.Handle).WorkingArea.Size;
+
+            if (location.X > screenSize.Width)
+                location.X = screenSize.Width - form.Size.Width;
+
+            location.X = Math.Max(0, location.X);
+
+            if (location.Y > screenSize.Height)
+                location.Y = screenSize.Height - form.Size.Height;
+
+            location.Y = Math.Max(0, location.Y);
+
+            return location;
+        }
+
+        /// <summary>
         /// Restores <see cref="System.Windows.Forms.Form"/>'s
         /// size, location and window state. Also restores <see cref="System.Windows.Forms.ColumnHeader"/>
         /// width and <see cref="System.Windows.Forms.SplitContainer"/> splitter distance.
@@ -68,14 +90,14 @@ namespace BSA_Browser.Classes
         /// <param name="form">The <see cref="System.Windows.Forms.Form"/> to restore.</param>
         public void RestoreForm(Form form)
         {
-            if (!this.Location.IsEmpty)
-            {
-                form.Location = this.Location;
-            }
-
             if (!this.Size.IsEmpty)
             {
                 form.Size = this.Size;
+            }
+
+            if (!this.Location.IsEmpty)
+            {
+                form.Location = CheckLocation(form, this.Location);
             }
 
             form.WindowState = this.FormWindowState;
