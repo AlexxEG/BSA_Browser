@@ -232,7 +232,7 @@
             this.cbRegex.TabIndex = 8;
             this.cbRegex.Text = "Use regex";
             this.cbRegex.UseVisualStyleBackColor = true;
-            this.cbRegex.CheckedChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            this.cbRegex.CheckedChanged += new System.EventHandler(this.txtSearch_DoSearch);
             // 
             // mainMenu1
             // 

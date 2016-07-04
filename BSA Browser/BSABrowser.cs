@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
+using System.Management.Automation;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -243,11 +244,27 @@ namespace BSA_Browser
             Program.SendMessage(lvFiles.Handle, 0x127, 0x10001, 0);
         }
 
+        Timer timer;
+
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
                 return;
 
+            if (timer == null)
+            {
+                timer = new Timer();
+                timer.Tick += txtSearch_DoSearch;
+                timer.Interval = 1 * 750; // 1 sec
+
+            }
+
+            timer.Stop();
+            timer.Start();
+        }
+
+        private void txtSearch_DoSearch(object sender, EventArgs e)
+        {
             string str = txtSearch.Text;
 
             if (cbRegex.Checked && str.Length > 0)
@@ -256,7 +273,7 @@ namespace BSA_Browser
 
                 try
                 {
-                    regex = new Regex(str, RegexOptions.Singleline);
+                    regex = new Regex(str, RegexOptions.Compiled | RegexOptions.Singleline);
                 }
                 catch { return; }
 
@@ -283,8 +300,10 @@ namespace BSA_Browser
                 {
                     List<ListViewItem> lvis = new List<ListViewItem>(GetSelectedArchive().Files.Length);
 
+                    var pattern = new WildcardPattern("*" + str + "*");
+
                     for (int i = 0; i < GetSelectedArchive().Items.Length; i++)
-                        if (GetSelectedArchive().Items[i].Text.Contains(str))
+                        if (pattern.IsMatch(GetSelectedArchive().Items[i].Text))
                             lvis.Add(GetSelectedArchive().Items[i]);
 
                     lvFiles.Items.AddRange(lvis.ToArray());
@@ -293,6 +312,8 @@ namespace BSA_Browser
             }
 
             lFileCount.Text = string.Format("{0:n0} files", lvFiles.Items.Count);
+
+            timer.Stop();
         }
 
         private void tvFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -712,7 +733,7 @@ namespace BSA_Browser
 
             MenuItem mi = new MenuItem("Close");
             mi.Tag = newNode;
-            mi.Click += delegate(object sender, EventArgs e)
+            mi.Click += delegate (object sender, EventArgs e)
             {
                 CloseArchive(newNode);
                 if (tvFolders.Nodes.Count == 0)
