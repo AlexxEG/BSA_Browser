@@ -139,5 +139,17 @@ namespace BSA_Browser.Properties {
                 this["ExtractMaintainFolderStructure"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SearchUseRegex {
+            get {
+                return ((bool)(this["SearchUseRegex"]));
+            }
+            set {
+                this["SearchUseRegex"] = value;
+            }
+        }
     }
 }

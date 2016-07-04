@@ -95,6 +95,9 @@ namespace BSA_Browser
             // Restore sorting preferences
             cmbSortOrder.SelectedIndex = (int)Settings.Default.SortType;
             cbDesc.Checked = Settings.Default.SortDesc;
+
+            // Restore Regex preference
+            cbRegex.Checked = Settings.Default.SearchUseRegex;
         }
 
         private void BSABrowser_FormClosing(object sender, FormClosingEventArgs e)
@@ -248,9 +251,6 @@ namespace BSA_Browser
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
-                return;
-
             if (timer == null)
             {
                 timer = new Timer();
@@ -265,6 +265,9 @@ namespace BSA_Browser
 
         private void txtSearch_DoSearch(object sender, EventArgs e)
         {
+            if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
+                return;
+
             string str = txtSearch.Text;
 
             if (cbRegex.Checked && str.Length > 0)
@@ -314,6 +317,12 @@ namespace BSA_Browser
             lFileCount.Text = string.Format("{0:n0} files", lvFiles.Items.Count);
 
             timer.Stop();
+        }
+
+        private void cbRegex_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.SearchUseRegex = cbRegex.Checked;
+            txtSearch_DoSearch(sender, e);
         }
 
         private void tvFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
