@@ -69,6 +69,9 @@
             this.copyFileNameMenuItem1 = new System.Windows.Forms.MenuItem();
             this.cbDesc = new System.Windows.Forms.CheckBox();
             this.lFileCount = new System.Windows.Forms.Label();
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -79,7 +82,10 @@
             // 
             this.lvFiles.AutoArrange = false;
             this.lvFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4});
             this.lvFiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvFiles.FullRowSelect = true;
             this.lvFiles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -100,7 +106,7 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "File path";
-            this.columnHeader1.Width = 465;
+            this.columnHeader1.Width = 227;
             // 
             // btnOpen
             // 
@@ -421,6 +427,22 @@
             this.lFileCount.Text = "0 files";
             this.lFileCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "File Size";
+            this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeader2.Width = 80;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Offset";
+            this.columnHeader3.Width = 80;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Compressed";
+            this.columnHeader4.Width = 90;
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -494,6 +516,9 @@
         private System.Windows.Forms.MenuItem helpMenuItem;
         private System.Windows.Forms.MenuItem aboutMenuItem;
         private System.Windows.Forms.Label lFileCount;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
     }
 }
 

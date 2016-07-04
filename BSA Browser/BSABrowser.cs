@@ -1084,6 +1084,9 @@ namespace BSA_Browser
                 BSAFileEntry file = bsaNode.Files[i];
                 ListViewItem lvi = new ListViewItem(Path.Combine(file.Folder, file.FileName));
 
+                lvi.SubItems.Add(FormatBytes(file.Size));
+                lvi.SubItems.Add(file.Offset.ToString());
+                lvi.SubItems.Add((file.Compressed ? "Compressed" : "Uncompressed"));
                 lvi.Tag = file;
                 lvi.ToolTipText =
                     "File size: " + FormatBytes(file.Size) + "\n" +
