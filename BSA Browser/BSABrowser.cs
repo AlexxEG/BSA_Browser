@@ -300,7 +300,7 @@ namespace BSA_Browser
                 {
                     List<ListViewItem> lvis = new List<ListViewItem>(GetSelectedArchive().Files.Length);
 
-                    var pattern = new WildcardPattern("*" + str + "*");
+                    var pattern = new WildcardPattern("*" + str + "*", WildcardOptions.Compiled);
 
                     for (int i = 0; i < GetSelectedArchive().Items.Length; i++)
                         if (pattern.IsMatch(GetSelectedArchive().Items[i].Text))
