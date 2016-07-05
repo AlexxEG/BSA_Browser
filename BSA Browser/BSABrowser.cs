@@ -331,9 +331,17 @@ namespace BSA_Browser
                     str = WildcardPattern.Escape(str).Replace("`*", "*");
                     var pattern = new WildcardPattern($"*{str}*", WildcardOptions.Compiled);
 
-                    for (int i = 0; i < GetSelectedArchive().Items.Length; i++)
-                        if (pattern.IsMatch(GetSelectedArchive().Items[i].Text))
-                            lvis.Add(GetSelectedArchive().Items[i]);
+                    try
+                    {
+                        for (int i = 0; i < GetSelectedArchive().Items.Length; i++)
+                            if (pattern.IsMatch(GetSelectedArchive().Items[i].Text))
+                                lvis.Add(GetSelectedArchive().Items[i]);
+                    }
+                    catch
+                    {
+                        txtSearch.ForeColor = System.Drawing.Color.Red;
+                        return;
+                    }
 
                     lvFiles.Items.AddRange(lvis.ToArray());
                 }
