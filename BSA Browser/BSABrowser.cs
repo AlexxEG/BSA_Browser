@@ -1209,25 +1209,11 @@ namespace BSA_Browser
         {
             if (a == null)
             {
-                if (b == null)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return -1;
-                }
+                return b == null ? 0 : -1;
             }
             else
             {
-                if (b == null)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return a.Text.CompareTo(b.Text);
-                }
+                return b == null ? 1 : a.Text.CompareTo(b.Text);
             }
         }
     }
