@@ -29,7 +29,7 @@ namespace BSA_Browser
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
         ColumnHeader[] _extraColumns;
         BSASorter _filesSorter = new BSASorter();
-        Timer _timer;
+        Timer _searchDelayTimer;
 
         public BSABrowser()
         {
@@ -290,23 +290,23 @@ namespace BSA_Browser
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (_timer == null)
+            if (_searchDelayTimer == null)
             {
-                _timer = new Timer();
-                _timer.Tick += txtSearch_DoSearch;
-                _timer.Interval = 1 * 750; // 1 sec
+                _searchDelayTimer = new Timer();
+                _searchDelayTimer.Tick += txtSearch_DoSearch;
+                _searchDelayTimer.Interval = 1 * 750; // 1 sec
 
             }
 
-            _timer.Stop();
-            _timer.Start();
+            _searchDelayTimer.Stop();
+            _searchDelayTimer.Start();
         }
 
         private List<BSAFileEntry> _files = new List<BSAFileEntry>();
 
         private void txtSearch_DoSearch(object sender, EventArgs e)
         {
-            _timer?.Stop();
+            _searchDelayTimer?.Stop();
 
             if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
                 return;
