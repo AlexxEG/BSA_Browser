@@ -396,6 +396,7 @@
             // 
             this.quickExtractsMenuItem.Index = 0;
             this.quickExtractsMenuItem.Text = "Quick extract...";
+            this.quickExtractsMenuItem.Click += new System.EventHandler(this.quickExtractsMenuItem_Click);
             // 
             // menuItem5
             // 

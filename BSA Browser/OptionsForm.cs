@@ -33,6 +33,12 @@ namespace BSA_Browser
             lvQuickExtract.HideFocusRectangle();
         }
 
+        public OptionsForm(int tabPage)
+            : this()
+        {
+            tabControl1.SelectedIndex = tabPage;
+        }
+
         private void OptionsForm_Load(object sender, EventArgs e)
         {
             if (!Settings.Default.WindowStates.Contains(this.Name))

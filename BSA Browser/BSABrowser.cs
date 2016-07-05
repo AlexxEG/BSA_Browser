@@ -480,7 +480,7 @@ namespace BSA_Browser
 
         private void optionsMenuItem_Click(object sender, EventArgs e)
         {
-            using (OptionsForm of = new OptionsForm())
+            using (var of = new OptionsForm())
             {
                 if (of.ShowDialog(this) == DialogResult.OK)
                 {
@@ -514,6 +514,26 @@ namespace BSA_Browser
             copyPathMenuItem1.Enabled = hasSelectedItems;
             copyFolderPathMenuItem1.Enabled = hasSelectedItems;
             copyFileNameMenuItem1.Enabled = hasSelectedItems;
+        }
+
+        private void quickExtractsMenuItem_Click(object sender, EventArgs e)
+        {
+            if (quickExtractsMenuItem.MenuItems.Count > 0)
+                return;
+
+            // Open options with second tab selected
+            using (var of = new OptionsForm(1))
+            {
+                if (of.ShowDialog(this) == DialogResult.OK)
+                {
+                    of.SaveChanges();
+                    Settings.Default.Save();
+
+                    // Sync changes to UI
+                    this.LoadQuickExtractPaths();
+                    this.UpdateColumns();
+                }
+            }
         }
 
         private void quickExtractMenuItem_Click(object sender, EventArgs e)
