@@ -332,7 +332,7 @@ namespace BSA_Browser
 
             lFileCount.Text = string.Format("{0:n0} files", lvFiles.Items.Count);
 
-            timer.Stop();
+            timer?.Stop();
         }
 
         private void cbRegex_CheckedChanged(object sender, EventArgs e)
@@ -402,7 +402,7 @@ namespace BSA_Browser
 
                 GetRootNode(e.Node).Items = lvis.ToArray();
             }
-            txtSearch_TextChanged(tvFolders, EventArgs.Empty);
+            txtSearch_DoSearch(tvFolders, EventArgs.Empty);
         }
 
         #region mainMenu1
@@ -767,7 +767,7 @@ namespace BSA_Browser
                 if (tvFolders.Nodes.Count == 0)
                     lvFiles.Items.Clear();
                 else
-                    txtSearch_TextChanged(null, null);
+                    txtSearch_DoSearch(null, null);
             };
             ContextMenu cm = new ContextMenu(new MenuItem[] { mi });
             newNode.ContextMenu = cm;
