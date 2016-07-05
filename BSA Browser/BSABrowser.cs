@@ -79,11 +79,6 @@ namespace BSA_Browser
             tvFolders.EnableVisualStyles();
             tvFolders.EnableAutoScroll();
 
-            // TESTING
-            lvFiles.VirtualMode = true;
-            lvFiles.RetrieveVirtualItem += LvFiles_RetrieveVirtualItem;
-            // -
-
             lvFiles.EnableVisualStyles();
             lvFiles.EnableVisualStylesSelection();
             lvFiles.HideFocusRectangle();
@@ -272,7 +267,7 @@ namespace BSA_Browser
             lvFiles.HideFocusRectangle();
         }
 
-        private void LvFiles_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        private void lvFiles_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
             var file = _files[e.ItemIndex];
             var lvi = new ListViewItem(Path.Combine(file.Folder, file.FileName));
