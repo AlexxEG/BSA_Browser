@@ -28,6 +28,7 @@ namespace BSA_Browser
         string _untouchedTitle;
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
         ColumnHeader[] _extraColumns;
+        List<BSAFileEntry> _files = new List<BSAFileEntry>();
         BSASorter _filesSorter = new BSASorter();
         Timer _searchDelayTimer;
 
@@ -301,8 +302,6 @@ namespace BSA_Browser
             _searchDelayTimer.Stop();
             _searchDelayTimer.Start();
         }
-
-        private List<BSAFileEntry> _files = new List<BSAFileEntry>();
 
         private void txtSearch_DoSearch(object sender, EventArgs e)
         {
