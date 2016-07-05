@@ -33,7 +33,7 @@ namespace BSA_Browser
             InitializeComponent();
 
             // Show application version in title
-            this.Text += " (" + Program.GetVersion() + ")";
+            this.Text += $" ({Program.GetVersion()})";
 
             // Store title so it can be restored later,
             // for example when showing the extraction progress in title
@@ -1140,8 +1140,8 @@ namespace BSA_Browser
                 lvi.SubItems.Add((file.Compressed ? "Compressed" : "Uncompressed"));
                 lvi.Tag = file;
                 lvi.ToolTipText =
-                    "File size: " + FormatBytes(file.Size) + "\n" +
-                    "File offset: " + file.Offset + " bytes\n" +
+                    $"File size: {FormatBytes(file.Size)}\n" +
+                    $"File offset: {file.Offset} bytes\n" +
                     (file.Compressed ? "Compressed" : "Uncompressed");
                 bsaNode.Items[i] = lvi;
             }
