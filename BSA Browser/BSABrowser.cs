@@ -1169,7 +1169,7 @@ namespace BSA_Browser
         }
     }
 
-    public class BSASorter : System.Collections.Generic.Comparer<BSAFileEntry>
+    public class BSASorter : Comparer<BSAFileEntry>
     {
         internal static BSASortOrder order = 0;
         internal static bool desc = true;
