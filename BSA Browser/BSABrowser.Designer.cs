@@ -60,7 +60,6 @@
             this.copyPathMenuItem = new System.Windows.Forms.MenuItem();
             this.copyFolderPathMenuItem = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem = new System.Windows.Forms.MenuItem();
-            this.toolsMenuItem = new System.Windows.Forms.MenuItem();
             this.optionsMenuItem = new System.Windows.Forms.MenuItem();
             this.helpMenuItem = new System.Windows.Forms.MenuItem();
             this.aboutMenuItem = new System.Windows.Forms.MenuItem();
@@ -72,6 +71,8 @@
             this.copyFileNameMenuItem1 = new System.Windows.Forms.MenuItem();
             this.cbDesc = new System.Windows.Forms.CheckBox();
             this.lFileCount = new System.Windows.Forms.Label();
+            this.openFoldersMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -263,7 +264,7 @@
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.fileMenuItem,
             this.editMenuItem,
-            this.toolsMenuItem,
+            this.openFoldersMenuItem,
             this.helpMenuItem});
             // 
             // fileMenuItem
@@ -272,6 +273,8 @@
             this.fileMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.openArchiveMnuItem,
             this.closeSelectedArchiveMenuItem,
+            this.menuItem1,
+            this.optionsMenuItem,
             this.menuItem6,
             this.recentFilesMenuItem,
             this.menuItem10,
@@ -293,12 +296,12 @@
             // 
             // menuItem6
             // 
-            this.menuItem6.Index = 2;
+            this.menuItem6.Index = 4;
             this.menuItem6.Text = "-";
             // 
             // recentFilesMenuItem
             // 
-            this.recentFilesMenuItem.Index = 3;
+            this.recentFilesMenuItem.Index = 5;
             this.recentFilesMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.emptyListMenuItem,
             this.menuItem9});
@@ -318,12 +321,12 @@
             // 
             // menuItem10
             // 
-            this.menuItem10.Index = 4;
+            this.menuItem10.Index = 6;
             this.menuItem10.Text = "-";
             // 
             // exitMenuItem
             // 
-            this.exitMenuItem.Index = 5;
+            this.exitMenuItem.Index = 7;
             this.exitMenuItem.Text = "Exit";
             this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
             // 
@@ -356,16 +359,9 @@
             this.copyFileNameMenuItem.Text = "Copy File Name";
             this.copyFileNameMenuItem.Click += new System.EventHandler(this.copyFileNameMenuItem_Click);
             // 
-            // toolsMenuItem
-            // 
-            this.toolsMenuItem.Index = 2;
-            this.toolsMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.optionsMenuItem});
-            this.toolsMenuItem.Text = "Tools";
-            // 
             // optionsMenuItem
             // 
-            this.optionsMenuItem.Index = 0;
+            this.optionsMenuItem.Index = 3;
             this.optionsMenuItem.Text = "Options...";
             this.optionsMenuItem.Click += new System.EventHandler(this.optionsMenuItem_Click);
             // 
@@ -446,6 +442,16 @@
             this.lFileCount.Text = "0 files";
             this.lFileCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // openFoldersMenuItem
+            // 
+            this.openFoldersMenuItem.Index = 2;
+            this.openFoldersMenuItem.Text = "Open Folders";
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 2;
+            this.menuItem1.Text = "-";
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -504,7 +510,6 @@
         private System.Windows.Forms.MenuItem menuItem9;
         private System.Windows.Forms.MenuItem menuItem10;
         private System.Windows.Forms.MenuItem exitMenuItem;
-        private System.Windows.Forms.MenuItem toolsMenuItem;
         private System.Windows.Forms.MenuItem optionsMenuItem;
         private System.Windows.Forms.CheckBox cbDesc;
         private System.Windows.Forms.MenuItem quickExtractsMenuItem;
@@ -522,6 +527,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.MenuItem menuItem1;
+        private System.Windows.Forms.MenuItem openFoldersMenuItem;
     }
 }
 

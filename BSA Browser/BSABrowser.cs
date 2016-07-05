@@ -384,6 +384,22 @@ namespace BSA_Browser
             CloseArchive(GetSelectedArchive());
         }
 
+        private void optionsMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var of = new OptionsForm())
+            {
+                if (of.ShowDialog(this) == DialogResult.OK)
+                {
+                    of.SaveChanges();
+                    Settings.Default.Save();
+
+                    // Sync changes to UI
+                    this.LoadQuickExtractPaths();
+                    this.UpdateColumns();
+                }
+            }
+        }
+
         private void recentFilesMenuItem_Popup(object sender, EventArgs e)
         {
             if (recentFilesMenuItem.MenuItems.Count > 2)
@@ -478,20 +494,20 @@ namespace BSA_Browser
             Clipboard.SetText(builder.ToString());
         }
 
-        private void optionsMenuItem_Click(object sender, EventArgs e)
+        private void openFolderMenuItem_Click(object sender, EventArgs e)
         {
-            using (var of = new OptionsForm())
-            {
-                if (of.ShowDialog(this) == DialogResult.OK)
-                {
-                    of.SaveChanges();
-                    Settings.Default.Save();
+            var menuItem = sender as MenuItem;
+            var path = menuItem.Tag as QuickExtractPath;
 
-                    // Sync changes to UI
-                    this.LoadQuickExtractPaths();
-                    this.UpdateColumns();
-                }
+            if (!Directory.Exists(path.Path))
+            {
+                MessageBox.Show(
+                    this,
+                    $"{path.Name}'s path no longer exists.");
+                return;
             }
+
+            System.Diagnostics.Process.Start(path.Path);
         }
 
         private void aboutMenuItem_Click(object sender, EventArgs e)
@@ -538,8 +554,8 @@ namespace BSA_Browser
 
         private void quickExtractMenuItem_Click(object sender, EventArgs e)
         {
-            MenuItem menuItem = sender as MenuItem;
-            QuickExtractPath path = menuItem.Tag as QuickExtractPath;
+            var menuItem = sender as MenuItem;
+            var path = menuItem.Tag as QuickExtractPath;
 
             if (!Directory.Exists(path.Path))
             {
@@ -1010,15 +1026,21 @@ namespace BSA_Browser
         /// </summary>
         private void LoadQuickExtractPaths()
         {
+            openFoldersMenuItem.MenuItems.Clear();
             quickExtractsMenuItem.MenuItems.Clear();
 
             foreach (QuickExtractPath path in Settings.Default.QuickExtractPaths)
             {
-                MenuItem menuItem = new MenuItem(path.Name, quickExtractMenuItem_Click);
-
-                menuItem.Tag = path;
-
-                quickExtractsMenuItem.MenuItems.Add(menuItem);
+                openFoldersMenuItem.MenuItems.Add(
+                    new MenuItem(path.Name, openFolderMenuItem_Click)
+                    {
+                        Tag = path
+                    });
+                quickExtractsMenuItem.MenuItems.Add(
+                    new MenuItem(path.Name, quickExtractMenuItem_Click)
+                    {
+                        Tag = path
+                    });
             }
         }
 
