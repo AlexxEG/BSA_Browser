@@ -281,10 +281,14 @@ namespace BSA_Browser
 
         private void txtSearch_DoSearch(object sender, EventArgs e)
         {
+            timer?.Stop();
+
             if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
                 return;
 
             string str = txtSearch.Text;
+
+            txtSearch.ForeColor = System.Drawing.SystemColors.WindowText;
 
             if (cbRegex.Checked && str.Length > 0)
             {
@@ -294,7 +298,11 @@ namespace BSA_Browser
                 {
                     regex = new Regex(str, RegexOptions.Compiled | RegexOptions.Singleline);
                 }
-                catch { return; }
+                catch
+                {
+                    txtSearch.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
 
                 lvFiles.BeginUpdate();
                 lvFiles.Items.Clear();
@@ -319,7 +327,9 @@ namespace BSA_Browser
                 {
                     List<ListViewItem> lvis = new List<ListViewItem>(GetSelectedArchive().Files.Length);
 
-                    var pattern = new WildcardPattern("*" + str + "*", WildcardOptions.Compiled);
+                    // Escape special characters, then unescape wild card characters again
+                    str = WildcardPattern.Escape(str).Replace("`*", "*");
+                    var pattern = new WildcardPattern($"*{str}*", WildcardOptions.Compiled);
 
                     for (int i = 0; i < GetSelectedArchive().Items.Length; i++)
                         if (pattern.IsMatch(GetSelectedArchive().Items[i].Text))
@@ -331,8 +341,6 @@ namespace BSA_Browser
             }
 
             lFileCount.Text = string.Format("{0:n0} files", lvFiles.Items.Count);
-
-            timer?.Stop();
         }
 
         private void cbRegex_CheckedChanged(object sender, EventArgs e)
