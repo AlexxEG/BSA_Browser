@@ -98,6 +98,7 @@
     <Compile Include="Dialogs\QuickExtractDialog.Designer.cs">
       <DependentUpon>QuickExtractDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\ListViewExtensions.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>

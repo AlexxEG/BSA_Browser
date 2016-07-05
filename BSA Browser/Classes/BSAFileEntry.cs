@@ -20,6 +20,13 @@ namespace BSA_Browser
                 lowername = Path.Combine(Folder.ToLower(), fileName.ToLower());
             }
         }
+        internal string FullPath
+        {
+            get
+            {
+                return Path.Combine(Folder, FileName);
+            }
+        }
         internal string LowerName
         {
             get { return lowername; }
