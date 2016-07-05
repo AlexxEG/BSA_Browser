@@ -89,7 +89,7 @@ namespace BSA_Browser
             lvFiles.HideFocusRectangle();
 
             // Set TextBox cue
-            txtSearch.SetCue("Enter a filter");
+            txtSearch.SetCue("Search term...");
         }
 
         public BSABrowser(string[] args)
@@ -294,7 +294,7 @@ namespace BSA_Browser
             if (_searchDelayTimer == null)
             {
                 _searchDelayTimer = new Timer();
-                _searchDelayTimer.Tick += txtSearch_DoSearch;
+                _searchDelayTimer.Tick += delegate { Search(); };
                 _searchDelayTimer.Interval = 1 * 750; // 1 sec
 
             }
@@ -303,84 +303,10 @@ namespace BSA_Browser
             _searchDelayTimer.Start();
         }
 
-        private void txtSearch_DoSearch(object sender, EventArgs e)
-        {
-            _searchDelayTimer?.Stop();
-
-            if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
-                return;
-
-            string str = txtSearch.Text;
-
-            txtSearch.ForeColor = System.Drawing.SystemColors.WindowText;
-
-            if (cbRegex.Checked && str.Length > 0)
-            {
-                Regex regex;
-
-                try
-                {
-                    regex = new Regex(str, RegexOptions.Compiled | RegexOptions.Singleline);
-                }
-                catch
-                {
-                    txtSearch.ForeColor = System.Drawing.Color.Red;
-                    return;
-                }
-
-                _files.Clear();
-
-                for (int i = 0; i < GetSelectedArchive().Files.Length; i++)
-                {
-                    var file = GetSelectedArchive().Files[i];
-
-                    if (regex.IsMatch(Path.Combine(file.Folder, file.FileName)))
-                        _files.Add(file);
-                }
-            }
-            else
-            {
-                _files.Clear();
-
-                if (str.Length == 0)
-                    _files.AddRange(GetSelectedArchive().Files);
-                else
-                {
-                    // Escape special characters, then unescape wild card characters again
-                    str = WildcardPattern.Escape(str).Replace("`*", "*");
-                    var pattern = new WildcardPattern($"*{str}*", WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
-
-                    try
-                    {
-                        for (int i = 0; i < GetSelectedArchive().Files.Length; i++)
-                        {
-                            var file = GetSelectedArchive().Files[i];
-
-                            if (pattern.IsMatch(Path.Combine(file.Folder, file.FileName)))
-                                _files.Add(file);
-                        }
-                    }
-                    catch
-                    {
-                        txtSearch.ForeColor = System.Drawing.Color.Red;
-                        return;
-                    }
-                }
-            }
-
-            _files.Sort(_filesSorter);
-
-            lvFiles.BeginUpdate();
-            lvFiles.VirtualListSize = _files.Count;
-            lvFiles.EndUpdate();
-
-            lFileCount.Text = string.Format("{0:n0} files", _files.Count);
-        }
-
         private void cbRegex_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.SearchUseRegex = cbRegex.Checked;
-            txtSearch_DoSearch(sender, e);
+            this.Search();
         }
 
         private void tvFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -445,7 +371,7 @@ namespace BSA_Browser
 
                 GetRootNode(e.Node).Files = lvis.ToArray();
             }
-            txtSearch_DoSearch(tvFolders, EventArgs.Empty);
+            this.Search();
         }
 
         #region mainMenu1
@@ -812,7 +738,7 @@ namespace BSA_Browser
                     lvFiles.EndUpdate();
                 }
                 else
-                    txtSearch_DoSearch(null, null);
+                    this.Search();
             };
             ContextMenu cm = new ContextMenu(new MenuItem[] { mi });
             newNode.ContextMenu = cm;
@@ -1117,6 +1043,84 @@ namespace BSA_Browser
 
             for (int i = recentFilesMenuItem.MenuItems.Count - 1; i != 1; i--)
                 Settings.Default.RecentFiles.Add(recentFilesMenuItem.MenuItems[i].Tag.ToString());
+        }
+
+        /// <summary>
+        /// Searches files list, filtering out not-matching files.
+        /// </summary>
+        private void Search()
+        {
+            _searchDelayTimer?.Stop();
+
+            if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
+                return;
+
+            string str = txtSearch.Text;
+
+            txtSearch.ForeColor = System.Drawing.SystemColors.WindowText;
+
+            if (cbRegex.Checked && str.Length > 0)
+            {
+                Regex regex;
+
+                try
+                {
+                    regex = new Regex(str, RegexOptions.Compiled | RegexOptions.Singleline);
+                }
+                catch
+                {
+                    txtSearch.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
+
+                _files.Clear();
+
+                for (int i = 0; i < GetSelectedArchive().Files.Length; i++)
+                {
+                    var file = GetSelectedArchive().Files[i];
+
+                    if (regex.IsMatch(Path.Combine(file.Folder, file.FileName)))
+                        _files.Add(file);
+                }
+            }
+            else
+            {
+                _files.Clear();
+
+                if (str.Length == 0)
+                    _files.AddRange(GetSelectedArchive().Files);
+                else
+                {
+                    // Escape special characters, then unescape wild card characters again
+                    str = WildcardPattern.Escape(str).Replace("`*", "*");
+                    var pattern = new WildcardPattern($"*{str}*", WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
+
+                    try
+                    {
+                        for (int i = 0; i < GetSelectedArchive().Files.Length; i++)
+                        {
+                            var file = GetSelectedArchive().Files[i];
+
+                            if (pattern.IsMatch(Path.Combine(file.Folder, file.FileName)))
+                                _files.Add(file);
+                        }
+                    }
+                    catch
+                    {
+                        txtSearch.ForeColor = System.Drawing.Color.Red;
+                        return;
+                    }
+                }
+            }
+
+            _files.Sort(_filesSorter);
+
+            lvFiles.BeginUpdate();
+            lvFiles.VirtualListSize = _files.Count;
+            lvFiles.Invalidate();
+            lvFiles.EndUpdate();
+
+            lFileCount.Text = string.Format("{0:n0} files", _files.Count);
         }
 
         /// <summary>
