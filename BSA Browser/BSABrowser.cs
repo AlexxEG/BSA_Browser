@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using BSA_Browser.Classes;
+using BSA_Browser.Controls;
 using BSA_Browser.Properties;
 
 namespace BSA_Browser
@@ -71,13 +72,16 @@ namespace BSA_Browser
             // Toggle columns based on setting
             this.UpdateColumns();
 
-            Program.SetWindowTheme(tvFolders.Handle, "explorer", null);
+            // Enable visual styles
+            tvFolders.EnableVisualStyles();
+            tvFolders.EnableAutoScroll();
 
-            Program.SendMessage(lvFiles.Handle, 0x127, 0x10001, 0);
-            Program.SetWindowTheme(lvFiles.Handle, "explorer", null);
-            Program.SendMessage(lvFiles.Handle, 0x1000 + 54, 0x00010000, 0x00010000);
+            lvFiles.EnableVisualStyles();
+            lvFiles.EnableVisualStylesSelection();
+            lvFiles.HideFocusRectangle();
 
-            Program.SendMessage(txtSearch.Handle, 0x1500 + 1, IntPtr.Zero.ToInt32(), "Enter a Filter");
+            // Set TextBox cue
+            txtSearch.SetCue("Enter a filter");
         }
 
         public BSABrowser(string[] args)
@@ -220,7 +224,7 @@ namespace BSA_Browser
 
         private void lvFiles_Enter(object sender, EventArgs e)
         {
-            Program.SendMessage(lvFiles.Handle, 0x127, 0x10001, 0);
+            lvFiles.HideFocusRectangle();
         }
 
         private void lvFiles_ItemDrag(object sender, ItemDragEventArgs e)
@@ -256,7 +260,7 @@ namespace BSA_Browser
 
         private void lvFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Program.SendMessage(lvFiles.Handle, 0x127, 0x10001, 0);
+            lvFiles.HideFocusRectangle();
         }
 
         Timer timer;

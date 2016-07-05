@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using BSA_Browser.Classes;
+using BSA_Browser.Controls;
 using BSA_Browser.Dialogs;
 using BSA_Browser.Properties;
 
@@ -27,9 +28,9 @@ namespace BSA_Browser
                 lvQuickExtract.Items.Add(item);
             }
 
-            Program.SendMessage(lvQuickExtract.Handle, 0x127, 0x10001, 0);
-            Program.SendMessage(lvQuickExtract.Handle, 0x1000 + 54, 0x00010000, 0x00010000);
-            Program.SetWindowTheme(lvQuickExtract.Handle, "explorer", null);
+            lvQuickExtract.EnableVisualStyles();
+            lvQuickExtract.EnableVisualStylesSelection();
+            lvQuickExtract.HideFocusRectangle();
         }
 
         private void OptionsForm_Load(object sender, EventArgs e)
@@ -65,12 +66,12 @@ namespace BSA_Browser
 
         private void lvQuickExtract_Enter(object sender, EventArgs e)
         {
-            Program.SendMessage(lvQuickExtract.Handle, 0x127, 0x10001, 0);
+            lvQuickExtract.HideFocusRectangle();
         }
 
         private void lvQuickExtract_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Program.SendMessage(lvQuickExtract.Handle, 0x127, 0x10001, 0);
+            lvQuickExtract.HideFocusRectangle();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

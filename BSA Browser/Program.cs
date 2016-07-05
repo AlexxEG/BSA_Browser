@@ -8,15 +8,6 @@ namespace BSA_Browser
 {
     static class Program
     {
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, string lParam);
-
-        [DllImport("uxtheme", CharSet = CharSet.Unicode)]
-        public extern static Int32 SetWindowTheme(IntPtr hWnd, String textSubAppName, String textSubIdList);
-
         public static readonly string tmpPath = Path.Combine(Path.GetTempPath(), "bsa_browser");
 
         /// <summary>

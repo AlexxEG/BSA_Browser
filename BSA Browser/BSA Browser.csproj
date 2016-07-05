@@ -91,6 +91,7 @@
     <Compile Include="Controls\ReorderableItemListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\VisualStyleExtensions.cs" />
     <Compile Include="Dialogs\QuickExtractDialog.cs">
       <SubType>Form</SubType>
     </Compile>
