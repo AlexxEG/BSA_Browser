@@ -291,7 +291,6 @@ namespace BSA_Browser
                 _searchDelayTimer = new Timer();
                 _searchDelayTimer.Tick += delegate { Search(); };
                 _searchDelayTimer.Interval = 500;
-
             }
 
             _searchDelayTimer.Stop();
