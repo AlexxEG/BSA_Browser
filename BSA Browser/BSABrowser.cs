@@ -394,7 +394,7 @@ namespace BSA_Browser
 
             foreach (BSAFileEntry lvi in GetRootNode(e.Node).AllFiles)
             {
-                string path = Path.GetDirectoryName(lvi.Folder);
+                string path = Path.GetDirectoryName(lvi.FullPath);
 
                 if (path == string.Empty || nodes.ContainsKey(path))
                     continue;
