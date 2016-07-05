@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using BSA_Browser.Classes;
 using BSA_Browser.Dialogs;
@@ -16,6 +15,7 @@ namespace BSA_Browser
 
             chbExtractMaintainFolderStructure.Checked = Settings.Default.ExtractMaintainFolderStructure;
             chbSortBSADirectories.Checked = Settings.Default.SortBSADirectories;
+            chbMoreColumns.Checked = Settings.Default.MoreColumns;
 
             foreach (QuickExtractPath path in Settings.Default.QuickExtractPaths)
             {
@@ -128,6 +128,7 @@ namespace BSA_Browser
         {
             Settings.Default.ExtractMaintainFolderStructure = chbExtractMaintainFolderStructure.Checked;
             Settings.Default.SortBSADirectories = chbSortBSADirectories.Checked;
+            Settings.Default.MoreColumns = chbMoreColumns.Checked;
 
             Settings.Default.QuickExtractPaths.Clear();
 

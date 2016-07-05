@@ -23,15 +23,21 @@ namespace BSA_Browser
 
     public partial class BSABrowser : Form
     {
-        ColumnHeader m_SortingColumn;
-        string untouchedTitle;
+        string _untouchedTitle;
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
+        ColumnHeader[] _extraColumns;
 
         public BSABrowser()
         {
             InitializeComponent();
+
+            // Show application version in title
             this.Text += " (" + Program.GetVersion() + ")";
-            untouchedTitle = this.Text;
+
+            // Store title so it can be restored later,
+            // for example when showing the extraction progress in title
+            _untouchedTitle = this.Text;
+
             lvFiles.ContextMenu = contextMenu1;
 
             if (Settings.Default.UpdateSettings)
@@ -41,17 +47,18 @@ namespace BSA_Browser
                 Settings.Default.Save();
             }
 
-            string path = Settings.Default.LastBSAUnpackPath;
+            // Restore last path for OpenFolderDialog
+            if (!string.IsNullOrEmpty(Settings.Default.LastBSAUnpackPath))
+                _openFolderDialog.InitialFolder = Settings.Default.LastBSAUnpackPath;
 
-            if (!string.IsNullOrEmpty(path))
-                _openFolderDialog.InitialFolder = path;
-
+            // Load Recent Files list
             if (Settings.Default.RecentFiles != null)
             {
                 foreach (string item in Settings.Default.RecentFiles)
                     AddToRecentFiles(item);
             }
 
+            // Load Quick Extract Paths
             if (Settings.Default.QuickExtractPaths == null)
                 Settings.Default.QuickExtractPaths = new QuickExtractPaths();
 
@@ -61,10 +68,15 @@ namespace BSA_Browser
             BSASorter.SetSorter(Settings.Default.SortType, Settings.Default.SortDesc);
             lvFiles.ListViewItemSorter = new BSASorter();
 
+            // Toggle columns based on setting
+            this.UpdateColumns();
+
             Program.SetWindowTheme(tvFolders.Handle, "explorer", null);
+
             Program.SendMessage(lvFiles.Handle, 0x127, 0x10001, 0);
             Program.SetWindowTheme(lvFiles.Handle, "explorer", null);
             Program.SendMessage(lvFiles.Handle, 0x1000 + 54, 0x00010000, 0x00010000);
+
             Program.SendMessage(txtSearch.Handle, 0x1500 + 1, IntPtr.Zero.ToInt32(), "Enter a Filter");
         }
 
@@ -507,7 +519,10 @@ namespace BSA_Browser
                 {
                     of.SaveChanges();
                     Settings.Default.Save();
+
+                    // Sync changes to UI
                     this.LoadQuickExtractPaths();
+                    this.UpdateColumns();
                 }
             }
         }
@@ -923,7 +938,7 @@ namespace BSA_Browser
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             pf.UpdateProgress(e.ProgressPercentage);
-            this.Text = string.Format("{0}% - {1}", pf.GetProgressPercentage(), untouchedTitle);
+            this.Text = string.Format("{0}% - {1}", pf.GetProgressPercentage(), _untouchedTitle);
         }
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -936,7 +951,7 @@ namespace BSA_Browser
             bw.Dispose();
             bw = null;
 
-            this.Text = untouchedTitle;
+            this.Text = _untouchedTitle;
 
             if (e.Result is bool)
             {
@@ -1068,6 +1083,30 @@ namespace BSA_Browser
                 node.Nodes.AddRange(nodes);
 
                 SortNodes(node);
+            }
+        }
+
+        /// <summary>
+        /// Shows or hides additional columns according to settings.
+        /// </summary>
+        private void UpdateColumns()
+        {
+            if (_extraColumns == null)
+                _extraColumns = new ColumnHeader[] { columnHeader2, columnHeader3, columnHeader4 };
+
+            if (Settings.Default.MoreColumns)
+            {
+                if (lvFiles.Columns.Count > 1)
+                    return;
+
+                lvFiles.BeginUpdate();
+                lvFiles.Columns.AddRange(_extraColumns);
+                lvFiles.EndUpdate();
+            }
+            else
+            {
+                foreach (ColumnHeader column in _extraColumns)
+                    lvFiles.Columns.Remove(column);
             }
         }
 
