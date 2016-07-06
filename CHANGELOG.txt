@@ -1,3 +1,13 @@
+[1.4]
+
+- Improved list performance, everything should be a bit faster now
+- Allow wild card in normal search
+- Add option for more columns (File size, offset, compressed)
+- Add shortcuts to open quick extract paths
+- Regex preference is now remembered
+- Search term will now appear red if it's invalid
+- Fix lag when searching, by adding a small delay
+
 [1.3.1]
 
 - Fixed window appearing outside the screen's working area
