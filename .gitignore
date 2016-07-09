@@ -219,7 +219,6 @@ pip-log.txt
 ## Inno Setup Files
 #############
 
-*.iss
 Inno Output/
 
 
