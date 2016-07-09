@@ -221,3 +221,10 @@ pip-log.txt
 
 *.iss
 Inno Output/
+
+
+#############
+## NuGet
+#############
+
+packages/
