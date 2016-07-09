@@ -1,3 +1,7 @@
+[1.4.1]
+
+- Fix missing DLL error
+
 [1.4]
 
 - Improved list performance, everything should be a bit faster now
