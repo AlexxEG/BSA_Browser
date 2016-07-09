@@ -596,6 +596,12 @@ namespace BSA_Browser
 
         #endregion
 
+        public const int MW_BSAHEADER_FILEID = 0x00000100; //!< Magic for Morrowind BSA
+        public const int OB_BSAHEADER_FILEID = 0x00415342; //!< Magic for Oblivion BSA, the literal string "BSA\0".
+
+        public const int OB_BSAHEADER_VERSION = 0x67; //!< Version number of an Oblivion BSA
+        public const int F3_BSAHEADER_VERSION = 0x68; //!< Version number of a Fallout 3 BSA
+
         /// <summary>
         /// Opens the given BSA archive, adding it to the TreeView and making it browsable.
         /// </summary>
@@ -612,7 +618,7 @@ namespace BSA_Browser
                 //if(Program.ReadCString(br)!="BSA") throw new fommException("File was not a valid BSA archive");
                 uint type = newNode.BinaryReader.ReadUInt32();
                 StringBuilder sb = new StringBuilder(64);
-                if (type != 0x00415342 && type != 0x00000100)
+                if (type != OB_BSAHEADER_FILEID && type != MW_BSAHEADER_FILEID)
                 {
                     //Might be a fallout 2 dat
                     newNode.BinaryReader.BaseStream.Position = newNode.BinaryReader.BaseStream.Length - 8;
@@ -677,7 +683,7 @@ namespace BSA_Browser
                 {
                     int version = newNode.BinaryReader.ReadInt32();
 
-                    if (version != 0x67 && version != 0x68)
+                    if (version != OB_BSAHEADER_VERSION && version != F3_BSAHEADER_VERSION)
                     {
                         if (MessageBox.Show("This BSA archive has an unknown version number.\n" +
                                             "Attempt to open anyway?", "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes)
@@ -690,7 +696,7 @@ namespace BSA_Browser
                     newNode.BinaryReader.BaseStream.Position += 4;
                     uint flags = newNode.BinaryReader.ReadUInt32();
                     newNode.Compressed = ((flags & 0x004) > 0);
-                    newNode.ContainsFileNameBlobs = ((flags & 0x100) > 0 && version == 0x68);
+                    newNode.ContainsFileNameBlobs = ((flags & 0x100) > 0 && version == OB_BSAHEADER_VERSION);
                     int FolderCount = newNode.BinaryReader.ReadInt32();
                     int FileCount = newNode.BinaryReader.ReadInt32();
                     newNode.BinaryReader.BaseStream.Position += 12;
