@@ -1,3 +1,8 @@
+[1.4.2]
+
+- Fix "Header checksum illegal" error
+- Fix some out of range errors
+
 [1.4.1]
 
 - Fix missing DLL error
