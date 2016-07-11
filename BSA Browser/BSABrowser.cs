@@ -269,6 +269,9 @@ namespace BSA_Browser
 
         private void lvFiles_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
+            if (_files.Count <= e.ItemIndex)
+                return;
+
             var file = _files[e.ItemIndex];
             var lvi = new ListViewItem(Path.Combine(file.Folder, file.FileName));
 
@@ -771,6 +774,7 @@ namespace BSA_Browser
                 {
                     lvFiles.BeginUpdate();
                     _files.Clear();
+                    lvFiles.VirtualListSize = 0;
                     lvFiles.EndUpdate();
                 }
                 else
@@ -834,6 +838,7 @@ namespace BSA_Browser
             {
                 lvFiles.BeginUpdate();
                 _files.Clear();
+                lvFiles.VirtualListSize = 0;
                 lvFiles.EndUpdate();
             }
 
@@ -857,6 +862,7 @@ namespace BSA_Browser
         {
             lvFiles.BeginUpdate();
             _files.Clear();
+            lvFiles.VirtualListSize = 0;
             lvFiles.EndUpdate();
 
             foreach (BSATreeNode node in tvFolders.Nodes)
