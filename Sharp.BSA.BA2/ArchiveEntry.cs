@@ -40,6 +40,13 @@ namespace SharpBSABA2
         /// Gets or sets the full file path.
         /// </summary>
         public string FullPath { get; set; }
+        public string LowerPath
+        {
+            get
+            {
+                return this.FullPath.ToLower();
+            }
+        }
 
         public Archive Archive { get; private set; }
 
