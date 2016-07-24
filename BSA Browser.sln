@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSA Browser", "BSA Browser\BSA Browser.csproj", "{63F0485C-8F38-4636-B255-3328E660664D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharp.BSA.BA2", "Sharp.BSA.BA2\Sharp.BSA.BA2.csproj", "{CA4A7785-F222-4CAA-84EF-6BFDD584DC83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +23,14 @@ Global
 		{63F0485C-8F38-4636-B255-3328E660664D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63F0485C-8F38-4636-B255-3328E660664D}.Release|x86.ActiveCfg = Release|x86
 		{63F0485C-8F38-4636-B255-3328E660664D}.Release|x86.Build.0 = Release|x86
+		{CA4A7785-F222-4CAA-84EF-6BFDD584DC83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA4A7785-F222-4CAA-84EF-6BFDD584DC83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA4A7785-F222-4CAA-84EF-6BFDD584DC83}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CA4A7785-F222-4CAA-84EF-6BFDD584DC83}.Debug|x86.Build.0 = Debug|Any CPU
+		{CA4A7785-F222-4CAA-84EF-6BFDD584DC83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA4A7785-F222-4CAA-84EF-6BFDD584DC83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA4A7785-F222-4CAA-84EF-6BFDD584DC83}.Release|x86.ActiveCfg = Release|Any CPU
+		{CA4A7785-F222-4CAA-84EF-6BFDD584DC83}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
