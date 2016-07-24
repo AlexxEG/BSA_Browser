@@ -4,11 +4,6 @@ namespace SharpBSABA2.BSAUtil
 {
     public class BSAFileEntry : ArchiveEntry
     {
-        public bool Compressed;
-        public uint Offset;
-        public uint Size;
-        public uint RealSize;
-
         public BSAFileEntry(Archive archive, int index)
             : base(archive, index)
         {
@@ -25,7 +20,7 @@ namespace SharpBSABA2.BSAUtil
             if (!Directory.Exists(Path.GetDirectoryName(path)))
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
 
-            this.BinaryReader.BaseStream.Position = Offset;
+            this.BinaryReader.BaseStream.Position = (long)Offset;
 
             // Skip ahead
             if ((this.Archive as BSA).ContainsFileNameBlobs)

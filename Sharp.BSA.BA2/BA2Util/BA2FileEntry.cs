@@ -5,24 +5,12 @@ namespace SharpBSABA2.BA2Util
     public class BA2FileEntry : ArchiveEntry
     {
         public uint flags { get; set; }
-        public ulong offset { get; set; }
         public uint align { get; set; }
-
-        /// <summary>
-        /// Gets if the file is compressed.
-        /// </summary>
-        public bool Compressed
+        
+        public override bool Compressed
         {
             get { return RealSize != 0; }
         }
-        /// <summary>
-        /// Gets the file size. (packSz)
-        /// </summary>
-        public uint Size { get; private set; }
-        /// <summary>
-        /// Gets the uncompressed file size. (fullSz)
-        /// </summary>
-        public uint RealSize { get; private set; }
 
         public BA2FileEntry(Archive ba2, int index) : base(ba2, index)
         {
@@ -30,7 +18,7 @@ namespace SharpBSABA2.BA2Util
             Extension = new string(ba2.BinaryReader.ReadChars(4));
             dirHash = ba2.BinaryReader.ReadUInt32();
             flags = ba2.BinaryReader.ReadUInt32();
-            offset = ba2.BinaryReader.ReadUInt64();
+            Offset = ba2.BinaryReader.ReadUInt64();
             Size = ba2.BinaryReader.ReadUInt32();
             RealSize = ba2.BinaryReader.ReadUInt32();
             align = ba2.BinaryReader.ReadUInt32();
@@ -38,7 +26,7 @@ namespace SharpBSABA2.BA2Util
 
         public override void Extract(string destination, bool preserveFolder)
         {
-            BinaryReader.BaseStream.Seek((long)offset, SeekOrigin.Begin);
+            BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
 
             string path = preserveFolder ? this.FullPath : this.FileName;
 

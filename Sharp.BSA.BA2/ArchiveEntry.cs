@@ -48,6 +48,20 @@ namespace SharpBSABA2
             }
         }
 
+        /// <summary>
+        /// Gets if the file is compressed.
+        /// </summary>
+        public virtual bool Compressed { get; protected set; }
+        public virtual ulong Offset { get; protected set; }
+        /// <summary>
+        /// Gets the uncompressed file size.
+        /// </summary>
+        public virtual uint RealSize { get; protected set; }
+        /// <summary>
+        /// Gets the file size.
+        /// </summary>
+        public virtual uint Size { get; protected set; }
+
         public Archive Archive { get; private set; }
 
         public BinaryReader BinaryReader { get { return this.Archive.BinaryReader; } }

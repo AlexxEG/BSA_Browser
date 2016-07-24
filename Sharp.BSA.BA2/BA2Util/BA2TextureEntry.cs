@@ -16,6 +16,26 @@ namespace SharpBSABA2.BA2Util
         byte format;
         ushort unk16;
 
+        // ToDo: Override ArchiveEntry.Size & ArchiveEntry.RealSize and return the file size by combining (?) the chunks's sizes.
+
+        public override bool Compressed
+        {
+            get
+            {
+                // ToDo: Can some chunks be not compressed, and some be?
+                return this.Chunks[0].packSz != 0;
+            }
+        }
+
+        public override ulong Offset
+        {
+            get
+            {
+                // ToDo: Are chunks always after each other?
+                return this.Chunks[0].offset;
+            }
+        }
+
         public BA2TextureEntry(Archive ba2, int index) : base(ba2, index)
         {
             nameHash = ba2.BinaryReader.ReadUInt32();
