@@ -11,6 +11,7 @@ using BSA_Browser.Classes;
 using BSA_Browser.Controls;
 using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
+using SharpBSABA2;
 
 namespace BSA_Browser
 {
@@ -28,7 +29,7 @@ namespace BSA_Browser
         string _untouchedTitle;
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
         ColumnHeader[] _extraColumns;
-        List<BSAFileEntry> _files = new List<BSAFileEntry>();
+        List<ArchiveEntry> _files = new List<ArchiveEntry>();
         BSASorter _filesSorter = new BSASorter();
         Timer _searchDelayTimer;
 
@@ -144,7 +145,7 @@ namespace BSA_Browser
 
             if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                var files = new List<BSAFileEntry>();
+                var files = new List<ArchiveEntry>();
 
                 foreach (int index in lvFiles.SelectedIndices)
                     files.Add(_files[index]);
@@ -160,11 +161,9 @@ namespace BSA_Browser
             if (tvFolders.SelectedNode == null)
                 return;
 
-            BSAFileEntry[] files = (BSAFileEntry[])GetSelectedArchive().Files;
-
             if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                ExtractFiles(_openFolderDialog.Folder, true, true, files);
+                ExtractFiles(_openFolderDialog.Folder, true, true, GetSelectedArchiveNode().Archive.Files.ToArray());
             }
         }
 
@@ -177,7 +176,7 @@ namespace BSA_Browser
             {
                 var fe = _files[lvFiles.SelectedIndices[0]];
 
-                switch (Path.GetExtension(fe.LowerName))
+                switch (Path.GetExtension(fe.LowerPath))
                 {
                     /*case ".nif":
                         MessageBox.Show("Viewing of nif's disabled as their format differs from oblivion");
@@ -191,11 +190,10 @@ namespace BSA_Browser
                     case ".lst":
                     case ".txt":
                     case ".xml":
-                        string path = Program.CreateTempDirectory();
-                        BSATreeNode root = GetSelectedArchive();
+                        string dest = Program.CreateTempDirectory();
 
-                        fe.Extract(Path.Combine(path, fe.FileName), false, root.BinaryReader, root.ContainsFileNameBlobs);
-                        System.Diagnostics.Process.Start(Path.Combine(path, fe.FileName));
+                        fe.Extract(dest, false);
+                        System.Diagnostics.Process.Start(Path.Combine(dest, fe.FileName));
                         break;
                     default:
                         MessageBox.Show("Filetype not supported.\n" +
@@ -243,11 +241,10 @@ namespace BSA_Browser
             foreach (int index in lvFiles.SelectedIndices)
             {
                 var fe = _files[index];
-                string path = Path.Combine(Program.CreateTempDirectory(), fe.FileName);
-                BSATreeNode root = GetSelectedArchive();
+                string dest = Program.CreateTempDirectory();
 
-                fe.Extract(path, false, root.BinaryReader, root.ContainsFileNameBlobs);
-                sc.Add(path);
+                fe.Extract(dest, false);
+                sc.Add(Path.Combine(dest, fe.FileName));
             }
 
             obj.SetFileDropList(sc);
@@ -313,9 +310,9 @@ namespace BSA_Browser
 
             e.Node.Nodes.Clear();
             Dictionary<string, TreeNode> nodes = new Dictionary<string, TreeNode>();
-            GetRootNode(e.Node).AllFiles = (BSAFileEntry[])GetRootNode(e.Node).Files.Clone();
+            GetRootNode(e.Node).AllFiles = (ArchiveEntry[])GetRootNode(e.Node).Files.Clone();
 
-            foreach (BSAFileEntry lvi in GetRootNode(e.Node).AllFiles)
+            foreach (ArchiveEntry lvi in GetRootNode(e.Node).AllFiles)
             {
                 string path = Path.GetDirectoryName(lvi.FullPath);
 
@@ -361,7 +358,7 @@ namespace BSA_Browser
                 GetRootNode(e.Node).Files = GetRootNode(e.Node).AllFiles;
             else
             {
-                var lvis = new List<BSAFileEntry>(GetRootNode(e.Node).AllFiles.Length);
+                var lvis = new List<ArchiveEntry>(GetRootNode(e.Node).AllFiles.Length);
 
                 foreach (var lvi in GetRootNode(e.Node).AllFiles)
                     if (lvi.FullPath.StartsWith(s)) lvis.Add(lvi);
@@ -381,10 +378,10 @@ namespace BSA_Browser
 
         private void closeSelectedArchiveMenuItem_Click(object sender, EventArgs e)
         {
-            if (GetSelectedArchive() == null)
+            if (GetSelectedArchiveNode() == null)
                 return;
 
-            CloseArchive(GetSelectedArchive());
+            CloseArchive(GetSelectedArchiveNode());
         }
 
         private void optionsMenuItem_Click(object sender, EventArgs e)
@@ -574,7 +571,7 @@ namespace BSA_Browser
                 Directory.CreateDirectory(path.Path);
             }
 
-            var files = new List<BSAFileEntry>();
+            var files = new List<ArchiveEntry>();
 
             foreach (int index in lvFiles.SelectedIndices)
                 files.Add(_files[index]);
@@ -606,158 +603,20 @@ namespace BSA_Browser
         /// <param name="addToRecentFiles">True if BSA archive should be added to recent files list.</param>
         public void OpenArchive(string path, bool addToRecentFiles = false)
         {
-            BSAFileEntry[] Files;
-            BSATreeNode newNode = new BSATreeNode(Path.GetFileNameWithoutExtension(path));
+            Archive archive = null;
 
             try
             {
-                newNode.BinaryReader = new BinaryReader(File.OpenRead(path), Encoding.Default);
-                //if(Program.ReadCString(br)!="BSA") throw new fommException("File was not a valid BSA archive");
-                uint type = newNode.BinaryReader.ReadUInt32();
-                StringBuilder sb = new StringBuilder(64);
-                if (type != 0x00415342 && type != 0x00000100)
-                {
-                    //Might be a fallout 2 dat
-                    newNode.BinaryReader.BaseStream.Position = newNode.BinaryReader.BaseStream.Length - 8;
-                    uint TreeSize = newNode.BinaryReader.ReadUInt32();
-                    uint DataSize = newNode.BinaryReader.ReadUInt32();
-
-                    if (DataSize != newNode.BinaryReader.BaseStream.Length)
-                    {
-                        MessageBox.Show("File is not a valid bsa archive");
-                        newNode.BinaryReader.Close();
-                        return;
-                    }
-
-                    newNode.BinaryReader.BaseStream.Position = DataSize - TreeSize - 8;
-                    int FileCount = newNode.BinaryReader.ReadInt32();
-                    Files = new BSAFileEntry[FileCount];
-
-                    for (int i = 0; i < FileCount; i++)
-                    {
-                        int fileLen = newNode.BinaryReader.ReadInt32();
-                        for (int j = 0; j < fileLen; j++) sb.Append(newNode.BinaryReader.ReadChar());
-                        byte comp = newNode.BinaryReader.ReadByte();
-                        uint realSize = newNode.BinaryReader.ReadUInt32();
-                        uint compSize = newNode.BinaryReader.ReadUInt32();
-                        uint offset = newNode.BinaryReader.ReadUInt32();
-                        if (sb[0] == '\\') sb.Remove(0, 1);
-                        Files[i] = new BSAFileEntry(sb.ToString(), offset, compSize, comp == 0 ? 0 : realSize);
-                        sb.Length = 0;
-                    }
-                }
-                else if (type == 0x0100)
-                {
-                    uint hashoffset = newNode.BinaryReader.ReadUInt32();
-                    uint FileCount = newNode.BinaryReader.ReadUInt32();
-                    Files = new BSAFileEntry[FileCount];
-
-                    uint dataoffset = 12 + hashoffset + FileCount * 8;
-                    uint fnameOffset1 = 12 + FileCount * 8;
-                    uint fnameOffset2 = 12 + FileCount * 12;
-
-                    for (int i = 0; i < FileCount; i++)
-                    {
-                        newNode.BinaryReader.BaseStream.Position = 12 + i * 8;
-                        uint size = newNode.BinaryReader.ReadUInt32();
-                        uint offset = newNode.BinaryReader.ReadUInt32() + dataoffset;
-                        newNode.BinaryReader.BaseStream.Position = fnameOffset1 + i * 4;
-                        newNode.BinaryReader.BaseStream.Position = newNode.BinaryReader.ReadInt32() + fnameOffset2;
-
-                        sb.Length = 0;
-
-                        while (true)
-                        {
-                            char b = newNode.BinaryReader.ReadChar();
-                            if (b == '\0') break;
-                            sb.Append(b);
-                        }
-
-                        Files[i] = new BSAFileEntry(sb.ToString(), offset, size);
-                    }
-                }
-                else
-                {
-                    int version = newNode.BinaryReader.ReadInt32();
-
-                    if (version != 0x67 && version != 0x68)
-                    {
-                        if (MessageBox.Show("This BSA archive has an unknown version number.\n" +
-                                            "Attempt to open anyway?", "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes)
-                        {
-                            newNode.BinaryReader.Close();
-                            return;
-                        }
-                    }
-
-                    newNode.BinaryReader.BaseStream.Position += 4;
-                    uint flags = newNode.BinaryReader.ReadUInt32();
-                    newNode.Compressed = ((flags & 0x004) > 0);
-                    newNode.ContainsFileNameBlobs = ((flags & 0x100) > 0 && version == 0x68);
-                    int FolderCount = newNode.BinaryReader.ReadInt32();
-                    int FileCount = newNode.BinaryReader.ReadInt32();
-                    newNode.BinaryReader.BaseStream.Position += 12;
-                    Files = new BSAFileEntry[FileCount];
-                    int[] numfiles = new int[FolderCount];
-                    newNode.BinaryReader.BaseStream.Position += 8;
-
-                    for (int i = 0; i < FolderCount; i++)
-                    {
-                        numfiles[i] = newNode.BinaryReader.ReadInt32();
-                        newNode.BinaryReader.BaseStream.Position += 12;
-                    }
-
-                    newNode.BinaryReader.BaseStream.Position -= 8;
-                    int filecount = 0;
-
-                    for (int i = 0; i < FolderCount; i++)
-                    {
-                        int k = newNode.BinaryReader.ReadByte();
-                        while (--k > 0) sb.Append(newNode.BinaryReader.ReadChar());
-                        newNode.BinaryReader.BaseStream.Position++;
-                        string folder = sb.ToString();
-
-                        for (int j = 0; j < numfiles[i]; j++)
-                        {
-                            newNode.BinaryReader.BaseStream.Position += 8;
-                            uint size = newNode.BinaryReader.ReadUInt32();
-                            bool comp = newNode.Compressed;
-
-                            if ((size & (1 << 30)) != 0)
-                            {
-                                comp = !comp;
-                                size ^= 1 << 30;
-                            }
-                            Files[filecount++] = new BSAFileEntry(comp, folder, newNode.BinaryReader.ReadUInt32(), size);
-                        }
-                        sb.Length = 0;
-                    }
-
-                    for (int i = 0; i < FileCount; i++)
-                    {
-                        while (true)
-                        {
-                            char c = newNode.BinaryReader.ReadChar();
-
-                            if (c == '\0')
-                                break;
-
-                            sb.Append(c);
-                        }
-                        Files[i].FileName = sb.ToString();
-                        sb.Length = 0;
-                    }
-                }
+                // ToDo: Figure out if the file is a BA2 or BSA file.
+                archive = new SharpBSABA2.BSAUtil.BSA(path);
             }
             catch (Exception ex)
             {
-                if (newNode.BinaryReader != null)
-                    newNode.BinaryReader.Close();
-
-                newNode.BinaryReader = null;
-                MessageBox.Show("An error occured trying to open the archive.\n" + ex.Message);
+                MessageBox.Show(ex.Message);
                 return;
             }
+
+            ArchiveNode newNode = new ArchiveNode(Path.GetFileNameWithoutExtension(path), archive);
 
             MenuItem mi = new MenuItem("Close");
             mi.Tag = newNode;
@@ -776,7 +635,7 @@ namespace BSA_Browser
             };
             ContextMenu cm = new ContextMenu(new MenuItem[] { mi });
             newNode.ContextMenu = cm;
-            newNode.Files = Files;
+            newNode.Files = archive.Files.ToArray();
             newNode.Nodes.Add("empty");
             tvFolders.Nodes.Add(newNode);
 
@@ -825,10 +684,10 @@ namespace BSA_Browser
         /// <summary>
         /// Closes the given BSA archive, removing it from the TreeView.
         /// </summary>
-        /// <param name="bsaNode"></param>
-        private void CloseArchive(BSATreeNode bsaNode)
+        /// <param name="archiveNode"></param>
+        private void CloseArchive(ArchiveNode archiveNode)
         {
-            if (GetSelectedArchive() == bsaNode)
+            if (GetSelectedArchiveNode() == archiveNode)
             {
                 lvFiles.BeginUpdate();
                 _files.Clear();
@@ -836,10 +695,9 @@ namespace BSA_Browser
                 lvFiles.EndUpdate();
             }
 
-            if (bsaNode.BinaryReader != null)
-                bsaNode.BinaryReader.Close();
+            archiveNode.Archive.Close();
 
-            tvFolders.Nodes.Remove(bsaNode);
+            tvFolders.Nodes.Remove(archiveNode);
 
             if (tvFolders.GetNodeCount(false) == 0)
             {
@@ -859,11 +717,8 @@ namespace BSA_Browser
             lvFiles.VirtualListSize = 0;
             lvFiles.EndUpdate();
 
-            foreach (BSATreeNode node in tvFolders.Nodes)
-            {
-                if (node.BinaryReader != null)
-                    node.BinaryReader.Close();
-            }
+            foreach (ArchiveNode node in tvFolders.Nodes)
+                node.Archive.Close();
 
             tvFolders.Nodes.Clear();
         }
@@ -875,7 +730,7 @@ namespace BSA_Browser
         /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
         /// <param name="gui">True to show a progression dialog.</param>
         /// <param name="files">The files in the selected BSA archive to extract.</param>
-        private void ExtractFiles(string folder, bool useFolderPath, bool gui, params BSAFileEntry[] files)
+        private void ExtractFiles(string folder, bool useFolderPath, bool gui, params ArchiveEntry[] files)
         {
             if (gui)
             {
@@ -891,20 +746,21 @@ namespace BSA_Browser
                 bw.DoWork += bw_DoWork;
                 bw.ProgressChanged += bw_ProgressChanged;
                 bw.RunWorkerCompleted += bw_RunWorkerCompleted;
-                bw.RunWorkerAsync(new object[] { folder, useFolderPath, files, GetSelectedArchive() });
+                bw.RunWorkerAsync(new ExtractFilesArguments()
+                {
+                    UseFolderPath = useFolderPath,
+                    Folder = folder,
+                    Files = files
+                });
             }
             else
             {
                 try
                 {
-                    BSATreeNode root = GetSelectedArchive();
+                    var root = GetSelectedArchiveNode();
 
-                    foreach (BSAFileEntry fe in files)
-                    {
-                        string path = useFolderPath ? folder : Path.Combine(folder, fe.FileName);
-
-                        fe.Extract(path, useFolderPath, root.BinaryReader, root.ContainsFileNameBlobs);
-                    }
+                    foreach (var fe in files)
+                        fe.Extract(folder, useFolderPath);
                 }
                 catch (Exception ex)
                 {
@@ -918,20 +774,22 @@ namespace BSA_Browser
         BackgroundWorker bw;
         ProgressForm pf;
 
+        private class ExtractFilesArguments
+        {
+            public bool UseFolderPath { get; set; }
+            public string Folder { get; set; }
+            public ArchiveEntry[] Files { get; set; }
+        }
+
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
-            object[] arguments = e.Argument as object[];
-
-            string folder = (arguments)[0] as string;
-            bool useFolderPath = bool.Parse((arguments)[1].ToString());
-            BSAFileEntry[] files = (arguments)[2] as BSAFileEntry[];
-            BSATreeNode root = (arguments)[3] as BSATreeNode;
+            var arguments = e.Argument as ExtractFilesArguments;
 
             try
             {
                 int count = 0;
 
-                foreach (BSAFileEntry fe in files)
+                foreach (var fe in arguments.Files)
                 {
                     if (bw.CancellationPending)
                     {
@@ -939,9 +797,7 @@ namespace BSA_Browser
                         break;
                     }
 
-                    string path = useFolderPath ? folder : Path.Combine(folder, fe.FileName);
-
-                    fe.Extract(path, useFolderPath, root.BinaryReader, root.ContainsFileNameBlobs);
+                    fe.Extract(arguments.Folder, arguments.UseFolderPath);
                     bw.ReportProgress(count++);
                 }
             }
@@ -1008,18 +864,18 @@ namespace BSA_Browser
         /// Returns the root node of the given TreeNode.
         /// </summary>
         /// <param name="node">The TreeNode to get root node from.</param>
-        private BSATreeNode GetRootNode(TreeNode node)
+        private ArchiveNode GetRootNode(TreeNode node)
         {
             TreeNode rootNode = node;
             while (rootNode.Parent != null)
                 rootNode = rootNode.Parent;
-            return (BSATreeNode)rootNode;
+            return rootNode as ArchiveNode;
         }
 
         /// <summary>
         /// Returns the selected BSA archive.
         /// </summary>
-        private BSATreeNode GetSelectedArchive()
+        private ArchiveNode GetSelectedArchiveNode()
         {
             if (tvFolders.SelectedNode == null)
                 return null;
@@ -1117,9 +973,9 @@ namespace BSA_Browser
 
                 _files.Clear();
 
-                for (int i = 0; i < GetSelectedArchive().Files.Length; i++)
+                for (int i = 0; i < GetSelectedArchiveNode().Files.Length; i++)
                 {
-                    var file = GetSelectedArchive().Files[i];
+                    var file = GetSelectedArchiveNode().Files[i];
 
                     if (regex.IsMatch(Path.Combine(file.Folder, file.FileName)))
                         _files.Add(file);
@@ -1130,7 +986,7 @@ namespace BSA_Browser
                 _files.Clear();
 
                 if (str.Length == 0)
-                    _files.AddRange(GetSelectedArchive().Files);
+                    _files.AddRange(GetSelectedArchiveNode().Files);
                 else
                 {
                     // Escape special characters, then unescape wild card characters again
@@ -1139,9 +995,9 @@ namespace BSA_Browser
 
                     try
                     {
-                        for (int i = 0; i < GetSelectedArchive().Files.Length; i++)
+                        for (int i = 0; i < GetSelectedArchiveNode().Files.Length; i++)
                         {
-                            var file = GetSelectedArchive().Files[i];
+                            var file = GetSelectedArchiveNode().Files[i];
 
                             if (pattern.IsMatch(Path.Combine(file.Folder, file.FileName)))
                                 _files.Add(file);
@@ -1211,7 +1067,7 @@ namespace BSA_Browser
         }
     }
 
-    public class BSASorter : Comparer<BSAFileEntry>
+    public class BSASorter : Comparer<ArchiveEntry>
     {
         internal static BSASortOrder order = 0;
         internal static bool desc = true;
@@ -1222,14 +1078,14 @@ namespace BSA_Browser
             desc = sortDesc;
         }
 
-        public override int Compare(BSAFileEntry a, BSAFileEntry b)
+        public override int Compare(ArchiveEntry a, ArchiveEntry b)
         {
-            BSAFileEntry fa = a;
-            BSAFileEntry fb = b;
+            ArchiveEntry fa = a;
+            ArchiveEntry fb = b;
             switch (order)
             {
                 case BSASortOrder.FolderName:
-                    return (desc) ? string.Compare(fa.LowerName, fb.LowerName) : string.Compare(fb.LowerName, fa.LowerName);
+                    return (desc) ? string.Compare(fa.LowerPath, fb.LowerPath) : string.Compare(fb.LowerPath, fa.LowerPath);
                 case BSASortOrder.FileName:
                     return (desc) ? string.Compare(fa.FileName, fb.FileName) : string.Compare(fb.FileName, fa.FileName);
                 case BSASortOrder.FileSize:

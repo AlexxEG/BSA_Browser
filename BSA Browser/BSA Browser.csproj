@@ -84,8 +84,7 @@
     <Compile Include="BSABrowser.Designer.cs">
       <DependentUpon>BSABrowser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Classes\BSAFileEntry.cs" />
-    <Compile Include="Classes\BSATreeNode.cs" />
+    <Compile Include="Classes\ArchiveNode.cs" />
     <Compile Include="Classes\OpenFolderDialog.cs" />
     <Compile Include="Classes\QuickExtractPath.cs" />
     <Compile Include="Classes\QuickExtractPaths.cs" />
@@ -193,6 +192,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fomm01.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sharp.BSA.BA2\Sharp.BSA.BA2.csproj">
+      <Project>{ca4a7785-f222-4caa-84ef-6bfdd584dc83}</Project>
+      <Name>Sharp.BSA.BA2</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
