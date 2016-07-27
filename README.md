@@ -4,7 +4,7 @@
 
 This is [Fallout Mod Manager](https://sourceforge.net/projects/fomm/)'s BSA Browser as a standalone application, with some new features.
 
-Requires .NET Framework 4.0
+Requires .NET Framework 4.5
 
 ## Features
 
