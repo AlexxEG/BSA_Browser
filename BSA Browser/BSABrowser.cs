@@ -620,7 +620,7 @@ namespace BSA_Browser
                         archive = new SharpBSABA2.BA2Util.BA2(path);
                         break;
                     default:
-                        throw new Exception($"Unrecognized archive file type ({Path.GetExtension(path)}).");
+                        throw new Exception($"Unrecognized archive file type ({extension}).");
                 }
             }
             catch (Exception ex)
@@ -629,11 +629,11 @@ namespace BSA_Browser
                 return;
             }
 
-            ArchiveNode newNode = new ArchiveNode(Path.GetFileNameWithoutExtension(path), archive);
+            var newNode = new ArchiveNode(Path.GetFileNameWithoutExtension(path), archive);
 
-            MenuItem mi = new MenuItem("Close");
-            mi.Tag = newNode;
-            mi.Click += delegate (object sender, EventArgs e)
+            var newMenuItem = new MenuItem("Close");
+            newMenuItem.Tag = newNode;
+            newMenuItem.Click += delegate (object sender, EventArgs e)
             {
                 CloseArchive(newNode);
                 if (tvFolders.Nodes.Count == 0)
@@ -646,7 +646,7 @@ namespace BSA_Browser
                 else
                     this.Search();
             };
-            ContextMenu cm = new ContextMenu(new MenuItem[] { mi });
+            var cm = new ContextMenu(new MenuItem[] { newMenuItem });
             newNode.ContextMenu = cm;
             newNode.Files = archive.Files.ToArray();
             newNode.Nodes.Add("empty");
