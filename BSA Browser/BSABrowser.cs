@@ -614,6 +614,13 @@ namespace BSA_Browser
                 {
                     case ".bsa":
                     case ".dat":
+                        if (SharpBSABA2.BSAUtil.BSA.IsSupportedVersion(path) == false)
+                        {
+                            if (MessageBox.Show("This BSA archive has an unknown version number.\n" +
+                                                "Attempt to open anyway?", "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                                return;
+                        }
+
                         archive = new SharpBSABA2.BSAUtil.BSA(path);
                         break;
                     case ".ba2":

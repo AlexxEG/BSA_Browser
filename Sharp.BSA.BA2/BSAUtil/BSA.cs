@@ -94,19 +94,6 @@ namespace SharpBSABA2.BSAUtil
                 else
                 {
                     int version = this.BinaryReader.ReadInt32();
-
-                    if (version != 0x67 && version != 0x68)
-                    {
-                        // ToDo: Make the GUI able to detect this and allow user to make an decision
-
-                        //if (MessageBox.Show("This BSA archive has an unknown version number.\n" +
-                        //                    "Attempt to open anyway?", "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes)
-                        //{
-                        //    this.BinaryReader.Close();
-                        //    return;
-                        //}
-                    }
-
                     this.BinaryReader.BaseStream.Position += 4;
                     uint flags = this.BinaryReader.ReadUInt32();
                     this.Compressed = ((flags & 0x004) > 0);
@@ -172,6 +159,24 @@ namespace SharpBSABA2.BSAUtil
 
                 throw new Exception("An error occured trying to open the archive.", ex);
             }
+        }
+
+        public static bool IsSupportedVersion(string filePath)
+        {
+            using (var br = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read)))
+            {
+                uint type = br.ReadUInt32();
+                int version = br.ReadInt32();
+
+                if (type != OB_BSAHEADER_FILEID)
+                    return true; // Only Oblivion/Fallout BSAs needs this version check,
+                                 // so if it's neither just always return true.
+
+                if (version != 0x67 && version != 0x68)
+                    return false;
+            }
+
+            return true;
         }
     }
 }
