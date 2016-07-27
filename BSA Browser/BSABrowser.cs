@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Management.Automation;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using BSA_Browser.Classes;
 using BSA_Browser.Controls;
@@ -118,6 +121,9 @@ namespace BSA_Browser
 
             // Restore Regex preference
             cbRegex.Checked = Settings.Default.SearchUseRegex;
+
+            // Show ! in main menu if update is available
+            this.ShowUpdateNotification();
         }
 
         private void BSABrowser_FormClosing(object sender, FormClosingEventArgs e)
@@ -510,6 +516,50 @@ namespace BSA_Browser
             }
 
             System.Diagnostics.Process.Start(path.Path);
+        }
+
+        private void helpMenuItem_Popup(object sender, EventArgs e)
+        {
+            int count = "(!) ".Length;
+
+            // Remove (!) from Text
+            if (helpMenuItem.Text.StartsWith("(!) "))
+                helpMenuItem.Text = helpMenuItem.Text.Remove(0, count);
+        }
+
+        private async void checkForUpdateMenuItem_Click(object sender, EventArgs e)
+        {
+            int count = "(!) ".Length;
+
+            // Remove (!) from Text
+            if (checkForUpdateMenuItem.Text.StartsWith("(!) "))
+                checkForUpdateMenuItem.Text = checkForUpdateMenuItem.Text.Remove(0, count);
+
+            try
+            {
+                if (await this.IsUpdateAvailable())
+                {
+                    if (MessageBox.Show(this,
+                        "Update available!\n\nDo you want to open the BSA Browser NexusMods page?",
+                        "Update available",
+                        MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        Process.Start(Program.Website);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(this, "You have the latest version.");
+                }
+            }
+            catch (Win32Exception)
+            {
+                MessageBox.Show(this, "Couldn't open the BSA Browser NexusMods page.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Error checking for update.\n\n" + ex.Message);
+            }
         }
 
         private void aboutMenuItem_Click(object sender, EventArgs e)
@@ -916,6 +966,20 @@ namespace BSA_Browser
         }
 
         /// <summary>
+        /// Returns true if update is available online.
+        /// </summary>
+        private async Task<bool> IsUpdateAvailable()
+        {
+            using (var wc = new WebClient())
+            {
+                var onlineVersion = new Version(await wc.DownloadStringTaskAsync(Program.VersionUrl));
+                var localVersion = new Version(Application.ProductVersion);
+
+                return localVersion < onlineVersion;
+            }
+        }
+
+        /// <summary>
         /// Loads quick extract paths into Quick Extract menu item.
         /// </summary>
         private void LoadQuickExtractPaths()
@@ -1051,6 +1115,18 @@ namespace BSA_Browser
             lvFiles.EndUpdate();
 
             lFileCount.Text = string.Format("{0:n0} files", _files.Count);
+        }
+
+        /// <summary>
+        /// Adds (!) to Help & Check for update menu items if there is an update available.
+        /// </summary>
+        private async void ShowUpdateNotification()
+        {
+            if (await this.IsUpdateAvailable())
+            {
+                helpMenuItem.Text = $"(!) {helpMenuItem.Text}";
+                checkForUpdateMenuItem.Text = $"(!) {checkForUpdateMenuItem.Text}";
+            }
         }
 
         /// <summary>

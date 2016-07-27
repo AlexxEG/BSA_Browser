@@ -50,6 +50,8 @@
             this.fileMenuItem = new System.Windows.Forms.MenuItem();
             this.openArchiveMnuItem = new System.Windows.Forms.MenuItem();
             this.closeSelectedArchiveMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.optionsMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem6 = new System.Windows.Forms.MenuItem();
             this.recentFilesMenuItem = new System.Windows.Forms.MenuItem();
             this.emptyListMenuItem = new System.Windows.Forms.MenuItem();
@@ -60,8 +62,10 @@
             this.copyPathMenuItem = new System.Windows.Forms.MenuItem();
             this.copyFolderPathMenuItem = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem = new System.Windows.Forms.MenuItem();
-            this.optionsMenuItem = new System.Windows.Forms.MenuItem();
+            this.openFoldersMenuItem = new System.Windows.Forms.MenuItem();
             this.helpMenuItem = new System.Windows.Forms.MenuItem();
+            this.checkForUpdateMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.aboutMenuItem = new System.Windows.Forms.MenuItem();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.quickExtractsMenuItem = new System.Windows.Forms.MenuItem();
@@ -71,8 +75,6 @@
             this.copyFileNameMenuItem1 = new System.Windows.Forms.MenuItem();
             this.cbDesc = new System.Windows.Forms.CheckBox();
             this.lFileCount = new System.Windows.Forms.Label();
-            this.openFoldersMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -152,7 +154,8 @@
             // 
             // OpenBSA
             // 
-            this.OpenBSA.Filter = "All supported files|*.bsa;*.ba2;*.dat|Fallout or Oblivion BSA archives|*.bsa|Fallout 4 BA2 archives|*.ba2|Fallout 2 dat archive|*.dat";
+            this.OpenBSA.Filter = "All supported files|*.bsa;*.ba2;*.dat|Fallout or Oblivion BSA archives|*.bsa|Fall" +
+    "out 4 BA2 archives|*.ba2|Fallout 2 dat archive|*.dat";
             this.OpenBSA.Multiselect = true;
             this.OpenBSA.RestoreDirectory = true;
             this.OpenBSA.Title = "Select archive to open";
@@ -230,8 +233,8 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Location = new System.Drawing.Point(12, 9);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
@@ -294,6 +297,17 @@
             this.closeSelectedArchiveMenuItem.Index = 1;
             this.closeSelectedArchiveMenuItem.Text = "Close Selected Archive";
             this.closeSelectedArchiveMenuItem.Click += new System.EventHandler(this.closeSelectedArchiveMenuItem_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 2;
+            this.menuItem1.Text = "-";
+            // 
+            // optionsMenuItem
+            // 
+            this.optionsMenuItem.Index = 3;
+            this.optionsMenuItem.Text = "Options...";
+            this.optionsMenuItem.Click += new System.EventHandler(this.optionsMenuItem_Click);
             // 
             // menuItem6
             // 
@@ -360,22 +374,35 @@
             this.copyFileNameMenuItem.Text = "Copy File Name";
             this.copyFileNameMenuItem.Click += new System.EventHandler(this.copyFileNameMenuItem_Click);
             // 
-            // optionsMenuItem
+            // openFoldersMenuItem
             // 
-            this.optionsMenuItem.Index = 3;
-            this.optionsMenuItem.Text = "Options...";
-            this.optionsMenuItem.Click += new System.EventHandler(this.optionsMenuItem_Click);
+            this.openFoldersMenuItem.Index = 2;
+            this.openFoldersMenuItem.Text = "Open Folders";
             // 
             // helpMenuItem
             // 
             this.helpMenuItem.Index = 3;
             this.helpMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.checkForUpdateMenuItem,
+            this.menuItem3,
             this.aboutMenuItem});
             this.helpMenuItem.Text = "Help";
+            this.helpMenuItem.Popup += new System.EventHandler(this.helpMenuItem_Popup);
+            // 
+            // checkForUpdateMenuItem
+            // 
+            this.checkForUpdateMenuItem.Index = 0;
+            this.checkForUpdateMenuItem.Text = "Check for update";
+            this.checkForUpdateMenuItem.Click += new System.EventHandler(this.checkForUpdateMenuItem_Click);
+            // 
+            // menuItem3
+            // 
+            this.menuItem3.Index = 1;
+            this.menuItem3.Text = "-";
             // 
             // aboutMenuItem
             // 
-            this.aboutMenuItem.Index = 0;
+            this.aboutMenuItem.Index = 2;
             this.aboutMenuItem.Text = "About BSA Browser";
             this.aboutMenuItem.Click += new System.EventHandler(this.aboutMenuItem_Click);
             // 
@@ -442,16 +469,6 @@
             this.lFileCount.TabIndex = 12;
             this.lFileCount.Text = "0 files";
             this.lFileCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // openFoldersMenuItem
-            // 
-            this.openFoldersMenuItem.Index = 2;
-            this.openFoldersMenuItem.Text = "Open Folders";
-            // 
-            // menuItem1
-            // 
-            this.menuItem1.Index = 2;
-            this.menuItem1.Text = "-";
             // 
             // BSABrowser
             // 
@@ -530,6 +547,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem openFoldersMenuItem;
+        private System.Windows.Forms.MenuItem checkForUpdateMenuItem;
+        private System.Windows.Forms.MenuItem menuItem3;
     }
 }
 

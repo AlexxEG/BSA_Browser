@@ -8,6 +8,9 @@ namespace BSA_Browser
 {
     static class Program
     {
+        public const string VersionUrl = "https://raw.githubusercontent.com/AlexxEG/BSA_Browser/master/VERSION";
+        public const string Website = "http://www.nexusmods.com/skyrim/mods/59553/?";
+
         public static readonly string tmpPath = Path.Combine(Path.GetTempPath(), "bsa_browser");
 
         /// <summary>
