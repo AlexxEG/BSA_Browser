@@ -607,8 +607,21 @@ namespace BSA_Browser
 
             try
             {
-                // ToDo: Figure out if the file is a BA2 or BSA file.
-                archive = new SharpBSABA2.BSAUtil.BSA(path);
+                string extension = Path.GetExtension(path);
+
+                // ToDo: Read file header to find archive type, not just extension
+                switch (extension)
+                {
+                    case ".bsa":
+                    case ".dat":
+                        archive = new SharpBSABA2.BSAUtil.BSA(path);
+                        break;
+                    case ".ba2":
+                        archive = new SharpBSABA2.BA2Util.BA2(path);
+                        break;
+                    default:
+                        throw new Exception($"Unrecognized archive file type ({Path.GetExtension(path)}).");
+                }
             }
             catch (Exception ex)
             {

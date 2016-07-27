@@ -152,7 +152,7 @@
             // 
             // OpenBSA
             // 
-            this.OpenBSA.Filter = "Fallout or Oblivion BSA archives|*.bsa|Fallout 2 dat archive|*.dat";
+            this.OpenBSA.Filter = "All supported files|*.bsa;*.ba2;*.dat|Fallout or Oblivion BSA archives|*.bsa|Fallout 4 BA2 archives|*.ba2|Fallout 2 dat archive|*.dat";
             this.OpenBSA.RestoreDirectory = true;
             this.OpenBSA.Title = "Select archive to open";
             // 
