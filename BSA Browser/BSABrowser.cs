@@ -603,6 +603,16 @@ namespace BSA_Browser
         /// <param name="addToRecentFiles">True if BSA archive should be added to recent files list.</param>
         public void OpenArchive(string path, bool addToRecentFiles = false)
         {
+            // Check if archive is already opened
+            foreach (ArchiveNode node in tvFolders.Nodes)
+            {
+                if (node.Archive.FullPath.ToLower() == path.ToLower())
+                {
+                    MessageBox.Show(this, "This archive is already opened.");
+                    return;
+                }
+            }
+
             Archive archive = null;
 
             try
