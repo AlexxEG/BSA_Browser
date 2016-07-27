@@ -28,6 +28,7 @@ OutputDir=Inno Output
 OutputBaseFilename=BSA Browser.{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
+UninstallDisplayIcon={app}\BSA Browser.exe
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -36,6 +37,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 Name: "bsaassociation"; Description: "Associate "".bsa"" extension"; GroupDescription: File extensions:
+Name: "ba2aassociation"; Description: "Associate "".ba2"" extension"; GroupDescription: File extensions:
 
 [Files]
 Source: "BSA Browser\bin\Release\BSA Browser.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -45,9 +47,10 @@ Source: "BSA Browser\bin\Release\System.Management.Automation.dll"; DestDir: "{a
 
 [Registry]
 Root: HKCR; Subkey: ".bsa"; ValueType: string; ValueName: ""; ValueData: "BSABrowser"; Flags: uninsdeletevalue; Tasks: bsaassociation
-Root: HKCR; Subkey: "BSABrowser"; ValueType: string; ValueName: ""; ValueData: "Bethesda File Archive"; Flags: uninsdeletekey; Tasks: bsaassociation
-Root: HKCR; Subkey: "BSABrowser\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"",0"; Tasks: bsaassociation
-Root: HKCR; Subkey: "BSABrowser\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: bsaassociation
+Root: HKCR; Subkey: ".ba2"; ValueType: string; ValueName: ""; ValueData: "BSABrowser"; Flags: uninsdeletevalue; Tasks: ba2aassociation
+Root: HKCR; Subkey: "BSABrowser"; ValueType: string; ValueName: ""; ValueData: "Bethesda File Archive"; Flags: uninsdeletekey; Tasks: bsaassociation or ba2aassociation
+Root: HKCR; Subkey: "BSABrowser\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"",0"; Tasks: bsaassociation or ba2aassociation
+Root: HKCR; Subkey: "BSABrowser\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: bsaassociation or ba2aassociation
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
