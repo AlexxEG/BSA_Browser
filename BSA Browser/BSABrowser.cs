@@ -135,7 +135,8 @@ namespace BSA_Browser
         private void btnOpen_Click(object sender, EventArgs e)
         {
             if (OpenBSA.ShowDialog() == DialogResult.OK)
-                OpenArchive(OpenBSA.FileName, true);
+                foreach (string file in OpenBSA.FileNames)
+                    OpenArchive(file, true);
         }
 
         private void btnExtract_Click(object sender, EventArgs e)
@@ -373,7 +374,8 @@ namespace BSA_Browser
         private void openArchiveMenuItem_Click(object sender, EventArgs e)
         {
             if (OpenBSA.ShowDialog() == DialogResult.OK)
-                OpenArchive(OpenBSA.FileName, true);
+                foreach (string file in OpenBSA.FileNames)
+                    OpenArchive(file, true);
         }
 
         private void closeSelectedArchiveMenuItem_Click(object sender, EventArgs e)
