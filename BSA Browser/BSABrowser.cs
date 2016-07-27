@@ -694,7 +694,7 @@ namespace BSA_Browser
 
             if (RecentListContains(file))
             {
-                MenuItem item = RecentListGetItemByString(file);
+                var item = RecentListGetItemByString(file);
 
                 if (item == null)
                     return;
@@ -705,7 +705,7 @@ namespace BSA_Browser
             }
             else
             {
-                MenuItem newItem = new MenuItem(Path.GetFileName(file), new EventHandler(recentFiles_Click));
+                var newItem = new MenuItem(file, new EventHandler(recentFiles_Click));
                 newItem.Tag = file;
                 recentFilesMenuItem.MenuItems.Add(2, newItem);
             }
