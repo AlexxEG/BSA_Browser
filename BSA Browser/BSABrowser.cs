@@ -141,8 +141,7 @@ namespace BSA_Browser
         private void btnOpen_Click(object sender, EventArgs e)
         {
             if (OpenBSA.ShowDialog() == DialogResult.OK)
-                foreach (string file in OpenBSA.FileNames)
-                    OpenArchive(file, true);
+                this.OpenArchives(true, OpenBSA.FileNames);
         }
 
         private void btnExtract_Click(object sender, EventArgs e)
@@ -380,8 +379,7 @@ namespace BSA_Browser
         private void openArchiveMenuItem_Click(object sender, EventArgs e)
         {
             if (OpenBSA.ShowDialog() == DialogResult.OK)
-                foreach (string file in OpenBSA.FileNames)
-                    OpenArchive(file, true);
+                this.OpenArchives(true, OpenBSA.FileNames);
         }
 
         private void closeSelectedArchiveMenuItem_Click(object sender, EventArgs e)
@@ -649,10 +647,10 @@ namespace BSA_Browser
         #endregion
 
         /// <summary>
-        /// Opens the given BSA archive, adding it to the TreeView and making it browsable.
+        /// Opens the given archive file, adding it to the TreeView and making it browsable.
         /// </summary>
-        /// <param name="path">The BSA archive's file path.</param>
-        /// <param name="addToRecentFiles">True if BSA archive should be added to recent files list.</param>
+        /// <param name="path">The archive file path.</param>
+        /// <param name="addToRecentFiles">True if archive file should be added to recent files list.</param>
         public void OpenArchive(string path, bool addToRecentFiles = false)
         {
             // Check if archive is already opened
@@ -733,6 +731,17 @@ namespace BSA_Browser
                 AddToRecentFiles(path);
 
             tvFolders.SelectedNode = newNode;
+        }
+
+        /// <summary>
+        /// Opens all given archive files.
+        /// </summary>
+        /// <param name="addToRecentFiles">True if archive files should be added to recent files list.</param>
+        /// <param name="paths">Array of archive file paths.</param>
+        public void OpenArchives(bool addToRecentFiles, params string[] paths)
+        {
+            foreach (string path in paths)
+                this.OpenArchive(path, addToRecentFiles);
         }
 
         /// <summary>
