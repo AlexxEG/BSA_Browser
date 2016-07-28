@@ -37,7 +37,7 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnExtractAll = new System.Windows.Forms.Button();
-            this.OpenBSA = new System.Windows.Forms.OpenFileDialog();
+            this.OpenArchiveDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnExtract = new System.Windows.Forms.Button();
             this.cmbSortOrder = new System.Windows.Forms.ComboBox();
             this.btnPreview = new System.Windows.Forms.Button();
@@ -152,13 +152,13 @@
             this.btnExtractAll.UseVisualStyleBackColor = true;
             this.btnExtractAll.Click += new System.EventHandler(this.btnExtractAll_Click);
             // 
-            // OpenBSA
+            // OpenArchiveDialog
             // 
-            this.OpenBSA.Filter = "All supported files|*.bsa;*.ba2;*.dat|Fallout or Oblivion BSA archives|*.bsa|Fall" +
+            this.OpenArchiveDialog.Filter = "All supported files|*.bsa;*.ba2;*.dat|Fallout or Oblivion BSA archives|*.bsa|Fall" +
     "out 4 BA2 archives|*.ba2|Fallout 2 dat archive|*.dat";
-            this.OpenBSA.Multiselect = true;
-            this.OpenBSA.RestoreDirectory = true;
-            this.OpenBSA.Title = "Select archive to open";
+            this.OpenArchiveDialog.Multiselect = true;
+            this.OpenArchiveDialog.RestoreDirectory = true;
+            this.OpenArchiveDialog.Title = "Select archive to open";
             // 
             // btnExtract
             // 
@@ -507,7 +507,7 @@
         private System.Windows.Forms.ListView lvFiles;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.Button btnExtractAll;
-        private System.Windows.Forms.OpenFileDialog OpenBSA;
+        private System.Windows.Forms.OpenFileDialog OpenArchiveDialog;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button btnExtract;
         private System.Windows.Forms.ComboBox cmbSortOrder;

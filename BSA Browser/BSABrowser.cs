@@ -18,7 +18,7 @@ using SharpBSABA2;
 
 namespace BSA_Browser
 {
-    public enum BSASortOrder
+    public enum ArchiveFileSortOrder
     {
         FolderName,
         FileName,
@@ -33,7 +33,7 @@ namespace BSA_Browser
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
         ColumnHeader[] _extraColumns;
         List<ArchiveEntry> _files = new List<ArchiveEntry>();
-        BSASorter _filesSorter = new BSASorter();
+        ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
         Timer _searchDelayTimer;
 
         public BSABrowser()
@@ -57,8 +57,8 @@ namespace BSA_Browser
             }
 
             // Restore last path for OpenFolderDialog
-            if (!string.IsNullOrEmpty(Settings.Default.LastBSAUnpackPath))
-                _openFolderDialog.InitialFolder = Settings.Default.LastBSAUnpackPath;
+            if (!string.IsNullOrEmpty(Settings.Default.LastUnpackPath))
+                _openFolderDialog.InitialFolder = Settings.Default.LastUnpackPath;
 
             // Load Recent Files list
             if (Settings.Default.RecentFiles != null)
@@ -74,7 +74,7 @@ namespace BSA_Browser
             this.LoadQuickExtractPaths();
 
             // Set lvFiles sorter
-            BSASorter.SetSorter(Settings.Default.SortType, Settings.Default.SortDesc);
+            ArchiveFileSorter.SetSorter(Settings.Default.SortType, Settings.Default.SortDesc);
 
             // Toggle columns based on setting
             this.UpdateColumns();
@@ -134,14 +134,14 @@ namespace BSA_Browser
             SaveRecentFiles();
 
             Settings.Default.WindowStates[this.Name].SaveForm(this);
-            Settings.Default.LastBSAUnpackPath = _openFolderDialog.Folder;
+            Settings.Default.LastUnpackPath = _openFolderDialog.Folder;
             Settings.Default.Save();
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            if (OpenBSA.ShowDialog() == DialogResult.OK)
-                this.OpenArchives(true, OpenBSA.FileNames);
+            if (OpenArchiveDialog.ShowDialog() == DialogResult.OK)
+                this.OpenArchives(true, OpenArchiveDialog.FileNames);
         }
 
         private void btnExtract_Click(object sender, EventArgs e)
@@ -215,16 +215,16 @@ namespace BSA_Browser
 
         private void cmbSortOrder_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BSASorter.SetSorter((BSASortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
+            ArchiveFileSorter.SetSorter((ArchiveFileSortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
             lvFiles.BeginUpdate();
             _files.Sort(_filesSorter);
             lvFiles.EndUpdate();
-            Settings.Default.SortType = (BSASortOrder)cmbSortOrder.SelectedIndex;
+            Settings.Default.SortType = (ArchiveFileSortOrder)cmbSortOrder.SelectedIndex;
         }
 
         private void cbDesc_CheckedChanged(object sender, EventArgs e)
         {
-            BSASorter.SetSorter((BSASortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
+            ArchiveFileSorter.SetSorter((ArchiveFileSortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
             lvFiles.BeginUpdate();
             _files.Sort(_filesSorter);
             lvFiles.EndUpdate();
@@ -347,7 +347,7 @@ namespace BSA_Browser
                 }
             }
 
-            if (Settings.Default.SortBSADirectories)
+            if (Settings.Default.SortArchiveDirectories)
             {
                 this.SortNodes(e.Node);
             }
@@ -378,8 +378,8 @@ namespace BSA_Browser
 
         private void openArchiveMenuItem_Click(object sender, EventArgs e)
         {
-            if (OpenBSA.ShowDialog() == DialogResult.OK)
-                this.OpenArchives(true, OpenBSA.FileNames);
+            if (OpenArchiveDialog.ShowDialog() == DialogResult.OK)
+                this.OpenArchives(true, OpenArchiveDialog.FileNames);
         }
 
         private void closeSelectedArchiveMenuItem_Click(object sender, EventArgs e)
@@ -647,10 +647,10 @@ namespace BSA_Browser
         #endregion
 
         /// <summary>
-        /// Opens the given archive file, adding it to the TreeView and making it browsable.
+        /// Opens the given archive, adding it to the TreeView and making it browsable.
         /// </summary>
         /// <param name="path">The archive file path.</param>
-        /// <param name="addToRecentFiles">True if archive file should be added to recent files list.</param>
+        /// <param name="addToRecentFiles">True if archive should be added to recent files list.</param>
         public void OpenArchive(string path, bool addToRecentFiles = false)
         {
             // Check if archive is already opened
@@ -734,9 +734,9 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Opens all given archive files.
+        /// Opens all given archives.
         /// </summary>
-        /// <param name="addToRecentFiles">True if archive files should be added to recent files list.</param>
+        /// <param name="addToRecentFiles">True if archives should be added to recent files list.</param>
         /// <param name="paths">Array of archive file paths.</param>
         public void OpenArchives(bool addToRecentFiles, params string[] paths)
         {
@@ -773,7 +773,7 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Closes the given BSA archive, removing it from the TreeView.
+        /// Closes the given archive, removing it from the TreeView.
         /// </summary>
         /// <param name="archiveNode"></param>
         private void CloseArchive(ArchiveNode archiveNode)
@@ -820,7 +820,7 @@ namespace BSA_Browser
         /// <param name="folder">The path to extract files to.</param>
         /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
         /// <param name="gui">True to show a progression dialog.</param>
-        /// <param name="files">The files in the selected BSA archive to extract.</param>
+        /// <param name="files">The files in the selected archive to extract.</param>
         private void ExtractFiles(string folder, bool useFolderPath, bool gui, params ArchiveEntry[] files)
         {
             if (gui)
@@ -964,7 +964,7 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Returns the selected BSA archive.
+        /// Returns the selected archive.
         /// </summary>
         private ArchiveNode GetSelectedArchiveNode()
         {
@@ -1184,12 +1184,12 @@ namespace BSA_Browser
         }
     }
 
-    public class BSASorter : Comparer<ArchiveEntry>
+    public class ArchiveFileSorter : Comparer<ArchiveEntry>
     {
-        internal static BSASortOrder order = 0;
+        internal static ArchiveFileSortOrder order = 0;
         internal static bool desc = true;
 
-        public static void SetSorter(BSASortOrder sortOrder, bool sortDesc)
+        public static void SetSorter(ArchiveFileSortOrder sortOrder, bool sortDesc)
         {
             order = sortOrder;
             desc = sortDesc;
@@ -1201,15 +1201,15 @@ namespace BSA_Browser
             ArchiveEntry fb = b;
             switch (order)
             {
-                case BSASortOrder.FolderName:
+                case ArchiveFileSortOrder.FolderName:
                     return (desc) ? string.Compare(fa.LowerPath, fb.LowerPath) : string.Compare(fb.LowerPath, fa.LowerPath);
-                case BSASortOrder.FileName:
+                case ArchiveFileSortOrder.FileName:
                     return (desc) ? string.Compare(fa.FileName, fb.FileName) : string.Compare(fb.FileName, fa.FileName);
-                case BSASortOrder.FileSize:
+                case ArchiveFileSortOrder.FileSize:
                     return (desc) ? fa.Size.CompareTo(fb.Size) : fb.Size.CompareTo(fa.Size);
-                case BSASortOrder.Offset:
+                case ArchiveFileSortOrder.Offset:
                     return (desc) ? fa.Offset.CompareTo(fb.Offset) : fb.Offset.CompareTo(fa.Offset);
-                case BSASortOrder.FileType:
+                case ArchiveFileSortOrder.FileType:
                     return (desc) ? string.Compare(Path.GetExtension(fa.FileName), Path.GetExtension(fb.FileName)) :
                                     string.Compare(Path.GetExtension(fb.FileName), Path.GetExtension(fa.FileName));
                 default:

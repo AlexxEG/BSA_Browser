@@ -26,12 +26,12 @@ namespace BSA_Browser.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
-        public string LastBSAUnpackPath {
+        public string LastUnpackPath {
             get {
-                return ((string)(this["LastBSAUnpackPath"]));
+                return ((string)(this["LastUnpackPath"]));
             }
             set {
-                this["LastBSAUnpackPath"] = value;
+                this["LastUnpackPath"] = value;
             }
         }
         
@@ -96,9 +96,9 @@ namespace BSA_Browser.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("FolderName")]
-        public global::BSA_Browser.BSASortOrder SortType {
+        public global::BSA_Browser.ArchiveFileSortOrder SortType {
             get {
-                return ((global::BSA_Browser.BSASortOrder)(this["SortType"]));
+                return ((global::BSA_Browser.ArchiveFileSortOrder)(this["SortType"]));
             }
             set {
                 this["SortType"] = value;
@@ -119,12 +119,12 @@ namespace BSA_Browser.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SortBSADirectories {
+        public bool SortArchiveDirectories {
             get {
-                return ((bool)(this["SortBSADirectories"]));
+                return ((bool)(this["SortArchiveDirectories"]));
             }
             set {
-                this["SortBSADirectories"] = value;
+                this["SortArchiveDirectories"] = value;
             }
         }
         

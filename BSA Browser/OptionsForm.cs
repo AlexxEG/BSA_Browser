@@ -15,7 +15,7 @@ namespace BSA_Browser
             InitializeComponent();
 
             chbExtractMaintainFolderStructure.Checked = Settings.Default.ExtractMaintainFolderStructure;
-            chbSortBSADirectories.Checked = Settings.Default.SortBSADirectories;
+            chbSortBSADirectories.Checked = Settings.Default.SortArchiveDirectories;
             chbMoreColumns.Checked = Settings.Default.MoreColumns;
 
             foreach (QuickExtractPath path in Settings.Default.QuickExtractPaths)
@@ -134,7 +134,7 @@ namespace BSA_Browser
         public void SaveChanges()
         {
             Settings.Default.ExtractMaintainFolderStructure = chbExtractMaintainFolderStructure.Checked;
-            Settings.Default.SortBSADirectories = chbSortBSADirectories.Checked;
+            Settings.Default.SortArchiveDirectories = chbSortBSADirectories.Checked;
             Settings.Default.MoreColumns = chbMoreColumns.Checked;
 
             Settings.Default.QuickExtractPaths.Clear();

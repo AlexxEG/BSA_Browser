@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BSA_Browser.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="LastBSAUnpackPath" Type="System.String" Scope="User">
+    <Setting Name="LastUnpackPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\</Value>
     </Setting>
     <Setting Name="RecentFiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
@@ -20,13 +20,13 @@
     <Setting Name="SortDesc" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="SortType" Type="BSA_Browser.BSASortOrder" Scope="User">
+    <Setting Name="SortType" Type="BSA_Browser.ArchiveFileSortOrder" Scope="User">
       <Value Profile="(Default)">FolderName</Value>
     </Setting>
     <Setting Name="QuickExtractPaths" Type="BSA_Browser.Classes.QuickExtractPaths" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SortBSADirectories" Type="System.Boolean" Scope="User">
+    <Setting Name="SortArchiveDirectories" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ExtractMaintainFolderStructure" Type="System.Boolean" Scope="User">
