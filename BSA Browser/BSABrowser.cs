@@ -706,10 +706,9 @@ namespace BSA_Browser
             newMenuItem.Click += delegate (object sender, EventArgs e)
             {
                 this.CloseArchive(newNode);
+
                 if (tvFolders.Nodes.Count == 0)
-                {
                     this.ClearList();
-                }
                 else
                     this.DoSearch();
             };
