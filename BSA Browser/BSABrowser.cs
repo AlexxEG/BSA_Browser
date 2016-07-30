@@ -314,6 +314,7 @@ namespace BSA_Browser
         {
             var rootNode = this.GetRootNode(e.Node);
 
+            // This event only needs to run once, so return if AllFiles is NOT null
             if (rootNode.AllFiles != null)
                 return;
 
@@ -321,6 +322,7 @@ namespace BSA_Browser
             var nodes = new Dictionary<string, TreeNode>();
             rootNode.AllFiles = (ArchiveEntry[])rootNode.Files.Clone();
 
+            // This builds the all TreeNodes
             foreach (var lvi in rootNode.AllFiles)
             {
                 string path = Path.GetDirectoryName(lvi.FullPath);
@@ -336,7 +338,7 @@ namespace BSA_Browser
 
                     if (!nodes.ContainsKey(newpath))
                     {
-                        TreeNode tn = new TreeNode(dirs[i]);
+                        var tn = new TreeNode(dirs[i]);
                         tn.Tag = newpath;
 
                         if (i == 0)
@@ -365,10 +367,11 @@ namespace BSA_Browser
             if (rootNode.AllFiles == null)
                 tvFolders_BeforeExpand(null, new TreeViewCancelEventArgs(e.Node, false, TreeViewAction.Unknown));
 
-            if (path == null)
+            if (path == null) // Root node is selected, so show all files
                 rootNode.Files = rootNode.AllFiles;
             else
             {
+                // Only show files under selected node
                 var lvis = new List<ArchiveEntry>(rootNode.AllFiles.Length);
 
                 foreach (var lvi in rootNode.AllFiles)
@@ -700,7 +703,7 @@ namespace BSA_Browser
             newMenuItem.Tag = newNode;
             newMenuItem.Click += delegate (object sender, EventArgs e)
             {
-                CloseArchive(newNode);
+                this.CloseArchive(newNode);
                 if (tvFolders.Nodes.Count == 0)
                 {
                     this.ClearList();
@@ -723,7 +726,7 @@ namespace BSA_Browser
             btnPreview.Enabled = true;
 
             if (addToRecentFiles)
-                AddToRecentFiles(path);
+                this.AddToRecentFiles(path);
 
             tvFolders.SelectedNode = newNode;
         }
