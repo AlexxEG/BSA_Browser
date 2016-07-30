@@ -279,12 +279,12 @@ namespace BSA_Browser
             var file = _files[e.ItemIndex];
             var lvi = new ListViewItem(Path.Combine(file.Folder, file.FileName));
 
-            lvi.SubItems.Add(FormatBytes(file.Size));
+            lvi.SubItems.Add(this.FormatBytes(file.Size));
             lvi.SubItems.Add(file.Offset.ToString());
             lvi.SubItems.Add((file.Compressed ? "Compressed" : "Uncompressed"));
             lvi.Tag = file;
             lvi.ToolTipText =
-                $"File size: {FormatBytes(file.Size)}\n" +
+                $"File size: {this.FormatBytes(file.Size)}\n" +
                 $"File offset: {file.Offset} bytes\n" +
                 (file.Compressed ? "Compressed" : "Uncompressed");
 
