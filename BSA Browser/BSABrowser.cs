@@ -538,9 +538,9 @@ namespace BSA_Browser
                 if (await this.IsUpdateAvailable())
                 {
                     if (MessageBox.Show(this,
-                        "Update available!\n\nDo you want to open the BSA Browser NexusMods page?",
-                        "Update available",
-                        MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            "Update available!\n\n" + "Do you want to open the BSA Browser NexusMods page?",
+                            "Update available",
+                            MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         Process.Start(Program.Website);
                     }
@@ -676,8 +676,10 @@ namespace BSA_Browser
                     case ".dat":
                         if (SharpBSABA2.BSAUtil.BSA.IsSupportedVersion(path) == false)
                         {
-                            if (MessageBox.Show("This BSA archive has an unknown version number.\n" +
-                                                "Attempt to open anyway?", "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            if (MessageBox.Show(this,
+                                    "This BSA archive has an unknown version number.\n" + "Attempt to open anyway?",
+                                    "Warning",
+                                    MessageBoxButtons.YesNo) != DialogResult.Yes)
                                 return;
                         }
 
