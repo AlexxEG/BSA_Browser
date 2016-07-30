@@ -45,7 +45,6 @@
             this.chbExtractMaintainFolderStructure = new System.Windows.Forms.CheckBox();
             this.chbSortBSADirectories = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.chbMoreColumns = new System.Windows.Forms.CheckBox();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -187,7 +186,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.chbMoreColumns);
             this.tabPage1.Controls.Add(this.chbExtractMaintainFolderStructure);
             this.tabPage1.Controls.Add(this.chbSortBSADirectories);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -228,16 +226,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Quick Extract";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // chbMoreColumns
-            // 
-            this.chbMoreColumns.AutoSize = true;
-            this.chbMoreColumns.Location = new System.Drawing.Point(13, 77);
-            this.chbMoreColumns.Name = "chbMoreColumns";
-            this.chbMoreColumns.Size = new System.Drawing.Size(267, 17);
-            this.chbMoreColumns.TabIndex = 2;
-            this.chbMoreColumns.Text = "Show more columns (File Size, Offset, Compressed)";
-            this.chbMoreColumns.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -284,6 +272,5 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.CheckBox chbSortBSADirectories;
         private System.Windows.Forms.CheckBox chbExtractMaintainFolderStructure;
-        private System.Windows.Forms.CheckBox chbMoreColumns;
     }
 }

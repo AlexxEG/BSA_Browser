@@ -33,7 +33,6 @@ namespace BSA_Browser
 
         string _untouchedTitle;
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
-        ColumnHeader[] _extraColumns;
         List<ArchiveEntry> _files = new List<ArchiveEntry>();
         ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
         Timer _searchDelayTimer;
@@ -77,9 +76,6 @@ namespace BSA_Browser
 
             // Set lvFiles sorter
             ArchiveFileSorter.SetSorter(Settings.Default.SortType, Settings.Default.SortDesc);
-
-            // Toggle columns based on setting
-            this.UpdateColumns();
 
             // Enable visual styles
             tvFolders.EnableVisualStyles();
@@ -280,13 +276,7 @@ namespace BSA_Browser
             var lvi = new ListViewItem(Path.Combine(file.Folder, file.FileName));
 
             lvi.SubItems.Add(this.FormatBytes(file.Size));
-            lvi.SubItems.Add(file.Offset.ToString());
-            lvi.SubItems.Add((file.Compressed ? "Compressed" : "Uncompressed"));
             lvi.Tag = file;
-            lvi.ToolTipText =
-                $"File size: {this.FormatBytes(file.Size)}\n" +
-                $"File offset: {file.Offset} bytes\n" +
-                (file.Compressed ? "Compressed" : "Uncompressed");
 
             e.Item = lvi;
         }
@@ -410,7 +400,6 @@ namespace BSA_Browser
 
                     // Sync changes to UI
                     this.LoadQuickExtractPaths();
-                    this.UpdateColumns();
                 }
             }
         }
@@ -597,7 +586,6 @@ namespace BSA_Browser
 
                     // Sync changes to UI
                     this.LoadQuickExtractPaths();
-                    this.UpdateColumns();
                 }
             }
         }
@@ -1195,30 +1183,6 @@ namespace BSA_Browser
                 node.Nodes.AddRange(nodes);
 
                 this.SortNodes(node);
-            }
-        }
-
-        /// <summary>
-        /// Shows or hides additional columns according to settings.
-        /// </summary>
-        private void UpdateColumns()
-        {
-            if (_extraColumns == null)
-                _extraColumns = new ColumnHeader[] { columnHeader2, columnHeader3, columnHeader4 };
-
-            if (Settings.Default.MoreColumns)
-            {
-                if (lvFiles.Columns.Count > 1)
-                    return;
-
-                lvFiles.BeginUpdate();
-                lvFiles.Columns.AddRange(_extraColumns);
-                lvFiles.EndUpdate();
-            }
-            else
-            {
-                foreach (var column in _extraColumns)
-                    lvFiles.Columns.Remove(column);
             }
         }
     }
