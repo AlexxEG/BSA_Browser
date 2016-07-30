@@ -697,7 +697,9 @@ namespace BSA_Browser
                 return;
             }
 
-            var newNode = new ArchiveNode(Path.GetFileNameWithoutExtension(path), archive);
+            var newNode = new ArchiveNode(
+                Path.GetFileNameWithoutExtension(path) + this.DetectGame(path),
+                archive);
 
             var newMenuItem = new MenuItem("Close");
             newMenuItem.Tag = newNode;
@@ -813,6 +815,27 @@ namespace BSA_Browser
                 node.Archive.Close();
 
             tvFolders.Nodes.Clear();
+        }
+
+        /// <summary>
+        /// Returns string with game name if given path is a Fallout 3 or Fallout New Vegas file
+        /// since these two games share a lot of file names.
+        /// </summary>
+        private string DetectGame(string path)
+        {
+            // path is not a original Fallout file, no additional identifier required
+            if (!Path.GetFileName(path).ToLower().StartsWith("fallout -"))
+                return string.Empty;
+
+            var f3 = new Regex(@"^.*(Fallout|F)\s{0,1}(3).*$", RegexOptions.IgnoreCase);
+            var fnv = new Regex(@"^.*(Fallout|F)\s{0,1}(NV|New\s{0,1}Vegas).*$", RegexOptions.IgnoreCase);
+
+            if (f3.IsMatch(path))
+                return " (F3)";
+            else if (fnv.IsMatch(path))
+                return " (NV)";
+
+            return string.Empty;
         }
 
         /// <summary>
