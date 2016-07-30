@@ -29,6 +29,8 @@ namespace BSA_Browser
 
     public partial class BSABrowser : Form
     {
+        private const string UpdateMarker = "(!) ";
+
         string _untouchedTitle;
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
         ColumnHeader[] _extraColumns;
@@ -64,7 +66,7 @@ namespace BSA_Browser
             if (Settings.Default.RecentFiles != null)
             {
                 foreach (string item in Settings.Default.RecentFiles)
-                    AddToRecentFiles(item);
+                    this.AddToRecentFiles(item);
             }
 
             // Load Quick Extract Paths
@@ -95,7 +97,7 @@ namespace BSA_Browser
             : this()
         {
             foreach (string file in args)
-                OpenArchive(file, true);
+                this.OpenArchive(file, true);
         }
 
         private void BSABrowser_Load(object sender, EventArgs e)
@@ -129,9 +131,9 @@ namespace BSA_Browser
         private void BSABrowser_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (tvFolders.GetNodeCount(false) > 0)
-                CloseArchives();
+                this.CloseArchives();
 
-            SaveRecentFiles();
+            this.SaveRecentFiles();
 
             Settings.Default.WindowStates[this.Name].SaveForm(this);
             Settings.Default.LastUnpackPath = _openFolderDialog.Folder;
@@ -140,7 +142,7 @@ namespace BSA_Browser
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            if (OpenArchiveDialog.ShowDialog() == DialogResult.OK)
+            if (OpenArchiveDialog.ShowDialog(this) == DialogResult.OK)
                 this.OpenArchives(true, OpenArchiveDialog.FileNames);
         }
 
@@ -158,7 +160,7 @@ namespace BSA_Browser
 
                 bool useFolderPath = Settings.Default.ExtractMaintainFolderStructure;
 
-                ExtractFiles(_openFolderDialog.Folder, useFolderPath, true, files.ToArray());
+                this.ExtractFiles(_openFolderDialog.Folder, useFolderPath, true, files.ToArray());
             }
         }
 
@@ -169,7 +171,10 @@ namespace BSA_Browser
 
             if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                ExtractFiles(_openFolderDialog.Folder, true, true, GetSelectedArchiveNode().Archive.Files.ToArray());
+                this.ExtractFiles(_openFolderDialog.Folder,
+                    true,
+                    true,
+                    this.GetSelectedArchiveNode().Archive.Files.ToArray());
             }
         }
 
@@ -199,35 +204,31 @@ namespace BSA_Browser
                         string dest = Program.CreateTempDirectory();
 
                         fe.Extract(dest, false);
-                        System.Diagnostics.Process.Start(Path.Combine(dest, fe.FileName));
+                        Process.Start(Path.Combine(dest, fe.FileName));
                         break;
                     default:
-                        MessageBox.Show("Filetype not supported.\n" +
-                            "Currently only txt or xml files can be previewed", "Error");
+                        MessageBox.Show(this,
+                            "Filetype not supported.\n" +
+                            "Currently only txt or xml files can be previewed",
+                            "Error");
                         break;
                 }
             }
             else
             {
-                MessageBox.Show("Can only preview one file at a time", "Error");
+                MessageBox.Show(this, "Can only preview one file at a time", "Error");
             }
         }
 
         private void cmbSortOrder_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ArchiveFileSorter.SetSorter((ArchiveFileSortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
-            lvFiles.BeginUpdate();
-            _files.Sort(_filesSorter);
-            lvFiles.EndUpdate();
+            this.SortList();
             Settings.Default.SortType = (ArchiveFileSortOrder)cmbSortOrder.SelectedIndex;
         }
 
         private void cbDesc_CheckedChanged(object sender, EventArgs e)
         {
-            ArchiveFileSorter.SetSorter((ArchiveFileSortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
-            lvFiles.BeginUpdate();
-            _files.Sort(_filesSorter);
-            lvFiles.EndUpdate();
+            this.SortList();
             Settings.Default.SortDesc = cbDesc.Checked;
         }
 
@@ -241,8 +242,8 @@ namespace BSA_Browser
             if (!(lvFiles.SelectedIndices.Count >= 1))
                 return;
 
-            DataObject obj = new DataObject();
-            StringCollection sc = new StringCollection();
+            var obj = new DataObject();
+            var sc = new StringCollection();
 
             foreach (int index in lvFiles.SelectedIndices)
             {
@@ -295,7 +296,7 @@ namespace BSA_Browser
             if (_searchDelayTimer == null)
             {
                 _searchDelayTimer = new Timer();
-                _searchDelayTimer.Tick += delegate { Search(); };
+                _searchDelayTimer.Tick += delegate { DoSearch(); };
                 _searchDelayTimer.Interval = 500;
             }
 
@@ -306,19 +307,21 @@ namespace BSA_Browser
         private void cbRegex_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.SearchUseRegex = cbRegex.Checked;
-            this.Search();
+            this.DoSearch();
         }
 
         private void tvFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            if (GetRootNode(e.Node).AllFiles != null)
+            var rootNode = this.GetRootNode(e.Node);
+
+            if (rootNode.AllFiles != null)
                 return;
 
             e.Node.Nodes.Clear();
-            Dictionary<string, TreeNode> nodes = new Dictionary<string, TreeNode>();
-            GetRootNode(e.Node).AllFiles = (ArchiveEntry[])GetRootNode(e.Node).Files.Clone();
+            var nodes = new Dictionary<string, TreeNode>();
+            rootNode.AllFiles = (ArchiveEntry[])rootNode.Files.Clone();
 
-            foreach (ArchiveEntry lvi in GetRootNode(e.Node).AllFiles)
+            foreach (var lvi in rootNode.AllFiles)
             {
                 string path = Path.GetDirectoryName(lvi.FullPath);
 
@@ -355,39 +358,42 @@ namespace BSA_Browser
 
         private void tvFolders_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (GetRootNode(e.Node).AllFiles == null)
+            var rootNode = this.GetRootNode(e.Node);
+            string path = (string)e.Node.Tag;
+
+            // If AllFiles is null, trigger event which will populate it
+            if (rootNode.AllFiles == null)
                 tvFolders_BeforeExpand(null, new TreeViewCancelEventArgs(e.Node, false, TreeViewAction.Unknown));
 
-            string s = (string)e.Node.Tag;
-
-            if (s == null)
-                GetRootNode(e.Node).Files = GetRootNode(e.Node).AllFiles;
+            if (path == null)
+                rootNode.Files = rootNode.AllFiles;
             else
             {
-                var lvis = new List<ArchiveEntry>(GetRootNode(e.Node).AllFiles.Length);
+                var lvis = new List<ArchiveEntry>(rootNode.AllFiles.Length);
 
-                foreach (var lvi in GetRootNode(e.Node).AllFiles)
-                    if (lvi.FullPath.StartsWith(s)) lvis.Add(lvi);
+                foreach (var lvi in rootNode.AllFiles)
+                    if (lvi.FullPath.StartsWith(path)) lvis.Add(lvi);
 
-                GetRootNode(e.Node).Files = lvis.ToArray();
+                rootNode.Files = lvis.ToArray();
             }
-            this.Search();
+
+            this.DoSearch();
         }
 
         #region mainMenu1
 
         private void openArchiveMenuItem_Click(object sender, EventArgs e)
         {
-            if (OpenArchiveDialog.ShowDialog() == DialogResult.OK)
+            if (OpenArchiveDialog.ShowDialog(this) == DialogResult.OK)
                 this.OpenArchives(true, OpenArchiveDialog.FileNames);
         }
 
         private void closeSelectedArchiveMenuItem_Click(object sender, EventArgs e)
         {
-            if (GetSelectedArchiveNode() == null)
+            if (this.GetSelectedArchiveNode() == null)
                 return;
 
-            CloseArchive(GetSelectedArchiveNode());
+            this.CloseArchive(GetSelectedArchiveNode());
         }
 
         private void optionsMenuItem_Click(object sender, EventArgs e)
@@ -408,10 +414,7 @@ namespace BSA_Browser
 
         private void recentFilesMenuItem_Popup(object sender, EventArgs e)
         {
-            if (recentFilesMenuItem.MenuItems.Count > 2)
-                emptyListMenuItem.Enabled = true;
-            else
-                emptyListMenuItem.Enabled = false;
+            emptyListMenuItem.Enabled = recentFilesMenuItem.MenuItems.Count > 2;
         }
 
         private void emptyListMenuItem_Click(object sender, EventArgs e)
@@ -422,19 +425,19 @@ namespace BSA_Browser
 
         private void recentFiles_Click(object sender, EventArgs e)
         {
-            MenuItem item = (MenuItem)sender;
+            var item = sender as MenuItem;
             string file = item.Tag.ToString();
 
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
-                OpenArchive(file, true);
+                this.OpenArchive(file, true);
             }
             else
             {
-                string message = string.Format("\"{1}\" doesn't exist anymore.{0}{0}" +
-                    "Do you want to remove it from the recent files list?", Environment.NewLine, item.Tag.ToString());
-
-                if (MessageBox.Show(this, message, "Lost File", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show(this,
+                        $"\"{file}\" doesn't exist anymore.\n\n" + "Do you want to remove it from the recent files list?",
+                        "Lost File",
+                        MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     recentFilesMenuItem.MenuItems.Remove(item);
                 }
@@ -457,12 +460,12 @@ namespace BSA_Browser
 
         private void copyPathMenuItem_Click(object sender, EventArgs e)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             foreach (int index in lvFiles.SelectedIndices)
             {
                 if (!string.IsNullOrEmpty(builder.ToString()))
-                    builder.Append(Environment.NewLine);
+                    builder.AppendLine();
 
                 builder.Append(_files[index].FullPath);
             }
@@ -472,12 +475,12 @@ namespace BSA_Browser
 
         private void copyFolderPathMenuItem_Click(object sender, EventArgs e)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             foreach (int index in lvFiles.SelectedIndices)
             {
                 if (!string.IsNullOrEmpty(builder.ToString()))
-                    builder.Append(Environment.NewLine);
+                    builder.AppendLine();
 
                 builder.Append(Path.GetDirectoryName(_files[index].FullPath));
             }
@@ -487,12 +490,12 @@ namespace BSA_Browser
 
         private void copyFileNameMenuItem_Click(object sender, EventArgs e)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             foreach (int index in lvFiles.SelectedIndices)
             {
                 if (!string.IsNullOrEmpty(builder.ToString()))
-                    builder.Append(Environment.NewLine);
+                    builder.AppendLine();
 
                 builder.Append(Path.GetFileName(_files[index].FullPath));
             }
@@ -507,31 +510,25 @@ namespace BSA_Browser
 
             if (!Directory.Exists(path.Path))
             {
-                MessageBox.Show(
-                    this,
-                    $"{path.Name}'s path no longer exists.");
+                MessageBox.Show(this, $"{path.Name}'s path no longer exists.");
                 return;
             }
 
-            System.Diagnostics.Process.Start(path.Path);
+            Process.Start(path.Path);
         }
 
         private void helpMenuItem_Popup(object sender, EventArgs e)
         {
-            int count = "(!) ".Length;
-
-            // Remove (!) from Text
-            if (helpMenuItem.Text.StartsWith("(!) "))
-                helpMenuItem.Text = helpMenuItem.Text.Remove(0, count);
+            // Remove UpdateMarker from Text
+            if (helpMenuItem.Text.StartsWith(UpdateMarker))
+                helpMenuItem.Text = helpMenuItem.Text.Remove(0, UpdateMarker.Length);
         }
 
         private async void checkForUpdateMenuItem_Click(object sender, EventArgs e)
         {
-            int count = "(!) ".Length;
-
-            // Remove (!) from Text
-            if (checkForUpdateMenuItem.Text.StartsWith("(!) "))
-                checkForUpdateMenuItem.Text = checkForUpdateMenuItem.Text.Remove(0, count);
+            // Remove UpdateMarker from Text
+            if (checkForUpdateMenuItem.Text.StartsWith(UpdateMarker))
+                checkForUpdateMenuItem.Text = checkForUpdateMenuItem.Text.Remove(0, UpdateMarker.Length);
 
             try
             {
@@ -609,8 +606,7 @@ namespace BSA_Browser
 
             if (!Directory.Exists(path.Path))
             {
-                DialogResult result = MessageBox.Show(
-                    this,
+                DialogResult result = MessageBox.Show(this,
                     string.Format("{0} path doesn't exists anymore. Do you want to create it?", path.Name),
                     "Quick Extract",
                     MessageBoxButtons.YesNo);
@@ -707,13 +703,10 @@ namespace BSA_Browser
                 CloseArchive(newNode);
                 if (tvFolders.Nodes.Count == 0)
                 {
-                    lvFiles.BeginUpdate();
-                    _files.Clear();
-                    lvFiles.VirtualListSize = 0;
-                    lvFiles.EndUpdate();
+                    this.ClearList();
                 }
                 else
-                    this.Search();
+                    this.DoSearch();
             };
             var cm = new ContextMenu(new MenuItem[] { newMenuItem });
             newNode.ContextMenu = cm;
@@ -755,9 +748,9 @@ namespace BSA_Browser
             if (string.IsNullOrEmpty(file))
                 return;
 
-            if (RecentListContains(file))
+            if (this.RecentListContains(file))
             {
-                var item = RecentListGetItemByString(file);
+                var item = this.RecentListGetItemByString(file);
 
                 if (item == null)
                     return;
@@ -775,18 +768,24 @@ namespace BSA_Browser
         }
 
         /// <summary>
+        /// Clears the virtual ListView.
+        /// </summary>
+        private void ClearList()
+        {
+            lvFiles.BeginUpdate();
+            _files.Clear();
+            lvFiles.VirtualListSize = 0;
+            lvFiles.EndUpdate();
+        }
+
+        /// <summary>
         /// Closes the given archive, removing it from the TreeView.
         /// </summary>
         /// <param name="archiveNode"></param>
         private void CloseArchive(ArchiveNode archiveNode)
         {
             if (GetSelectedArchiveNode() == archiveNode)
-            {
-                lvFiles.BeginUpdate();
-                _files.Clear();
-                lvFiles.VirtualListSize = 0;
-                lvFiles.EndUpdate();
-            }
+                this.ClearList();
 
             archiveNode.Archive.Close();
 
@@ -805,15 +804,94 @@ namespace BSA_Browser
         /// </summary>
         private void CloseArchives()
         {
-            lvFiles.BeginUpdate();
-            _files.Clear();
-            lvFiles.VirtualListSize = 0;
-            lvFiles.EndUpdate();
+            this.ClearList();
 
             foreach (ArchiveNode node in tvFolders.Nodes)
                 node.Archive.Close();
 
             tvFolders.Nodes.Clear();
+        }
+
+        /// <summary>
+        /// Searches files list, filtering out not-matching files.
+        /// </summary>
+        private void DoSearch()
+        {
+            _searchDelayTimer?.Stop();
+
+            if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
+                return;
+
+            string str = txtSearch.Text;
+
+            // Reset text color
+            txtSearch.ForeColor = System.Drawing.SystemColors.WindowText;
+
+            if (cbRegex.Checked && str.Length > 0)
+            {
+                Regex regex;
+
+                try
+                {
+                    regex = new Regex(str, RegexOptions.Compiled | RegexOptions.Singleline);
+                }
+                catch
+                {
+                    // Set text color to red to indicate an error with the search pattern
+                    txtSearch.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
+
+                _files.Clear();
+
+                for (int i = 0; i < this.GetSelectedArchiveNode().Files.Length; i++)
+                {
+                    var file = this.GetSelectedArchiveNode().Files[i];
+
+                    if (regex.IsMatch(Path.Combine(file.Folder, file.FileName)))
+                        _files.Add(file);
+                }
+            }
+            else
+            {
+                _files.Clear();
+
+                if (str.Length == 0)
+                    _files.AddRange(this.GetSelectedArchiveNode().Files);
+                else
+                {
+                    // Escape special characters, then unescape wild card characters again
+                    str = WildcardPattern.Escape(str).Replace("`*", "*");
+                    var pattern = new WildcardPattern($"*{str}*", WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
+
+                    try
+                    {
+                        for (int i = 0; i < this.GetSelectedArchiveNode().Files.Length; i++)
+                        {
+                            var file = this.GetSelectedArchiveNode().Files[i];
+
+                            if (pattern.IsMatch(Path.Combine(file.Folder, file.FileName)))
+                                _files.Add(file);
+                        }
+                    }
+                    catch
+                    {
+                        // Set text color to red to indicate an error with the search term
+                        txtSearch.ForeColor = System.Drawing.Color.Red;
+                        return;
+                    }
+                }
+            }
+
+            _files.Sort(_filesSorter);
+
+            // Refresh list items
+            lvFiles.BeginUpdate();
+            lvFiles.VirtualListSize = _files.Count;
+            lvFiles.Invalidate();
+            lvFiles.EndUpdate();
+
+            lFileCount.Text = string.Format("{0:n0} files", _files.Count);
         }
 
         /// <summary>
@@ -857,7 +935,7 @@ namespace BSA_Browser
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error");
+                    MessageBox.Show(this, ex.Message, "Error");
                 }
             }
         }
@@ -922,12 +1000,12 @@ namespace BSA_Browser
             {
                 if (!(bool)e.Result)
                 {
-                    MessageBox.Show("Operation cancelled", "Message");
+                    MessageBox.Show(this, "Operation cancelled", "Message");
                 }
             }
             else if (e.Result is Exception)
             {
-                MessageBox.Show(((Exception)e.Result).Message, "Error");
+                MessageBox.Show(this, (e.Result as Exception).Message, "Error");
             }
         }
 
@@ -959,7 +1037,7 @@ namespace BSA_Browser
         /// <param name="node">The TreeNode to get root node from.</param>
         private ArchiveNode GetRootNode(TreeNode node)
         {
-            TreeNode rootNode = node;
+            var rootNode = node;
             while (rootNode.Parent != null)
                 rootNode = rootNode.Parent;
             return rootNode as ArchiveNode;
@@ -973,7 +1051,7 @@ namespace BSA_Browser
             if (tvFolders.SelectedNode == null)
                 return null;
 
-            return GetRootNode(tvFolders.SelectedNode);
+            return this.GetRootNode(tvFolders.SelectedNode);
         }
 
         /// <summary>
@@ -1021,6 +1099,7 @@ namespace BSA_Browser
         {
             foreach (MenuItem item in recentFilesMenuItem.MenuItems)
                 if (item.Tag != null && item.Tag.ToString() == file) return true;
+
             return false;
         }
 
@@ -1051,93 +1130,26 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Searches files list, filtering out not-matching files.
-        /// </summary>
-        private void Search()
-        {
-            _searchDelayTimer?.Stop();
-
-            if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
-                return;
-
-            string str = txtSearch.Text;
-
-            txtSearch.ForeColor = System.Drawing.SystemColors.WindowText;
-
-            if (cbRegex.Checked && str.Length > 0)
-            {
-                Regex regex;
-
-                try
-                {
-                    regex = new Regex(str, RegexOptions.Compiled | RegexOptions.Singleline);
-                }
-                catch
-                {
-                    txtSearch.ForeColor = System.Drawing.Color.Red;
-                    return;
-                }
-
-                _files.Clear();
-
-                for (int i = 0; i < GetSelectedArchiveNode().Files.Length; i++)
-                {
-                    var file = GetSelectedArchiveNode().Files[i];
-
-                    if (regex.IsMatch(Path.Combine(file.Folder, file.FileName)))
-                        _files.Add(file);
-                }
-            }
-            else
-            {
-                _files.Clear();
-
-                if (str.Length == 0)
-                    _files.AddRange(GetSelectedArchiveNode().Files);
-                else
-                {
-                    // Escape special characters, then unescape wild card characters again
-                    str = WildcardPattern.Escape(str).Replace("`*", "*");
-                    var pattern = new WildcardPattern($"*{str}*", WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
-
-                    try
-                    {
-                        for (int i = 0; i < GetSelectedArchiveNode().Files.Length; i++)
-                        {
-                            var file = GetSelectedArchiveNode().Files[i];
-
-                            if (pattern.IsMatch(Path.Combine(file.Folder, file.FileName)))
-                                _files.Add(file);
-                        }
-                    }
-                    catch
-                    {
-                        txtSearch.ForeColor = System.Drawing.Color.Red;
-                        return;
-                    }
-                }
-            }
-
-            _files.Sort(_filesSorter);
-
-            lvFiles.BeginUpdate();
-            lvFiles.VirtualListSize = _files.Count;
-            lvFiles.Invalidate();
-            lvFiles.EndUpdate();
-
-            lFileCount.Text = string.Format("{0:n0} files", _files.Count);
-        }
-
-        /// <summary>
-        /// Adds (!) to Help & Check for update menu items if there is an update available.
+        /// Adds update marker (UpdateMarker constant) to Help & Check for update menu items if there is an update available.
         /// </summary>
         private async void ShowUpdateNotification()
         {
             if (await this.IsUpdateAvailable())
             {
-                helpMenuItem.Text = $"(!) {helpMenuItem.Text}";
-                checkForUpdateMenuItem.Text = $"(!) {checkForUpdateMenuItem.Text}";
+                helpMenuItem.Text = UpdateMarker + helpMenuItem.Text;
+                checkForUpdateMenuItem.Text = UpdateMarker + checkForUpdateMenuItem.Text;
             }
+        }
+
+        /// <summary>
+        /// Sorts all items in list according to user selection.
+        /// </summary>
+        private void SortList()
+        {
+            ArchiveFileSorter.SetSorter((ArchiveFileSortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
+            lvFiles.BeginUpdate();
+            _files.Sort(_filesSorter);
+            lvFiles.EndUpdate();
         }
 
         /// <summary>
@@ -1148,16 +1160,16 @@ namespace BSA_Browser
         {
             foreach (TreeNode node in rootNode.Nodes)
             {
-                TreeNode[] nodes = new TreeNode[node.Nodes.Count];
+                var nodes = new TreeNode[node.Nodes.Count];
 
                 node.Nodes.CopyTo(nodes, 0);
 
-                Array.Sort<TreeNode>(nodes, new TreeNodeSorter());
+                Array.Sort(nodes, new TreeNodeSorter());
 
                 node.Nodes.Clear();
                 node.Nodes.AddRange(nodes);
 
-                SortNodes(node);
+                this.SortNodes(node);
             }
         }
 
@@ -1180,7 +1192,7 @@ namespace BSA_Browser
             }
             else
             {
-                foreach (ColumnHeader column in _extraColumns)
+                foreach (var column in _extraColumns)
                     lvFiles.Columns.Remove(column);
             }
         }
