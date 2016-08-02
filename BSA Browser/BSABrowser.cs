@@ -923,7 +923,7 @@ namespace BSA_Browser
             {
                 pf = new ProgressForm("Unpacking archive", false);
                 pf.EnableCancel();
-                pf.SetProgressRange(files.Length);
+                pf.SetProgressRange(100);
                 pf.Canceled += delegate { bw.CancelAsync(); };
                 pf.Show(this);
 
@@ -974,6 +974,8 @@ namespace BSA_Browser
 
             try
             {
+                int progress = 0;
+                int prevProgress = 0;
                 int count = 0;
 
                 foreach (var fe in arguments.Files)
@@ -985,7 +987,14 @@ namespace BSA_Browser
                     }
 
                     fe.Extract(arguments.Folder, arguments.UseFolderPath);
-                    bw.ReportProgress(count++);
+
+                    count++;
+                    progress = (int)Math.Round(((double)count / arguments.Files.Length) * 100);
+                    if (progress > prevProgress)
+                    {
+                        prevProgress = progress;
+                        bw.ReportProgress(progress);
+                    }
                 }
             }
             catch (Exception ex)
