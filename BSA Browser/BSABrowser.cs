@@ -657,7 +657,7 @@ namespace BSA_Browser
                 string extension = Path.GetExtension(path);
 
                 // ToDo: Read file header to find archive type, not just extension
-                switch (extension)
+                switch (extension.ToLower())
                 {
                     case ".bsa":
                     case ".dat":
