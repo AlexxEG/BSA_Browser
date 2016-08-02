@@ -1,3 +1,13 @@
+[1.5]
+
+- Added support for .BA2 (Fallout 4) archive files. Comes with the same limitations as other tools, I.E. normal maps aren't accurate. For more information download the Fallout 4 tools from http://f4se.silverlock.org/ & read the ba2extract note in the readme
+- Added "Check for update" & very small update notifier. Just adds an "(!)" to Help menu if there is an update
+- Allow opening multiple files at once
+- Full file path now shown in recent files, since Fallout 3 & NV share file names
+- Also show a F3/NV tag next to archive name if it's a original (i.e. not a mod/dlc) Fallout 3 or New Vegas file
+- Removed extra columns & related option. Only filename & file size columns now
+- Fixed opening the same file multiple times. Not allowed anymore
+
 [1.4.2]
 
 - Fix "Header checksum illegal" error
