@@ -1021,14 +1021,7 @@ namespace BSA_Browser
 
             this.Text = _untouchedTitle;
 
-            if (e.Result is bool)
-            {
-                if (!(bool)e.Result)
-                {
-                    MessageBox.Show(this, "Operation cancelled", "Message");
-                }
-            }
-            else if (e.Result is Exception)
+            if (e.Result is Exception)
             {
                 MessageBox.Show(this, (e.Result as Exception).Message, "Error");
             }
