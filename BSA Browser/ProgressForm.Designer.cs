@@ -101,6 +101,7 @@ namespace BSA_Browser
             this.Name = "ProgressForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Load += new System.EventHandler(this.ProgressForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

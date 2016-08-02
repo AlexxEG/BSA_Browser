@@ -28,6 +28,11 @@ namespace BSA_Browser
             this.Closing += new CancelEventHandler(ProgressForm_FormClosing);
         }
 
+        private void ProgressForm_Load(object sender, EventArgs e)
+        {
+            this.CenterToParent();
+        }
+
         private void ProgressForm_FormClosing(object sender, CancelEventArgs e)
         {
             if (blockClose)
@@ -81,15 +86,13 @@ namespace BSA_Browser
         /// <param name="value">The new value.</param>
         public void UpdateProgress(int value)
         {
-            pbProgress.Value = value;
             lProgress.Text = ((int)(100 * (float)value / (float)pbProgress.Maximum)).ToString() + "%";
             if (!Focused) Focus();
         }
 
         private void OnCanceled(EventArgs e)
         {
-            if (Canceled != null)
-                Canceled(this, e);
+            Canceled?.Invoke(this, e);
         }
     }
 
