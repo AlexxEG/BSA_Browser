@@ -16,8 +16,6 @@ namespace SharpBSABA2.BA2Util
         byte format;
         ushort unk16;
 
-        // ToDo: Override ArchiveEntry.Size & ArchiveEntry.RealSize and return the file size by combining (?) the chunks's sizes.
-
         public override bool Compressed
         {
             get
@@ -26,7 +24,16 @@ namespace SharpBSABA2.BA2Util
                 return this.Chunks[0].packSz != 0;
             }
         }
-
+        public override uint DisplaySize
+        {
+            get
+            {
+                uint size = 0;
+                foreach (var chunk in this.Chunks)
+                    size += chunk.fullSz;
+                return size;
+            }
+        }
         public override ulong Offset
         {
             get

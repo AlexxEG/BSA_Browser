@@ -4,6 +4,15 @@ namespace SharpBSABA2.BSAUtil
 {
     public class BSAFileEntry : ArchiveEntry
     {
+        public override uint DisplaySize
+        {
+            get
+            {
+                // ToDo: Incorrect with compressed files. RealSize isn't set until Extract is called
+                return this.Size;
+            }
+        }
+
         public BSAFileEntry(Archive archive, int index)
             : base(archive, index)
         {

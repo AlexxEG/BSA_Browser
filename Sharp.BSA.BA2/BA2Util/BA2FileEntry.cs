@@ -6,10 +6,17 @@ namespace SharpBSABA2.BA2Util
     {
         public uint flags { get; set; }
         public uint align { get; set; }
-        
+
         public override bool Compressed
         {
             get { return RealSize != 0; }
+        }
+        public override uint DisplaySize
+        {
+            get
+            {
+                return this.Compressed ? this.RealSize : this.Size;
+            }
         }
 
         public BA2FileEntry(Archive ba2, int index) : base(ba2, index)

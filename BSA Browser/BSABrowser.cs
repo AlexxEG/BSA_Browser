@@ -275,7 +275,7 @@ namespace BSA_Browser
             var file = _files[e.ItemIndex];
             var lvi = new ListViewItem(Path.Combine(file.Folder, file.FileName));
 
-            lvi.SubItems.Add(this.FormatBytes(file.Size));
+            lvi.SubItems.Add(this.FormatBytes(file.DisplaySize));
             lvi.Tag = file;
 
             e.Item = lvi;
@@ -1209,7 +1209,7 @@ namespace BSA_Browser
                 case ArchiveFileSortOrder.FileName:
                     return (desc) ? string.Compare(fa.FileName, fb.FileName) : string.Compare(fb.FileName, fa.FileName);
                 case ArchiveFileSortOrder.FileSize:
-                    return (desc) ? fa.Size.CompareTo(fb.Size) : fb.Size.CompareTo(fa.Size);
+                    return (desc) ? fa.DisplaySize.CompareTo(fb.DisplaySize) : fb.DisplaySize.CompareTo(fa.DisplaySize);
                 case ArchiveFileSortOrder.Offset:
                     return (desc) ? fa.Offset.CompareTo(fb.Offset) : fb.Offset.CompareTo(fa.Offset);
                 case ArchiveFileSortOrder.FileType:

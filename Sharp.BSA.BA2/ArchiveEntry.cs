@@ -61,6 +61,10 @@ namespace SharpBSABA2
         /// Gets the file size.
         /// </summary>
         public virtual uint Size { get; protected set; }
+        /// <summary>
+        /// Gets a file size more suited for display in GUIs.
+        /// </summary>
+        public abstract uint DisplaySize { get; }
 
         public Archive Archive { get; private set; }
 
