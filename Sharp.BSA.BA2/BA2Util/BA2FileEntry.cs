@@ -46,6 +46,15 @@ namespace SharpBSABA2.BA2Util
             using (var fs = File.Create(path))
             {
                 byte[] bytes = new byte[this.Size];
+                
+                if (this.Size == 0)
+                {
+                    bytes = new byte[this.RealSize];
+                    BinaryReader.Read(bytes, 0, (int)this.RealSize);
+                    fs.Write(bytes, 0, (int)this.RealSize);
+                    return;
+                }
+
                 BinaryReader.Read(bytes, 0, (int)this.Size);
 
                 if (!this.Compressed)
