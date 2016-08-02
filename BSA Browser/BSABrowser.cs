@@ -1074,7 +1074,8 @@ namespace BSA_Browser
         {
             using (var wc = new WebClient())
             {
-                var onlineVersion = new Version(await wc.DownloadStringTaskAsync(Program.VersionUrl));
+                // Add tick count to disable caching.
+                var onlineVersion = new Version(await wc.DownloadStringTaskAsync(Program.VersionUrl + $"?nocache={Environment.TickCount}"));
                 var localVersion = new Version(Application.ProductVersion);
 
                 return localVersion < onlineVersion;
