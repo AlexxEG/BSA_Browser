@@ -86,6 +86,7 @@ namespace BSA_Browser
         /// <param name="value">The new value.</param>
         public void UpdateProgress(int value)
         {
+            pbProgress.Value = Math.Min(value, pbProgress.Maximum);
             lProgress.Text = ((int)(100 * (float)value / (float)pbProgress.Maximum)).ToString() + "%";
             if (!Focused) Focus();
         }
