@@ -1,3 +1,8 @@
+[1.5.1]
+
+- Added option for ATI header for textures. More accurate, but only seems to work for Photoshop plugin
+- Fixed files being extracted empty (i.e. filled with zeros)
+
 [1.5]
 
 - Added support for .BA2 (Fallout 4) archive files. Comes with the same limitations as other tools, I.E. normal maps aren't accurate. For more information download the Fallout 4 tools from http://f4se.silverlock.org/ & read the ba2extract note in the readme
