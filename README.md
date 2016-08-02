@@ -4,6 +4,8 @@
 
 This is [Fallout Mod Manager](https://sourceforge.net/projects/fomm/)'s BSA Browser as a standalone application, with some new features.
 
+[BSA Browser](http://www.nexusmods.com/fallout4/mods/17061/?) on Fallout 4 Nexus Mods
+
 Requires .NET Framework 4.5
 
 ## Features
