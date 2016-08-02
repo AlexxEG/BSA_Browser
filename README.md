@@ -35,8 +35,8 @@ All rights on source code and libraries belong to their respective owners.
 
 ## Credits
  
-Thanks to Timeslip, Q & kaburke for [Fallout Mod Manager](https://sourceforge.net/projects/fomm/)
-[bsaopt](https://github.com/Ethatron/bsaopt)
-[BA2Lib](https://github.com/digitalutopia1/BA2Lib)
-[F4SE's ba2extract tool](http://f4se.silverlock.org/)
-[B.A.E. - Bethesda Archive Extractor](http://www.nexusmods.com/fallout4/mods/78) - Used to compare extraction result
+- Thanks to Timeslip, Q & kaburke for [Fallout Mod Manager](https://sourceforge.net/projects/fomm/)
+- [bsaopt](https://github.com/Ethatron/bsaopt)
+- [BA2Lib](https://github.com/digitalutopia1/BA2Lib)
+- [F4SE's ba2extract tool](http://f4se.silverlock.org/)
+- [B.A.E. - Bethesda Archive Extractor](http://www.nexusmods.com/fallout4/mods/78) - Used to compare extraction result
