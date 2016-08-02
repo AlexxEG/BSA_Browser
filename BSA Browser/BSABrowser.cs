@@ -842,7 +842,11 @@ namespace BSA_Browser
             // Reset text color
             txtSearch.ForeColor = System.Drawing.SystemColors.WindowText;
 
-            if (cbRegex.Checked && str.Length > 0)
+            _files.Clear();
+
+            if (str.Length == 0)
+                _files.AddRange(this.GetSelectedArchiveNode().Files);
+            else if (cbRegex.Checked)
             {
                 Regex regex;
 
@@ -857,8 +861,6 @@ namespace BSA_Browser
                     return;
                 }
 
-                _files.Clear();
-
                 for (int i = 0; i < this.GetSelectedArchiveNode().Files.Length; i++)
                 {
                     var file = this.GetSelectedArchiveNode().Files[i];
@@ -869,32 +871,25 @@ namespace BSA_Browser
             }
             else
             {
-                _files.Clear();
+                // Escape special characters, then unescape wild card characters again
+                str = WildcardPattern.Escape(str).Replace("`*", "*");
+                var pattern = new WildcardPattern($"*{str}*", WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
 
-                if (str.Length == 0)
-                    _files.AddRange(this.GetSelectedArchiveNode().Files);
-                else
+                try
                 {
-                    // Escape special characters, then unescape wild card characters again
-                    str = WildcardPattern.Escape(str).Replace("`*", "*");
-                    var pattern = new WildcardPattern($"*{str}*", WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
-
-                    try
+                    for (int i = 0; i < this.GetSelectedArchiveNode().Files.Length; i++)
                     {
-                        for (int i = 0; i < this.GetSelectedArchiveNode().Files.Length; i++)
-                        {
-                            var file = this.GetSelectedArchiveNode().Files[i];
+                        var file = this.GetSelectedArchiveNode().Files[i];
 
-                            if (pattern.IsMatch(Path.Combine(file.Folder, file.FileName)))
-                                _files.Add(file);
-                        }
+                        if (pattern.IsMatch(Path.Combine(file.Folder, file.FileName)))
+                            _files.Add(file);
                     }
-                    catch
-                    {
-                        // Set text color to red to indicate an error with the search term
-                        txtSearch.ForeColor = System.Drawing.Color.Red;
-                        return;
-                    }
+                }
+                catch
+                {
+                    // Set text color to red to indicate an error with the search term
+                    txtSearch.ForeColor = System.Drawing.Color.Red;
+                    return;
                 }
             }
 
