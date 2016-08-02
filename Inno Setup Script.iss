@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BSA Browser"
-#define MyAppVersion "1.4.2"
+#define MyAppVersion "1.5"
 #define MyAppPublisher "Alexander Ellingsen"
 #define MyAppURL "https://github.com/AlexxEG/BSA_Browser/"
 #define MyAppExeName "BSA Browser.exe"
@@ -42,6 +42,8 @@ Name: "ba2aassociation"; Description: "Associate "".ba2"" extension"; GroupDescr
 [Files]
 Source: "BSA Browser\bin\Release\BSA Browser.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\BSA Browser.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "BSA Browser\bin\Release\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "BSA Browser\bin\Release\Sharp.BSA.BA2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\System.Management.Automation.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
