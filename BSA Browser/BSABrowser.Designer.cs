@@ -167,7 +167,6 @@
             "Folder name",
             "File name",
             "File size",
-            "Offset",
             "File extension"});
             this.cmbSortOrder.Location = new System.Drawing.Point(501, 278);
             this.cmbSortOrder.Name = "cmbSortOrder";

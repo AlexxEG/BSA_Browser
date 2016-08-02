@@ -23,7 +23,6 @@ namespace BSA_Browser
         FolderName,
         FileName,
         FileSize,
-        Offset,
         FileType
     }
 
@@ -1216,8 +1215,6 @@ namespace BSA_Browser
                     return (desc) ? string.Compare(fa.FileName, fb.FileName) : string.Compare(fb.FileName, fa.FileName);
                 case ArchiveFileSortOrder.FileSize:
                     return (desc) ? fa.DisplaySize.CompareTo(fb.DisplaySize) : fb.DisplaySize.CompareTo(fa.DisplaySize);
-                case ArchiveFileSortOrder.Offset:
-                    return (desc) ? fa.Offset.CompareTo(fb.Offset) : fb.Offset.CompareTo(fa.Offset);
                 case ArchiveFileSortOrder.FileType:
                     return (desc) ? string.Compare(Path.GetExtension(fa.FileName), Path.GetExtension(fb.FileName)) :
                                     string.Compare(Path.GetExtension(fb.FileName), Path.GetExtension(fa.FileName));
