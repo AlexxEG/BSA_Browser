@@ -114,11 +114,11 @@
             this.llSkyrimNexus.Location = new System.Drawing.Point(12, 163);
             this.llSkyrimNexus.Margin = new System.Windows.Forms.Padding(3);
             this.llSkyrimNexus.Name = "llSkyrimNexus";
-            this.llSkyrimNexus.Size = new System.Drawing.Size(71, 13);
+            this.llSkyrimNexus.Size = new System.Drawing.Size(66, 13);
             this.llSkyrimNexus.TabIndex = 25;
             this.llSkyrimNexus.TabStop = true;
-            this.llSkyrimNexus.Tag = "http://www.nexusmods.com/skyrim/mods/59553/?";
-            this.llSkyrimNexus.Text = "Skyrim Nexus";
+            this.llSkyrimNexus.Tag = "http://www.nexusmods.com/fallout4/mods/17061/?";
+            this.llSkyrimNexus.Text = "Nexus Mods";
             this.llSkyrimNexus.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_LinkClicked);
             // 
             // label1
