@@ -45,10 +45,13 @@
             this.chbExtractMaintainFolderStructure = new System.Windows.Forms.CheckBox();
             this.chbSortBSADirectories = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.chbUseATIFourCC = new System.Windows.Forms.CheckBox();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
@@ -178,6 +181,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -227,6 +231,29 @@
             this.tabPage2.Text = "Quick Extract";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.chbUseATIFourCC);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(552, 282);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Fallout 4";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // chbUseATIFourCC
+            // 
+            this.chbUseATIFourCC.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.chbUseATIFourCC.Location = new System.Drawing.Point(13, 13);
+            this.chbUseATIFourCC.Name = "chbUseATIFourCC";
+            this.chbUseATIFourCC.Size = new System.Drawing.Size(284, 84);
+            this.chbUseATIFourCC.TabIndex = 0;
+            this.chbUseATIFourCC.Text = "Use ATI header for textures\r\n\r\nThis makes some textures more accurate but only th" +
+    "e Photoshop plugin seems to be able to open.\r\n\r\nRe-open archives to apply this c" +
+    "hange.";
+            this.chbUseATIFourCC.UseVisualStyleBackColor = true;
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOK;
@@ -250,6 +277,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -272,5 +300,7 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.CheckBox chbSortBSADirectories;
         private System.Windows.Forms.CheckBox chbExtractMaintainFolderStructure;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.CheckBox chbUseATIFourCC;
     }
 }

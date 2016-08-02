@@ -673,7 +673,10 @@ namespace BSA_Browser
                         archive = new SharpBSABA2.BSAUtil.BSA(path);
                         break;
                     case ".ba2":
-                        archive = new SharpBSABA2.BA2Util.BA2(path);
+                        archive = new SharpBSABA2.BA2Util.BA2(path)
+                        {
+                            UseATIFourCC = Settings.Default.UseATIFourCC
+                        };
                         break;
                     default:
                         throw new Exception($"Unrecognized archive file type ({extension}).");

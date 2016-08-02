@@ -7,6 +7,8 @@ namespace SharpBSABA2.BA2Util
     {
         public BA2Header Header { get; set; }
 
+        public bool UseATIFourCC { get; set; } = false;
+
         public BA2(string filePath) : base(filePath)
         {
         }
