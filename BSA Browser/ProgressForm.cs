@@ -96,6 +96,4 @@ namespace BSA_Browser
             Canceled?.Invoke(this, e);
         }
     }
-
-    public class fommCancelException : fommException { public fommCancelException(string msg) : base(msg) { } }
 }
