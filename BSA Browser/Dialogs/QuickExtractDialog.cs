@@ -44,8 +44,11 @@ namespace BSA_Browser.Dialogs
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            using (OpenFolderDialog ofd = new OpenFolderDialog())
+            using (var ofd = new OpenFolderDialog())
             {
+                if (!string.IsNullOrEmpty(txtPath.Text))
+                    ofd.InitialFolder = txtPath.Text;
+
                 if (ofd.ShowDialog(this) == DialogResult.OK)
                     txtPath.Text = ofd.Folder;
             }
