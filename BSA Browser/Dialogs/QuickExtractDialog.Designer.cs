@@ -63,6 +63,8 @@
             // chbUseFolderPath
             // 
             this.chbUseFolderPath.AutoSize = true;
+            this.chbUseFolderPath.Checked = true;
+            this.chbUseFolderPath.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbUseFolderPath.Location = new System.Drawing.Point(53, 64);
             this.chbUseFolderPath.Name = "chbUseFolderPath";
             this.chbUseFolderPath.Size = new System.Drawing.Size(119, 17);
