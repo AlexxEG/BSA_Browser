@@ -915,7 +915,7 @@ namespace BSA_Browser
         {
             if (gui)
             {
-                pf = new ProgressForm("Unpacking archive", false);
+                pf = new ProgressForm("Unpacking archive");
                 pf.EnableCancel();
                 pf.SetProgressRange(100);
                 pf.Canceled += delegate { bw.CancelAsync(); };

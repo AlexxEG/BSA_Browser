@@ -13,18 +13,11 @@ namespace BSA_Browser
         /// </summary>
         public event EventHandler Canceled;
 
-        public ProgressForm(string title, bool showRatio)
+        public ProgressForm(string title)
         {
             InitializeComponent();
             Application.UseWaitCursor = true;
-            Text = title;
-            if (!showRatio)
-            {
-                pbRatio.Visible = false;
-                lRatio.Visible = false;
-                pbProgress.Height += 21;
-                lProgress.Top += 10;
-            }
+            this.Text = title;
             this.Closing += new CancelEventHandler(ProgressForm_FormClosing);
         }
 
