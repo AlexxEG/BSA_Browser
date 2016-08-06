@@ -48,6 +48,7 @@
             this.fileMenuItem = new System.Windows.Forms.MenuItem();
             this.openArchiveMnuItem = new System.Windows.Forms.MenuItem();
             this.closeSelectedArchiveMenuItem = new System.Windows.Forms.MenuItem();
+            this.closeAllArchivesMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.optionsMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem6 = new System.Windows.Forms.MenuItem();
@@ -73,7 +74,6 @@
             this.copyFileNameMenuItem1 = new System.Windows.Forms.MenuItem();
             this.cbDesc = new System.Windows.Forms.CheckBox();
             this.lFileCount = new System.Windows.Forms.Label();
-            this.closeAllArchivesMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -285,6 +285,12 @@
             this.closeSelectedArchiveMenuItem.Text = "Close Selected Archive";
             this.closeSelectedArchiveMenuItem.Click += new System.EventHandler(this.closeSelectedArchiveMenuItem_Click);
             // 
+            // closeAllArchivesMenuItem
+            // 
+            this.closeAllArchivesMenuItem.Index = 2;
+            this.closeAllArchivesMenuItem.Text = "Close All Archives";
+            this.closeAllArchivesMenuItem.Click += new System.EventHandler(this.closeAllArchivesMenuItem_Click);
+            // 
             // menuItem1
             // 
             this.menuItem1.Index = 3;
@@ -456,12 +462,6 @@
             this.lFileCount.TabIndex = 12;
             this.lFileCount.Text = "0 files";
             this.lFileCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // closeAllArchivesMenuItem
-            // 
-            this.closeAllArchivesMenuItem.Index = 2;
-            this.closeAllArchivesMenuItem.Text = "Close All Archives";
-            this.closeAllArchivesMenuItem.Click += new System.EventHandler(this.closeAllArchivesMenuItem_Click);
             // 
             // BSABrowser
             // 
