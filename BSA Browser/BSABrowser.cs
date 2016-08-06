@@ -716,7 +716,6 @@ namespace BSA_Browser
             if (newNode.IsExpanded)
                 newNode.Collapse();
 
-            txtSearch.Text = "";
             btnExtract.Enabled = true;
             btnExtractAll.Enabled = true;
             btnPreview.Enabled = true;
