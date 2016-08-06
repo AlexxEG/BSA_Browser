@@ -37,7 +37,7 @@ namespace BSA_Browser
                     return tmp + Path.DirectorySeparatorChar;
                 }
             }
-            throw new fommException("Could not create temp folder because directory is full");
+            throw new Exception("Could not create temp folder because directory is full");
         }
 
         public static string GetVersion()
@@ -85,6 +85,4 @@ namespace BSA_Browser
                 (this.MainForm as BSABrowser).OpenArchive(eventArgs.CommandLine[0], true);
         }
     }
-
-    public class fommException : Exception { public fommException(string msg) : base(msg) { } }
 }
