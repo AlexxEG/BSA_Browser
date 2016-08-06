@@ -388,6 +388,11 @@ namespace BSA_Browser
             this.CloseArchive(GetSelectedArchiveNode());
         }
 
+        private void closeAllArchivesMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CloseArchives();
+        }
+
         private void optionsMenuItem_Click(object sender, EventArgs e)
         {
             using (var of = new OptionsForm())
@@ -804,6 +809,9 @@ namespace BSA_Browser
                 node.Archive.Close();
 
             tvFolders.Nodes.Clear();
+
+            // Disable buttons
+            btnPreview.Enabled = btnExtract.Enabled = btnExtractAll.Enabled = false;
         }
 
         /// <summary>
