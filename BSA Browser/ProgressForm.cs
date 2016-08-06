@@ -57,6 +57,14 @@ namespace BSA_Browser
         }
 
         /// <summary>
+        /// Sets the lCurrentFile Text value.
+        /// </summary>
+        public void SetCurrentFile(string file)
+        {
+            lCurrentFile.Text = $"{file}...";
+        }
+
+        /// <summary>
         /// Sets the ProgressBar maximum value. 
         /// </summary>
         /// <param name="high">The maximum value.</param>

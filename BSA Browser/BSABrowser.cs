@@ -980,6 +980,8 @@ namespace BSA_Browser
                         break;
                     }
 
+                    // Update ProgressForm's current file
+                    bw.ReportProgress(-1, fe.FileName);
                     fe.Extract(arguments.Folder, arguments.UseFolderPath);
 
                     count++;
@@ -999,8 +1001,15 @@ namespace BSA_Browser
 
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            pf.UpdateProgress(e.ProgressPercentage);
-            this.Text = string.Format("{0}% - {1}", pf.GetProgressPercentage(), _untouchedTitle);
+            if (e.ProgressPercentage == -1)
+            {
+                pf.SetCurrentFile(e.UserState as string);
+            }
+            else
+            {
+                pf.UpdateProgress(e.ProgressPercentage);
+                this.Text = string.Format("{0}% - {1}", pf.GetProgressPercentage(), _untouchedTitle);
+            }
         }
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
