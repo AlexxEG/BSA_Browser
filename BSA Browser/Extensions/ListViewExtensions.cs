@@ -53,5 +53,20 @@ namespace BSA_Browser.Extensions
             lvItem.state = value;
             SendMessageLVItem(new HandleRef(listView, listView.Handle), LVM_SETITEMSTATE, itemIndex, ref lvItem);
         }
+
+        public static void ScrollToTop(this ListView listView)
+        {
+            if (listView.Items.Count == 0)
+                return;
+
+            try
+            {
+                listView.TopItem = listView.Items[0];
+            }
+            catch
+            {
+                // Setting TopItem in virtualization mode is apparently prone to throwing errors
+            }
+        }
     }
 }

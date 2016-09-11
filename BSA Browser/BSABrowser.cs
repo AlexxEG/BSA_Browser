@@ -369,6 +369,7 @@ namespace BSA_Browser
                 rootNode.Files = lvis.ToArray();
             }
 
+            lvFiles.ScrollToTop();
             this.DoSearch();
         }
 
