@@ -29,6 +29,7 @@ OutputBaseFilename=BSA Browser.{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 UninstallDisplayIcon={app}\BSA Browser.exe
+VersionInfoVersion={#MyAppVersion}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
