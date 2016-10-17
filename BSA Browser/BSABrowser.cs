@@ -1164,10 +1164,17 @@ namespace BSA_Browser
         /// </summary>
         private async void ShowUpdateNotification()
         {
-            if (await this.IsUpdateAvailable())
+            try
             {
-                helpMenuItem.Text = UpdateMarker + helpMenuItem.Text;
-                checkForUpdateMenuItem.Text = UpdateMarker + checkForUpdateMenuItem.Text;
+                if (await this.IsUpdateAvailable())
+                {
+                    helpMenuItem.Text = UpdateMarker + helpMenuItem.Text;
+                    checkForUpdateMenuItem.Text = UpdateMarker + checkForUpdateMenuItem.Text;
+                }
+            }
+            catch
+            {
+                // Do nothing
             }
         }
 
