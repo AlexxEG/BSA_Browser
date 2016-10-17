@@ -1,3 +1,11 @@
+[1.5.2]
+
+- Added "Close All Archives" menu button
+- Fixed "Cancel" button being unresponsive
+- Removed Offset sorting option
+- Scroll to top when switching sub folder in archives
+- Fixed program crashing when not able to check for updates (e.g. blocked by firewall)
+
 [1.5.1]
 
 - Added option for ATI header for textures. More accurate, but only seems to work for Photoshop plugin
