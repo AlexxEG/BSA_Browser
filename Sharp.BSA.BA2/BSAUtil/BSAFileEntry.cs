@@ -13,6 +13,8 @@ namespace SharpBSABA2.BSAUtil
             }
         }
 
+        public BSAFileInfo fileInfo;
+
         public BSAFileEntry(Archive archive, int index)
             : base(archive, index)
         {
@@ -29,33 +31,73 @@ namespace SharpBSABA2.BSAUtil
             if (!Directory.Exists(Path.GetDirectoryName(path)))
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
 
-            this.BinaryReader.BaseStream.Position = (long)Offset;
-
-            // Skip ahead
-            if ((this.Archive as BSA).ContainsFileNameBlobs)
-                this.BinaryReader.BaseStream.Position += this.BinaryReader.ReadByte() + 1;
-
-            using (var fs = File.Create(path))
+            if ((this.Archive as BSA).Version == BSA.SSE_BSAHEADER_VERSION)
             {
-                if (!Compressed)
+                // Separate Skyrim Special Edition extraction
+                this.BinaryReader.BaseStream.Seek(fileInfo.Offset, SeekOrigin.Begin);
+                ulong filesz = fileInfo.SizeFlags & 0x3fffffff;
+                if (fileInfo.NamePrefix)
                 {
-                    byte[] bytes = new byte[Size];
-                    this.BinaryReader.Read(bytes, 0, (int)Size);
-                    fs.Write(bytes, 0, (int)Size);
+                    int len = this.BinaryReader.ReadByte();
+                    filesz -= (ulong)len + 1;
+                    this.BinaryReader.BaseStream.Seek(fileInfo.Offset + 1 + len, SeekOrigin.Begin);
                 }
-                else
+
+                uint filesize = (uint)filesz;
+                if (fileInfo.SizeFlags > 0 && fileInfo.Compressed)
                 {
-                    byte[] uncompressed;
-                    if (RealSize == 0)
-                        uncompressed = new byte[this.BinaryReader.ReadUInt32()];
+                    filesize = this.BinaryReader.ReadUInt32();
+                    filesz -= 4;
+                }
+
+                byte[] content = this.BinaryReader.ReadBytes((int)filesz);
+
+                using (var fs = File.Create(path))
+                {
+                    if (fileInfo.Compressed == false)
+                    {
+                        fs.Write(content, 0, content.Length);
+                    }
                     else
-                        uncompressed = new byte[RealSize];
-                    byte[] compressed = new byte[Size - 4];
-                    this.BinaryReader.Read(compressed, 0, (int)(Size - 4));
-                    this.Archive.Inflater.Reset();
-                    this.Archive.Inflater.SetInput(compressed);
-                    this.Archive.Inflater.Inflate(uncompressed);
-                    fs.Write(uncompressed, 0, uncompressed.Length);
+                    {
+                        using (var ms = new MemoryStream(content, false))
+                        using (var stream = lz4.LZ4Stream.CreateDecompressor(ms, lz4.LZ4StreamMode.Read))
+                        {
+                            stream.CopyTo(fs);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                this.BinaryReader.BaseStream.Position = (long)Offset;
+
+                // Skip ahead
+                if ((this.Archive as BSA).ContainsFileNameBlobs)
+                    this.BinaryReader.BaseStream.Position += this.BinaryReader.ReadByte() + 1;
+
+                using (var fs = File.Create(path))
+                {
+                    if (!Compressed)
+                    {
+                        byte[] bytes = new byte[Size];
+                        this.BinaryReader.Read(bytes, 0, (int)Size);
+                        fs.Write(bytes, 0, (int)Size);
+                    }
+                    else
+                    {
+                        byte[] uncompressed;
+                        if (RealSize == 0)
+                            uncompressed = new byte[this.BinaryReader.ReadUInt32()];
+                        else
+                            uncompressed = new byte[RealSize];
+                        byte[] compressed = new byte[Size - 4];
+                        this.BinaryReader.Read(compressed, 0, (int)(Size - 4));
+                        this.Archive.Inflater.Reset();
+                        this.Archive.Inflater.SetInput(compressed);
+                        this.Archive.Inflater.Inflate(uncompressed);
+                        fs.Write(uncompressed, 0, uncompressed.Length);
+                    }
                 }
             }
         }

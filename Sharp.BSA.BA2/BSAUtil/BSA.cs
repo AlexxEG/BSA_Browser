@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -11,9 +12,15 @@ namespace SharpBSABA2.BSAUtil
 
         public const int OB_BSAHEADER_VERSION = 0x67; //!< Version number of an Oblivion BSA
         public const int F3_BSAHEADER_VERSION = 0x68; //!< Version number of a Fallout 3 BSA
+        public const int SSE_BSAHEADER_VERSION = 0x69; //!< Version number of a Skyrim Special Edition BSA
+
+        public const int OB_BSAARCHIVE_COMPRESSFILES = 0x0004;
+        public const int F3_BSAARCHIVE_PREFIXFULLFILENAMES = 0x0100;
 
         public bool Compressed { get; private set; }
         public bool ContainsFileNameBlobs { get; private set; }
+
+        public int Version { get; set; }
 
         public BSA(string filePath) : base(filePath)
         {
@@ -94,6 +101,16 @@ namespace SharpBSABA2.BSAUtil
                 else
                 {
                     int version = this.BinaryReader.ReadInt32();
+                    this.Version = version;
+
+                    if (version == 0x69)
+                    {
+                        // ToDo: Merge these two methods together, with version checks instead.
+                        // This is just a lazy lazy implementation for now.
+                        this.OpenSSE();
+                        return;
+                    }
+
                     this.BinaryReader.BaseStream.Position += 4;
                     uint flags = this.BinaryReader.ReadUInt32();
                     this.Compressed = ((flags & 0x004) > 0);
@@ -102,12 +119,15 @@ namespace SharpBSABA2.BSAUtil
                     int FileCount = this.BinaryReader.ReadInt32();
                     this.BinaryReader.BaseStream.Position += 12;
                     int[] numfiles = new int[FolderCount];
-                    this.BinaryReader.BaseStream.Position += 8;
 
                     for (int i = 0; i < FolderCount; i++)
                     {
+                        // Skip hash
+                        this.BinaryReader.BaseStream.Position += 8;
+                        // Read fileCount
                         numfiles[i] = this.BinaryReader.ReadInt32();
-                        this.BinaryReader.BaseStream.Position += 12;
+                        // Skip offset
+                        this.BinaryReader.BaseStream.Position += 4;
                     }
 
                     this.BinaryReader.BaseStream.Position -= 8;
@@ -161,6 +181,89 @@ namespace SharpBSABA2.BSAUtil
             }
         }
 
+        private string ReadStringTo(BinaryReader reader, char endChar)
+        {
+            var sb = new StringBuilder();
+            while (true)
+            {
+                char c = reader.ReadChar();
+                if (c == endChar)
+                    break;
+                sb.Append(c);
+            }
+            return sb.ToString();
+        }
+
+        private void OpenSSE()
+        {
+            // magic and version has been read, at position 8
+
+            // read header
+            BSAHeader header = BSAHeader.ReadFrom(this.BinaryReader);
+
+            uint numFiles = header.FileCount;
+
+            this.Compressed = (header.ArchiveFlags & OB_BSAARCHIVE_COMPRESSFILES) > 0;
+            this.ContainsFileNameBlobs = (header.ArchiveFlags & F3_BSAARCHIVE_PREFIXFULLFILENAMES) > 0;
+
+            // Seek to start of Folders, then skip to filename table
+            this.BinaryReader.BaseStream.Seek(header.FolderRecordOffset
+                    + header.FolderNameLength
+                    + header.FolderCount * (1 + BSAFolderInfo.SizeOf(Version))
+                    + header.FileCount * BSAFileInfo.SizeOf(),
+                SeekOrigin.Begin);
+
+            List<string> fileNames = new List<string>();
+            for (int i = 0; i < header.FileCount; i++)
+            {
+                fileNames.Add(this.ReadStringTo(this.BinaryReader, '\0'));
+            }
+
+            this.BinaryReader.BaseStream.Seek(header.FolderRecordOffset, SeekOrigin.Begin);
+
+            var folderInfos = new List<BSAFolderInfo>();
+            for (int i = 0; i < header.FolderCount; i++)
+            {
+                var fi = BSAFolderInfo.ReadFrom(this.BinaryReader, this.Version);
+                folderInfos.Add(fi);
+            }
+
+            int filenameIndex = 0;
+
+            for (int i = 0; i < folderInfos.Count; i++)
+            {
+                int len = this.BinaryReader.ReadByte();
+                byte[] b = this.BinaryReader.ReadBytes(len);
+
+                folderInfos[i].FolderName = Encoding.Default.GetString(b, 0, b.Length - 1);
+
+                List<BSAFileInfo> fileInfos = new List<BSAFileInfo>();
+                while (fileInfos.Count < folderInfos[i].FileCount)
+                {
+                    var fi = BSAFileInfo.ReadFrom(this.BinaryReader);
+                    fi.NamePrefix = this.ContainsFileNameBlobs;
+                    fi.Compressed = this.Compressed;
+                    fileInfos.Add(fi);
+                }
+
+                for (int j = 0; j < fileInfos.Count; j++)
+                {
+                    fileInfos[j].Name = fileNames[filenameIndex];
+                    filenameIndex++;
+                    var fe = new BSAFileEntry(this, i)
+                        .Initialize(this.Compressed,
+                            folderInfos[i].FolderName,
+                            fileInfos[j].Offset,
+                            fileInfos[j].SizeFlags);
+                    fe.FullPath = Path.Combine(fe.FullPath, fileInfos[j].Name);
+                    fe.fileInfo = fileInfos[j];
+                    this.Files.Add(fe);
+                }
+
+                folderInfos[i].Files.AddRange(fileInfos);
+            }
+        }
+
         public static bool IsSupportedVersion(string filePath)
         {
             using (var br = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read)))
@@ -172,7 +275,7 @@ namespace SharpBSABA2.BSAUtil
                     return true; // Only Oblivion/Fallout BSAs needs this version check,
                                  // so if it's neither just always return true.
 
-                if (version != 0x67 && version != 0x68)
+                if (version != 0x67 && version != 0x68 && version != 0x69)
                     return false;
             }
 
