@@ -1,3 +1,7 @@
+[1.6]
+
+- Added support for Skyrim Special Edition .BSA archives
+
 [1.5.2]
 
 - Added "Close All Archives" menu button
