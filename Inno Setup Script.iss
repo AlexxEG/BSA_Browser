@@ -44,6 +44,9 @@ Name: "ba2aassociation"; Description: "Associate "".ba2"" extension"; GroupDescr
 Source: "BSA Browser\bin\Release\BSA Browser.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\BSA Browser.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "BSA Browser\bin\Release\lz4.AnyCPU.loader.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "BSA Browser\bin\Release\lz4.x64.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "BSA Browser\bin\Release\lz4.x86.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\Sharp.BSA.BA2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\System.Management.Automation.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
