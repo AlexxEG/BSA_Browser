@@ -9,7 +9,7 @@ namespace BSA_Browser
     static class Program
     {
         public const string VersionUrl = "https://raw.githubusercontent.com/AlexxEG/BSA_Browser/master/VERSION";
-        public const string Website = "http://www.nexusmods.com/fallout4/mods/17061/?";
+        public const string Website = "http://www.nexusmods.com/skyrimspecialedition/mods/1756/?";
 
         public static readonly string tmpPath = Path.Combine(Path.GetTempPath(), "bsa_browser");
 
