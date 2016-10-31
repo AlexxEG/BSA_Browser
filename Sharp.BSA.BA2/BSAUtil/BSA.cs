@@ -119,15 +119,14 @@ namespace SharpBSABA2.BSAUtil
                     int FileCount = this.BinaryReader.ReadInt32();
                     this.BinaryReader.BaseStream.Position += 12;
                     int[] numfiles = new int[FolderCount];
+                    this.BinaryReader.BaseStream.Position += 8;
 
                     for (int i = 0; i < FolderCount; i++)
                     {
-                        // Skip hash
-                        this.BinaryReader.BaseStream.Position += 8;
                         // Read fileCount
                         numfiles[i] = this.BinaryReader.ReadInt32();
-                        // Skip offset
-                        this.BinaryReader.BaseStream.Position += 4;
+                        // Skip offset, then hash of the next entry
+                        this.BinaryReader.BaseStream.Position += 12;
                     }
 
                     this.BinaryReader.BaseStream.Position -= 8;
