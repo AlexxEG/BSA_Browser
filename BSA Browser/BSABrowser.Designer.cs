@@ -58,20 +58,29 @@
             this.menuItem10 = new System.Windows.Forms.MenuItem();
             this.exitMenuItem = new System.Windows.Forms.MenuItem();
             this.editMenuItem = new System.Windows.Forms.MenuItem();
+            this.copyMenuItem = new System.Windows.Forms.MenuItem();
             this.copyPathMenuItem = new System.Windows.Forms.MenuItem();
             this.copyFolderPathMenuItem = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem = new System.Windows.Forms.MenuItem();
+            this.selectAllMenuItem = new System.Windows.Forms.MenuItem();
             this.openFoldersMenuItem = new System.Windows.Forms.MenuItem();
             this.helpMenuItem = new System.Windows.Forms.MenuItem();
             this.checkForUpdateMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.aboutMenuItem = new System.Windows.Forms.MenuItem();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
+            this.extractMenuItem = new System.Windows.Forms.MenuItem();
+            this.extractHereMenuItem = new System.Windows.Forms.MenuItem();
+            this.extractAllMenuItem = new System.Windows.Forms.MenuItem();
+            this.extractAllHereMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem11 = new System.Windows.Forms.MenuItem();
             this.quickExtractsMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
+            this.copyMenuItem1 = new System.Windows.Forms.MenuItem();
             this.copyPathMenuItem1 = new System.Windows.Forms.MenuItem();
             this.copyFolderPathMenuItem1 = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem1 = new System.Windows.Forms.MenuItem();
+            this.selectAllMenuItem1 = new System.Windows.Forms.MenuItem();
             this.cbDesc = new System.Windows.Forms.CheckBox();
             this.lFileCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -342,30 +351,44 @@
             // 
             this.editMenuItem.Index = 1;
             this.editMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.copyMenuItem,
+            this.selectAllMenuItem});
+            this.editMenuItem.Text = "Edit";
+            this.editMenuItem.Popup += new System.EventHandler(this.editMenuItem_Popup);
+            // 
+            // copyMenuItem
+            // 
+            this.copyMenuItem.Index = 0;
+            this.copyMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.copyPathMenuItem,
             this.copyFolderPathMenuItem,
             this.copyFileNameMenuItem});
-            this.editMenuItem.Text = "Edit";
-            this.editMenuItem.Popup += new System.EventHandler(this.editMenuItem_Popup);
+            this.copyMenuItem.Text = "Copy";
             // 
             // copyPathMenuItem
             // 
             this.copyPathMenuItem.Index = 0;
             this.copyPathMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlC;
-            this.copyPathMenuItem.Text = "Copy Path";
+            this.copyPathMenuItem.Text = "Path";
             this.copyPathMenuItem.Click += new System.EventHandler(this.copyPathMenuItem_Click);
             // 
             // copyFolderPathMenuItem
             // 
             this.copyFolderPathMenuItem.Index = 1;
-            this.copyFolderPathMenuItem.Text = "Copy Folder Path";
+            this.copyFolderPathMenuItem.Text = "Folder Path";
             this.copyFolderPathMenuItem.Click += new System.EventHandler(this.copyFolderPathMenuItem_Click);
             // 
             // copyFileNameMenuItem
             // 
             this.copyFileNameMenuItem.Index = 2;
-            this.copyFileNameMenuItem.Text = "Copy File Name";
+            this.copyFileNameMenuItem.Text = "File Name";
             this.copyFileNameMenuItem.Click += new System.EventHandler(this.copyFileNameMenuItem_Click);
+            // 
+            // selectAllMenuItem
+            // 
+            this.selectAllMenuItem.Index = 1;
+            this.selectAllMenuItem.Text = "Select All";
+            this.selectAllMenuItem.Click += new System.EventHandler(this.selectAllMenuItem_Click);
             // 
             // openFoldersMenuItem
             // 
@@ -402,41 +425,89 @@
             // contextMenu1
             // 
             this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.extractMenuItem,
+            this.extractHereMenuItem,
+            this.extractAllMenuItem,
+            this.extractAllHereMenuItem,
+            this.menuItem11,
             this.quickExtractsMenuItem,
             this.menuItem5,
-            this.copyPathMenuItem1,
-            this.copyFolderPathMenuItem1,
-            this.copyFileNameMenuItem1});
+            this.copyMenuItem1,
+            this.selectAllMenuItem1});
             this.contextMenu1.Popup += new System.EventHandler(this.contextMenu1_Popup);
+            // 
+            // extractMenuItem
+            // 
+            this.extractMenuItem.Index = 0;
+            this.extractMenuItem.Text = "Extract";
+            this.extractMenuItem.Click += new System.EventHandler(this.extractMenuItem_Click);
+            // 
+            // extractHereMenuItem
+            // 
+            this.extractHereMenuItem.Index = 1;
+            this.extractHereMenuItem.Text = "Extract Here";
+            this.extractHereMenuItem.Click += new System.EventHandler(this.extractHereMenuItem_Click);
+            // 
+            // extractAllMenuItem
+            // 
+            this.extractAllMenuItem.Index = 2;
+            this.extractAllMenuItem.Text = "Extract All";
+            this.extractAllMenuItem.Click += new System.EventHandler(this.extractAllMenuItem_Click);
+            // 
+            // extractAllHereMenuItem
+            // 
+            this.extractAllHereMenuItem.Index = 3;
+            this.extractAllHereMenuItem.Text = "Extract All Here";
+            this.extractAllHereMenuItem.Click += new System.EventHandler(this.extractAllHereMenuItem_Click);
+            // 
+            // menuItem11
+            // 
+            this.menuItem11.Index = 4;
+            this.menuItem11.Text = "-";
             // 
             // quickExtractsMenuItem
             // 
-            this.quickExtractsMenuItem.Index = 0;
+            this.quickExtractsMenuItem.Index = 5;
             this.quickExtractsMenuItem.Text = "Quick extract...";
             this.quickExtractsMenuItem.Click += new System.EventHandler(this.quickExtractsMenuItem_Click);
             // 
             // menuItem5
             // 
-            this.menuItem5.Index = 1;
+            this.menuItem5.Index = 6;
             this.menuItem5.Text = "-";
+            // 
+            // copyMenuItem1
+            // 
+            this.copyMenuItem1.Index = 7;
+            this.copyMenuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.copyPathMenuItem1,
+            this.copyFolderPathMenuItem1,
+            this.copyFileNameMenuItem1});
+            this.copyMenuItem1.Text = "Copy";
             // 
             // copyPathMenuItem1
             // 
-            this.copyPathMenuItem1.Index = 2;
-            this.copyPathMenuItem1.Text = "Copy Path";
+            this.copyPathMenuItem1.Index = 0;
+            this.copyPathMenuItem1.Text = "Path";
             this.copyPathMenuItem1.Click += new System.EventHandler(this.copyPathMenuItem1_Click);
             // 
             // copyFolderPathMenuItem1
             // 
-            this.copyFolderPathMenuItem1.Index = 3;
-            this.copyFolderPathMenuItem1.Text = "Copy Folder Path";
+            this.copyFolderPathMenuItem1.Index = 1;
+            this.copyFolderPathMenuItem1.Text = "Folder Path";
             this.copyFolderPathMenuItem1.Click += new System.EventHandler(this.copyFolderPathMenuItem1_Click);
             // 
             // copyFileNameMenuItem1
             // 
-            this.copyFileNameMenuItem1.Index = 4;
-            this.copyFileNameMenuItem1.Text = "Copy File Name";
+            this.copyFileNameMenuItem1.Index = 2;
+            this.copyFileNameMenuItem1.Text = "File Name";
             this.copyFileNameMenuItem1.Click += new System.EventHandler(this.copyFileNameMenuItem1_Click);
+            // 
+            // selectAllMenuItem1
+            // 
+            this.selectAllMenuItem1.Index = 8;
+            this.selectAllMenuItem1.Text = "Select All";
+            this.selectAllMenuItem1.Click += new System.EventHandler(this.selectAllMenuItem1_Click);
             // 
             // cbDesc
             // 
@@ -541,6 +612,15 @@
         private System.Windows.Forms.MenuItem checkForUpdateMenuItem;
         private System.Windows.Forms.MenuItem menuItem3;
         private System.Windows.Forms.MenuItem closeAllArchivesMenuItem;
+        private System.Windows.Forms.MenuItem extractMenuItem;
+        private System.Windows.Forms.MenuItem extractAllMenuItem;
+        private System.Windows.Forms.MenuItem extractHereMenuItem;
+        private System.Windows.Forms.MenuItem extractAllHereMenuItem;
+        private System.Windows.Forms.MenuItem menuItem11;
+        private System.Windows.Forms.MenuItem copyMenuItem1;
+        private System.Windows.Forms.MenuItem selectAllMenuItem1;
+        private System.Windows.Forms.MenuItem copyMenuItem;
+        private System.Windows.Forms.MenuItem selectAllMenuItem;
     }
 }
 

@@ -449,10 +449,8 @@ namespace BSA_Browser
         private void editMenuItem_Popup(object sender, EventArgs e)
         {
             bool hasSelectedItems = lvFiles.SelectedIndices.Count > 0;
-
-            copyPathMenuItem.Enabled = hasSelectedItems;
-            copyFolderPathMenuItem.Enabled = hasSelectedItems;
-            copyFileNameMenuItem.Enabled = hasSelectedItems;
+            
+            copyMenuItem.Enabled = hasSelectedItems;
         }
 
         private void copyPathMenuItem_Click(object sender, EventArgs e)
@@ -498,6 +496,11 @@ namespace BSA_Browser
             }
 
             Clipboard.SetText(builder.ToString());
+        }
+
+        private void selectAllMenuItem_Click(object sender, EventArgs e)
+        {
+            lvFiles.SelectAllItems();
         }
 
         private void openFolderMenuItem_Click(object sender, EventArgs e)
@@ -569,11 +572,75 @@ namespace BSA_Browser
         private void contextMenu1_Popup(object sender, EventArgs e)
         {
             bool hasSelectedItems = lvFiles.SelectedIndices.Count > 0;
+            bool listIsEmpty = GetSelectedArchiveNode() == null || GetSelectedArchiveNode().Archive.Files.Count == 0;
+
+            extractMenuItem.Enabled = hasSelectedItems;
+            extractHereMenuItem.Enabled = hasSelectedItems;
+            extractAllMenuItem.Enabled = !listIsEmpty;
+            extractAllHereMenuItem.Enabled = !listIsEmpty;
 
             quickExtractsMenuItem.Enabled = hasSelectedItems;
-            copyPathMenuItem1.Enabled = hasSelectedItems;
-            copyFolderPathMenuItem1.Enabled = hasSelectedItems;
-            copyFileNameMenuItem1.Enabled = hasSelectedItems;
+            copyMenuItem1.Enabled = hasSelectedItems;
+        }
+
+        private void extractMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lvFiles.SelectedIndices.Count == 0)
+                return;
+
+            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                var files = new List<ArchiveEntry>();
+
+                foreach (int index in lvFiles.SelectedIndices)
+                    files.Add(_files[index]);
+
+                this.ExtractFiles(_openFolderDialog.Folder, true, true, files.ToArray());
+            }
+        }
+
+        private void extractHereMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lvFiles.SelectedIndices.Count == 0)
+                return;
+
+            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                var files = new List<ArchiveEntry>();
+
+                foreach (int index in lvFiles.SelectedIndices)
+                    files.Add(_files[index]);
+
+                this.ExtractFiles(_openFolderDialog.Folder, false, true, files.ToArray());
+            }
+        }
+
+        private void extractAllMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tvFolders.SelectedNode == null)
+                return;
+
+            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                this.ExtractFiles(_openFolderDialog.Folder,
+                    true,
+                    true,
+                    this.GetSelectedArchiveNode().Archive.Files.ToArray());
+            }
+        }
+
+        private void extractAllHereMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tvFolders.SelectedNode == null)
+                return;
+
+            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                this.ExtractFiles(_openFolderDialog.Folder,
+                    false,
+                    true,
+                    this.GetSelectedArchiveNode().Archive.Files.ToArray());
+            }
         }
 
         private void quickExtractsMenuItem_Click(object sender, EventArgs e)
@@ -634,6 +701,11 @@ namespace BSA_Browser
         private void copyFileNameMenuItem1_Click(object sender, EventArgs e)
         {
             copyFileNameMenuItem.PerformClick();
+        }
+
+        private void selectAllMenuItem1_Click(object sender, EventArgs e)
+        {
+            lvFiles.SelectAllItems();
         }
 
         #endregion
