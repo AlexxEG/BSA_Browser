@@ -36,7 +36,7 @@
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnExtractAll = new System.Windows.Forms.Button();
             this.OpenArchiveDialog = new System.Windows.Forms.OpenFileDialog();
-            this.btnExtract = new System.Windows.Forms.Button();
+            this.btnExtractAllFolders = new System.Windows.Forms.Button();
             this.cmbSortOrder = new System.Windows.Forms.ComboBox();
             this.btnPreview = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -70,9 +70,7 @@
             this.aboutMenuItem = new System.Windows.Forms.MenuItem();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.extractMenuItem = new System.Windows.Forms.MenuItem();
-            this.extractHereMenuItem = new System.Windows.Forms.MenuItem();
-            this.extractAllMenuItem = new System.Windows.Forms.MenuItem();
-            this.extractAllHereMenuItem = new System.Windows.Forms.MenuItem();
+            this.extractFoldersMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem11 = new System.Windows.Forms.MenuItem();
             this.quickExtractsMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
@@ -107,7 +105,6 @@
             this.lvFiles.UseCompatibleStateImageBehavior = false;
             this.lvFiles.View = System.Windows.Forms.View.Details;
             this.lvFiles.VirtualMode = true;
-            this.lvFiles.ItemActivate += new System.EventHandler(this.btnExtract_Click);
             this.lvFiles.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.lvFiles_ItemDrag);
             this.lvFiles.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.lvFiles_RetrieveVirtualItem);
             this.lvFiles.SelectedIndexChanged += new System.EventHandler(this.lvFiles_SelectedIndexChanged);
@@ -140,7 +137,7 @@
             // 
             this.btnExtractAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExtractAll.Enabled = false;
-            this.btnExtractAll.Location = new System.Drawing.Point(273, 276);
+            this.btnExtractAll.Location = new System.Drawing.Point(192, 276);
             this.btnExtractAll.Name = "btnExtractAll";
             this.btnExtractAll.Size = new System.Drawing.Size(75, 23);
             this.btnExtractAll.TabIndex = 3;
@@ -156,17 +153,17 @@
             this.OpenArchiveDialog.RestoreDirectory = true;
             this.OpenArchiveDialog.Title = "Select archive to open";
             // 
-            // btnExtract
+            // btnExtractAllFolders
             // 
-            this.btnExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExtract.Enabled = false;
-            this.btnExtract.Location = new System.Drawing.Point(192, 276);
-            this.btnExtract.Name = "btnExtract";
-            this.btnExtract.Size = new System.Drawing.Size(75, 23);
-            this.btnExtract.TabIndex = 2;
-            this.btnExtract.Text = "Extract";
-            this.btnExtract.UseVisualStyleBackColor = true;
-            this.btnExtract.Click += new System.EventHandler(this.btnExtract_Click);
+            this.btnExtractAllFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExtractAllFolders.Enabled = false;
+            this.btnExtractAllFolders.Location = new System.Drawing.Point(273, 276);
+            this.btnExtractAllFolders.Name = "btnExtractAllFolders";
+            this.btnExtractAllFolders.Size = new System.Drawing.Size(110, 23);
+            this.btnExtractAllFolders.TabIndex = 2;
+            this.btnExtractAllFolders.Text = "Extract all folders";
+            this.btnExtractAllFolders.UseVisualStyleBackColor = true;
+            this.btnExtractAllFolders.Click += new System.EventHandler(this.btnExtractAllFolders_Click);
             // 
             // cmbSortOrder
             // 
@@ -201,7 +198,7 @@
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txtSearch.Location = new System.Drawing.Point(12, 308);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(336, 20);
+            this.txtSearch.Size = new System.Drawing.Size(371, 20);
             this.txtSearch.TabIndex = 4;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
@@ -209,7 +206,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(354, 311);
+            this.label1.Location = new System.Drawing.Point(389, 311);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 13);
             this.label1.TabIndex = 7;
@@ -250,7 +247,7 @@
             // 
             this.cbRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbRegex.AutoSize = true;
-            this.cbRegex.Location = new System.Drawing.Point(401, 310);
+            this.cbRegex.Location = new System.Drawing.Point(436, 310);
             this.cbRegex.Name = "cbRegex";
             this.cbRegex.Size = new System.Drawing.Size(74, 17);
             this.cbRegex.TabIndex = 8;
@@ -426,9 +423,7 @@
             // 
             this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.extractMenuItem,
-            this.extractHereMenuItem,
-            this.extractAllMenuItem,
-            this.extractAllHereMenuItem,
+            this.extractFoldersMenuItem,
             this.menuItem11,
             this.quickExtractsMenuItem,
             this.menuItem5,
@@ -442,43 +437,31 @@
             this.extractMenuItem.Text = "Extract";
             this.extractMenuItem.Click += new System.EventHandler(this.extractMenuItem_Click);
             // 
-            // extractHereMenuItem
+            // extractFoldersMenuItem
             // 
-            this.extractHereMenuItem.Index = 1;
-            this.extractHereMenuItem.Text = "Extract Here";
-            this.extractHereMenuItem.Click += new System.EventHandler(this.extractHereMenuItem_Click);
-            // 
-            // extractAllMenuItem
-            // 
-            this.extractAllMenuItem.Index = 2;
-            this.extractAllMenuItem.Text = "Extract All";
-            this.extractAllMenuItem.Click += new System.EventHandler(this.extractAllMenuItem_Click);
-            // 
-            // extractAllHereMenuItem
-            // 
-            this.extractAllHereMenuItem.Index = 3;
-            this.extractAllHereMenuItem.Text = "Extract All Here";
-            this.extractAllHereMenuItem.Click += new System.EventHandler(this.extractAllHereMenuItem_Click);
+            this.extractFoldersMenuItem.Index = 1;
+            this.extractFoldersMenuItem.Text = "Extract Folders";
+            this.extractFoldersMenuItem.Click += new System.EventHandler(this.extractFoldersMenuItem_Click);
             // 
             // menuItem11
             // 
-            this.menuItem11.Index = 4;
+            this.menuItem11.Index = 2;
             this.menuItem11.Text = "-";
             // 
             // quickExtractsMenuItem
             // 
-            this.quickExtractsMenuItem.Index = 5;
+            this.quickExtractsMenuItem.Index = 3;
             this.quickExtractsMenuItem.Text = "Quick extract...";
             this.quickExtractsMenuItem.Click += new System.EventHandler(this.quickExtractsMenuItem_Click);
             // 
             // menuItem5
             // 
-            this.menuItem5.Index = 6;
+            this.menuItem5.Index = 4;
             this.menuItem5.Text = "-";
             // 
             // copyMenuItem1
             // 
-            this.copyMenuItem1.Index = 7;
+            this.copyMenuItem1.Index = 5;
             this.copyMenuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.copyPathMenuItem1,
             this.copyFolderPathMenuItem1,
@@ -505,7 +488,7 @@
             // 
             // selectAllMenuItem1
             // 
-            this.selectAllMenuItem1.Index = 8;
+            this.selectAllMenuItem1.Index = 6;
             this.selectAllMenuItem1.Text = "Select All";
             this.selectAllMenuItem1.Click += new System.EventHandler(this.selectAllMenuItem1_Click);
             // 
@@ -547,7 +530,7 @@
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.btnPreview);
-            this.Controls.Add(this.btnExtract);
+            this.Controls.Add(this.btnExtractAllFolders);
             this.Controls.Add(this.btnExtractAll);
             this.Controls.Add(this.cmbSortOrder);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -573,7 +556,7 @@
         private System.Windows.Forms.Button btnExtractAll;
         private System.Windows.Forms.OpenFileDialog OpenArchiveDialog;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.Button btnExtract;
+        private System.Windows.Forms.Button btnExtractAllFolders;
         private System.Windows.Forms.ComboBox cmbSortOrder;
         private System.Windows.Forms.Button btnPreview;
         private System.Windows.Forms.TextBox txtSearch;
@@ -613,9 +596,7 @@
         private System.Windows.Forms.MenuItem menuItem3;
         private System.Windows.Forms.MenuItem closeAllArchivesMenuItem;
         private System.Windows.Forms.MenuItem extractMenuItem;
-        private System.Windows.Forms.MenuItem extractAllMenuItem;
-        private System.Windows.Forms.MenuItem extractHereMenuItem;
-        private System.Windows.Forms.MenuItem extractAllHereMenuItem;
+        private System.Windows.Forms.MenuItem extractFoldersMenuItem;
         private System.Windows.Forms.MenuItem menuItem11;
         private System.Windows.Forms.MenuItem copyMenuItem1;
         private System.Windows.Forms.MenuItem selectAllMenuItem1;

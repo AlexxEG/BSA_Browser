@@ -141,25 +141,21 @@ namespace BSA_Browser
                 this.OpenArchives(true, OpenArchiveDialog.FileNames);
         }
 
-        private void btnExtract_Click(object sender, EventArgs e)
+        private void btnExtractAll_Click(object sender, EventArgs e)
         {
-            if (lvFiles.SelectedIndices.Count == 0)
+            if (tvFolders.SelectedNode == null)
                 return;
 
             if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                var files = new List<ArchiveEntry>();
-
-                foreach (int index in lvFiles.SelectedIndices)
-                    files.Add(_files[index]);
-
-                bool useFolderPath = Settings.Default.ExtractMaintainFolderStructure;
-
-                this.ExtractFiles(_openFolderDialog.Folder, useFolderPath, true, files.ToArray());
+                this.ExtractFiles(_openFolderDialog.Folder,
+                    false,
+                    true,
+                    this.GetSelectedArchiveNode().Archive.Files.ToArray());
             }
         }
 
-        private void btnExtractAll_Click(object sender, EventArgs e)
+        private void btnExtractAllFolders_Click(object sender, EventArgs e)
         {
             if (tvFolders.SelectedNode == null)
                 return;
@@ -449,7 +445,7 @@ namespace BSA_Browser
         private void editMenuItem_Popup(object sender, EventArgs e)
         {
             bool hasSelectedItems = lvFiles.SelectedIndices.Count > 0;
-            
+
             copyMenuItem.Enabled = hasSelectedItems;
         }
 
@@ -575,9 +571,7 @@ namespace BSA_Browser
             bool listIsEmpty = GetSelectedArchiveNode() == null || GetSelectedArchiveNode().Archive.Files.Count == 0;
 
             extractMenuItem.Enabled = hasSelectedItems;
-            extractHereMenuItem.Enabled = hasSelectedItems;
-            extractAllMenuItem.Enabled = !listIsEmpty;
-            extractAllHereMenuItem.Enabled = !listIsEmpty;
+            extractFoldersMenuItem.Enabled = hasSelectedItems;
 
             quickExtractsMenuItem.Enabled = hasSelectedItems;
             copyMenuItem1.Enabled = hasSelectedItems;
@@ -595,11 +589,11 @@ namespace BSA_Browser
                 foreach (int index in lvFiles.SelectedIndices)
                     files.Add(_files[index]);
 
-                this.ExtractFiles(_openFolderDialog.Folder, true, true, files.ToArray());
+                this.ExtractFiles(_openFolderDialog.Folder, false, true, files.ToArray());
             }
         }
 
-        private void extractHereMenuItem_Click(object sender, EventArgs e)
+        private void extractFoldersMenuItem_Click(object sender, EventArgs e)
         {
             if (lvFiles.SelectedIndices.Count == 0)
                 return;
@@ -611,38 +605,10 @@ namespace BSA_Browser
                 foreach (int index in lvFiles.SelectedIndices)
                     files.Add(_files[index]);
 
-                this.ExtractFiles(_openFolderDialog.Folder, false, true, files.ToArray());
+                this.ExtractFiles(_openFolderDialog.Folder, true, true, files.ToArray());
             }
         }
-
-        private void extractAllMenuItem_Click(object sender, EventArgs e)
-        {
-            if (tvFolders.SelectedNode == null)
-                return;
-
-            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                this.ExtractFiles(_openFolderDialog.Folder,
-                    true,
-                    true,
-                    this.GetSelectedArchiveNode().Archive.Files.ToArray());
-            }
-        }
-
-        private void extractAllHereMenuItem_Click(object sender, EventArgs e)
-        {
-            if (tvFolders.SelectedNode == null)
-                return;
-
-            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                this.ExtractFiles(_openFolderDialog.Folder,
-                    false,
-                    true,
-                    this.GetSelectedArchiveNode().Archive.Files.ToArray());
-            }
-        }
-
+        
         private void quickExtractsMenuItem_Click(object sender, EventArgs e)
         {
             if (quickExtractsMenuItem.MenuItems.Count > 0)
@@ -789,7 +755,7 @@ namespace BSA_Browser
             if (newNode.IsExpanded)
                 newNode.Collapse();
 
-            btnExtract.Enabled = true;
+            btnExtractAllFolders.Enabled = true;
             btnExtractAll.Enabled = true;
             btnPreview.Enabled = true;
 
@@ -865,7 +831,7 @@ namespace BSA_Browser
             if (tvFolders.GetNodeCount(false) == 0)
             {
                 btnPreview.Enabled = false;
-                btnExtract.Enabled = false;
+                btnExtractAllFolders.Enabled = false;
                 btnExtractAll.Enabled = false;
             }
         }
@@ -883,7 +849,7 @@ namespace BSA_Browser
             tvFolders.Nodes.Clear();
 
             // Disable buttons
-            btnPreview.Enabled = btnExtract.Enabled = btnExtractAll.Enabled = false;
+            btnPreview.Enabled = btnExtractAllFolders.Enabled = btnExtractAll.Enabled = false;
         }
 
         /// <summary>
