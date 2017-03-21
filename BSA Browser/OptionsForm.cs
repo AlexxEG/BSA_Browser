@@ -14,7 +14,6 @@ namespace BSA_Browser
         {
             InitializeComponent();
 
-            chbExtractMaintainFolderStructure.Checked = Settings.Default.ExtractMaintainFolderStructure;
             chbSortBSADirectories.Checked = Settings.Default.SortArchiveDirectories;
             chbUseATIFourCC.Checked = Settings.Default.UseATIFourCC;
 
@@ -133,7 +132,6 @@ namespace BSA_Browser
 
         public void SaveChanges()
         {
-            Settings.Default.ExtractMaintainFolderStructure = chbExtractMaintainFolderStructure.Checked;
             Settings.Default.SortArchiveDirectories = chbSortBSADirectories.Checked;
             Settings.Default.UseATIFourCC = chbUseATIFourCC.Checked;
 

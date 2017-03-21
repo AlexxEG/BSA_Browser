@@ -29,9 +29,6 @@
     <Setting Name="SortArchiveDirectories" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ExtractMaintainFolderStructure" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="SearchUseRegex" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

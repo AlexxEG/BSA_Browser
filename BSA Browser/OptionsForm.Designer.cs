@@ -42,7 +42,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.chbExtractMaintainFolderStructure = new System.Windows.Forms.CheckBox();
             this.chbSortBSADirectories = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -190,7 +189,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.chbExtractMaintainFolderStructure);
             this.tabPage1.Controls.Add(this.chbSortBSADirectories);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
@@ -200,20 +198,10 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // chbExtractMaintainFolderStructure
-            // 
-            this.chbExtractMaintainFolderStructure.AutoSize = true;
-            this.chbExtractMaintainFolderStructure.Location = new System.Drawing.Point(13, 13);
-            this.chbExtractMaintainFolderStructure.Name = "chbExtractMaintainFolderStructure";
-            this.chbExtractMaintainFolderStructure.Size = new System.Drawing.Size(275, 17);
-            this.chbExtractMaintainFolderStructure.TabIndex = 1;
-            this.chbExtractMaintainFolderStructure.Text = "Maintain folder structure when using \"Extract\" button";
-            this.chbExtractMaintainFolderStructure.UseVisualStyleBackColor = true;
-            // 
             // chbSortBSADirectories
             // 
             this.chbSortBSADirectories.AutoSize = true;
-            this.chbSortBSADirectories.Location = new System.Drawing.Point(13, 36);
+            this.chbSortBSADirectories.Location = new System.Drawing.Point(13, 13);
             this.chbSortBSADirectories.Name = "chbSortBSADirectories";
             this.chbSortBSADirectories.Size = new System.Drawing.Size(333, 17);
             this.chbSortBSADirectories.TabIndex = 0;
@@ -299,7 +287,6 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.CheckBox chbSortBSADirectories;
-        private System.Windows.Forms.CheckBox chbExtractMaintainFolderStructure;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.CheckBox chbUseATIFourCC;
     }

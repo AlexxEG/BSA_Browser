@@ -130,18 +130,6 @@ namespace BSA_Browser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ExtractMaintainFolderStructure {
-            get {
-                return ((bool)(this["ExtractMaintainFolderStructure"]));
-            }
-            set {
-                this["ExtractMaintainFolderStructure"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SearchUseRegex {
             get {
