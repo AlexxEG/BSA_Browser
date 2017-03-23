@@ -82,5 +82,7 @@ namespace SharpBSABA2
         }
 
         public abstract void Extract(string destination, bool preserveFolder);
+
+        public abstract void Extract(string destination, bool preserveFolder, string newName);
     }
 }

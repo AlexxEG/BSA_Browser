@@ -66,6 +66,11 @@ namespace SharpBSABA2.BA2Util
 
         public override void Extract(string destination, bool preserveFolder)
         {
+            this.Extract(destination, preserveFolder, this.FileName);
+        }
+
+        public override void Extract(string destination, bool preserveFolder, string newName)
+        {
             DDS_HEADER ddsHeader = new DDS_HEADER();
             ddsHeader.dwSize = ddsHeader.GetSize();
             ddsHeader.dwHeaderFlags = DDS.DDS_HEADER_FLAGS_TEXTURE | DDS.DDS_HEADER_FLAGS_LINEARSIZE | DDS.DDS_HEADER_FLAGS_MIPMAP;
@@ -125,7 +130,9 @@ namespace SharpBSABA2.BA2Util
                     return;
             }
 
-            string path = preserveFolder ? this.FullPath : this.FileName;
+            string path = preserveFolder ? this.Folder : string.Empty;
+
+            path = Path.Combine(path, newName);
 
             if (!string.IsNullOrEmpty(destination))
                 path = Path.Combine(destination, path);

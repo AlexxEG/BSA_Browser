@@ -608,7 +608,7 @@ namespace BSA_Browser
                 this.ExtractFiles(_openFolderDialog.Folder, true, true, files.ToArray());
             }
         }
-        
+
         private void quickExtractsMenuItem_Click(object sender, EventArgs e)
         {
             if (quickExtractsMenuItem.MenuItems.Count > 0)
@@ -1011,6 +1011,7 @@ namespace BSA_Browser
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
             var arguments = e.Argument as ExtractFilesArguments;
+            var extracted = new Dictionary<string, int>();
 
             try
             {
@@ -1028,7 +1029,28 @@ namespace BSA_Browser
 
                     // Update ProgressForm's current file
                     bw.ReportProgress(-1, fe.FileName);
-                    fe.Extract(arguments.Folder, arguments.UseFolderPath);
+
+                    if (!arguments.UseFolderPath)
+                    {
+                        if (extracted.ContainsKey(fe.FileName))
+                        {
+                            string filename = Path.GetFileNameWithoutExtension(fe.FileName);
+                            string extension = Path.GetExtension(fe.FileName);
+
+                            fe.Extract(arguments.Folder,
+                                arguments.UseFolderPath,
+                                $"{filename} ({++extracted[fe.FileName]}){extension}");
+                        }
+                        else
+                        {
+                            fe.Extract(arguments.Folder, arguments.UseFolderPath);
+                            extracted.Add(fe.FileName, 0);
+                        }
+                    }
+                    else
+                    {
+                        fe.Extract(arguments.Folder, arguments.UseFolderPath);
+                    }
 
                     count++;
                     progress = (int)Math.Round(((double)count / arguments.Files.Length) * 100);

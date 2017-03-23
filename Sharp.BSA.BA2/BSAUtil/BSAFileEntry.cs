@@ -23,7 +23,14 @@ namespace SharpBSABA2.BSAUtil
 
         public override void Extract(string destination, bool preserveFolder)
         {
-            string path = preserveFolder ? this.FullPath : this.FileName;
+            this.Extract(destination, preserveFolder, this.FileName);
+        }
+
+        public override void Extract(string destination, bool preserveFolder, string newName)
+        {
+            string path = preserveFolder ? this.Folder : string.Empty;
+
+            path = Path.Combine(path, newName);
 
             if (!string.IsNullOrEmpty(destination))
                 path = Path.Combine(destination, path);

@@ -33,9 +33,16 @@ namespace SharpBSABA2.BA2Util
 
         public override void Extract(string destination, bool preserveFolder)
         {
+            this.Extract(destination, preserveFolder, this.FileName);
+        }
+
+        public override void Extract(string destination, bool preserveFolder, string newName)
+        {
             BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
 
-            string path = preserveFolder ? this.FullPath : this.FileName;
+            string path = preserveFolder ? this.Folder : string.Empty;
+
+            path = Path.Combine(path, newName);
 
             if (!string.IsNullOrEmpty(destination))
                 path = Path.Combine(destination, path);
@@ -46,7 +53,7 @@ namespace SharpBSABA2.BA2Util
             using (var fs = File.Create(path))
             {
                 byte[] bytes = new byte[this.Size];
-                
+
                 if (this.Size == 0)
                 {
                     bytes = new byte[this.RealSize];
