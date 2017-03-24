@@ -1,3 +1,10 @@
+[1.6.5]
+
+- Right click menu now has 'Extract' and 'Extract Folders' buttons for selected files
+- Buttons above search bar now has 'Extract all' and 'Extract all folders'
+- New 'Select All' menu item
+- Move copy menu items into cascading 'Copy' menu
+
 [1.6.1]
 
 - Fix support for older games that was broken in 1.6
