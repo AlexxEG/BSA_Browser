@@ -64,13 +64,8 @@ namespace SharpBSABA2.BA2Util
                 this.Chunks.Add(new BA2TextureChunk(ba2.BinaryReader));
             }
         }
-
-        public override void Extract(string destination, bool preserveFolder)
-        {
-            this.Extract(destination, preserveFolder, this.FileName);
-        }
-
-        public override void Extract(string destination, bool preserveFolder, string newName)
+        
+        protected override void WriteDataToStream(Stream stream)
         {
             DDS_HEADER ddsHeader = new DDS_HEADER();
             ddsHeader.dwSize = ddsHeader.GetSize();
@@ -131,112 +126,9 @@ namespace SharpBSABA2.BA2Util
                     return;
             }
 
-            string path = preserveFolder ? this.Folder : string.Empty;
+            var temp = new MemoryStream();
 
-            path = Path.Combine(path, newName);
-
-            if (!string.IsNullOrEmpty(destination))
-                path = Path.Combine(destination, path);
-
-            if (!Directory.Exists(Path.GetDirectoryName(path)))
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-
-            using (var bw = new BinaryWriter(File.Create(path)))
-            {
-                bw.Write((uint)DDS.DDS_MAGIC);
-                ddsHeader.Write(bw);
-
-                for (int i = 0; i < numChunks; i++)
-                {
-                    byte[] compressed = new byte[this.Chunks[i].packSz];
-                    byte[] full = new byte[this.Chunks[i].fullSz];
-                    bool isCompressed = this.Chunks[i].packSz != 0;
-
-                    this.BinaryReader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
-
-                    if (!isCompressed)
-                    {
-                        this.BinaryReader.Read(full, 0, full.Length);
-                    }
-                    else
-                    {
-                        this.BinaryReader.Read(compressed, 0, compressed.Length);
-                        // Uncompress
-                        this.Archive.Inflater.Reset();
-                        this.Archive.Inflater.SetInput(compressed);
-                        this.Archive.Inflater.Inflate(full);
-                    }
-
-                    bw.Write(full);
-                }
-            }
-        }
-
-        public override MemoryStream GetDataStream()
-        {
-            DDS_HEADER ddsHeader = new DDS_HEADER();
-            ddsHeader.dwSize = ddsHeader.GetSize();
-            ddsHeader.dwHeaderFlags = DDS.DDS_HEADER_FLAGS_TEXTURE | DDS.DDS_HEADER_FLAGS_LINEARSIZE | DDS.DDS_HEADER_FLAGS_MIPMAP;
-            ddsHeader.dwHeight = height;
-            ddsHeader.dwWidth = width;
-            ddsHeader.dwMipMapCount = numMips;
-            ddsHeader.PixelFormat.dwSize = ddsHeader.PixelFormat.GetSize();
-            ddsHeader.dwSurfaceFlags = DDS.DDS_SURFACE_FLAGS_TEXTURE | DDS.DDS_SURFACE_FLAGS_MIPMAP;
-
-            switch ((DXGI_FORMAT)format)
-            {
-                case DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM:
-                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
-                    ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '1');
-                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height / 2); // 4bpp
-                    break;
-                case DXGI_FORMAT.DXGI_FORMAT_BC2_UNORM:
-                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
-                    ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '3');
-                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
-                    break;
-                case DXGI_FORMAT.DXGI_FORMAT_BC3_UNORM:
-                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
-                    ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '5');
-                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
-                    break;
-                case DXGI_FORMAT.DXGI_FORMAT_BC5_UNORM:
-                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
-                    if ((this.Archive as BA2).UseATIFourCC)
-                        ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('A', 'T', 'I', '2'); // this is more correct but the only thing I have found that supports it is the nvidia photoshop plugin
-                    else
-                        ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '5');
-                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
-                    break;
-                case DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM:
-                    // totally wrong but not worth writing out the DX10 header
-                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
-                    ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('B', 'C', '7', '\0');
-                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
-                    break;
-                case DXGI_FORMAT.DXGI_FORMAT_B8G8R8A8_UNORM:
-                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_RGBA;
-                    ddsHeader.PixelFormat.dwRGBBitCount = 32;
-                    ddsHeader.PixelFormat.dwRBitMask = 0x00FF0000;
-                    ddsHeader.PixelFormat.dwGBitMask = 0x0000FF00;
-                    ddsHeader.PixelFormat.dwBBitMask = 0x000000FF;
-                    ddsHeader.PixelFormat.dwABitMask = 0xFF000000;
-                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height * 4); // 32bpp
-                    break;
-                case DXGI_FORMAT.DXGI_FORMAT_R8_UNORM:
-                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_RGB;
-                    ddsHeader.PixelFormat.dwRGBBitCount = 8;
-                    ddsHeader.PixelFormat.dwRBitMask = 0xFF;
-                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
-                    break;
-                default:
-                    return null;
-            }
-            
-            var stream = new MemoryStream();
-            var result_ms = new MemoryStream();
-
-            using (var bw = new BinaryWriter(stream))
+            using (var bw = new BinaryWriter(temp))
             {
                 bw.Write((uint)DDS.DDS_MAGIC);
                 ddsHeader.Write(bw);
@@ -265,12 +157,9 @@ namespace SharpBSABA2.BA2Util
                     bw.Write(full);
                 }
 
-                byte[] bytes = stream.GetBuffer();
-                result_ms.Write(bytes, 0, bytes.Length);
+                byte[] bytes = temp.GetBuffer();
+                stream.Write(bytes, 0, bytes.Length);
             }
-            
-            result_ms.Seek(0, SeekOrigin.Begin);
-            return result_ms;
         }
     }
 }

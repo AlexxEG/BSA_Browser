@@ -31,61 +31,9 @@ namespace SharpBSABA2.BA2Util
             RealSize = ba2.BinaryReader.ReadUInt32();
             align = ba2.BinaryReader.ReadUInt32();
         }
-
-        public override void Extract(string destination, bool preserveFolder)
+        
+        protected override void WriteDataToStream(Stream stream)
         {
-            this.Extract(destination, preserveFolder, this.FileName);
-        }
-
-        public override void Extract(string destination, bool preserveFolder, string newName)
-        {
-            BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
-
-            string path = preserveFolder ? this.Folder : string.Empty;
-
-            path = Path.Combine(path, newName);
-
-            if (!string.IsNullOrEmpty(destination))
-                path = Path.Combine(destination, path);
-
-            if (!Directory.Exists(Path.GetDirectoryName(path)))
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-
-            using (var fs = File.Create(path))
-            {
-                byte[] bytes = new byte[this.Size];
-
-                if (this.Size == 0)
-                {
-                    bytes = new byte[this.RealSize];
-                    BinaryReader.Read(bytes, 0, (int)this.RealSize);
-                    fs.Write(bytes, 0, (int)this.RealSize);
-                    return;
-                }
-
-                BinaryReader.Read(bytes, 0, (int)this.Size);
-
-                if (!this.Compressed)
-                {
-                    fs.Write(bytes, 0, (int)this.Size);
-                }
-                else
-                {
-                    byte[] uncompressed = new byte[this.RealSize];
-
-                    this.Archive.Inflater.Reset();
-                    this.Archive.Inflater.SetInput(bytes);
-                    this.Archive.Inflater.Inflate(uncompressed);
-
-                    fs.Write(uncompressed, 0, uncompressed.Length);
-                }
-            }
-        }
-
-        public override MemoryStream GetDataStream()
-        {
-            var result_ms = new MemoryStream();
-
             BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
 
             byte[] bytes = new byte[this.Size];
@@ -94,16 +42,16 @@ namespace SharpBSABA2.BA2Util
             {
                 bytes = new byte[this.RealSize];
                 BinaryReader.Read(bytes, 0, (int)this.RealSize);
-                result_ms.Write(bytes, 0, (int)this.RealSize);
-                result_ms.Seek(0, SeekOrigin.Begin);
-                return result_ms;
+                stream.Write(bytes, 0, (int)this.RealSize);
+                stream.Seek(0, SeekOrigin.Begin);
+                return;
             }
 
             BinaryReader.Read(bytes, 0, (int)this.Size);
 
             if (!this.Compressed)
             {
-                result_ms.Write(bytes, 0, (int)this.Size);
+                stream.Write(bytes, 0, (int)this.Size);
             }
             else
             {
@@ -113,11 +61,8 @@ namespace SharpBSABA2.BA2Util
                 this.Archive.Inflater.SetInput(bytes);
                 this.Archive.Inflater.Inflate(uncompressed);
 
-                result_ms.Write(uncompressed, 0, uncompressed.Length);
+                stream.Write(uncompressed, 0, uncompressed.Length);
             }
-
-            result_ms.Seek(0, SeekOrigin.Begin);
-            return result_ms;
         }
     }
 }

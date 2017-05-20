@@ -81,13 +81,40 @@ namespace SharpBSABA2
             this.Extract(string.Empty, preserveFolder);
         }
 
-        public abstract void Extract(string destination, bool preserveFolder);
+        public virtual void Extract(string destination, bool preserveFolder)
+        {
+            this.Extract(destination, preserveFolder, this.FileName);
+        }
 
-        public abstract void Extract(string destination, bool preserveFolder, string newName);
+        public virtual void Extract(string destination, bool preserveFolder, string newName)
+        {
+            string path = preserveFolder ? this.Folder : string.Empty;
+
+            path = Path.Combine(path, newName);
+
+            if (!string.IsNullOrEmpty(destination))
+                path = Path.Combine(destination, path);
+
+            if (!Directory.Exists(Path.GetDirectoryName(path)))
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            using (var fs = File.Create(path))
+                this.WriteDataToStream(fs);
+        }
 
         /// <summary>
         /// Extracts and uncompresses data and then returns the stream.
         /// </summary>
-        public abstract MemoryStream GetDataStream();
+        public virtual MemoryStream GetDataStream()
+        {
+            var ms = new MemoryStream();
+
+            this.WriteDataToStream(ms);
+
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
+        }
+
+        protected abstract void WriteDataToStream(Stream stream);
     }
 }
