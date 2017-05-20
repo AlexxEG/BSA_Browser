@@ -71,6 +71,7 @@
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.extractMenuItem = new System.Windows.Forms.MenuItem();
             this.extractFoldersMenuItem = new System.Windows.Forms.MenuItem();
+            this.previewMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem11 = new System.Windows.Forms.MenuItem();
             this.quickExtractsMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
@@ -108,6 +109,7 @@
             this.lvFiles.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.lvFiles_ItemDrag);
             this.lvFiles.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.lvFiles_RetrieveVirtualItem);
             this.lvFiles.SelectedIndexChanged += new System.EventHandler(this.lvFiles_SelectedIndexChanged);
+            this.lvFiles.DoubleClick += new System.EventHandler(this.lvFiles_DoubleClick);
             this.lvFiles.Enter += new System.EventHandler(this.lvFiles_Enter);
             this.lvFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvFiles_KeyDown);
             // 
@@ -424,6 +426,7 @@
             this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.extractMenuItem,
             this.extractFoldersMenuItem,
+            this.previewMenuItem,
             this.menuItem11,
             this.quickExtractsMenuItem,
             this.menuItem5,
@@ -443,25 +446,31 @@
             this.extractFoldersMenuItem.Text = "Extract Folders";
             this.extractFoldersMenuItem.Click += new System.EventHandler(this.extractFoldersMenuItem_Click);
             // 
+            // previewMenuItem
+            // 
+            this.previewMenuItem.Index = 2;
+            this.previewMenuItem.Text = "Preview";
+            this.previewMenuItem.Click += new System.EventHandler(this.previewMenuItem_Click);
+            // 
             // menuItem11
             // 
-            this.menuItem11.Index = 2;
+            this.menuItem11.Index = 3;
             this.menuItem11.Text = "-";
             // 
             // quickExtractsMenuItem
             // 
-            this.quickExtractsMenuItem.Index = 3;
+            this.quickExtractsMenuItem.Index = 4;
             this.quickExtractsMenuItem.Text = "Quick extract...";
             this.quickExtractsMenuItem.Click += new System.EventHandler(this.quickExtractsMenuItem_Click);
             // 
             // menuItem5
             // 
-            this.menuItem5.Index = 4;
+            this.menuItem5.Index = 5;
             this.menuItem5.Text = "-";
             // 
             // copyMenuItem1
             // 
-            this.copyMenuItem1.Index = 5;
+            this.copyMenuItem1.Index = 6;
             this.copyMenuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.copyPathMenuItem1,
             this.copyFolderPathMenuItem1,
@@ -488,7 +497,7 @@
             // 
             // selectAllMenuItem1
             // 
-            this.selectAllMenuItem1.Index = 6;
+            this.selectAllMenuItem1.Index = 7;
             this.selectAllMenuItem1.Text = "Select All";
             this.selectAllMenuItem1.Click += new System.EventHandler(this.selectAllMenuItem1_Click);
             // 
@@ -602,6 +611,7 @@
         private System.Windows.Forms.MenuItem selectAllMenuItem1;
         private System.Windows.Forms.MenuItem copyMenuItem;
         private System.Windows.Forms.MenuItem selectAllMenuItem;
+        private System.Windows.Forms.MenuItem previewMenuItem;
     }
 }
 

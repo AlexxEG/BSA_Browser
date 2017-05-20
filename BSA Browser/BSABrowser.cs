@@ -171,53 +171,7 @@ namespace BSA_Browser
 
         private void btnPreview_Click(object sender, EventArgs e)
         {
-            if (lvFiles.SelectedIndices.Count == 0)
-                return;
-
-            if (lvFiles.SelectedIndices.Count == 1)
-            {
-                var fe = _files[lvFiles.SelectedIndices[0]];
-
-                switch (Path.GetExtension(fe.LowerPath))
-                {
-                    /*case ".nif":
-                        MessageBox.Show("Viewing of nif's disabled as their format differs from oblivion");
-                        return;
-                    case ".tga":
-                    case ".bmp":
-                    case ".jpg":
-                        System.Diagnostics.Process.Start("obmm\\NifViewer.exe", fe.LowerName);
-                        break;*/
-                    case ".dds":
-                        try
-                        {
-                            DDSViewer.ShowDialog(this, fe);
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(this, ex.Message);
-                        }
-                        break;
-                    case ".lst":
-                    case ".txt":
-                    case ".xml":
-                        string dest = Program.CreateTempDirectory();
-
-                        fe.Extract(dest, false);
-                        Process.Start(Path.Combine(dest, fe.FileName));
-                        break;
-                    default:
-                        MessageBox.Show(this,
-                            "Filetype not supported.\n" +
-                            "Currently only txt, xml, dds and lst files can be previewed.",
-                            "Error");
-                        break;
-                }
-            }
-            else
-            {
-                MessageBox.Show(this, "Can only preview one file at a time", "Error");
-            }
+            this.PreviewSelected();
         }
 
         private void cmbSortOrder_SelectedIndexChanged(object sender, EventArgs e)
@@ -230,6 +184,11 @@ namespace BSA_Browser
         {
             this.SortList();
             Settings.Default.SortDesc = cbDesc.Checked;
+        }
+
+        private void lvFiles_DoubleClick(object sender, EventArgs e)
+        {
+            this.PreviewSelected();
         }
 
         private void lvFiles_Enter(object sender, EventArgs e)
@@ -616,6 +575,11 @@ namespace BSA_Browser
 
                 this.ExtractFiles(_openFolderDialog.Folder, true, true, files.ToArray());
             }
+        }
+
+        private void previewMenuItem_Click(object sender, EventArgs e)
+        {
+            this.PreviewSelected();
         }
 
         private void quickExtractsMenuItem_Click(object sender, EventArgs e)
@@ -1187,6 +1151,60 @@ namespace BSA_Browser
                     {
                         Tag = path
                     });
+            }
+        }
+
+        /// <summary>
+        /// Previews selected file in default program or built-in tool if supported.
+        /// </summary>
+        private void PreviewSelected()
+        {
+            if (lvFiles.SelectedIndices.Count == 0)
+                return;
+
+            if (lvFiles.SelectedIndices.Count == 1)
+            {
+                var fe = _files[lvFiles.SelectedIndices[0]];
+
+                switch (Path.GetExtension(fe.LowerPath))
+                {
+                    /*case ".nif":
+                        MessageBox.Show("Viewing of nif's disabled as their format differs from oblivion");
+                        return;
+                    case ".tga":
+                    case ".bmp":
+                    case ".jpg":
+                        System.Diagnostics.Process.Start("obmm\\NifViewer.exe", fe.LowerName);
+                        break;*/
+                    case ".dds":
+                        try
+                        {
+                            DDSViewer.ShowDialog(this, fe);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(this, ex.Message);
+                        }
+                        break;
+                    case ".lst":
+                    case ".txt":
+                    case ".xml":
+                        string dest = Program.CreateTempDirectory();
+
+                        fe.Extract(dest, false);
+                        Process.Start(Path.Combine(dest, fe.FileName));
+                        break;
+                    default:
+                        MessageBox.Show(this,
+                            "Filetype not supported.\n" +
+                            "Currently only txt, xml, dds and lst files can be previewed.",
+                            "Error");
+                        break;
+                }
+            }
+            else
+            {
+                MessageBox.Show(this, "Can only preview one file at a time", "Error");
             }
         }
 
