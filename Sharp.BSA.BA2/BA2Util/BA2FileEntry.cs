@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace SharpBSABA2.BA2Util
 {
@@ -79,6 +80,44 @@ namespace SharpBSABA2.BA2Util
                     fs.Write(uncompressed, 0, uncompressed.Length);
                 }
             }
+        }
+
+        public override MemoryStream GetDataStream()
+        {
+            var result_ms = new MemoryStream();
+
+            BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
+
+            byte[] bytes = new byte[this.Size];
+
+            if (this.Size == 0)
+            {
+                bytes = new byte[this.RealSize];
+                BinaryReader.Read(bytes, 0, (int)this.RealSize);
+                result_ms.Write(bytes, 0, (int)this.RealSize);
+                result_ms.Seek(0, SeekOrigin.Begin);
+                return result_ms;
+            }
+
+            BinaryReader.Read(bytes, 0, (int)this.Size);
+
+            if (!this.Compressed)
+            {
+                result_ms.Write(bytes, 0, (int)this.Size);
+            }
+            else
+            {
+                byte[] uncompressed = new byte[this.RealSize];
+
+                this.Archive.Inflater.Reset();
+                this.Archive.Inflater.SetInput(bytes);
+                this.Archive.Inflater.Inflate(uncompressed);
+
+                result_ms.Write(uncompressed, 0, uncompressed.Length);
+            }
+
+            result_ms.Seek(0, SeekOrigin.Begin);
+            return result_ms;
         }
     }
 }

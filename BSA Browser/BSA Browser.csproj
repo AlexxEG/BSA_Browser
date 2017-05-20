@@ -48,6 +48,8 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -58,6 +60,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
@@ -85,6 +88,7 @@
       <DependentUpon>BSABrowser.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\ArchiveNode.cs" />
+    <Compile Include="Classes\DDSImage.cs" />
     <Compile Include="Classes\OpenFolderDialog.cs" />
     <Compile Include="Classes\QuickExtractPath.cs" />
     <Compile Include="Classes\QuickExtractPaths.cs" />
@@ -94,6 +98,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\VisualStyleExtensions.cs" />
+    <Compile Include="DDSViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DDSViewer.Designer.cs">
+      <DependentUpon>DDSViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\QuickExtractDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BSABrowser.resx">
       <DependentUpon>BSABrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DDSViewer.resx">
+      <DependentUpon>DDSViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\QuickExtractDialog.resx">
       <DependentUpon>QuickExtractDialog.cs</DependentUpon>

@@ -84,5 +84,10 @@ namespace SharpBSABA2
         public abstract void Extract(string destination, bool preserveFolder);
 
         public abstract void Extract(string destination, bool preserveFolder, string newName);
+
+        /// <summary>
+        /// Extracts and uncompresses data and then returns the stream.
+        /// </summary>
+        public abstract MemoryStream GetDataStream();
     }
 }

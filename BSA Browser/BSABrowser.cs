@@ -183,12 +183,21 @@ namespace BSA_Browser
                     /*case ".nif":
                         MessageBox.Show("Viewing of nif's disabled as their format differs from oblivion");
                         return;
-                    case ".dds":
                     case ".tga":
                     case ".bmp":
                     case ".jpg":
                         System.Diagnostics.Process.Start("obmm\\NifViewer.exe", fe.LowerName);
                         break;*/
+                    case ".dds":
+                        try
+                        {
+                            DDSViewer.ShowDialog(this, fe);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(this, ex.Message);
+                        }
+                        break;
                     case ".lst":
                     case ".txt":
                     case ".xml":
