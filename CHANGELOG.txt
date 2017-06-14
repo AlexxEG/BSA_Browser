@@ -1,3 +1,7 @@
+[1.7]
+
+- Added built-in previewer for .DDS files
+
 [1.6.5]
 
 - Right click menu now has 'Extract' and 'Extract Folders' buttons for selected files
