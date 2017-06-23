@@ -135,6 +135,19 @@ namespace BSA_Browser
             Settings.Default.Save();
         }
 
+        private void File_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Link;
+        }
+
+        private void File_DragDrop(object sender, DragEventArgs e)
+        {
+            foreach (string file in (string[])e.Data.GetData(DataFormats.FileDrop))
+                if (IsSupportedFile(file))
+                    this.OpenArchive(file, true);
+        }
+
         private void btnOpen_Click(object sender, EventArgs e)
         {
             if (OpenArchiveDialog.ShowDialog(this) == DialogResult.OK)
@@ -1114,6 +1127,21 @@ namespace BSA_Browser
                 return null;
 
             return this.GetRootNode(tvFolders.SelectedNode);
+        }
+
+        /// <summary>
+        /// Returns true if file is supported by this program. False otherwise.
+        /// </summary>
+        private bool IsSupportedFile(string file)
+        {
+            switch (Path.GetExtension(file))
+            {
+                case ".bsa":
+                case ".ba2":
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>

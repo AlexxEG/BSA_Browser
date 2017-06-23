@@ -90,6 +90,7 @@
             // 
             // lvFiles
             // 
+            this.lvFiles.AllowDrop = true;
             this.lvFiles.AutoArrange = false;
             this.lvFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
@@ -109,6 +110,8 @@
             this.lvFiles.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.lvFiles_ItemDrag);
             this.lvFiles.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.lvFiles_RetrieveVirtualItem);
             this.lvFiles.SelectedIndexChanged += new System.EventHandler(this.lvFiles_SelectedIndexChanged);
+            this.lvFiles.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
+            this.lvFiles.DragOver += new System.Windows.Forms.DragEventHandler(this.File_DragOver);
             this.lvFiles.DoubleClick += new System.EventHandler(this.lvFiles_DoubleClick);
             this.lvFiles.Enter += new System.EventHandler(this.lvFiles_Enter);
             this.lvFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvFiles_KeyDown);
@@ -216,6 +219,7 @@
             // 
             // tvFolders
             // 
+            this.tvFolders.AllowDrop = true;
             this.tvFolders.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvFolders.HideSelection = false;
             this.tvFolders.Location = new System.Drawing.Point(0, 0);
@@ -224,6 +228,8 @@
             this.tvFolders.TabIndex = 0;
             this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
             this.tvFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterSelect);
+            this.tvFolders.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
+            this.tvFolders.DragOver += new System.Windows.Forms.DragEventHandler(this.File_DragOver);
             // 
             // splitContainer1
             // 
