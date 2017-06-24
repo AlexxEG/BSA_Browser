@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.Text;
+using SharpBSABA2.Extensions;
 
 namespace SharpBSABA2.BA2Util
 {
@@ -30,10 +30,7 @@ namespace SharpBSABA2.BA2Util
             for (int i = 0; i < this.Header.numFiles; i++)
             {
                 short length = BinaryReader.ReadInt16();
-                byte[] name = new byte[length];
-                BinaryReader.Read(name, 0, length);
-
-                this.Files[i].FullPath = Encoding.Default.GetString(name);
+                this.Files[i].FullPath = this.BinaryReader.ReadString(length);
             }
         }
     }

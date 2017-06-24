@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 
 namespace SharpBSABA2
@@ -16,7 +17,7 @@ namespace SharpBSABA2
         public Archive(string filePath)
         {
             this.FullPath = filePath;
-            this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read));
+            this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), Encoding.Default);
 
             this.Open(filePath);
         }

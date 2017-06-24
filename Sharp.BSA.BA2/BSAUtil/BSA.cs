@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using SharpBSABA2.Extensions;
 
 namespace SharpBSABA2.BSAUtil
 {
@@ -32,7 +33,6 @@ namespace SharpBSABA2.BSAUtil
             {
                 //if(Program.ReadCString(br)!="BSA") throw new fommException("File was not a valid BSA archive");
                 uint type = this.BinaryReader.ReadUInt32();
-                StringBuilder sb = new StringBuilder(64);
                 if (type != 0x00415342 && type != 0x00000100)
                 {
                     //Might be a fallout 2 dat
@@ -52,21 +52,18 @@ namespace SharpBSABA2.BSAUtil
                     for (int i = 0; i < FileCount; i++)
                     {
                         int fileLen = this.BinaryReader.ReadInt32();
-
-                        for (int j = 0; j < fileLen; j++)
-                            sb.Append(this.BinaryReader.ReadChar());
+                        string path = this.BinaryReader.ReadString(fileLen);
 
                         byte comp = this.BinaryReader.ReadByte();
                         uint realSize = this.BinaryReader.ReadUInt32();
                         uint compSize = this.BinaryReader.ReadUInt32();
                         uint offset = this.BinaryReader.ReadUInt32();
 
-                        if (sb[0] == '\\')
-                            sb.Remove(0, 1);
+                        if (path.StartsWith("\\"))
+                            path.Remove(0, 1);
 
                         this.Files.Add(new BSAFileEntry(this, i)
-                            .Initialize(sb.ToString(), offset, compSize, comp == 0 ? 0 : realSize));
-                        sb.Length = 0;
+                            .Initialize(path, offset, compSize, comp == 0 ? 0 : realSize));
                     }
                 }
                 else if (type == 0x0100)
@@ -86,16 +83,9 @@ namespace SharpBSABA2.BSAUtil
                         this.BinaryReader.BaseStream.Position = fnameOffset1 + i * 4;
                         this.BinaryReader.BaseStream.Position = this.BinaryReader.ReadInt32() + fnameOffset2;
 
-                        sb.Length = 0;
+                        string name = this.ReadStringTo(this.BinaryReader, '\0');
 
-                        while (true)
-                        {
-                            char b = this.BinaryReader.ReadChar();
-                            if (b == '\0') break;
-                            sb.Append(b);
-                        }
-
-                        this.Files.Add(new BSAFileEntry(this, i).Initialize(sb.ToString(), offset, size));
+                        this.Files.Add(new BSAFileEntry(this, i).Initialize(name, offset, size));
                     }
                 }
                 else
@@ -134,9 +124,8 @@ namespace SharpBSABA2.BSAUtil
                     for (int i = 0; i < FolderCount; i++)
                     {
                         int k = this.BinaryReader.ReadByte();
-                        while (--k > 0) sb.Append(this.BinaryReader.ReadChar());
+                        string folder = this.BinaryReader.ReadString(k - 1);
                         this.BinaryReader.BaseStream.Position++;
-                        string folder = sb.ToString();
 
                         for (int j = 0; j < numfiles[i]; j++)
                         {
@@ -152,22 +141,12 @@ namespace SharpBSABA2.BSAUtil
                             this.Files.Add(new BSAFileEntry(this, i)
                                 .Initialize(comp, folder, this.BinaryReader.ReadUInt32(), size));
                         }
-                        sb.Length = 0;
                     }
 
                     for (int i = 0; i < FileCount; i++)
                     {
-                        while (true)
-                        {
-                            char c = this.BinaryReader.ReadChar();
-
-                            if (c == '\0')
-                                break;
-
-                            sb.Append(c);
-                        }
-                        this.Files[i].FullPath = Path.Combine(this.Files[i].FullPath, sb.ToString());
-                        sb.Length = 0;
+                        string name = this.ReadStringTo(this.BinaryReader, '\0');
+                        this.Files[i].FullPath = Path.Combine(this.Files[i].FullPath, name);
                     }
                 }
             }
@@ -183,11 +162,9 @@ namespace SharpBSABA2.BSAUtil
         private string ReadStringTo(BinaryReader reader, char endChar)
         {
             var sb = new StringBuilder();
-            while (true)
+            char c;
+            while ((c = reader.ReadChar()) != endChar)
             {
-                char c = reader.ReadChar();
-                if (c == endChar)
-                    break;
                 sb.Append(c);
             }
             return sb.ToString();
@@ -232,9 +209,8 @@ namespace SharpBSABA2.BSAUtil
             for (int i = 0; i < folderInfos.Count; i++)
             {
                 int len = this.BinaryReader.ReadByte();
-                byte[] b = this.BinaryReader.ReadBytes(len);
-
-                folderInfos[i].FolderName = Encoding.Default.GetString(b, 0, b.Length - 1);
+                folderInfos[i].FolderName = this.BinaryReader.ReadString(len - 1);
+                this.BinaryReader.ReadChar(); // Skip '\0' char
 
                 List<BSAFileInfo> fileInfos = new List<BSAFileInfo>();
                 while (fileInfos.Count < folderInfos[i].FileCount)
