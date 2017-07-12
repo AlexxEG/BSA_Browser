@@ -44,9 +44,8 @@
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="lz4.AnyCPU.loader, Version=1.0.4.0, Culture=neutral, PublicKeyToken=7aa3c636ef56b77f, processorArchitecture=MSIL">
-      <HintPath>..\packages\IonKiwi.lz4.net.1.0.5\lib\net45\lz4.AnyCPU.loader.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="lz4.AnyCPU.loader, Version=1.0.9.0, Culture=neutral, PublicKeyToken=7aa3c636ef56b77f, processorArchitecture=MSIL">
+      <HintPath>..\packages\IonKiwi.lz4.net.1.0.9\lib\net45\lz4.AnyCPU.loader.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,14 +71,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="lz4.x64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="lz4.x86.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
