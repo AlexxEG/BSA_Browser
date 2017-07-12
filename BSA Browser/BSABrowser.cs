@@ -1225,7 +1225,7 @@ namespace BSA_Browser
                     default:
                         MessageBox.Show(this,
                             "Filetype not supported.\n" +
-                            "Currently only txt, xml, dds and lst files can be previewed.",
+                            "Currently only .txt, .xml, .dds and .lst files can be previewed.",
                             "Error");
                         break;
                 }
