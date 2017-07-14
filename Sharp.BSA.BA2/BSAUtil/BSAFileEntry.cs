@@ -20,7 +20,7 @@ namespace SharpBSABA2.BSAUtil
         {
 
         }
-        
+
         public BSAFileEntry Initialize(bool compressed, string folder, uint offset, uint size)
         {
             Compressed = compressed;
