@@ -98,25 +98,8 @@ namespace S16.Drawing
             }
             else
             {
-                uint bps = header.width * header.pixelformat.rgbbitcount / 8;
-                compsize = bps * header.height * header.depth;
-                compdata = new byte[compsize];
-
-                MemoryStream mem = new MemoryStream((int)compsize);
-
-                byte[] temp;
-                for (int z = 0; z < header.depth; z++)
-                {
-                    for (int y = 0; y < header.height; y++)
-                    {
-                        temp = reader.ReadBytes((int)bps);
-                        mem.Write(temp, 0, temp.Length);
-                    }
-                }
-                mem.Seek(0, SeekOrigin.Begin);
-
-                mem.Read(compdata, 0, compdata.Length);
-                mem.Close();
+                compdata = reader.ReadBytes((int)reader.BaseStream.Length);
+                compsize = (uint)compdata.Length;
             }
 
             return compdata;
