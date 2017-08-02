@@ -1200,11 +1200,12 @@ namespace BSA_Browser
                         MessageBox.Show("Viewing of nif's disabled as their format differs from oblivion");
                         return;
                     case ".tga":
-                    case ".bmp":
-                    case ".jpg":
                         System.Diagnostics.Process.Start("obmm\\NifViewer.exe", fe.LowerName);
                         break;*/
                     case ".dds":
+                    case ".bmp":
+                    case ".png":
+                    case ".jpg":
                         try
                         {
                             DDSViewer.ShowDialog(this, fe);

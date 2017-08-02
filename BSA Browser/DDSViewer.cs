@@ -1,8 +1,9 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using S16.Drawing;
+﻿using S16.Drawing;
 using SharpBSABA2;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 namespace BSA_Browser
 {
@@ -11,18 +12,32 @@ namespace BSA_Browser
         private const int BackgroundBoxSize = 16;
 
         public DDSImage DDSImage { get; private set; }
+        public Size ImageSize { get; private set; }
+
+        Exception _ex;
 
         private DDSViewer(ArchiveEntry entry)
         {
             InitializeComponent();
 
-            var stream = entry.GetDataStream();
-            var dds = new DDSImage(stream);
+            try
+            {
+                this.LoadImage(entry);
+                this.CalculateStartingSize();
+            }
+            catch (Exception ex)
+            {
+                _ex = ex;
+            }
 
-            this.DDSImage = dds;
-            this.ImageBox.Image = dds.BitmapImage;
-            this.CalculateStartingSize();
             this.Text = entry.FileName;
+        }
+
+        private void DDSViewer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.ImageBox.Image = null;
+            this.DDSImage?.Dispose();
+            this.DDSImage = null;
         }
 
         private void DDSViewer_KeyUp(object sender, KeyEventArgs e)
@@ -58,7 +73,7 @@ namespace BSA_Browser
 
         private void DDSViewer_Resize(object sender, EventArgs e)
         {
-            if (ImageBox.Size.Height < DDSImage.BitmapImage.Height || ImageBox.Size.Width < DDSImage.BitmapImage.Width)
+            if (ImageBox.Size.Height < ImageSize.Height || ImageBox.Size.Width < ImageSize.Width)
             {
                 ImageBox.SizeMode = PictureBoxSizeMode.Zoom;
             }
@@ -68,10 +83,19 @@ namespace BSA_Browser
             }
         }
 
+        private void DDSViewer_Shown(object sender, EventArgs e)
+        {
+            if (_ex != null)
+            {
+                MessageBox.Show(this, "Couldn't load image.\n\n" + _ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
+        }
+
         private void CalculateStartingSize()
         {
-            int windowHeight = DDSImage.BitmapImage.Height;
-            int windowWidth = DDSImage.BitmapImage.Width;
+            int windowHeight = ImageSize.Height;
+            int windowWidth = ImageSize.Width;
             var workingArea = Screen.GetWorkingArea(this.DesktopLocation);
 
             // Calculate new width or height depending on screen ratio
@@ -80,7 +104,7 @@ namespace BSA_Browser
                 windowHeight = Math.Min(
                     windowHeight,
                     workingArea.Height - 100);
-                double dbl = (double)DDSImage.BitmapImage.Width / (double)DDSImage.BitmapImage.Height;
+                double dbl = (double)ImageSize.Width / (double)ImageSize.Height;
                 windowWidth = Convert.ToInt32(windowHeight * dbl);
             }
             else
@@ -88,11 +112,30 @@ namespace BSA_Browser
                 windowWidth = Math.Min(
                     windowWidth,
                     workingArea.Height - 100);
-                double dbl = (double)DDSImage.BitmapImage.Width / (double)DDSImage.BitmapImage.Height;
+                double dbl = (double)ImageSize.Width / (double)ImageSize.Height;
                 windowHeight = Convert.ToInt32(windowWidth * dbl);
             }
 
             this.ClientSize = new Size(windowWidth, windowHeight);
+        }
+
+        private void LoadImage(ArchiveEntry entry)
+        {
+            var stream = entry.GetDataStream();
+
+            if (Path.GetExtension(entry.FileName) == ".dds")
+            {
+                var dds = new DDSImage(stream);
+                this.DDSImage = dds;
+                this.ImageSize = new Size(dds.BitmapImage.Width, dds.BitmapImage.Height);
+                this.ImageBox.Image = dds.BitmapImage;
+            }
+            else
+            {
+                var bitmap = new Bitmap(stream);
+                this.ImageSize = new Size(bitmap.Width, bitmap.Height);
+                this.ImageBox.Image = bitmap;
+            }
         }
 
         public static DialogResult ShowDialog(IWin32Window owner, ArchiveEntry entry)
