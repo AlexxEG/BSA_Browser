@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Management.Automation;
 using System.Net;
 using System.Text;
@@ -1243,10 +1244,9 @@ namespace BSA_Browser
         /// <param name="file">The file to check.</param>
         private bool RecentListContains(string file)
         {
-            foreach (MenuItem item in recentFilesMenuItem.MenuItems)
-                if (item.Tag != null && item.Tag.ToString() == file) return true;
-
-            return false;
+            return recentFilesMenuItem.MenuItems
+                .Cast<MenuItem>()
+                .Any(x => x.Tag != null && x.Tag.ToString() == file);
         }
 
         /// <summary>
@@ -1255,10 +1255,9 @@ namespace BSA_Browser
         /// <param name="file">The file to get MenuItem from.</param>
         private MenuItem RecentListGetItemByString(string file)
         {
-            foreach (MenuItem item in recentFilesMenuItem.MenuItems)
-                if (item.Tag != null && item.Tag.ToString() == file) return item;
-
-            return null;
+            return recentFilesMenuItem.MenuItems
+                .Cast<MenuItem>()
+                .First(x => x.Tag != null && x.Tag.ToString() == file);
         }
 
         /// <summary>
