@@ -911,7 +911,7 @@ namespace BSA_Browser
                 {
                     var file = this.SelectedArchiveNode.Files[i];
 
-                    if (regex.IsMatch(Path.Combine(file.Folder, file.FileName)))
+                    if (regex.IsMatch(file.FullPath))
                         _files.Add(file);
                 }
             }
@@ -927,7 +927,7 @@ namespace BSA_Browser
                     {
                         var file = this.SelectedArchiveNode.Files[i];
 
-                        if (pattern.IsMatch(Path.Combine(file.Folder, file.FileName)))
+                        if (pattern.IsMatch(file.FullPath))
                             _files.Add(file);
                     }
                 }
