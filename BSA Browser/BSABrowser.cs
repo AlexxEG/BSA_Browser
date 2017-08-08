@@ -550,7 +550,7 @@ namespace BSA_Browser
 
         private void aboutMenuItem_Click(object sender, EventArgs e)
         {
-            using (AboutBox ab = new AboutBox())
+            using (var ab = new AboutBox())
             {
                 ab.ShowDialog(this);
             }
@@ -737,7 +737,7 @@ namespace BSA_Browser
 
             var newMenuItem = new MenuItem("Close");
             newMenuItem.Tag = newNode;
-            newMenuItem.Click += delegate (object sender, EventArgs e)
+            newMenuItem.Click += delegate
             {
                 this.CloseArchive(newNode);
 
@@ -798,7 +798,7 @@ namespace BSA_Browser
             }
             else
             {
-                var newItem = new MenuItem(file, new EventHandler(recentFiles_Click));
+                var newItem = new MenuItem(file, recentFiles_Click);
                 newItem.Tag = file;
                 recentFilesMenuItem.MenuItems.Add(2, newItem);
             }
@@ -880,7 +880,7 @@ namespace BSA_Browser
         {
             _searchDelayTimer?.Stop();
 
-            if (!(tvFolders.GetNodeCount(false) > 0) || tvFolders.SelectedNode == null)
+            if (tvFolders.GetNodeCount(false) < 1 || tvFolders.SelectedNode == null)
                 return;
 
             string str = txtSearch.Text;
@@ -1030,7 +1030,11 @@ namespace BSA_Browser
                     // Update ProgressForm's current file
                     bw.ReportProgress(-1, fe.FileName);
 
-                    if (!arguments.UseFolderPath)
+                    if (arguments.UseFolderPath)
+                    {
+                        fe.Extract(arguments.Folder, arguments.UseFolderPath);
+                    }
+                    else
                     {
                         if (extracted.ContainsKey(fe.FileName))
                         {
@@ -1046,10 +1050,6 @@ namespace BSA_Browser
                             fe.Extract(arguments.Folder, arguments.UseFolderPath);
                             extracted.Add(fe.FileName, 0);
                         }
-                    }
-                    else
-                    {
-                        fe.Extract(arguments.Folder, arguments.UseFolderPath);
                     }
 
                     count++;
@@ -1076,7 +1076,7 @@ namespace BSA_Browser
             else
             {
                 pf.UpdateProgress(e.ProgressPercentage);
-                this.Text = string.Format("{0}% - {1}", pf.GetProgressPercentage(), _untouchedTitle);
+                this.Text = $"{pf.GetProgressPercentage()}% - {_untouchedTitle}";
             }
         }
 
