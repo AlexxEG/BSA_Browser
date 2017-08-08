@@ -707,7 +707,7 @@ namespace BSA_Browser
                         if (SharpBSABA2.BSAUtil.BSA.IsSupportedVersion(path) == false)
                         {
                             if (MessageBox.Show(this,
-                                    "This BSA archive has an unknown version number.\n" + "Attempt to open anyway?",
+                                    "Archive has an unknown version number.\n" + "Attempt to open anyway?",
                                     "Warning",
                                     MessageBoxButtons.YesNo) != DialogResult.Yes)
                                 return;
