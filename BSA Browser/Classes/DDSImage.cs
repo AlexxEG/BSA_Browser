@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using System.IO;
+using System.Runtime.InteropServices;
 
 /* 
  * From https://gist.github.com/soeminnminn/e9c4c99867743a717f5b
@@ -25,12 +23,12 @@ namespace S16.Drawing
             if (ddsImage == null) return;
             if (ddsImage.Length == 0) return;
 
-            using (MemoryStream stream = new MemoryStream(ddsImage.Length))
+            using (var stream = new MemoryStream(ddsImage.Length))
             {
                 stream.Write(ddsImage, 0, ddsImage.Length);
                 stream.Seek(0, SeekOrigin.Begin);
 
-                using (BinaryReader reader = new BinaryReader(stream))
+                using (var reader = new BinaryReader(stream))
                 {
                     this.Parse(reader);
                 }
@@ -42,7 +40,7 @@ namespace S16.Drawing
             if (ddsImage == null) return;
             if (!ddsImage.CanRead) return;
 
-            using (BinaryReader reader = new BinaryReader(ddsImage))
+            using (var reader = new BinaryReader(ddsImage))
             {
                 this.Parse(reader);
             }
