@@ -37,6 +37,20 @@ namespace BSA_Browser
         ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
         Timer _searchDelayTimer;
 
+        /// <summary>
+        /// Get the selected archive.
+        /// </summary>
+        private ArchiveNode SelectedArchiveNode
+        {
+            get
+            {
+                if (tvFolders.SelectedNode == null)
+                    return null;
+
+                return this.GetRootNode(tvFolders.SelectedNode);
+            }
+        }
+
         public BSABrowser()
         {
             InitializeComponent();
@@ -165,7 +179,7 @@ namespace BSA_Browser
                 this.ExtractFiles(_openFolderDialog.Folder,
                     false,
                     true,
-                    this.GetSelectedArchiveNode().Archive.Files.ToArray());
+                    this.SelectedArchiveNode.Archive.Files.ToArray());
             }
         }
 
@@ -179,7 +193,7 @@ namespace BSA_Browser
                 this.ExtractFiles(_openFolderDialog.Folder,
                     true,
                     true,
-                    this.GetSelectedArchiveNode().Archive.Files.ToArray());
+                    this.SelectedArchiveNode.Archive.Files.ToArray());
             }
         }
 
@@ -361,10 +375,10 @@ namespace BSA_Browser
 
         private void closeSelectedArchiveMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.GetSelectedArchiveNode() == null)
+            if (this.SelectedArchiveNode == null)
                 return;
 
-            this.CloseArchive(GetSelectedArchiveNode());
+            this.CloseArchive(SelectedArchiveNode);
         }
 
         private void closeAllArchivesMenuItem_Click(object sender, EventArgs e)
@@ -550,7 +564,7 @@ namespace BSA_Browser
         private void contextMenu1_Popup(object sender, EventArgs e)
         {
             bool hasSelectedItems = lvFiles.SelectedIndices.Count > 0;
-            bool listIsEmpty = GetSelectedArchiveNode() == null || GetSelectedArchiveNode().Archive.Files.Count == 0;
+            bool listIsEmpty = SelectedArchiveNode == null || SelectedArchiveNode.Archive.Files.Count == 0;
 
             extractMenuItem.Enabled = hasSelectedItems;
             extractFoldersMenuItem.Enabled = hasSelectedItems;
@@ -808,7 +822,7 @@ namespace BSA_Browser
         /// <param name="archiveNode"></param>
         private void CloseArchive(ArchiveNode archiveNode)
         {
-            if (GetSelectedArchiveNode() == archiveNode)
+            if (SelectedArchiveNode == archiveNode)
                 this.ClearList();
 
             archiveNode.Archive.Close();
@@ -878,7 +892,7 @@ namespace BSA_Browser
             _files.Clear();
 
             if (str.Length == 0)
-                _files.AddRange(this.GetSelectedArchiveNode().Files);
+                _files.AddRange(this.SelectedArchiveNode.Files);
             else if (cbRegex.Checked)
             {
                 Regex regex;
@@ -894,9 +908,9 @@ namespace BSA_Browser
                     return;
                 }
 
-                for (int i = 0; i < this.GetSelectedArchiveNode().Files.Length; i++)
+                for (int i = 0; i < this.SelectedArchiveNode.Files.Length; i++)
                 {
-                    var file = this.GetSelectedArchiveNode().Files[i];
+                    var file = this.SelectedArchiveNode.Files[i];
 
                     if (regex.IsMatch(Path.Combine(file.Folder, file.FileName)))
                         _files.Add(file);
@@ -910,9 +924,9 @@ namespace BSA_Browser
 
                 try
                 {
-                    for (int i = 0; i < this.GetSelectedArchiveNode().Files.Length; i++)
+                    for (int i = 0; i < this.SelectedArchiveNode.Files.Length; i++)
                     {
-                        var file = this.GetSelectedArchiveNode().Files[i];
+                        var file = this.SelectedArchiveNode.Files[i];
 
                         if (pattern.IsMatch(Path.Combine(file.Folder, file.FileName)))
                             _files.Add(file);
@@ -971,7 +985,7 @@ namespace BSA_Browser
             {
                 try
                 {
-                    var root = GetSelectedArchiveNode();
+                    var root = SelectedArchiveNode;
 
                     foreach (var fe in files)
                         fe.Extract(folder, useFolderPath);
@@ -1117,17 +1131,6 @@ namespace BSA_Browser
             while (rootNode.Parent != null)
                 rootNode = rootNode.Parent;
             return rootNode as ArchiveNode;
-        }
-
-        /// <summary>
-        /// Returns the selected archive.
-        /// </summary>
-        private ArchiveNode GetSelectedArchiveNode()
-        {
-            if (tvFolders.SelectedNode == null)
-                return null;
-
-            return this.GetRootNode(tvFolders.SelectedNode);
         }
 
         /// <summary>
