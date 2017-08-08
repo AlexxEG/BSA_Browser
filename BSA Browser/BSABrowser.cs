@@ -106,8 +106,7 @@ namespace BSA_Browser
         public BSABrowser(string[] args)
             : this()
         {
-            foreach (string file in args)
-                this.OpenArchive(file, true);
+            this.OpenArchives(true, args);
         }
 
         private void BSABrowser_Load(object sender, EventArgs e)
@@ -158,9 +157,9 @@ namespace BSA_Browser
 
         private void File_DragDrop(object sender, DragEventArgs e)
         {
-            foreach (string file in (string[])e.Data.GetData(DataFormats.FileDrop))
-                if (IsSupportedFile(file))
-                    this.OpenArchive(file, true);
+            this.OpenArchives(true, ((string[])e.Data.GetData(DataFormats.FileDrop))
+                .Where(x => IsSupportedFile(x))
+                .ToArray());
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
