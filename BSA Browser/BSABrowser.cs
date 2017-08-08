@@ -984,8 +984,6 @@ namespace BSA_Browser
             {
                 try
                 {
-                    var root = SelectedArchiveNode;
-
                     foreach (var fe in files)
                         fe.Extract(folder, useFolderPath);
                 }
