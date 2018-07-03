@@ -82,6 +82,11 @@
             this.selectAllMenuItem1 = new System.Windows.Forms.MenuItem();
             this.cbDesc = new System.Windows.Forms.CheckBox();
             this.lFileCount = new System.Windows.Forms.Label();
+            this.archiveContextMenu = new System.Windows.Forms.ContextMenu();
+            this.extractAllFilesMenuItem = new System.Windows.Forms.MenuItem();
+            this.extractAllFoldersMenuItem = new System.Windows.Forms.MenuItem();
+            this.closeMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem8 = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -532,6 +537,38 @@
             this.lFileCount.Text = "0 files";
             this.lFileCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // archiveContextMenu
+            // 
+            this.archiveContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.extractAllFilesMenuItem,
+            this.extractAllFoldersMenuItem,
+            this.menuItem8,
+            this.closeMenuItem});
+            this.archiveContextMenu.Popup += new System.EventHandler(this.archiveContextMenu_Popup);
+            // 
+            // extractAllFilesMenuItem
+            // 
+            this.extractAllFilesMenuItem.Index = 0;
+            this.extractAllFilesMenuItem.Text = "Extract All Files";
+            this.extractAllFilesMenuItem.Click += new System.EventHandler(this.extractAllFilesMenuItem_Click);
+            // 
+            // extractAllFoldersMenuItem
+            // 
+            this.extractAllFoldersMenuItem.Index = 1;
+            this.extractAllFoldersMenuItem.Text = "Extract All Folders";
+            this.extractAllFoldersMenuItem.Click += new System.EventHandler(this.extractAllFoldersMenuItem_Click);
+            // 
+            // closeMenuItem
+            // 
+            this.closeMenuItem.Index = 3;
+            this.closeMenuItem.Text = "Close";
+            this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
+            // 
+            // menuItem8
+            // 
+            this.menuItem8.Index = 2;
+            this.menuItem8.Text = "-";
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -618,6 +655,11 @@
         private System.Windows.Forms.MenuItem copyMenuItem;
         private System.Windows.Forms.MenuItem selectAllMenuItem;
         private System.Windows.Forms.MenuItem previewMenuItem;
+        private System.Windows.Forms.ContextMenu archiveContextMenu;
+        private System.Windows.Forms.MenuItem extractAllFilesMenuItem;
+        private System.Windows.Forms.MenuItem extractAllFoldersMenuItem;
+        private System.Windows.Forms.MenuItem menuItem8;
+        private System.Windows.Forms.MenuItem closeMenuItem;
     }
 }
 

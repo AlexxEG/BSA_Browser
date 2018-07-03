@@ -670,6 +670,50 @@ namespace BSA_Browser
 
         #endregion
 
+        #region archiveContextMenu
+
+        private void archiveContextMenu_Popup(object sender, EventArgs e)
+        {
+            archiveContextMenu.Tag = tvFolders.GetNodeAt(tvFolders.PointToClient(Cursor.Position));
+        }
+
+        private void extractAllFilesMenuItem_Click(object sender, EventArgs e)
+        {
+            ArchiveNode node = archiveContextMenu.Tag as ArchiveNode;
+
+            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                this.ExtractFiles(_openFolderDialog.Folder,
+                    false, true,
+                    node.Archive.Files.ToArray());
+            }
+        }
+
+        private void extractAllFoldersMenuItem_Click(object sender, EventArgs e)
+        {
+            ArchiveNode node = archiveContextMenu.Tag as ArchiveNode;
+
+            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                this.ExtractFiles(_openFolderDialog.Folder,
+                    true, true,
+                    node.Archive.Files.ToArray());
+            }
+        }
+
+        private void closeMenuItem_Click(object sender, EventArgs e)
+        {
+            ArchiveNode node = archiveContextMenu.Tag as ArchiveNode;
+            this.CloseArchive(node);
+
+            if (tvFolders.Nodes.Count == 0)
+                this.ClearList();
+            else
+                this.DoSearch();
+        }
+
+        #endregion
+
         /// <summary>
         /// Opens the given archive, adding it to the TreeView and making it browsable.
         /// </summary>
@@ -729,19 +773,7 @@ namespace BSA_Browser
                 Path.GetFileNameWithoutExtension(path) + this.DetectGame(path),
                 archive);
 
-            var newMenuItem = new MenuItem("Close");
-            newMenuItem.Tag = newNode;
-            newMenuItem.Click += delegate
-            {
-                this.CloseArchive(newNode);
-
-                if (tvFolders.Nodes.Count == 0)
-                    this.ClearList();
-                else
-                    this.DoSearch();
-            };
-            var cm = new ContextMenu(new MenuItem[] { newMenuItem });
-            newNode.ContextMenu = cm;
+            newNode.ContextMenu = archiveContextMenu;
             newNode.Files = archive.Files.ToArray();
             newNode.Nodes.Add("empty");
             tvFolders.Nodes.Add(newNode);
