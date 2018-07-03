@@ -144,9 +144,9 @@
             this.btnExtractAll.Enabled = false;
             this.btnExtractAll.Location = new System.Drawing.Point(192, 276);
             this.btnExtractAll.Name = "btnExtractAll";
-            this.btnExtractAll.Size = new System.Drawing.Size(75, 23);
+            this.btnExtractAll.Size = new System.Drawing.Size(83, 23);
             this.btnExtractAll.TabIndex = 3;
-            this.btnExtractAll.Text = "Extract all";
+            this.btnExtractAll.Text = "Extract files";
             this.btnExtractAll.UseVisualStyleBackColor = true;
             this.btnExtractAll.Click += new System.EventHandler(this.btnExtractAll_Click);
             // 
@@ -162,11 +162,11 @@
             // 
             this.btnExtractAllFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExtractAllFolders.Enabled = false;
-            this.btnExtractAllFolders.Location = new System.Drawing.Point(273, 276);
+            this.btnExtractAllFolders.Location = new System.Drawing.Point(281, 276);
             this.btnExtractAllFolders.Name = "btnExtractAllFolders";
-            this.btnExtractAllFolders.Size = new System.Drawing.Size(110, 23);
+            this.btnExtractAllFolders.Size = new System.Drawing.Size(102, 23);
             this.btnExtractAllFolders.TabIndex = 2;
-            this.btnExtractAllFolders.Text = "Extract all folders";
+            this.btnExtractAllFolders.Text = "Extract folders";
             this.btnExtractAllFolders.UseVisualStyleBackColor = true;
             this.btnExtractAllFolders.Click += new System.EventHandler(this.btnExtractAllFolders_Click);
             // 

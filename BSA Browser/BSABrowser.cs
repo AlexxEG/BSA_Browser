@@ -175,10 +175,7 @@ namespace BSA_Browser
 
             if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                this.ExtractFiles(_openFolderDialog.Folder,
-                    false,
-                    true,
-                    this.SelectedArchiveNode.Archive.Files.ToArray());
+                this.ExtractFiles(_openFolderDialog.Folder, false, true, _files.ToArray());
             }
         }
 
@@ -189,10 +186,7 @@ namespace BSA_Browser
 
             if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                this.ExtractFiles(_openFolderDialog.Folder,
-                    true,
-                    true,
-                    this.SelectedArchiveNode.Archive.Files.ToArray());
+                this.ExtractFiles(_openFolderDialog.Folder, true, true, _files.ToArray());
             }
         }
 
