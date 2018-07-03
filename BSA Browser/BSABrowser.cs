@@ -798,9 +798,9 @@ namespace BSA_Browser
             }
             else
             {
-                var newItem = new MenuItem(file, recentFiles_Click);
-                newItem.Tag = file;
-                recentFilesMenuItem.MenuItems.Add(2, newItem);
+                var item = new MenuItem(file, recentFiles_Click);
+                item.Tag = file;
+                recentFilesMenuItem.MenuItems.Add(2, item);
             }
         }
 
