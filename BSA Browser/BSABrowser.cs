@@ -133,6 +133,8 @@ namespace BSA_Browser
             // Restore Regex preference
             cbRegex.Checked = Settings.Default.SearchUseRegex;
 
+            OpenArchiveDialog.InitialDirectory = Settings.Default.OpenArchiveDialog;
+
             // Show ! in main menu if update is available
             this.ShowUpdateNotification();
         }
@@ -356,6 +358,12 @@ namespace BSA_Browser
 
             lvFiles.ScrollToTop();
             this.DoSearch();
+        }
+
+        private void OpenArchiveDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            OpenArchiveDialog.InitialDirectory = Path.GetDirectoryName(OpenArchiveDialog.FileName);
+            Settings.Default.OpenArchiveDialog = OpenArchiveDialog.InitialDirectory;
         }
 
         #region mainMenu1

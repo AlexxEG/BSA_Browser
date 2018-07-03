@@ -162,6 +162,7 @@
             this.OpenArchiveDialog.Multiselect = true;
             this.OpenArchiveDialog.RestoreDirectory = true;
             this.OpenArchiveDialog.Title = "Select archive to open";
+            this.OpenArchiveDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenArchiveDialog_FileOk);
             // 
             // btnExtractAllFolders
             // 
