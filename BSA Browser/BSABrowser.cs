@@ -1270,6 +1270,7 @@ namespace BSA_Browser
             else
                 Settings.Default.RecentFiles.Clear();
 
+            // Go bottom-to-top, stopping before clear list and separator items
             for (int i = recentFilesMenuItem.MenuItems.Count - 1; i != 1; i--)
                 Settings.Default.RecentFiles.Add(recentFilesMenuItem.MenuItems[i].Tag.ToString());
         }
