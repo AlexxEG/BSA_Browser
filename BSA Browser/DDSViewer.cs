@@ -123,7 +123,7 @@ namespace BSA_Browser
         {
             var stream = entry.GetDataStream();
 
-            if (Path.GetExtension(entry.FileName) == ".dds")
+            if (Path.GetExtension(entry.FileName).ToLower() == ".dds")
             {
                 var dds = new DDSImage(stream);
                 this.DDSImage = dds;
