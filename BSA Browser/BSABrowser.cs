@@ -22,8 +22,8 @@ namespace BSA_Browser
     public enum ArchiveFileSortOrder
     {
         FolderName,
-        FileName,
         FileSize,
+        FileName,
         FileType
     }
 
@@ -127,8 +127,9 @@ namespace BSA_Browser
             Settings.Default.WindowStates[this.Name].RestoreForm(this);
 
             // Restore sorting preferences
-            cmbSortOrder.SelectedIndex = (int)Settings.Default.SortType;
-            cbDesc.Checked = Settings.Default.SortDesc;
+            lvFiles.SetSortIcon(
+                (int)Settings.Default.SortType,
+                Settings.Default.SortDesc ? SortOrder.Ascending : SortOrder.Descending);
 
             // Restore Regex preference
             cbRegex.Checked = Settings.Default.SearchUseRegex;
@@ -197,16 +198,25 @@ namespace BSA_Browser
             this.PreviewSelected();
         }
 
-        private void cmbSortOrder_SelectedIndexChanged(object sender, EventArgs e)
+        private void lvFiles_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            this.SortList();
-            Settings.Default.SortType = (ArchiveFileSortOrder)cmbSortOrder.SelectedIndex;
-        }
+            var type = (ArchiveFileSortOrder)e.Column;
 
-        private void cbDesc_CheckedChanged(object sender, EventArgs e)
-        {
+            if (Settings.Default.SortType == type)
+            {
+                // Reverse order
+                Settings.Default.SortDesc = !Settings.Default.SortDesc;
+            }
+            else
+            {
+                Settings.Default.SortType = type;
+                Settings.Default.SortDesc = true;
+            }
+
+            lvFiles.SetSortIcon(e.Column,
+                Settings.Default.SortDesc ? SortOrder.Ascending : SortOrder.Descending);
+
             this.SortList();
-            Settings.Default.SortDesc = cbDesc.Checked;
         }
 
         private void lvFiles_DoubleClick(object sender, EventArgs e)
@@ -1334,7 +1344,7 @@ namespace BSA_Browser
         /// </summary>
         private void SortList()
         {
-            ArchiveFileSorter.SetSorter((ArchiveFileSortOrder)cmbSortOrder.SelectedIndex, cbDesc.Checked);
+            ArchiveFileSorter.SetSorter(Settings.Default.SortType, Settings.Default.SortDesc);
             lvFiles.BeginUpdate();
             _files.Sort(_filesSorter);
             lvFiles.EndUpdate();

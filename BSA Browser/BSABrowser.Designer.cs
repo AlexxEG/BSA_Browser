@@ -31,13 +31,12 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BSABrowser));
             this.lvFiles = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnFileSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnExtractAll = new System.Windows.Forms.Button();
             this.OpenArchiveDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnExtractAllFolders = new System.Windows.Forms.Button();
-            this.cmbSortOrder = new System.Windows.Forms.ComboBox();
             this.btnPreview = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -80,13 +79,13 @@
             this.copyFolderPathMenuItem1 = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem1 = new System.Windows.Forms.MenuItem();
             this.selectAllMenuItem1 = new System.Windows.Forms.MenuItem();
-            this.cbDesc = new System.Windows.Forms.CheckBox();
             this.lFileCount = new System.Windows.Forms.Label();
             this.archiveContextMenu = new System.Windows.Forms.ContextMenu();
             this.extractAllFilesMenuItem = new System.Windows.Forms.MenuItem();
             this.extractAllFoldersMenuItem = new System.Windows.Forms.MenuItem();
-            this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem8 = new System.Windows.Forms.MenuItem();
+            this.closeMenuItem = new System.Windows.Forms.MenuItem();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -98,11 +97,10 @@
             this.lvFiles.AllowDrop = true;
             this.lvFiles.AutoArrange = false;
             this.lvFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
+            this.columnFilePath,
+            this.columnFileSize});
             this.lvFiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvFiles.FullRowSelect = true;
-            this.lvFiles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvFiles.LabelWrap = false;
             this.lvFiles.Location = new System.Drawing.Point(0, 0);
             this.lvFiles.Name = "lvFiles";
@@ -112,6 +110,7 @@
             this.lvFiles.UseCompatibleStateImageBehavior = false;
             this.lvFiles.View = System.Windows.Forms.View.Details;
             this.lvFiles.VirtualMode = true;
+            this.lvFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvFiles_ColumnClick);
             this.lvFiles.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.lvFiles_ItemDrag);
             this.lvFiles.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.lvFiles_RetrieveVirtualItem);
             this.lvFiles.SelectedIndexChanged += new System.EventHandler(this.lvFiles_SelectedIndexChanged);
@@ -121,16 +120,16 @@
             this.lvFiles.Enter += new System.EventHandler(this.lvFiles_Enter);
             this.lvFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvFiles_KeyDown);
             // 
-            // columnHeader1
+            // columnFilePath
             // 
-            this.columnHeader1.Text = "File path";
-            this.columnHeader1.Width = 227;
+            this.columnFilePath.Text = "File Path";
+            this.columnFilePath.Width = 227;
             // 
-            // columnHeader2
+            // columnFileSize
             // 
-            this.columnHeader2.Text = "File Size";
-            this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.columnHeader2.Width = 80;
+            this.columnFileSize.Text = "File Size";
+            this.columnFileSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnFileSize.Width = 80;
             // 
             // btnOpen
             // 
@@ -175,22 +174,6 @@
             this.btnExtractAllFolders.Text = "Extract folders";
             this.btnExtractAllFolders.UseVisualStyleBackColor = true;
             this.btnExtractAllFolders.Click += new System.EventHandler(this.btnExtractAllFolders_Click);
-            // 
-            // cmbSortOrder
-            // 
-            this.cmbSortOrder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbSortOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSortOrder.FormattingEnabled = true;
-            this.cmbSortOrder.Items.AddRange(new object[] {
-            "Folder name",
-            "File name",
-            "File size",
-            "File extension"});
-            this.cmbSortOrder.Location = new System.Drawing.Point(501, 278);
-            this.cmbSortOrder.Name = "cmbSortOrder";
-            this.cmbSortOrder.Size = new System.Drawing.Size(121, 21);
-            this.cmbSortOrder.TabIndex = 5;
-            this.cmbSortOrder.SelectedIndexChanged += new System.EventHandler(this.cmbSortOrder_SelectedIndexChanged);
             // 
             // btnPreview
             // 
@@ -513,20 +496,6 @@
             this.selectAllMenuItem1.Text = "Select All";
             this.selectAllMenuItem1.Click += new System.EventHandler(this.selectAllMenuItem1_Click);
             // 
-            // cbDesc
-            // 
-            this.cbDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbDesc.AutoSize = true;
-            this.cbDesc.Checked = true;
-            this.cbDesc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDesc.Location = new System.Drawing.Point(444, 280);
-            this.cbDesc.Name = "cbDesc";
-            this.cbDesc.Size = new System.Drawing.Size(51, 17);
-            this.cbDesc.TabIndex = 11;
-            this.cbDesc.Text = "Desc";
-            this.cbDesc.UseVisualStyleBackColor = true;
-            this.cbDesc.CheckedChanged += new System.EventHandler(this.cbDesc_CheckedChanged);
-            // 
             // lFileCount
             // 
             this.lFileCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -559,16 +528,16 @@
             this.extractAllFoldersMenuItem.Text = "Extract All Folders";
             this.extractAllFoldersMenuItem.Click += new System.EventHandler(this.extractAllFoldersMenuItem_Click);
             // 
+            // menuItem8
+            // 
+            this.menuItem8.Index = 2;
+            this.menuItem8.Text = "-";
+            // 
             // closeMenuItem
             // 
             this.closeMenuItem.Index = 3;
             this.closeMenuItem.Text = "Close";
             this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
-            // 
-            // menuItem8
-            // 
-            this.menuItem8.Index = 2;
-            this.menuItem8.Text = "-";
             // 
             // BSABrowser
             // 
@@ -576,7 +545,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 340);
             this.Controls.Add(this.lFileCount);
-            this.Controls.Add(this.cbDesc);
             this.Controls.Add(this.cbRegex);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.label1);
@@ -585,7 +553,6 @@
             this.Controls.Add(this.btnPreview);
             this.Controls.Add(this.btnExtractAllFolders);
             this.Controls.Add(this.btnExtractAll);
-            this.Controls.Add(this.cmbSortOrder);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.mainMenu1;
             this.MinimumSize = new System.Drawing.Size(639, 180);
@@ -608,9 +575,8 @@
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.Button btnExtractAll;
         private System.Windows.Forms.OpenFileDialog OpenArchiveDialog;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnFilePath;
         private System.Windows.Forms.Button btnExtractAllFolders;
-        private System.Windows.Forms.ComboBox cmbSortOrder;
         private System.Windows.Forms.Button btnPreview;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label label1;
@@ -629,7 +595,6 @@
         private System.Windows.Forms.MenuItem menuItem10;
         private System.Windows.Forms.MenuItem exitMenuItem;
         private System.Windows.Forms.MenuItem optionsMenuItem;
-        private System.Windows.Forms.CheckBox cbDesc;
         private System.Windows.Forms.MenuItem quickExtractsMenuItem;
         private System.Windows.Forms.MenuItem menuItem5;
         private System.Windows.Forms.MenuItem copyPathMenuItem1;
@@ -642,7 +607,7 @@
         private System.Windows.Forms.MenuItem helpMenuItem;
         private System.Windows.Forms.MenuItem aboutMenuItem;
         private System.Windows.Forms.Label lFileCount;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnFileSize;
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem openFoldersMenuItem;
         private System.Windows.Forms.MenuItem checkForUpdateMenuItem;
@@ -661,6 +626,7 @@
         private System.Windows.Forms.MenuItem extractAllFoldersMenuItem;
         private System.Windows.Forms.MenuItem menuItem8;
         private System.Windows.Forms.MenuItem closeMenuItem;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 
