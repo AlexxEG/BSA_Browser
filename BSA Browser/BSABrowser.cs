@@ -1253,6 +1253,7 @@ namespace BSA_Browser
                     case ".lst":
                     case ".txt":
                     case ".xml":
+                    case ".psc":
                         string dest = Program.CreateTempDirectory();
 
                         fe.Extract(dest, false);
