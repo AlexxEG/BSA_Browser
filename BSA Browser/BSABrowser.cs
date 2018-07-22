@@ -1393,14 +1393,14 @@ namespace BSA_Browser
             switch (order)
             {
                 case ArchiveFileSortOrder.FolderName:
-                    return (desc) ? string.Compare(fa.LowerPath, fb.LowerPath) : string.Compare(fb.LowerPath, fa.LowerPath);
+                    return (desc) ? string.CompareOrdinal(fa.LowerPath, fb.LowerPath) : string.CompareOrdinal(fb.LowerPath, fa.LowerPath);
                 case ArchiveFileSortOrder.FileName:
-                    return (desc) ? string.Compare(fa.FileName, fb.FileName) : string.Compare(fb.FileName, fa.FileName);
+                    return (desc) ? string.CompareOrdinal(fa.FileName, fb.FileName) : string.CompareOrdinal(fb.FileName, fa.FileName);
                 case ArchiveFileSortOrder.FileSize:
                     return (desc) ? fa.DisplaySize.CompareTo(fb.DisplaySize) : fb.DisplaySize.CompareTo(fa.DisplaySize);
                 case ArchiveFileSortOrder.FileType:
-                    return (desc) ? string.Compare(Path.GetExtension(fa.FileName), Path.GetExtension(fb.FileName)) :
-                                    string.Compare(Path.GetExtension(fb.FileName), Path.GetExtension(fa.FileName));
+                    return (desc) ? string.CompareOrdinal(Path.GetExtension(fa.FileName), Path.GetExtension(fb.FileName)) :
+                                    string.CompareOrdinal(Path.GetExtension(fb.FileName), Path.GetExtension(fa.FileName));
                 default:
                     return 0;
             }
