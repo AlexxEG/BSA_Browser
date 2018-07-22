@@ -1,11 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSA Browser", "BSA Browser\BSA Browser.csproj", "{63F0485C-8F38-4636-B255-3328E660664D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharp.BSA.BA2", "Sharp.BSA.BA2\Sharp.BSA.BA2.csproj", "{CA4A7785-F222-4CAA-84EF-6BFDD584DC83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A7F83BD8-772D-469B-8816-B8D9FB0378EC}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.txt = CHANGELOG.txt
+		Inno Setup Script.iss = Inno Setup Script.iss
+		LICENSE = LICENSE
+		README.md = README.md
+		VERSION = VERSION
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,5 +43,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA224566-FAC8-4359-AE27-A4FB60386B00}
 	EndGlobalSection
 EndGlobal
