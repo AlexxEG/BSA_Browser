@@ -152,7 +152,7 @@
             this.btnExtractAll.TabIndex = 3;
             this.btnExtractAll.Text = "Extract files";
             this.btnExtractAll.UseVisualStyleBackColor = true;
-            this.btnExtractAll.Click += new System.EventHandler(this.btnExtractAll_Click);
+            this.btnExtractAll.Click += new System.EventHandler(this.btnExtractFiles_Click);
             // 
             // OpenArchiveDialog
             // 
@@ -173,7 +173,7 @@
             this.btnExtractAllFolders.TabIndex = 2;
             this.btnExtractAllFolders.Text = "Extract folders";
             this.btnExtractAllFolders.UseVisualStyleBackColor = true;
-            this.btnExtractAllFolders.Click += new System.EventHandler(this.btnExtractAllFolders_Click);
+            this.btnExtractAllFolders.Click += new System.EventHandler(this.btnExtractFolders_Click);
             // 
             // btnPreview
             // 

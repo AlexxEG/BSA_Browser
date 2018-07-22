@@ -171,7 +171,7 @@ namespace BSA_Browser
                 this.OpenArchives(true, OpenArchiveDialog.FileNames);
         }
 
-        private void btnExtractAll_Click(object sender, EventArgs e)
+        private void btnExtractFiles_Click(object sender, EventArgs e)
         {
             if (tvFolders.SelectedNode == null)
                 return;
@@ -182,7 +182,7 @@ namespace BSA_Browser
             }
         }
 
-        private void btnExtractAllFolders_Click(object sender, EventArgs e)
+        private void btnExtractFolders_Click(object sender, EventArgs e)
         {
             if (tvFolders.SelectedNode == null)
                 return;
