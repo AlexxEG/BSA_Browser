@@ -1,4 +1,0 @@
-[ ] Extract file with command prompt. See 'Skyrimfan5' comment from http://www.nexusmods.com/fallout4/mods/17061
-
-
-[x] Preview textures (make DDS viewer or extract to temp folder and open in default)
