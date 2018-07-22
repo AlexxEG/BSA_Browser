@@ -871,6 +871,8 @@ namespace BSA_Browser
 
             tvFolders.Nodes.Remove(archiveNode);
 
+            GC.Collect();
+
             if (tvFolders.GetNodeCount(false) == 0)
             {
                 btnPreview.Enabled = false;
@@ -890,6 +892,8 @@ namespace BSA_Browser
                 node.Archive.Close();
 
             tvFolders.Nodes.Clear();
+
+            GC.Collect();
 
             // Disable buttons
             btnPreview.Enabled = btnExtractAllFolders.Enabled = btnExtractAll.Enabled = false;
