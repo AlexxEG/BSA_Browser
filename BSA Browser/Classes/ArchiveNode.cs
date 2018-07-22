@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
 using SharpBSABA2;
 
 namespace BSA_Browser.Classes
@@ -6,7 +7,13 @@ namespace BSA_Browser.Classes
     public class ArchiveNode : TreeNode
     {
         public Archive Archive { get; private set; }
-        public ArchiveEntry[] AllFiles { get; set; }
+        /// <summary>
+        /// Gets all files in the archive.
+        /// </summary>
+        public List<ArchiveEntry> AllFiles { get; set; }
+        /// <summary>
+        /// Gets all the files to be shown currently.
+        /// </summary>
         public ArchiveEntry[] Files { get; set; }
 
         public ArchiveNode(string text, Archive archive)

@@ -306,7 +306,8 @@ namespace BSA_Browser
 
             e.Node.Nodes.Clear();
             var nodes = new Dictionary<string, TreeNode>();
-            rootNode.AllFiles = (ArchiveEntry[])rootNode.Files.Clone();
+            rootNode.AllFiles = new List<ArchiveEntry>(rootNode.Files);
+            rootNode.AllFiles.Sort(_filesSorter);
 
             // This builds the all TreeNodes
             foreach (var lvi in rootNode.AllFiles)
@@ -354,15 +355,16 @@ namespace BSA_Browser
                 tvFolders_BeforeExpand(null, new TreeViewCancelEventArgs(e.Node, false, TreeViewAction.Unknown));
 
             if (path == null) // Root node is selected, so show all files
-                rootNode.Files = rootNode.AllFiles;
+                rootNode.Files = rootNode.AllFiles.ToArray();
             else
             {
                 // Only show files under selected node
-                var lvis = new List<ArchiveEntry>(rootNode.AllFiles.Length);
+                var lvis = new List<ArchiveEntry>(rootNode.AllFiles.Count);
 
                 foreach (var lvi in rootNode.AllFiles)
                     if (lvi.FullPath.StartsWith(path)) lvis.Add(lvi);
 
+                lvis.TrimExcess();
                 rootNode.Files = lvis.ToArray();
             }
 
@@ -986,8 +988,6 @@ namespace BSA_Browser
                 }
             }
 
-            _files.Sort(_filesSorter);
-
             // Refresh list items
             lvFiles.BeginUpdate();
             lvFiles.VirtualListSize = _files.Count;
@@ -1349,7 +1349,12 @@ namespace BSA_Browser
         {
             ArchiveFileSorter.SetSorter(Settings.Default.SortType, Settings.Default.SortDesc);
             lvFiles.BeginUpdate();
-            _files.Sort(_filesSorter);
+
+            // Sort the archive so it only needs to be done once
+            this.SelectedArchiveNode.AllFiles.Sort(_filesSorter);
+            // Repopulate 'SelectedArchiveNode.Files' with sorted list by triggering this event
+            tvFolders_AfterSelect(null, new TreeViewEventArgs(tvFolders.SelectedNode, TreeViewAction.Unknown));
+
             lvFiles.EndUpdate();
         }
 
