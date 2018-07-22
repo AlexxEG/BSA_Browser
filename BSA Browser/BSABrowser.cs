@@ -721,8 +721,7 @@ namespace BSA_Browser
 
         private void closeMenuItem_Click(object sender, EventArgs e)
         {
-            ArchiveNode node = archiveContextMenu.Tag as ArchiveNode;
-            this.CloseArchive(node);
+            this.CloseArchive((ArchiveNode)archiveContextMenu.Tag);
 
             if (tvFolders.Nodes.Count == 0)
                 this.ClearList();
