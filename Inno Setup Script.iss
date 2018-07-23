@@ -35,6 +35,7 @@ VersionInfoVersion={#MyAppVersion}
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
+Name: "cli"; Description: "Install CLI executable"; GroupDescription: "Optional"; Flags: unchecked
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 Name: "bsaassociation"; Description: "Associate "".bsa"" extension"; GroupDescription: File extensions:
@@ -50,6 +51,8 @@ Source: "BSA Browser\bin\Release\lz4.x86.dll"; DestDir: "{app}"; Flags: ignoreve
 Source: "BSA Browser\bin\Release\Sharp.BSA.BA2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\System.Management.Automation.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+; Optional
+Source: "BSA Browser CLI\bin\Release\bsab.exe"; DestDir: "{app}"; Flags: ignoreversion; Tasks: cli
 
 [Registry]
 Root: HKCR; Subkey: ".bsa"; ValueType: string; ValueName: ""; ValueData: "BSABrowser"; Flags: uninsdeletevalue; Tasks: bsaassociation
