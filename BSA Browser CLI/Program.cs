@@ -61,7 +61,7 @@ namespace BSA_Browser_CLI
                 }
             }
 
-            exit:
+            exit:;
 
 #if DEBUG
             Console.WriteLine("Press any key to exit...");
