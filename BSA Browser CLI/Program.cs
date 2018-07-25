@@ -33,9 +33,20 @@ namespace BSA_Browser_CLI
                     goto exit;
                 }
 
-                if (args.Contains("/l"))
+                string checkList = string.Empty;
+
+                if (!string.IsNullOrEmpty((checkList = args.First(x => x.StartsWith("/l")))))
                 {
-                    PrintFileList(input);
+                    var options = checkList.Remove(0, 2);
+                    try
+                    {
+                        PrintFileList(input, options);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        goto exit;
+                    }
                 }
 
                 if (args.Contains("/e"))
@@ -130,8 +141,15 @@ namespace BSA_Browser_CLI
             }
         }
 
-        private static void PrintFileList(List<string> files)
+        private static void PrintFileList(List<string> files, string options)
         {
+            if (!string.IsNullOrEmpty(options) &&
+                                      options.ToLower() != ":a" &&
+                                      options.ToLower() != ":f")
+            {
+                throw new Exception("Unknown option(s) for list: " + options);
+            }
+
             files.ForEach(file =>
             {
                 if (files.Count > 1)
@@ -145,7 +163,19 @@ namespace BSA_Browser_CLI
                 }
                 else
                 {
-                    archive.Files.ForEach(x => Console.WriteLine((files.Count > 1 ? "\t" : "") + x.FullPath));
+                    string prefix = string.Empty;
+
+                    switch (options.ToLower())
+                    {
+                        case ":a":
+                            prefix = Path.GetFileName(archive.FullPath);
+                            break;
+                        case ":f":
+                            prefix = archive.FullPath;
+                            break;
+                    }
+
+                    archive.Files.ForEach(x => Console.WriteLine((files.Count > 1 ? "\t" : "") + Path.Combine(prefix, x.FullPath)));
                 }
 
                 Console.WriteLine();
@@ -156,11 +186,13 @@ namespace BSA_Browser_CLI
         {
             Console.WriteLine("Extract or list files inside .bsa and .ba2 archives.");
             Console.WriteLine();
-            Console.WriteLine("bsab [/e] [/l] FILE DESTINATION");
+            Console.WriteLine("bsab [/e] [/l:[options]] FILE DESTINATION");
             Console.WriteLine();
-            Console.WriteLine("  /e \t Extract all files");
-            Console.WriteLine("  /l \t List all files");
-            Console.WriteLine("  /ati \t Use ATI header for textures");
+            Console.WriteLine("  /e \t\t Extract all files");
+            Console.WriteLine("  /l \t\t List all files");
+            Console.WriteLine("    options \t  A \t Prepend each line with archive filename");
+            Console.WriteLine("    \t      \t  F \t Prepend each line with full archive file path");
+            Console.WriteLine("  /ati \t\t Use ATI header for textures");
             Console.WriteLine();
         }
     }
