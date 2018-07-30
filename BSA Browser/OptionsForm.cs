@@ -17,9 +17,9 @@ namespace BSA_Browser
             chbSortBSADirectories.Checked = Settings.Default.SortArchiveDirectories;
             chbUseATIFourCC.Checked = Settings.Default.UseATIFourCC;
 
-            foreach (QuickExtractPath path in Settings.Default.QuickExtractPaths)
+            foreach (var path in Settings.Default.QuickExtractPaths)
             {
-                ListViewItem item = new ListViewItem(path.Name);
+                var item = new ListViewItem(path.Name);
                 item.SubItems.Add(path.Path);
                 item.SubItems.Add(path.UseFolderPath ? "Yes" : "No");
                 item.Tag = path;
@@ -51,11 +51,9 @@ namespace BSA_Browser
             // Center form to Owner
             if (this.Owner != null)
             {
-                Point location = new Point(
+                this.Location = new Point(
                     Owner.Location.X + Owner.Width / 2 - Width / 2,
                     Owner.Location.Y + Owner.Height / 2 - Height / 2);
-
-                this.Location = location;
             }
         }
 
@@ -81,13 +79,13 @@ namespace BSA_Browser
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            using (QuickExtractDialog cpd = new QuickExtractDialog())
+            using (var cpd = new QuickExtractDialog())
             {
                 if (cpd.ShowDialog(this) == DialogResult.Cancel)
                     return;
 
-                QuickExtractPath path = new QuickExtractPath(cpd.PathName, cpd.Path, cpd.UseFolderPath);
-                ListViewItem newItem = new ListViewItem(cpd.PathName);
+                var path = new QuickExtractPath(cpd.PathName, cpd.Path, cpd.UseFolderPath);
+                var newItem = new ListViewItem(cpd.PathName);
 
                 newItem.SubItems.Add(cpd.Path);
                 newItem.SubItems.Add(cpd.UseFolderPath ? "Yes" : "No");
@@ -102,10 +100,10 @@ namespace BSA_Browser
             if (lvQuickExtract.SelectedItems.Count == 0)
                 return;
 
-            using (QuickExtractDialog cpd = new QuickExtractDialog())
+            using (var cpd = new QuickExtractDialog())
             {
-                ListViewItem item = (ListViewItem)lvQuickExtract.SelectedItems[0];
-                QuickExtractPath path = (QuickExtractPath)item.Tag;
+                var item = lvQuickExtract.SelectedItems[0];
+                var path = (QuickExtractPath)item.Tag;
 
                 if (cpd.ShowDialog(this, path) == DialogResult.Cancel)
                     return;
