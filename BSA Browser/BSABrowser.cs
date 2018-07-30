@@ -173,23 +173,17 @@ namespace BSA_Browser
 
         private void btnExtractFiles_Click(object sender, EventArgs e)
         {
-            if (tvFolders.SelectedNode == null)
-                return;
-
-            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            if (tvFolders.SelectedNode != null)
             {
-                this.ExtractFiles(_openFolderDialog.Folder, false, true, _files.ToArray());
+                this.ExtractFilesTo(false, true, () => _files);
             }
         }
 
         private void btnExtractFolders_Click(object sender, EventArgs e)
         {
-            if (tvFolders.SelectedNode == null)
-                return;
-
-            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            if (tvFolders.SelectedNode != null)
             {
-                this.ExtractFiles(_openFolderDialog.Folder, true, true, _files.ToArray());
+                this.ExtractFilesTo(true, true, () => _files);
             }
         }
 
@@ -588,33 +582,17 @@ namespace BSA_Browser
 
         private void extractMenuItem_Click(object sender, EventArgs e)
         {
-            if (lvFiles.SelectedIndices.Count == 0)
-                return;
-
-            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            if (lvFiles.SelectedIndices.Count > 0)
             {
-                var files = new List<ArchiveEntry>();
-
-                foreach (int index in lvFiles.SelectedIndices)
-                    files.Add(_files[index]);
-
-                this.ExtractFiles(_openFolderDialog.Folder, false, true, files.ToArray());
+                this.ExtractFilesTo(false, true, () => lvFiles.SelectedIndices.Cast<int>().Select(index => _files[index]));
             }
         }
 
         private void extractFoldersMenuItem_Click(object sender, EventArgs e)
         {
-            if (lvFiles.SelectedIndices.Count == 0)
-                return;
-
-            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            if (lvFiles.SelectedIndices.Count > 0)
             {
-                var files = new List<ArchiveEntry>();
-
-                foreach (int index in lvFiles.SelectedIndices)
-                    files.Add(_files[index]);
-
-                this.ExtractFiles(_openFolderDialog.Folder, true, true, files.ToArray());
+                this.ExtractFilesTo(true, true, () => lvFiles.SelectedIndices.Cast<int>().Select(index => _files[index]));
             }
         }
 
@@ -699,26 +677,12 @@ namespace BSA_Browser
 
         private void extractAllFilesMenuItem_Click(object sender, EventArgs e)
         {
-            ArchiveNode node = archiveContextMenu.Tag as ArchiveNode;
-
-            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                this.ExtractFiles(_openFolderDialog.Folder,
-                    false, true,
-                    node.Archive.Files.ToArray());
-            }
+            this.ExtractFilesTo(false, true, () => (archiveContextMenu.Tag as ArchiveNode).Archive.Files);
         }
 
         private void extractAllFoldersMenuItem_Click(object sender, EventArgs e)
         {
-            ArchiveNode node = archiveContextMenu.Tag as ArchiveNode;
-
-            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                this.ExtractFiles(_openFolderDialog.Folder,
-                    true, true,
-                    node.Archive.Files.ToArray());
-            }
+            this.ExtractFilesTo(true, true, () => (archiveContextMenu.Tag as ArchiveNode).Archive.Files);
         }
 
         private void closeMenuItem_Click(object sender, EventArgs e)
@@ -1038,6 +1002,24 @@ namespace BSA_Browser
                 {
                     MessageBox.Show(this, ex.Message, "Error");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Opens folder browser to select where to extract file(s).
+        /// </summary>
+        /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
+        /// <param name="gui">True to show a progression dialog.</param>
+        /// <param name="selector">The files in the selected archive to extract.</param>
+        private void ExtractFilesTo(bool useFolderPath, bool gui, Func<IEnumerable<ArchiveEntry>> selector)
+        {
+            var archive = this.SelectedArchiveNode.Archive.FullPath;
+
+            _openFolderDialog.DefaultFolder = Path.GetDirectoryName(archive);
+
+            if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                this.ExtractFiles(_openFolderDialog.Folder, useFolderPath, gui, selector.Invoke().ToArray());
             }
         }
 
