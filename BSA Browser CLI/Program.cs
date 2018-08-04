@@ -35,7 +35,7 @@ namespace BSA_Browser_CLI
 
                 string checkList = string.Empty;
 
-                if (!string.IsNullOrEmpty((checkList = args.FirstOrDefault(x => x.StartsWith("/l")))))
+                if (!string.IsNullOrEmpty((checkList = args.FirstOrDefault(x => x.ToLower().StartsWith("/l")))))
                 {
                     var options = checkList.Remove(0, 2);
                     try
@@ -49,7 +49,7 @@ namespace BSA_Browser_CLI
                     }
                 }
 
-                if (args.Contains("/e"))
+                if (args.Contains("/e") || args.Contains("/E"))
                 {
                     // Last argument should be the destination
                     string destination = args[args.Length - 1];
