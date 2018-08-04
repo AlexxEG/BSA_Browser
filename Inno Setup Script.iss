@@ -46,13 +46,15 @@ Source: "BSA Browser\bin\Release\BSA Browser.exe"; DestDir: "{app}"; Flags: igno
 Source: "BSA Browser\bin\Release\BSA Browser.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\lz4.AnyCPU.loader.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "BSA Browser\bin\Release\lz4.x64.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "BSA Browser\bin\Release\lz4.x86.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\Sharp.BSA.BA2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\System.Management.Automation.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 ; Optional
 Source: "BSA Browser CLI\bin\Release\bsab.exe"; DestDir: "{app}"; Flags: ignoreversion; Tasks: cli
+
+[InstallDelete]
+Type: files; Name: {app}\lz4.x64.dll
+Type: files; Name: {app}\lz4.x86.dll
 
 [Registry]
 Root: HKCR; Subkey: ".bsa"; ValueType: string; ValueName: ""; ValueData: "BSABrowser"; Flags: uninsdeletevalue; Tasks: bsaassociation
