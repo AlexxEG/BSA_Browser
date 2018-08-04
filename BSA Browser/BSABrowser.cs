@@ -155,14 +155,21 @@ namespace BSA_Browser
         private void File_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Link;
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                e.Effect = files.All(this.IsSupportedFile) ? DragDropEffects.Link : DragDropEffects.Scroll;
+            }
         }
 
         private void File_DragDrop(object sender, DragEventArgs e)
         {
-            this.OpenArchives(true, ((string[])e.Data.GetData(DataFormats.FileDrop))
-                .Where(x => IsSupportedFile(x))
-                .ToArray());
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.All(this.IsSupportedFile))
+            {
+                this.OpenArchives(true, files.Where(this.IsSupportedFile).ToArray());
+            }
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
