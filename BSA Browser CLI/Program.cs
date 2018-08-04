@@ -298,7 +298,7 @@ namespace BSA_Browser_CLI
         {
             Console.WriteLine("Extract or list files inside .bsa and .ba2 archives.");
             Console.WriteLine();
-            Console.WriteLine("bsab [/e] [/l:[options]] FILE DESTINATION");
+            Console.WriteLine("bsab [/e] [/l:[options]] [/ati] [/f [pattern]] [/regex [pattern]] [FILE] [DESTINATION]");
             Console.WriteLine();
             Console.WriteLine("  /e \t\t Extract all files");
             Console.WriteLine("  /l \t\t List all files");
