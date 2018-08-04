@@ -1,3 +1,17 @@
+[1.8]
+
+- Added right click menu options for archives to extract entire archive
+- Added drag-and-drop for opening archives
+- Added .bmp, .png, .jpg preview
+- Added .psc preview. Opens in default program
+- Added CLI tool to interact with archives. Available as an option in installer
+- Improved browsing speed. Much less hang-ups when browsing big files
+- Changed extract buttons behaviour. They will now only ever extracts files/folders currently listed, for example to extract only searched files or only files in a folder
+- Changed sorting behaviour. Sort by clicking columns instead of combobox
+- Fixed .DDS preview for Oblivion
+- Support unicode characters in file names
+- Updated lz4 library from 1.0.5 to 1.0.9
+
 [1.7]
 
 - Added built-in previewer for .DDS files
