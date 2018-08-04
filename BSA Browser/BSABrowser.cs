@@ -1375,19 +1375,17 @@ namespace BSA_Browser
 
         public override int Compare(ArchiveEntry a, ArchiveEntry b)
         {
-            ArchiveEntry fa = a;
-            ArchiveEntry fb = b;
             switch (order)
             {
                 case ArchiveFileSortOrder.FolderName:
-                    return (desc) ? string.CompareOrdinal(fa.LowerPath, fb.LowerPath) : string.CompareOrdinal(fb.LowerPath, fa.LowerPath);
+                    return (desc) ? string.CompareOrdinal(a.LowerPath, b.LowerPath) : string.CompareOrdinal(b.LowerPath, a.LowerPath);
                 case ArchiveFileSortOrder.FileName:
-                    return (desc) ? string.CompareOrdinal(fa.FileName, fb.FileName) : string.CompareOrdinal(fb.FileName, fa.FileName);
+                    return (desc) ? string.CompareOrdinal(a.FileName, b.FileName) : string.CompareOrdinal(b.FileName, a.FileName);
                 case ArchiveFileSortOrder.FileSize:
-                    return (desc) ? fa.DisplaySize.CompareTo(fb.DisplaySize) : fb.DisplaySize.CompareTo(fa.DisplaySize);
+                    return (desc) ? a.DisplaySize.CompareTo(b.DisplaySize) : b.DisplaySize.CompareTo(a.DisplaySize);
                 case ArchiveFileSortOrder.FileType:
-                    return (desc) ? string.CompareOrdinal(Path.GetExtension(fa.FileName), Path.GetExtension(fb.FileName)) :
-                                    string.CompareOrdinal(Path.GetExtension(fb.FileName), Path.GetExtension(fa.FileName));
+                    return (desc) ? string.CompareOrdinal(Path.GetExtension(a.FileName), Path.GetExtension(b.FileName)) :
+                                    string.CompareOrdinal(Path.GetExtension(b.FileName), Path.GetExtension(a.FileName));
                 default:
                     return 0;
             }
