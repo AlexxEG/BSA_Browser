@@ -2,74 +2,168 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Management.Automation;
+using System.Text.RegularExpressions;
 using SharpBSABA2;
 
 namespace BSA_Browser_CLI
 {
+    enum Filtering
+    {
+        None, Simple, Regex
+    }
+
+    [Flags]
+    enum ListOptions
+    {
+        None = 0,
+        Archive = 1,
+        FullPath = 2,
+        FileSize = 4
+    }
+
+    class Arguments
+    {
+        public bool Extract { get; private set; }
+        public bool Help { get; private set; }
+        public bool List { get; private set; }
+        public bool ATI { get; private set; }
+
+        public Filtering Filtering { get; private set; } = Filtering.None;
+        public ListOptions ListOptions { get; private set; } = ListOptions.None;
+
+        public string Destination { get; private set; }
+        public string FilterString { get; private set; }
+
+        public IReadOnlyCollection<string> Inputs { get; private set; }
+
+        public Arguments(string[] args)
+        {
+            List<string> input = new List<string>();
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                string arg = args[i];
+
+                if (arg.StartsWith("/"))
+                {
+                    switch (arg.ToLower().Split(':')[0])
+                    {
+                        case "/?":
+                            this.Help = true;
+                            break;
+                        case "/e":
+                            this.Extract = true;
+                            break;
+                        case "/l":
+                            this.List = true;
+
+                            char[] options = arg.Split(':').Last().ToLower().ToCharArray();
+
+                            if (options.Contains('a')) this.ListOptions = ListOptions.Archive;
+                            if (options.Contains('f')) this.ListOptions = (this.ListOptions | ListOptions.FullPath);
+                            if (options.Contains('s')) this.ListOptions = (this.ListOptions | ListOptions.FileSize);
+
+                            break;
+                        case "/ati":
+                            this.ATI = true;
+                            break;
+                        case "/f":
+                            this.Filtering = Filtering.Simple;
+                            this.FilterString = args[++i];
+                            break;
+                        case "/regex":
+                            this.Filtering = Filtering.Regex;
+                            this.FilterString = args[++i];
+                            break;
+                        default:
+                            throw new ArgumentException("Unrecognized argument: " + arg);
+                    }
+                }
+                else
+                {
+                    if (i == args.Length - 1 && this.Extract) // Last item is destination when extracting
+                    {
+                        if (Directory.Exists(arg))
+                            this.Destination = arg;
+                        else
+                            throw new DirectoryNotFoundException("Destination directory not found.");
+                    }
+                    else if (File.Exists(arg))
+                    {
+                        input.Add(arg);
+                    }
+                    else
+                    {
+                        throw new FileNotFoundException("File not found.", arg);
+                    }
+                }
+            }
+
+            this.Inputs = input.AsReadOnly();
+        }
+    }
+
     class Program
     {
+        static Arguments _arguments;
+        static Regex _regex;
+        static WildcardPattern _pattern;
+
         static void Main(string[] args)
         {
+            _arguments = new Arguments(args);
+
             // Print help screen. Ignore other arguments
-            if (args.Contains("/?"))
+            if (args.Length == 0 || _arguments.Help)
             {
                 PrintHelp();
+                goto exit;
             }
-            else
+
+            if (_arguments.Inputs.Count == 0)
             {
-                var input = new List<string>();
+                Console.WriteLine("No input file(s) found");
+                goto exit;
+            }
 
-                for (int i = 0; i < args.Length; i++)
+            // Setup filtering
+            if (_arguments.Filtering != Filtering.None)
+            {
+                if (_arguments.Filtering == Filtering.Simple)
                 {
-                    string arg = args[i];
-
-                    if (!arg.StartsWith("/") && File.Exists(arg))
-                        input.Add(arg);
+                    _pattern = new WildcardPattern(
+                        $"*{WildcardPattern.Escape(_arguments.FilterString).Replace("`*", "*")}*",
+                        WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
                 }
-
-                if (input.Count == 0)
+                else if (_arguments.Filtering == Filtering.Regex)
                 {
-                    Console.WriteLine("No input file(s) found");
-                    goto exit;
-                }
-
-                string checkList = string.Empty;
-
-                if (!string.IsNullOrEmpty((checkList = args.FirstOrDefault(x => x.ToLower().StartsWith("/l")))))
-                {
-                    var options = checkList.Remove(0, 2);
                     try
                     {
-                        PrintFileList(input, options);
+                        _regex = new Regex(_arguments.FilterString, RegexOptions.Compiled | RegexOptions.Singleline);
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        Console.WriteLine(ex.Message);
+                        Console.WriteLine("Invalid regex filter string");
                         goto exit;
                     }
                 }
+            }
 
-                if (args.Contains("/e") || args.Contains("/E"))
+            if (_arguments.List)
+            {
+                PrintFileList(_arguments.Inputs.ToList(), _arguments.ListOptions);
+            }
+
+            if (_arguments.Extract)
+            {
+                if (string.IsNullOrEmpty(_arguments.Destination) || !Directory.Exists(_arguments.Destination))
                 {
-                    // Last argument should be the destination
-                    string destination = args[args.Length - 1];
-
-                    // Make sure destination exists
-                    if (!Directory.Exists(destination))
-                    {
-                        try
-                        {
-                            Directory.CreateDirectory(destination);
-                        }
-                        catch
-                        {
-                            Console.WriteLine("ERROR! Destination can\'t be found.");
-                            goto exit;
-                        }
-                    }
-
-                    ExtractFiles(input, args.Contains("/ati"), destination);
+                    Console.WriteLine($"Destination \'{_arguments.Destination}\' not found!");
+                    goto exit;
                 }
+
+                ExtractFiles(_arguments.Inputs.ToList(), _arguments.ATI, _arguments.Destination);
             }
 
             exit:;
@@ -90,19 +184,22 @@ namespace BSA_Browser_CLI
                 else
                 {
                     int count = 0;
-                    int total = archive.Files.Count;
+                    int total = archive.Files.Count(x => Filter(x.FullPath));
                     int line = Console.CursorTop;
                     int prevLength = 0;
 
-                    archive.Files.ForEach(x =>
+                    foreach (var entry in archive.Files)
                     {
+                        if (!Filter(entry.FullPath))
+                            continue;
+
                         Console.SetCursorPosition(0, line);
-                        string output = $"Extracting: {++count}/{total} - {x.FullPath}";
+                        string output = $"Extracting: {++count}/{total} - {entry.FullPath}";
                         Console.Write(output.PadRight(prevLength));
                         prevLength = output.Length;
 
-                        x.Extract(destination, true);
-                    });
+                        entry.Extract(destination, true);
+                    }
 
                     Console.WriteLine();
                 }
@@ -141,15 +238,22 @@ namespace BSA_Browser_CLI
             }
         }
 
-        private static void PrintFileList(List<string> files, string options)
+        static bool Filter(string input)
         {
-            if (!string.IsNullOrEmpty(options) &&
-                                      options.ToLower() != ":a" &&
-                                      options.ToLower() != ":f")
+            if (_arguments.Filtering == Filtering.Simple)
             {
-                throw new Exception("Unknown option(s) for list: " + options);
+                return _pattern.IsMatch(input);
+            }
+            else if (_arguments.Filtering == Filtering.Regex)
+            {
+                return _regex.IsMatch(input);
             }
 
+            return true;
+        }
+
+        private static void PrintFileList(List<string> files, ListOptions options)
+        {
             files.ForEach(file =>
             {
                 if (files.Count > 1)
@@ -159,23 +263,31 @@ namespace BSA_Browser_CLI
 
                 if (archive == null)
                 {
-                    Console.WriteLine("\tCouldn\'t open archive.");
+                    Console.WriteLine("{0}Couldn\'t open archive.", files.Count > 1 ? "\t" : string.Empty);
                 }
                 else
                 {
+                    bool filesize = false;
                     string prefix = string.Empty;
 
-                    switch (options.ToLower())
-                    {
-                        case ":a":
-                            prefix = Path.GetFileName(archive.FullPath);
-                            break;
-                        case ":f":
-                            prefix = archive.FullPath;
-                            break;
-                    }
+                    if (options.HasFlag(ListOptions.Archive))
+                        prefix = Path.GetFileName(archive.FullPath);
 
-                    archive.Files.ForEach(x => Console.WriteLine((files.Count > 1 ? "\t" : "") + Path.Combine(prefix, x.FullPath)));
+                    if (options.HasFlag(ListOptions.FullPath))
+                        prefix = Path.GetFullPath(archive.FullPath);
+
+                    filesize = options.HasFlag(ListOptions.FileSize);
+
+                    foreach (var entry in archive.Files)
+                    {
+                        if (!Filter(entry.FullPath))
+                            continue;
+
+                        string indent = string.IsNullOrEmpty(prefix) && files.Count > 1 ? "\t" : string.Empty;
+                        string filesizeString = filesize ? entry.RealSize + "\t\t" : string.Empty;
+
+                        Console.WriteLine($"{indent}{filesizeString}{Path.Combine(prefix, entry.FullPath)}");
+                    }
                 }
 
                 Console.WriteLine();
@@ -192,6 +304,9 @@ namespace BSA_Browser_CLI
             Console.WriteLine("  /l \t\t List all files");
             Console.WriteLine("    options \t  A \t Prepend each line with archive filename");
             Console.WriteLine("    \t      \t  F \t Prepend each line with full archive file path");
+            Console.WriteLine("    \t      \t  S \t Display file size");
+            Console.WriteLine("  /f \t\t Simple filtering. Wildcard supported");
+            Console.WriteLine("  /regex \t Regex filtering");
             Console.WriteLine("  /ati \t\t Use ATI header for textures");
             Console.WriteLine();
         }
