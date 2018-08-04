@@ -35,7 +35,7 @@ namespace BSA_Browser_CLI
 
                 string checkList = string.Empty;
 
-                if (!string.IsNullOrEmpty((checkList = args.First(x => x.StartsWith("/l")))))
+                if (!string.IsNullOrEmpty((checkList = args.FirstOrDefault(x => x.StartsWith("/l")))))
                 {
                     var options = checkList.Remove(0, 2);
                     try
