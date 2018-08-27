@@ -2,8 +2,16 @@
 
 namespace SharpBSABA2.BSAUtil
 {
+    public enum BSAFileVersion
+    {
+        BSA,
+        Morrowind,
+        Fallout2
+    }
+
     public class BSAFileEntry : ArchiveEntry
     {
+        public new BSA Archive => base.Archive as BSA;
         public override uint DisplaySize
         {
             get
@@ -13,57 +21,58 @@ namespace SharpBSABA2.BSAUtil
             }
         }
 
-        public BSAFileInfo fileInfo;
+        public BSAFileVersion Version { get; private set; }
 
-        public BSAFileEntry(Archive archive, int index)
+        public BSAFileEntry(Archive archive, int index, bool compressed, string folder, uint offset, uint size)
             : base(archive, index)
         {
+            this.Version = BSAFileVersion.BSA;
 
-        }
-
-        public BSAFileEntry Initialize(bool compressed, string folder, uint offset, uint size)
-        {
-            Compressed = compressed;
+            this.Compressed = compressed;
             this.FullPath = folder;
-            Offset = offset;
-            Size = size;
-            return this;
+            this.Offset = offset;
+            this.Size = size;
         }
 
-        public BSAFileEntry Initialize(string path, uint offset, uint size)
+        public BSAFileEntry(Archive archive, int index, string path, uint offset, uint size)
+            : base(archive, index)
         {
+            this.Version = BSAFileVersion.Morrowind;
+
             this.FullPath = path;
-            Offset = offset;
-            Size = size;
-            return this;
+            this.Offset = offset;
+            this.Size = size;
         }
 
-        public BSAFileEntry Initialize(string path, uint offset, uint size, uint realSize)
+        public BSAFileEntry(Archive archive, int index, string path, uint offset, uint size, uint realSize)
+            : base(archive, index)
         {
+            this.Version = BSAFileVersion.Fallout2;
+
             this.FullPath = path;
-            Offset = offset;
-            Size = size;
-            RealSize = realSize;
-            Compressed = realSize != 0;
-            return this;
+            this.Offset = offset;
+            this.Size = size;
+            this.RealSize = realSize;
+            this.Compressed = realSize != 0;
         }
 
         protected override void WriteDataToStream(Stream stream)
         {
-            if ((this.Archive as BSA).Version == BSA.SSE_BSAHEADER_VERSION)
+            this.BinaryReader.BaseStream.Position = (long)Offset;
+
+            if (this.Archive.Version == BSA.SSE_HEADER_VERSION)
             {
                 // Separate Skyrim Special Edition extraction
-                this.BinaryReader.BaseStream.Seek(fileInfo.Offset, SeekOrigin.Begin);
-                ulong filesz = fileInfo.SizeFlags & 0x3fffffff;
-                if (fileInfo.NamePrefix)
+                ulong filesz = this.Size & 0x3fffffff;
+                if (this.Archive.ContainsFileNameBlobs)
                 {
                     int len = this.BinaryReader.ReadByte();
                     filesz -= (ulong)len + 1;
-                    this.BinaryReader.BaseStream.Seek(fileInfo.Offset + 1 + len, SeekOrigin.Begin);
+                    this.BinaryReader.BaseStream.Seek((int)this.Offset + 1 + len, SeekOrigin.Begin);
                 }
 
                 uint filesize = (uint)filesz;
-                if (fileInfo.SizeFlags > 0 && fileInfo.Compressed)
+                if (this.Size > 0 && this.Compressed)
                 {
                     filesize = this.BinaryReader.ReadUInt32();
                     filesz -= 4;
@@ -71,7 +80,7 @@ namespace SharpBSABA2.BSAUtil
 
                 byte[] content = this.BinaryReader.ReadBytes((int)filesz);
 
-                if (fileInfo.Compressed == false)
+                if (this.Compressed == false)
                 {
                     stream.Write(content, 0, content.Length);
                 }
@@ -86,27 +95,24 @@ namespace SharpBSABA2.BSAUtil
             }
             else
             {
-                this.BinaryReader.BaseStream.Position = (long)Offset;
-
                 // Skip ahead
-                if ((this.Archive as BSA).ContainsFileNameBlobs)
+                if (this.Archive.ContainsFileNameBlobs)
                     this.BinaryReader.BaseStream.Position += this.BinaryReader.ReadByte() + 1;
 
-                if (!Compressed)
+                if (!this.Compressed)
                 {
-                    byte[] bytes = new byte[Size];
-                    this.BinaryReader.Read(bytes, 0, (int)Size);
-                    stream.Write(bytes, 0, (int)Size);
+                    byte[] content = this.BinaryReader.ReadBytes((int)this.Size);
+                    stream.Write(content, 0, content.Length);
                 }
                 else
                 {
                     byte[] uncompressed;
-                    if (RealSize == 0)
+                    if (this.RealSize == 0)
                         uncompressed = new byte[this.BinaryReader.ReadUInt32()];
                     else
-                        uncompressed = new byte[RealSize];
-                    byte[] compressed = new byte[Size - 4];
-                    this.BinaryReader.Read(compressed, 0, (int)(Size - 4));
+                        uncompressed = new byte[this.RealSize];
+                    byte[] compressed = new byte[this.Size - 4];
+                    this.BinaryReader.Read(compressed, 0, compressed.Length);
                     this.Archive.Inflater.Reset();
                     this.Archive.Inflater.SetInput(compressed);
                     this.Archive.Inflater.Inflate(uncompressed);

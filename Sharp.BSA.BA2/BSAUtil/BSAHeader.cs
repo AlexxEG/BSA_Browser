@@ -2,34 +2,25 @@
 
 namespace SharpBSABA2.BSAUtil
 {
-    public class BSAHeader
+    public struct BSAHeader
     {
-        private BinaryReader _reader;
-
-        public uint FolderRecordOffset { get; private set; }
-        public uint ArchiveFlags { get; private set; }
-        public uint FolderCount { get; private set; }
-        public uint FileCount { get; private set; }
-        public uint FolderNameLength { get; private set; }
-        public uint FileNameLength { get; private set; }
-        public uint FileFlags { get; private set; }
+        public uint FolderRecordOffset;
+        public uint ArchiveFlags;
+        public uint FolderCount;
+        public uint FileCount;
+        public uint FolderNameLength;
+        public uint FileNameLength;
+        public uint FileFlags;
 
         public BSAHeader(BinaryReader reader)
         {
-            _reader = reader;
-
-            this.FolderRecordOffset = _reader.ReadUInt32();
-            this.ArchiveFlags = _reader.ReadUInt32();
-            this.FolderCount = _reader.ReadUInt32();
-            this.FileCount = _reader.ReadUInt32();
-            this.FolderNameLength = _reader.ReadUInt32();
-            this.FileNameLength = _reader.ReadUInt32();
-            this.FileFlags = _reader.ReadUInt32();
-        }
-
-        public static BSAHeader ReadFrom(BinaryReader reader)
-        {
-            return new BSAHeader(reader);
+            FolderRecordOffset = reader.ReadUInt32();
+            ArchiveFlags = reader.ReadUInt32();
+            FolderCount = reader.ReadUInt32();
+            FileCount = reader.ReadUInt32();
+            FolderNameLength = reader.ReadUInt32();
+            FileNameLength = reader.ReadUInt32();
+            FileFlags = reader.ReadUInt32();
         }
     }
 }

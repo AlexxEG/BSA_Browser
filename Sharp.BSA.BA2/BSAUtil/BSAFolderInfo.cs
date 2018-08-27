@@ -14,32 +14,24 @@ namespace SharpBSABA2.BSAUtil
 
         public List<BSAFileInfo> Files { get; private set; } = new List<BSAFileInfo>();
 
-        private BinaryReader _reader;
-
         public BSAFolderInfo(BinaryReader reader, int version)
         {
-            _reader = reader;
+            this.Hash = reader.ReadUInt64();
+            this.FileCount = reader.ReadUInt32();
 
-            this.Hash = _reader.ReadUInt64();
-            this.FileCount = _reader.ReadUInt32();
+            if (version == BSA.SSE_HEADER_VERSION)
+                this.Unk1 = reader.ReadUInt32();
 
-            if (version == BSA.SSE_BSAHEADER_VERSION)
-                this.Unk1 = _reader.ReadUInt32();
-
-            this.Offset = _reader.ReadUInt64();
+            this.Offset = reader.ReadUInt64();
         }
 
         public static int SizeOf(int version)
         {
-            if (version == BSA.SSE_BSAHEADER_VERSION)
+            if (version == BSA.SSE_HEADER_VERSION)
                 return 24;
             else
                 return 20;
         }
 
-        public static BSAFolderInfo ReadFrom(BinaryReader reader, int version)
-        {
-            return new BSAFolderInfo(reader, version);
-        }
     }
 }

@@ -2,36 +2,23 @@
 
 namespace SharpBSABA2.BSAUtil
 {
-    public class BSAFileInfo
+    public struct BSAFileInfo
     {
-        public ulong Hash { get; private set; }
-        public uint SizeFlags { get; private set; }
-        public uint Offset { get; private set; }
+        public ulong Hash;
 
-        public bool NamePrefix { get; set; }
-        public bool Compressed { get; set; }
-
-        public string Name { get; set; }
-
-        private BinaryReader _reader;
+        public uint SizeFlags;
+        public uint Offset;
 
         public BSAFileInfo(BinaryReader reader)
         {
-            _reader = reader;
-
-            this.Hash = _reader.ReadUInt64();
-            this.SizeFlags = _reader.ReadUInt32();
-            this.Offset = _reader.ReadUInt32();
+            this.Hash = reader.ReadUInt64();
+            this.SizeFlags = reader.ReadUInt32();
+            this.Offset = reader.ReadUInt32();
         }
 
         public static int SizeOf()
         {
             return 16;
-        }
-
-        public static BSAFileInfo ReadFrom(BinaryReader reader)
-        {
-            return new BSAFileInfo(reader);
         }
     }
 }
