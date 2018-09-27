@@ -1160,6 +1160,9 @@ namespace BSA_Browser
         /// <param name="node">The TreeNode to get root node from.</param>
         private ArchiveNode GetRootNode(TreeNode node)
         {
+            if (node == null)
+                return null;
+
             var rootNode = node;
             while (rootNode.Parent != null)
                 rootNode = rootNode.Parent;
@@ -1340,9 +1343,11 @@ namespace BSA_Browser
             lvFiles.BeginUpdate();
 
             // Sort the archive so it only needs to be done once
-            this.SelectedArchiveNode.AllFiles.Sort(_filesSorter);
+            this.SelectedArchiveNode?.AllFiles.Sort(_filesSorter);
+
             // Repopulate 'SelectedArchiveNode.Files' with sorted list by triggering this event
-            tvFolders_AfterSelect(null, new TreeViewEventArgs(tvFolders.SelectedNode, TreeViewAction.Unknown));
+            if (this.SelectedArchiveNode != null)
+                tvFolders_AfterSelect(null, new TreeViewEventArgs(tvFolders.SelectedNode, TreeViewAction.Unknown));
 
             lvFiles.EndUpdate();
         }
