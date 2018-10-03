@@ -1233,8 +1233,9 @@ namespace BSA_Browser
             if (lvFiles.SelectedIndices.Count == 1)
             {
                 var fe = _files[lvFiles.SelectedIndices[0]];
+                var extension = Path.GetExtension(fe.LowerPath);
 
-                switch (Path.GetExtension(fe.LowerPath))
+                switch (extension)
                 {
                     /*case ".nif":
                         MessageBox.Show("Viewing of nif's disabled as their format differs from oblivion");
@@ -1246,6 +1247,12 @@ namespace BSA_Browser
                     case ".bmp":
                     case ".png":
                     case ".jpg":
+                        if (fe is SharpBSABA2.BA2Util.BA2GNFEntry)
+                        {
+                            MessageBox.Show(this, "Can't preview GNF .dds files.");
+                            return;
+                        }
+
                         try
                         {
                             DDSViewer.ShowDialog(this, fe);
@@ -1255,9 +1262,9 @@ namespace BSA_Browser
                             MessageBox.Show(this, ex.Message);
                         }
                         break;
-                    case ".lst":
                     case ".txt":
                     case ".xml":
+                    case ".lst":
                     case ".psc":
                         string dest = Program.CreateTempDirectory();
 
@@ -1267,7 +1274,7 @@ namespace BSA_Browser
                     default:
                         MessageBox.Show(this,
                             "Filetype not supported.\n" +
-                            "Currently only .txt, .xml, .dds and .lst files can be previewed.",
+                            "Currently only .txt, .xml, .lst, .psc, .dds, .bmp, .png and .jpg files can be previewed.",
                             "Error");
                         break;
                 }

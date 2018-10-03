@@ -135,7 +135,7 @@ namespace S16.Drawing
         {
             byte[] signature = reader.ReadBytes(4);
             if (!(signature[0] == 'D' && signature[1] == 'D' && signature[2] == 'S' && signature[3] == ' '))
-                return false;
+                throw new FormatException("Invalid DDS magic header.");
 
             header.size = reader.ReadUInt32();
             if (header.size != 124)
