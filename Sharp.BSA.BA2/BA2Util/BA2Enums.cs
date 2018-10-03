@@ -19,6 +19,7 @@
     {
         GNRL,
         DX10,
+        GNMF,
         Unknown
     }
 }

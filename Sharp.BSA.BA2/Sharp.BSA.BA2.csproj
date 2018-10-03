@@ -54,6 +54,7 @@
     <Compile Include="BA2Util\BA2.cs" />
     <Compile Include="ArchiveEntry.cs" />
     <Compile Include="BA2Util\BA2FileEntry.cs" />
+    <Compile Include="BA2Util\BA2GNFEntry.cs" />
     <Compile Include="BA2Util\BA2Header.cs" />
     <Compile Include="BA2Util\BA2TextureChunk.cs" />
     <Compile Include="BA2Util\BA2TextureEntry.cs" />

@@ -22,6 +22,8 @@ namespace SharpBSABA2.BA2Util
                     this.Files.Add(new BA2FileEntry(this, i));
                 else if (this.Header.Type == BA2HeaderType.DX10)
                     this.Files.Add(new BA2TextureEntry(this, i));
+                else if (this.Header.Type == BA2HeaderType.GNMF)
+                    this.Files.Add(new BA2GNFEntry(this, i));
 
             // Seek to name table
             BinaryReader.BaseStream.Seek((long)this.Header.nameTableOffset, SeekOrigin.Begin);
