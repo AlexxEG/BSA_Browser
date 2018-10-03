@@ -64,43 +64,42 @@ namespace SharpBSABA2.BA2Util
 
         protected override void WriteDataToStream(Stream stream)
         {
-            using (var writer = new BinaryWriter(stream))
+            var writer = new BinaryWriter(stream);
+
+            writer.Write(GNF_HEADER_MAGIC); // 'GNF ' magic
+            writer.Write(GNF_HEADER_CONTENT_SIZE); // Content-size. Seems to be either 4 or 8 bytes
+
+            writer.Write((byte)0x2); // Version
+            writer.Write((byte)0x1); // Texture Count
+            writer.Write((byte)0x8); // Alignment
+            writer.Write((byte)0x0); // Unused
+
+            writer.Write(BitConverter.GetBytes(this.RealSize + 256).Reverse().ToArray()); // File size + header size
+            writer.Write(this.GNFHeader);
+
+            for (int i = 0; i < 208; i++)
+                writer.Write((byte)0x0); // Padding
+
+            byte[] bytes = new byte[this.Size];
+            byte[] uncompressed = new byte[this.RealSize];
+
+            BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
+            BinaryReader.Read(bytes, 0, (int)this.Size);
+
+            try
             {
-                writer.Write(GNF_HEADER_MAGIC); // 'GNF ' magic
-                writer.Write(GNF_HEADER_CONTENT_SIZE); // Content-size. Seems to be either 4 or 8 bytes
-
-                writer.Write((byte)0x2); // Version
-                writer.Write((byte)0x1); // Texture Count
-                writer.Write((byte)0x8); // Alignment
-                writer.Write((byte)0x0); // Unused
-
-                writer.Write(BitConverter.GetBytes(this.RealSize + 256).Reverse().ToArray()); // File size + header size
-                writer.Write(this.GNFHeader);
-
-                for (int i = 0; i < 208; i++)
-                    writer.Write((byte)0x0); // Padding
-
-                byte[] bytes = new byte[this.Size];
-                byte[] uncompressed = new byte[this.RealSize];
-
-                BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
-                BinaryReader.Read(bytes, 0, (int)this.Size);
-
-                try
-                {
-                    this.Archive.Inflater.Reset();
-                    this.Archive.Inflater.SetInput(bytes);
-                    this.Archive.Inflater.Inflate(uncompressed);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception($"Couldn't decompress zlib texture data. Size: {this.Size}, RealSize: {this.RealSize}", ex);
-                }
-
-                stream.Write(uncompressed, 0, uncompressed.Length);
-
-                this.WriteChunks(stream);
+                this.Archive.Inflater.Reset();
+                this.Archive.Inflater.SetInput(bytes);
+                this.Archive.Inflater.Inflate(uncompressed);
             }
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't decompress zlib texture data. Size: {this.Size}, RealSize: {this.RealSize}", ex);
+            }
+
+            stream.Write(uncompressed, 0, uncompressed.Length);
+
+            this.WriteChunks(stream);
         }
 
         private void WriteChunks(Stream stream)
