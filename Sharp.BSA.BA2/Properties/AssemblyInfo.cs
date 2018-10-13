@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Sharp.BSA.BA2")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Library to work with BSA/BA2 archive files.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Alexander Ellingsen")]
 [assembly: AssemblyProduct("Sharp.BSA.BA2")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright ©  2016-2018 Alexander")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
