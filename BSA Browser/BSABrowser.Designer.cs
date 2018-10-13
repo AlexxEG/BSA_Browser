@@ -307,7 +307,7 @@
             // extractArchivesMenuItem
             // 
             this.extractArchivesMenuItem.Index = 4;
-            this.extractArchivesMenuItem.Text = "Extract archives...";
+            this.extractArchivesMenuItem.Text = "Extract Archives...";
             this.extractArchivesMenuItem.Click += new System.EventHandler(this.extractArchivesMenuItem_Click);
             // 
             // menuItem1
