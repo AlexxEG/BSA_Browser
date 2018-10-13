@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace SharpBSABA2.BA2Util
 {
@@ -31,7 +30,7 @@ namespace SharpBSABA2.BA2Util
             RealSize = ba2.BinaryReader.ReadUInt32();
             align = ba2.BinaryReader.ReadUInt32();
         }
-        
+
         protected override void WriteDataToStream(Stream stream)
         {
             BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
