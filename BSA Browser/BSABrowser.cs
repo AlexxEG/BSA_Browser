@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BSA_Browser.Classes;
 using BSA_Browser.Controls;
+using BSA_Browser.Dialogs;
 using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
 using SharpBSABA2;
@@ -381,6 +382,11 @@ namespace BSA_Browser
 
         #region mainMenu1
 
+        private void fileMenuItem_Popup(object sender, EventArgs e)
+        {
+            extractArchivesMenuItem.Enabled = tvFolders.Nodes.Count >= 1;
+        }
+
         private void openArchiveMenuItem_Click(object sender, EventArgs e)
         {
             if (OpenArchiveDialog.ShowDialog(this) == DialogResult.OK)
@@ -398,6 +404,27 @@ namespace BSA_Browser
         private void closeAllArchivesMenuItem_Click(object sender, EventArgs e)
         {
             this.CloseArchives();
+        }
+
+        private void extractArchivesMenuItem_Click(object sender, EventArgs e)
+        {
+            var archives = new List<Archive>(tvFolders.Nodes.Cast<ArchiveNode>().Select(x => x.Archive));
+            var dialog = ExtractArchivesDialog.ShowDialog(this, archives);
+
+            if (dialog.DialogResult != DialogResult.OK)
+                return;
+
+            this.ExtractFilesTo(true, true, () =>
+            {
+                var files = new List<ArchiveEntry>();
+
+                foreach (Archive archive in dialog.Selected)
+                    files.AddRange(archive.Files);
+
+                return files;
+            });
+
+            var test = dialog.Selected.Select(x => x.Files);
         }
 
         private void optionsMenuItem_Click(object sender, EventArgs e)

@@ -104,6 +104,12 @@
     <Compile Include="DDSViewer.Designer.cs">
       <DependentUpon>DDSViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ExtractArchivesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ExtractArchivesDialog.Designer.cs">
+      <DependentUpon>ExtractArchivesDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\QuickExtractDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DDSViewer.resx">
       <DependentUpon>DDSViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ExtractArchivesDialog.resx">
+      <DependentUpon>ExtractArchivesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\QuickExtractDialog.resx">
       <DependentUpon>QuickExtractDialog.cs</DependentUpon>

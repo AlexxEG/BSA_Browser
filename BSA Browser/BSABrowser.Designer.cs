@@ -48,6 +48,8 @@
             this.openArchiveMnuItem = new System.Windows.Forms.MenuItem();
             this.closeSelectedArchiveMenuItem = new System.Windows.Forms.MenuItem();
             this.closeAllArchivesMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem4 = new System.Windows.Forms.MenuItem();
+            this.extractArchivesMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.optionsMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem6 = new System.Windows.Forms.MenuItem();
@@ -267,6 +269,8 @@
             this.openArchiveMnuItem,
             this.closeSelectedArchiveMenuItem,
             this.closeAllArchivesMenuItem,
+            this.menuItem4,
+            this.extractArchivesMenuItem,
             this.menuItem1,
             this.optionsMenuItem,
             this.menuItem6,
@@ -274,6 +278,7 @@
             this.menuItem10,
             this.exitMenuItem});
             this.fileMenuItem.Text = "File";
+            this.fileMenuItem.Popup += new System.EventHandler(this.fileMenuItem_Popup);
             // 
             // openArchiveMnuItem
             // 
@@ -294,25 +299,36 @@
             this.closeAllArchivesMenuItem.Text = "Close All Archives";
             this.closeAllArchivesMenuItem.Click += new System.EventHandler(this.closeAllArchivesMenuItem_Click);
             // 
+            // menuItem4
+            // 
+            this.menuItem4.Index = 3;
+            this.menuItem4.Text = "-";
+            // 
+            // extractArchivesMenuItem
+            // 
+            this.extractArchivesMenuItem.Index = 4;
+            this.extractArchivesMenuItem.Text = "Extract archives...";
+            this.extractArchivesMenuItem.Click += new System.EventHandler(this.extractArchivesMenuItem_Click);
+            // 
             // menuItem1
             // 
-            this.menuItem1.Index = 3;
+            this.menuItem1.Index = 5;
             this.menuItem1.Text = "-";
             // 
             // optionsMenuItem
             // 
-            this.optionsMenuItem.Index = 4;
+            this.optionsMenuItem.Index = 6;
             this.optionsMenuItem.Text = "Options...";
             this.optionsMenuItem.Click += new System.EventHandler(this.optionsMenuItem_Click);
             // 
             // menuItem6
             // 
-            this.menuItem6.Index = 5;
+            this.menuItem6.Index = 7;
             this.menuItem6.Text = "-";
             // 
             // recentFilesMenuItem
             // 
-            this.recentFilesMenuItem.Index = 6;
+            this.recentFilesMenuItem.Index = 8;
             this.recentFilesMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.emptyListMenuItem,
             this.menuItem9});
@@ -332,12 +348,12 @@
             // 
             // menuItem10
             // 
-            this.menuItem10.Index = 7;
+            this.menuItem10.Index = 9;
             this.menuItem10.Text = "-";
             // 
             // exitMenuItem
             // 
-            this.exitMenuItem.Index = 8;
+            this.exitMenuItem.Index = 10;
             this.exitMenuItem.Text = "Exit";
             this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
             // 
@@ -627,6 +643,8 @@
         private System.Windows.Forms.MenuItem menuItem8;
         private System.Windows.Forms.MenuItem closeMenuItem;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.MenuItem menuItem4;
+        private System.Windows.Forms.MenuItem extractArchivesMenuItem;
     }
 }
 
