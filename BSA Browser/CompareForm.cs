@@ -86,8 +86,8 @@ namespace BSA_Browser
                 }
                 else
                 {
-                    byte[] a = archAFileList[file].GetDataStream().ToArray();
-                    byte[] b = archBFileList[file].GetDataStream().ToArray();
+                    byte[] a = archAFileList[file].GetRawDataStream().ToArray();
+                    byte[] b = archBFileList[file].GetRawDataStream().ToArray();
 
                     if (Testing.UnsafeCompare(a, b))
                     {
