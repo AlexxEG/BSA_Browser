@@ -56,7 +56,22 @@ namespace SharpBSABA2.BSAUtil
             this.Compressed = realSize != 0;
         }
 
+        public override MemoryStream GetRawDataStream()
+        {
+            var ms = new MemoryStream();
+
+            this.WriteDataToStream(ms, false);
+
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
+        }
+
         protected override void WriteDataToStream(Stream stream)
+        {
+            this.WriteDataToStream(stream, true);
+        }
+
+        protected void WriteDataToStream(Stream stream, bool decompress)
         {
             this.BinaryReader.BaseStream.Position = (long)Offset;
 
@@ -80,7 +95,7 @@ namespace SharpBSABA2.BSAUtil
 
                 byte[] content = this.BinaryReader.ReadBytes((int)filesz);
 
-                if (this.Compressed == false)
+                if (!decompress || this.Compressed == false)
                 {
                     stream.Write(content, 0, content.Length);
                 }
@@ -99,7 +114,7 @@ namespace SharpBSABA2.BSAUtil
                 if (this.Archive.ContainsFileNameBlobs)
                     this.BinaryReader.BaseStream.Position += this.BinaryReader.ReadByte() + 1;
 
-                if (!this.Compressed)
+                if (!decompress || !this.Compressed)
                 {
                     byte[] content = this.BinaryReader.ReadBytes((int)this.Size);
                     stream.Write(content, 0, content.Length);

@@ -62,23 +62,41 @@ namespace SharpBSABA2.BA2Util
             }
         }
 
+        public override MemoryStream GetRawDataStream()
+        {
+            var ms = new MemoryStream();
+
+            this.WriteDateToStream(ms, false);
+
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
+        }
+
         protected override void WriteDataToStream(Stream stream)
         {
-            var writer = new BinaryWriter(stream);
+            this.WriteDateToStream(stream, true);
+        }
 
-            writer.Write(GNF_HEADER_MAGIC); // 'GNF ' magic
-            writer.Write(GNF_HEADER_CONTENT_SIZE); // Content-size. Seems to be either 4 or 8 bytes
+        protected void WriteDateToStream(Stream stream, bool decompress)
+        {
+            if (decompress)
+            {
+                var writer = new BinaryWriter(stream);
 
-            writer.Write((byte)0x2); // Version
-            writer.Write((byte)0x1); // Texture Count
-            writer.Write((byte)0x8); // Alignment
-            writer.Write((byte)0x0); // Unused
+                writer.Write(GNF_HEADER_MAGIC); // 'GNF ' magic
+                writer.Write(GNF_HEADER_CONTENT_SIZE); // Content-size. Seems to be either 4 or 8 bytes
 
-            writer.Write(BitConverter.GetBytes(this.RealSize + 256).Reverse().ToArray()); // File size + header size
-            writer.Write(this.GNFHeader);
+                writer.Write((byte)0x2); // Version
+                writer.Write((byte)0x1); // Texture Count
+                writer.Write((byte)0x8); // Alignment
+                writer.Write((byte)0x0); // Unused
 
-            for (int i = 0; i < 208; i++)
-                writer.Write((byte)0x0); // Padding
+                writer.Write(BitConverter.GetBytes(this.RealSize + 256).Reverse().ToArray()); // File size + header size
+                writer.Write(this.GNFHeader);
+
+                for (int i = 0; i < 208; i++)
+                    writer.Write((byte)0x0); // Padding
+            }
 
             byte[] bytes = new byte[this.Size];
             byte[] uncompressed = new byte[this.RealSize];
@@ -86,23 +104,30 @@ namespace SharpBSABA2.BA2Util
             BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
             BinaryReader.Read(bytes, 0, (int)this.Size);
 
-            try
+            if (!decompress)
             {
-                this.Archive.Inflater.Reset();
-                this.Archive.Inflater.SetInput(bytes);
-                this.Archive.Inflater.Inflate(uncompressed);
+                stream.Write(bytes, 0, bytes.Length);
             }
-            catch (Exception ex)
+            else
             {
-                throw new Exception($"Couldn't decompress zlib texture data. Size: {this.Size}, RealSize: {this.RealSize}", ex);
+                try
+                {
+                    this.Archive.Inflater.Reset();
+                    this.Archive.Inflater.SetInput(bytes);
+                    this.Archive.Inflater.Inflate(uncompressed);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Couldn't decompress zlib texture data. Size: {this.Size}, RealSize: {this.RealSize}", ex);
+                }
+
+                stream.Write(uncompressed, 0, uncompressed.Length);
             }
 
-            stream.Write(uncompressed, 0, uncompressed.Length);
-
-            this.WriteChunks(stream);
+            this.WriteChunks(stream, decompress);
         }
 
-        private void WriteChunks(Stream stream)
+        private void WriteChunks(Stream stream, bool decompress)
         {
             for (int i = 0; i < (numChunks - 1); i++)
             {
@@ -112,12 +137,19 @@ namespace SharpBSABA2.BA2Util
                 this.BinaryReader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
                 this.BinaryReader.Read(compressed, 0, compressed.Length);
 
-                // Uncompress
-                this.Archive.Inflater.Reset();
-                this.Archive.Inflater.SetInput(compressed);
-                this.Archive.Inflater.Inflate(full);
+                if (!decompress)
+                {
+                    stream.Write(compressed, 0, compressed.Length);
+                }
+                else
+                {
+                    // Uncompress
+                    this.Archive.Inflater.Reset();
+                    this.Archive.Inflater.SetInput(compressed);
+                    this.Archive.Inflater.Inflate(full);
 
-                stream.Write(full, 0, full.Length);
+                    stream.Write(full, 0, full.Length);
+                }
             }
         }
     }

@@ -64,8 +64,18 @@ namespace SharpBSABA2.BA2Util
                 this.Chunks.Add(new BA2TextureChunk(ba2.BinaryReader));
             }
         }
-        
-        protected override void WriteDataToStream(Stream stream)
+
+        public override MemoryStream GetRawDataStream()
+        {
+            var ms = new MemoryStream();
+
+            this.WriteDataToStream(ms, false);
+
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
+        }
+
+        private DDS_HEADER CreateHeader()
         {
             DDS_HEADER ddsHeader = new DDS_HEADER();
             ddsHeader.dwSize = ddsHeader.GetSize();
@@ -123,30 +133,45 @@ namespace SharpBSABA2.BA2Util
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
                 default:
-                    return;
+                    throw new Exception("Unsupported DDS header format.");
             }
 
+            return ddsHeader;
+        }
+
+        protected override void WriteDataToStream(Stream stream)
+        {
+            this.WriteDataToStream(stream, true);
+        }
+
+        protected void WriteDataToStream(Stream stream, bool decompress)
+        {
             var temp = new MemoryStream();
 
             using (var bw = new BinaryWriter(temp))
             {
-                bw.Write((uint)DDS.DDS_MAGIC);
-                ddsHeader.Write(bw);
+                if (decompress)
+                {
+                    var ddsHeader = this.CreateHeader();
+                    bw.Write((uint)DDS.DDS_MAGIC);
+                    ddsHeader.Write(bw);
+                }
 
                 for (int i = 0; i < numChunks; i++)
                 {
-                    byte[] compressed = new byte[this.Chunks[i].packSz];
                     byte[] full = new byte[this.Chunks[i].fullSz];
                     bool isCompressed = this.Chunks[i].packSz != 0;
 
                     this.BinaryReader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
 
-                    if (!isCompressed)
+                    if (!decompress || !isCompressed)
                     {
                         this.BinaryReader.Read(full, 0, full.Length);
                     }
                     else
                     {
+                        byte[] compressed = new byte[this.Chunks[i].packSz];
+
                         this.BinaryReader.Read(compressed, 0, compressed.Length);
                         // Uncompress
                         this.Archive.Inflater.Reset();

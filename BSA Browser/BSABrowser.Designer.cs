@@ -88,6 +88,8 @@
             this.menuItem8 = new System.Windows.Forms.MenuItem();
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.compareArchivesMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -259,6 +261,7 @@
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.fileMenuItem,
             this.editMenuItem,
+            this.menuItem2,
             this.openFoldersMenuItem,
             this.helpMenuItem});
             // 
@@ -402,12 +405,12 @@
             // 
             // openFoldersMenuItem
             // 
-            this.openFoldersMenuItem.Index = 2;
+            this.openFoldersMenuItem.Index = 3;
             this.openFoldersMenuItem.Text = "Open Folders";
             // 
             // helpMenuItem
             // 
-            this.helpMenuItem.Index = 3;
+            this.helpMenuItem.Index = 4;
             this.helpMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.checkForUpdateMenuItem,
             this.menuItem3,
@@ -555,6 +558,19 @@
             this.closeMenuItem.Text = "Close";
             this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
             // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 2;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.compareArchivesMenuItem});
+            this.menuItem2.Text = "Tools";
+            // 
+            // compareArchivesMenuItem
+            // 
+            this.compareArchivesMenuItem.Index = 0;
+            this.compareArchivesMenuItem.Text = "Compare Archives...";
+            this.compareArchivesMenuItem.Click += new System.EventHandler(this.compareArchivesMenuItem_Click);
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -645,6 +661,8 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.MenuItem menuItem4;
         private System.Windows.Forms.MenuItem extractArchivesMenuItem;
+        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem compareArchivesMenuItem;
     }
 }
 

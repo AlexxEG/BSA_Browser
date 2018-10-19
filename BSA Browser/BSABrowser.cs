@@ -1406,6 +1406,14 @@ namespace BSA_Browser
                 this.SortNodes(node);
             }
         }
+
+        private void compareArchivesMenuItem_Click(object sender, EventArgs e)
+        {
+            var archives = new List<Archive>();
+            foreach (ArchiveNode node in tvFolders.Nodes)
+                archives.Add(node.Archive);
+            new CompareForm(archives).Show(this);
+        }
     }
 
     public class ArchiveFileSorter : Comparer<ArchiveEntry>

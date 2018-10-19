@@ -31,7 +31,22 @@ namespace SharpBSABA2.BA2Util
             align = ba2.BinaryReader.ReadUInt32();
         }
 
+        public override MemoryStream GetRawDataStream()
+        {
+            var ms = new MemoryStream();
+
+            this.WriteDataToStream(ms, false);
+
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
+        }
+
         protected override void WriteDataToStream(Stream stream)
+        {
+            this.WriteDataToStream(stream, true);
+        }
+
+        protected void WriteDataToStream(Stream stream, bool decompress)
         {
             BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
 
@@ -48,7 +63,7 @@ namespace SharpBSABA2.BA2Util
 
             BinaryReader.Read(bytes, 0, (int)this.Size);
 
-            if (!this.Compressed)
+            if (!decompress || !this.Compressed)
             {
                 stream.Write(bytes, 0, (int)this.Size);
             }

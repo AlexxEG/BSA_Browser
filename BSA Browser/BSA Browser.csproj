@@ -94,6 +94,12 @@
     <Compile Include="Classes\QuickExtractPaths.cs" />
     <Compile Include="Classes\WindowState.cs" />
     <Compile Include="Classes\WindowStates.cs" />
+    <Compile Include="CompareForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompareForm.Designer.cs">
+      <DependentUpon>CompareForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ReorderableItemListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -137,6 +143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BSABrowser.resx">
       <DependentUpon>BSABrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompareForm.resx">
+      <DependentUpon>CompareForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DDSViewer.resx">
       <DependentUpon>DDSViewer.cs</DependentUpon>

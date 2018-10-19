@@ -8,6 +8,7 @@ namespace SharpBSABA2
     public abstract class Archive
     {
         public string FullPath { get; private set; }
+        public string FileName => Path.GetFileName(this.FullPath);
 
         public Inflater Inflater { get; private set; } = new Inflater();
         public List<ArchiveEntry> Files { get; private set; } = new List<ArchiveEntry>();

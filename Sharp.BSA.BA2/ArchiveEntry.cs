@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace SharpBSABA2
 {
@@ -113,6 +114,11 @@ namespace SharpBSABA2
 
             ms.Seek(0, SeekOrigin.Begin);
             return ms;
+        }
+
+        public virtual MemoryStream GetRawDataStream()
+        {
+            throw new NotImplementedException();
         }
 
         protected abstract void WriteDataToStream(Stream stream);
