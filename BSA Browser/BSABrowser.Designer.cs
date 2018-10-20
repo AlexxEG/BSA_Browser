@@ -64,6 +64,8 @@
             this.copyFolderPathMenuItem = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem = new System.Windows.Forms.MenuItem();
             this.selectAllMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.compareArchivesMenuItem = new System.Windows.Forms.MenuItem();
             this.openFoldersMenuItem = new System.Windows.Forms.MenuItem();
             this.helpMenuItem = new System.Windows.Forms.MenuItem();
             this.checkForUpdateMenuItem = new System.Windows.Forms.MenuItem();
@@ -88,8 +90,6 @@
             this.menuItem8 = new System.Windows.Forms.MenuItem();
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.compareArchivesMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -403,6 +403,19 @@
             this.selectAllMenuItem.Text = "Select All";
             this.selectAllMenuItem.Click += new System.EventHandler(this.selectAllMenuItem_Click);
             // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 2;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.compareArchivesMenuItem});
+            this.menuItem2.Text = "Tools";
+            // 
+            // compareArchivesMenuItem
+            // 
+            this.compareArchivesMenuItem.Index = 0;
+            this.compareArchivesMenuItem.Text = "Compare Archives...";
+            this.compareArchivesMenuItem.Click += new System.EventHandler(this.compareArchivesMenuItem_Click);
+            // 
             // openFoldersMenuItem
             // 
             this.openFoldersMenuItem.Index = 3;
@@ -557,19 +570,6 @@
             this.closeMenuItem.Index = 3;
             this.closeMenuItem.Text = "Close";
             this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
-            // 
-            // menuItem2
-            // 
-            this.menuItem2.Index = 2;
-            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.compareArchivesMenuItem});
-            this.menuItem2.Text = "Tools";
-            // 
-            // compareArchivesMenuItem
-            // 
-            this.compareArchivesMenuItem.Index = 0;
-            this.compareArchivesMenuItem.Text = "Compare Archives...";
-            this.compareArchivesMenuItem.Click += new System.EventHandler(this.compareArchivesMenuItem_Click);
             // 
             // BSABrowser
             // 

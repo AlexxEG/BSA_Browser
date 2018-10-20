@@ -536,6 +536,14 @@ namespace BSA_Browser
             lvFiles.SelectAllItems();
         }
 
+        private void compareArchivesMenuItem_Click(object sender, EventArgs e)
+        {
+            var archives = new List<Archive>();
+            foreach (ArchiveNode node in tvFolders.Nodes)
+                archives.Add(node.Archive);
+            new CompareForm(archives).Show(this);
+        }
+
         private void openFolderMenuItem_Click(object sender, EventArgs e)
         {
             var menuItem = sender as MenuItem;
@@ -1405,14 +1413,6 @@ namespace BSA_Browser
 
                 this.SortNodes(node);
             }
-        }
-
-        private void compareArchivesMenuItem_Click(object sender, EventArgs e)
-        {
-            var archives = new List<Archive>();
-            foreach (ArchiveNode node in tvFolders.Nodes)
-                archives.Add(node.Archive);
-            new CompareForm(archives).Show(this);
         }
     }
 
