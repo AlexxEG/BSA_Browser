@@ -102,7 +102,7 @@ namespace BSA_Browser
 
             foreach (var entry in added)
             {
-                var item = new ListViewItem("+");
+                var item = new ListViewItem();
                 item.UseItemStyleForSubItems = false;
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item,
                     entry.FullPath,
@@ -118,7 +118,7 @@ namespace BSA_Browser
                 item.ForeColor = Color.Red;
                 item.UseItemStyleForSubItems = false;
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item,
-                    "-",
+                    string.Empty,
                     Color.Red,
                     Color.Transparent,
                     lvArchiveA.Font));
