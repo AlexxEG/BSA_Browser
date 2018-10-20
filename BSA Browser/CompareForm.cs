@@ -35,7 +35,7 @@ namespace BSA_Browser
                 cbArchiveB.Items.Add(archive.FileName);
             }
 
-            this.lComparison.Text = string.Format(CompareTextTemplate, 0, 1, 2, 3, 4);
+            this.lComparison.Text = string.Format(CompareTextTemplate, 0, 0, 0, 0, 0);
         }
 
         private void cbArchiveA_SelectedIndexChanged(object sender, EventArgs e)
