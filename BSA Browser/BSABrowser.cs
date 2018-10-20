@@ -37,6 +37,7 @@ namespace BSA_Browser
         List<ArchiveEntry> _files = new List<ArchiveEntry>();
         ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
         Timer _searchDelayTimer;
+        CompareForm _compareForm;
 
         /// <summary>
         /// Get the selected archive.
@@ -543,7 +544,10 @@ namespace BSA_Browser
             foreach (ArchiveNode node in tvFolders.Nodes)
                 archives.Add(node.Archive);
 
-            new CompareForm(archives).Show(this);
+            if (_compareForm == null)
+                _compareForm = new CompareForm(archives);
+
+            _compareForm.Show();
         }
 
         private void openFolderMenuItem_Click(object sender, EventArgs e)
@@ -816,6 +820,8 @@ namespace BSA_Browser
                 this.AddToRecentFiles(path);
 
             tvFolders.SelectedNode = newNode;
+
+            _compareForm?.AddArchive(archive);
         }
 
         /// <summary>
@@ -878,6 +884,7 @@ namespace BSA_Browser
                 this.ClearList();
 
             archiveNode.Archive.Close();
+            _compareForm.RemoveArchive(archiveNode.Archive);
 
             tvFolders.Nodes.Remove(archiveNode);
 
@@ -899,7 +906,10 @@ namespace BSA_Browser
             this.ClearList();
 
             foreach (ArchiveNode node in tvFolders.Nodes)
+            {
                 node.Archive.Close();
+                _compareForm?.RemoveArchive(node.Archive);
+            }
 
             tvFolders.Nodes.Clear();
 

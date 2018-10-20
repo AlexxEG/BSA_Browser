@@ -89,7 +89,7 @@ namespace BSA_Browser
                     byte[] a = archAFileList[file].GetRawDataStream().ToArray();
                     byte[] b = archBFileList[file].GetRawDataStream().ToArray();
 
-                    if (Testing.UnsafeCompare(a, b))
+                    if (UnsafeCompare(a, b))
                     {
                         identical.Add(archAFileList[file]);
                     }
@@ -158,10 +158,23 @@ namespace BSA_Browser
 
             cbArchiveA.SelectedIndexChanged += cbArchiveA_SelectedIndexChanged;
         }
-    }
 
-    public class Testing
-    {
+        public void AddArchive(Archive archive)
+        {
+            this.Archives.Add(archive);
+
+            cbArchiveA.Items.Add(archive.FileName);
+            cbArchiveB.Items.Add(archive.FileName);
+        }
+
+        public void RemoveArchive(Archive archive)
+        {
+            this.Archives.Remove(archive);
+
+            cbArchiveA.Items.Remove(archive.FileName);
+            cbArchiveB.Items.Remove(archive.FileName);
+        }
+
         // Copyright (c) 2008-2013 Hafthor Stefansson
         // Distributed under the MIT/X11 software license
         // Ref: http://www.opensource.org/licenses/mit-license.php.
