@@ -757,7 +757,7 @@ namespace BSA_Browser
             {
                 if (node.Archive.FullPath.ToLower() == path.ToLower())
                 {
-                    MessageBox.Show(this, "This archive is already opened.");
+                    tvFolders.SelectedNode = node;
                     return;
                 }
             }
