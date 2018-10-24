@@ -782,11 +782,15 @@ namespace BSA_Browser
                                 return;
                         }
 
-                        archive = new SharpBSABA2.BSAUtil.BSA(path);
+                        archive = new SharpBSABA2.BSAUtil.BSA(path)
+                        {
+                            RetrieveRealSize = Settings.Default.RetrieveRealSize
+                        };
                         break;
                     case ".ba2":
                         archive = new SharpBSABA2.BA2Util.BA2(path)
                         {
+                            RetrieveRealSize = Settings.Default.RetrieveRealSize,
                             UseATIFourCC = Settings.Default.UseATIFourCC
                         };
                         break;

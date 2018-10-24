@@ -46,6 +46,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.chbUseATIFourCC = new System.Windows.Forms.CheckBox();
+            this.chbRetrieveRealSize = new System.Windows.Forms.CheckBox();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -189,6 +190,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.chbRetrieveRealSize);
             this.tabPage1.Controls.Add(this.chbSortBSADirectories);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
@@ -203,9 +205,9 @@
             this.chbSortBSADirectories.AutoSize = true;
             this.chbSortBSADirectories.Location = new System.Drawing.Point(13, 13);
             this.chbSortBSADirectories.Name = "chbSortBSADirectories";
-            this.chbSortBSADirectories.Size = new System.Drawing.Size(333, 17);
+            this.chbSortBSADirectories.Size = new System.Drawing.Size(306, 17);
             this.chbSortBSADirectories.TabIndex = 0;
-            this.chbSortBSADirectories.Text = "Sort directories in .BSA archives (Reopen archives to take effect)";
+            this.chbSortBSADirectories.Text = "Sort directories in archives (Reopen archives to take effect)";
             this.chbSortBSADirectories.UseVisualStyleBackColor = true;
             // 
             // tabPage2
@@ -241,6 +243,16 @@
     "e Photoshop plugin seems to be able to open.\r\n\r\nRe-open archives to apply this c" +
     "hange.";
             this.chbUseATIFourCC.UseVisualStyleBackColor = true;
+            // 
+            // chbRetrieveRealSize
+            // 
+            this.chbRetrieveRealSize.AutoSize = true;
+            this.chbRetrieveRealSize.Location = new System.Drawing.Point(13, 36);
+            this.chbRetrieveRealSize.Name = "chbRetrieveRealSize";
+            this.chbRetrieveRealSize.Size = new System.Drawing.Size(363, 17);
+            this.chbRetrieveRealSize.TabIndex = 1;
+            this.chbRetrieveRealSize.Text = "Always use real file size, even if slower (Reopen archives to take effect)";
+            this.chbRetrieveRealSize.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -289,5 +301,6 @@
         private System.Windows.Forms.CheckBox chbSortBSADirectories;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.CheckBox chbUseATIFourCC;
+        private System.Windows.Forms.CheckBox chbRetrieveRealSize;
     }
 }

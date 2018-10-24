@@ -15,6 +15,7 @@ namespace BSA_Browser
             InitializeComponent();
 
             chbSortBSADirectories.Checked = Settings.Default.SortArchiveDirectories;
+            chbRetrieveRealSize.Checked = Settings.Default.RetrieveRealSize;
             chbUseATIFourCC.Checked = Settings.Default.UseATIFourCC;
 
             foreach (var path in Settings.Default.QuickExtractPaths)
@@ -131,6 +132,7 @@ namespace BSA_Browser
         public void SaveChanges()
         {
             Settings.Default.SortArchiveDirectories = chbSortBSADirectories.Checked;
+            Settings.Default.RetrieveRealSize = chbRetrieveRealSize.Checked;
             Settings.Default.UseATIFourCC = chbUseATIFourCC.Checked;
 
             Settings.Default.QuickExtractPaths.Clear();

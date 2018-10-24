@@ -8,6 +8,8 @@ namespace SharpBSABA2
 {
     public abstract class Archive
     {
+        public bool RetrieveRealSize { get; set; }
+
         public string FullPath { get; private set; }
         public string FileName => Path.GetFileName(this.FullPath);
 

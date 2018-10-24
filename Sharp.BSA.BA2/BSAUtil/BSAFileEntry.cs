@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using SharpBSABA2.Extensions;
 
 namespace SharpBSABA2.BSAUtil
 {
@@ -16,8 +17,7 @@ namespace SharpBSABA2.BSAUtil
         {
             get
             {
-                // ToDo: Incorrect with compressed files. RealSize isn't set until Extract is called
-                return this.Size;
+                return this.RealSize > 0 ? this.RealSize : this.Size;
             }
         }
 
@@ -32,6 +32,11 @@ namespace SharpBSABA2.BSAUtil
             this.FullPath = folder;
             this.Offset = offset;
             this.Size = size;
+
+            if (this.Archive.RetrieveRealSize)
+            {
+                this.RealSize = this.BinaryReader.ReadUInt32From((long)Offset);
+            }
         }
 
         public BSAFileEntry(Archive archive, int index, string path, uint offset, uint size)
