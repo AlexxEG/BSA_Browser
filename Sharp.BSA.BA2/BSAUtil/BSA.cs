@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using SharpBSABA2.Enums;
 using SharpBSABA2.Extensions;
 
 namespace SharpBSABA2.BSAUtil
@@ -35,6 +36,7 @@ namespace SharpBSABA2.BSAUtil
 
                 if (magic == MW_HEADER_MAGIC) // Morrowind uses this as version
                 {
+                    this.Type = ArchiveTypes.BSA_MW;
 
                     var header = new BSAHeaderMW(this.BinaryReader, magic);
 
@@ -57,10 +59,12 @@ namespace SharpBSABA2.BSAUtil
                 }
                 else if (magic == BSA_HEADER_MAGIC)
                 {
+                    this.Type = ArchiveTypes.BSA;
                     this.Version = this.BinaryReader.ReadInt32();
 
                     if (this.Version == SSE_HEADER_VERSION)
                     {
+                        this.Type = ArchiveTypes.BSA_SE;
                         // ToDo: Merge these two methods together, with version checks instead.
                         // This is just a lazy lazy implementation for now.
                         this.OpenSSE();
@@ -115,6 +119,7 @@ namespace SharpBSABA2.BSAUtil
                 else
                 {
                     //Might be a fallout 2 dat
+                    this.Type = ArchiveTypes.DAT_F2;
                     this.BinaryReader.BaseStream.Position = this.BinaryReader.BaseStream.Length - 8;
                     uint TreeSize = this.BinaryReader.ReadUInt32();
                     uint DataSize = this.BinaryReader.ReadUInt32();

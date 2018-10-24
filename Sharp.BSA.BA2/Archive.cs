@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression;
+using SharpBSABA2.Enums;
 
 namespace SharpBSABA2
 {
@@ -9,6 +10,8 @@ namespace SharpBSABA2
     {
         public string FullPath { get; private set; }
         public string FileName => Path.GetFileName(this.FullPath);
+
+        public ArchiveTypes Type { get; protected set; }
 
         public Inflater Inflater { get; private set; } = new Inflater();
         public List<ArchiveEntry> Files { get; private set; } = new List<ArchiveEntry>();

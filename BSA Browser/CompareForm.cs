@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using SharpBSABA2;
+using SharpBSABA2.Enums;
 
 namespace BSA_Browser
 {
@@ -38,13 +39,16 @@ namespace BSA_Browser
             this.lComparison.Text = string.Format(CompareTextTemplate, 0, 0, 0, 0, 0);
         }
 
-        private void cbArchiveA_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbArchives_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.Compare();
-        }
+            ComboBox comboBox = sender as ComboBox;
+            Label label = sender == cbArchiveA ? lTypeA : lTypeB;
 
-        private void cbArchiveB_SelectedIndexChanged(object sender, EventArgs e)
-        {
+            if (comboBox.SelectedIndex < 0)
+                label.Text = "-";
+            else
+                label.Text = this.FormatType(this.Archives[comboBox.SelectedIndex].Type);
+
             this.Compare();
         }
 
@@ -60,6 +64,9 @@ namespace BSA_Browser
 
             var archA = this.Archives[cbArchiveA.SelectedIndex];
             var archB = this.Archives[cbArchiveB.SelectedIndex];
+
+            lTypeA.ForeColor = archA.Type != archB.Type ? Color.Red : SystemColors.ControlText;
+            lTypeB.ForeColor = archA.Type != archB.Type ? Color.Green : SystemColors.ControlText;
 
             var archAFileList = archA.Files.ToDictionary(x => x.FullPath);
             var archBFileList = archB.Files.ToDictionary(x => x.FullPath);
@@ -151,12 +158,12 @@ namespace BSA_Browser
 
         public void Compare(Archive archA, Archive archB)
         {
-            cbArchiveA.SelectedIndexChanged -= cbArchiveA_SelectedIndexChanged;
+            cbArchiveA.SelectedIndexChanged -= cbArchives_SelectedIndexChanged;
 
             cbArchiveA.SelectedIndex = this.Archives.IndexOf(archA);
             cbArchiveB.SelectedIndex = this.Archives.IndexOf(archB);
 
-            cbArchiveA.SelectedIndexChanged += cbArchiveA_SelectedIndexChanged;
+            cbArchiveA.SelectedIndexChanged += cbArchives_SelectedIndexChanged;
         }
 
         public void AddArchive(Archive archive)
@@ -173,6 +180,21 @@ namespace BSA_Browser
 
             cbArchiveA.Items.Remove(archive.FileName);
             cbArchiveB.Items.Remove(archive.FileName);
+        }
+
+        public string FormatType(ArchiveTypes type)
+        {
+            switch (type)
+            {
+                case ArchiveTypes.BA2_DX10: return "BA2 Texture";
+                case ArchiveTypes.BA2_GNMF: return "BA2 Texture (GNF)";
+                case ArchiveTypes.BA2_GNRL: return "BA2 General";
+                case ArchiveTypes.BSA: return "BSA";
+                case ArchiveTypes.BSA_MW: return "BSA Morrowind";
+                case ArchiveTypes.BSA_SE: return "BSA Special Edition";
+                case ArchiveTypes.DAT_F2: return "DAT Fallout 2";
+                default: return string.Empty;
+            }
         }
 
         // Copyright (c) 2008-2013 Hafthor Stefansson

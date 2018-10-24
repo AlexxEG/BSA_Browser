@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using SharpBSABA2.Enums;
 using SharpBSABA2.Extensions;
 
 namespace SharpBSABA2.BA2Util
@@ -16,6 +18,22 @@ namespace SharpBSABA2.BA2Util
         protected override void Open(string filePath)
         {
             this.Header = new BA2Header(BinaryReader);
+
+            // Set archive type
+            switch (this.Header.Type)
+            {
+                case BA2HeaderType.DX10:
+                    this.Type = ArchiveTypes.BA2_DX10;
+                    break;
+                case BA2HeaderType.GNMF:
+                    this.Type = ArchiveTypes.BA2_GNMF;
+                    break;
+                case BA2HeaderType.GNRL:
+                    this.Type = ArchiveTypes.BA2_GNRL;
+                    break;
+                case BA2HeaderType.Unknown:
+                    throw new Exception($"Unknown {nameof(BA2HeaderType)} value: {this.Header.Type}");
+            }
 
             for (int i = 0; i < this.Header.numFiles; i++)
                 if (this.Header.Type == BA2HeaderType.GNRL)
