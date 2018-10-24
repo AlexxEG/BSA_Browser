@@ -8,12 +8,12 @@ namespace SharpBSABA2.BSAUtil
 {
     public class BSA : Archive
     {
-        public const int MW_HEADER_MAGIC = 0x00000100;  //!< Magic for Morrowind BSA
-        public const int BSA_HEADER_MAGIC = 0x00415342; //!< Magic for Oblivion BSA, the literal string "BSA\0".
+        public const int MW_HEADER_MAGIC = 0x00000100;  // Magic for Morrowind BSA
+        public const int BSA_HEADER_MAGIC = 0x00415342; // Magic for Oblivion BSA, the literal string "BSA\0".
 
-        public const int OB_HEADER_VERSION = 0x67;  //!< Version number of an Oblivion BSA
-        public const int F3_HEADER_VERSION = 0x68;  //!< Version number of an Fallout 3 BSA
-        public const int SSE_HEADER_VERSION = 0x69; //!< Version number of an Skyrim Special Edition BSA
+        public const int OB_HEADER_VERSION = 0x67;  // Version number of an Oblivion BSA
+        public const int F3_HEADER_VERSION = 0x68;  // Version number of an Fallout 3 BSA
+        public const int SSE_HEADER_VERSION = 0x69; // Version number of an Skyrim Special Edition BSA
 
         public const int OB_BSAARCHIVE_COMPRESSFILES = 0x4;
         public const int F3_BSAARCHIVE_PREFIXFULLFILENAMES = 0x100;
@@ -31,18 +31,18 @@ namespace SharpBSABA2.BSAUtil
         {
             try
             {
-                uint type = this.BinaryReader.ReadUInt32();
+                uint magic = this.BinaryReader.ReadUInt32();
 
-                if (type == MW_HEADER_MAGIC)
+                if (magic == MW_HEADER_MAGIC) // Morrowind uses this as version
                 {
-                    uint hashoffset = this.BinaryReader.ReadUInt32();
-                    uint FileCount = this.BinaryReader.ReadUInt32();
 
-                    uint dataoffset = 12 + hashoffset + FileCount * 8;
-                    uint fnameOffset1 = 12 + FileCount * 8;
-                    uint fnameOffset2 = 12 + FileCount * 12;
+                    var header = new BSAHeaderMW(this.BinaryReader, magic);
 
-                    for (int i = 0; i < FileCount; i++)
+                    uint dataoffset = 12 + header.HashOffset + header.FileCount * 8;
+                    uint fnameOffset1 = 12 + header.FileCount * 8;
+                    uint fnameOffset2 = 12 + header.FileCount * 12;
+
+                    for (int i = 0; i < header.FileCount; i++)
                     {
                         this.BinaryReader.BaseStream.Position = 12 + i * 8;
                         uint size = this.BinaryReader.ReadUInt32();
@@ -55,12 +55,11 @@ namespace SharpBSABA2.BSAUtil
                         this.Files.Add(new BSAFileEntry(this, i, name, offset, size));
                     }
                 }
-                else if (type == BSA_HEADER_MAGIC)
+                else if (magic == BSA_HEADER_MAGIC)
                 {
-                    int version = this.BinaryReader.ReadInt32();
-                    this.Version = version;
+                    this.Version = this.BinaryReader.ReadInt32();
 
-                    if (version == SSE_HEADER_VERSION)
+                    if (this.Version == SSE_HEADER_VERSION)
                     {
                         // ToDo: Merge these two methods together, with version checks instead.
                         // This is just a lazy lazy implementation for now.
@@ -68,11 +67,11 @@ namespace SharpBSABA2.BSAUtil
                         return;
                     }
 
-                    BSAHeader header = new BSAHeader(this.BinaryReader);
+                    var header = new BSAHeader(this.BinaryReader);
 
                     int[] numfiles = new int[header.FolderCount];
                     this.Compressed = ((header.ArchiveFlags & OB_BSAARCHIVE_COMPRESSFILES) > 0);
-                    this.ContainsFileNameBlobs = ((header.ArchiveFlags & F3_BSAARCHIVE_PREFIXFULLFILENAMES) > 0 && version == F3_HEADER_VERSION);
+                    this.ContainsFileNameBlobs = ((header.ArchiveFlags & F3_BSAARCHIVE_PREFIXFULLFILENAMES) > 0 && this.Version == F3_HEADER_VERSION);
 
                     for (int i = 0; i < header.FolderCount; i++)
                     {
