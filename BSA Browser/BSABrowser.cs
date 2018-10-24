@@ -884,7 +884,7 @@ namespace BSA_Browser
                 this.ClearList();
 
             archiveNode.Archive.Close();
-            _compareForm.RemoveArchive(archiveNode.Archive);
+            _compareForm?.RemoveArchive(archiveNode.Archive);
 
             tvFolders.Nodes.Remove(archiveNode);
 
