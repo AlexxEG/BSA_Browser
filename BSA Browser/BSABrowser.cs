@@ -544,7 +544,7 @@ namespace BSA_Browser
             foreach (ArchiveNode node in tvFolders.Nodes)
                 archives.Add(node.Archive);
 
-            if (_compareForm == null)
+            if (_compareForm == null || _compareForm.IsDisposed)
                 _compareForm = new CompareForm(archives);
 
             _compareForm.Show();
