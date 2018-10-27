@@ -34,14 +34,24 @@ namespace SharpBSABA2.BA2Util
                 else if (this.Header.Type == BA2HeaderType.GNMF)
                     this.Files.Add(new BA2GNFEntry(this, i));
 
-            // Seek to name table
-            BinaryReader.BaseStream.Seek((long)this.Header.nameTableOffset, SeekOrigin.Begin);
+            if (this.Header.nameTableOffset > 0)
+            {
+                // Seek to name table
+                BinaryReader.BaseStream.Seek((long)this.Header.nameTableOffset, SeekOrigin.Begin);
+            }
 
             // Assign full names to each file
             for (int i = 0; i < this.Header.numFiles; i++)
             {
-                short length = BinaryReader.ReadInt16();
-                this.Files[i].FullPath = this.BinaryReader.ReadString(length);
+                if (this.Header.nameTableOffset == 0)
+                {
+                    this.Files[i].FullPath = this.Files[i].nameHash.ToString("x");
+                }
+                else
+                {
+                    short length = BinaryReader.ReadInt16();
+                    this.Files[i].FullPath = this.BinaryReader.ReadString(length);
+                }
             }
         }
     }
