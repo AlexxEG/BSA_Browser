@@ -9,7 +9,7 @@ namespace SharpBSABA2.BA2Util
 
         public override bool Compressed
         {
-            get { return RealSize != 0; }
+            get { return this.RealSize != 0; }
         }
         public override uint DisplaySize
         {
@@ -50,22 +50,14 @@ namespace SharpBSABA2.BA2Util
         {
             BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
 
-            byte[] bytes = new byte[this.Size];
+            uint len = this.Compressed ? this.Size : this.RealSize;
+            byte[] bytes = new byte[len];
 
-            if (this.Size == 0)
-            {
-                bytes = new byte[this.RealSize];
-                BinaryReader.Read(bytes, 0, (int)this.RealSize);
-                stream.Write(bytes, 0, (int)this.RealSize);
-                stream.Seek(0, SeekOrigin.Begin);
-                return;
-            }
-
-            BinaryReader.Read(bytes, 0, (int)this.Size);
+            BinaryReader.Read(bytes, 0, bytes.Length);
 
             if (!decompress || !this.Compressed)
             {
-                stream.Write(bytes, 0, (int)this.Size);
+                stream.Write(bytes, 0, bytes.Length);
             }
             else
             {
