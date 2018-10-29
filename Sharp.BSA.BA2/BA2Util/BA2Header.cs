@@ -13,16 +13,14 @@ namespace SharpBSABA2.BA2Util
 
         public BA2Header(BinaryReader br)
         {
-            BA2HeaderMagic magicParsed;
-            if (Enum.TryParse(new string(br.ReadChars(4)), true, out magicParsed))
+            if (Enum.TryParse(new string(br.ReadChars(4)), true, out BA2HeaderMagic magicParsed))
                 this.Magic = magicParsed;
             else
                 this.Magic = BA2HeaderMagic.Unknown;
 
             version = br.ReadUInt32();
 
-            BA2HeaderType typeParsed;
-            if (Enum.TryParse(new string(br.ReadChars(4)), true, out typeParsed))
+            if (Enum.TryParse(new string(br.ReadChars(4)), true, out BA2HeaderType typeParsed))
                 this.Type = typeParsed;
             else
                 this.Type = BA2HeaderType.Unknown;

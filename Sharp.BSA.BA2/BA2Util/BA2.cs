@@ -20,8 +20,7 @@ namespace SharpBSABA2.BA2Util
             this.Header = new BA2Header(BinaryReader);
 
             // Set archive type
-            ArchiveTypes type;
-            if (Enum.TryParse("BA2_" + this.Header.Type, out type))
+            if (Enum.TryParse("BA2_" + this.Header.Type, out ArchiveTypes type))
                 this.Type = type;
             else
                 throw new Exception($"Unknown {nameof(BA2HeaderType)} value: {this.Header.Type}");
