@@ -45,7 +45,7 @@ namespace SharpBSABA2.BA2Util
             {
                 if (this.Header.nameTableOffset == 0)
                 {
-                    this.Files[i].FullPath = this.Files[i].nameHash.ToString("x");
+                    this.Files[i].FullPath = this.Files[i].nameHash.ToString("X");
                 }
                 else
                 {
