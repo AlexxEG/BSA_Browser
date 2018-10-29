@@ -8,11 +8,32 @@ using SharpBSABA2.Enums;
 
 namespace BSA_Browser
 {
+    public struct CompareItem
+    {
+        public string FullPath;
+        public CompareType Type;
+
+        public CompareItem(string fullPath, CompareType type)
+        {
+            this.FullPath = fullPath;
+            this.Type = type;
+        }
+    }
+
+    public enum CompareType
+    {
+        Added,
+        Removed,
+        Changed,
+        Identical
+    }
+
     public partial class CompareForm : Form
     {
         string CompareTextTemplate = string.Empty;
 
         public List<Archive> Archives { get; private set; } = new List<Archive>();
+        public List<CompareItem> Files { get; private set; } = new List<CompareItem>();
 
         public CompareForm()
         {
@@ -41,21 +62,93 @@ namespace BSA_Browser
 
         private void cbArchives_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ComboBox comboBox = sender as ComboBox;
-            Label label = sender == cbArchiveA ? lTypeA : lTypeB;
+            var comboBox = sender as ComboBox;
+
+            var controls = new Dictionary<string, Control>()
+            {
+                { "type", sender == cbArchiveA ? lTypeA : lTypeB },
+                { "version", sender == cbArchiveA ? lVersionA : lVersionB },
+                { "fileCount", sender == cbArchiveA ? lFileCountA : lFileCountB },
+                { "chunks", sender == cbArchiveA ? lChunksA : lChunksB },
+                { "chunksLabel", sender == cbArchiveA ? lChunksAA : lChunksBB },
+                { "missingNameTable", sender == cbArchiveA ? lMissingNameTableA : lMissingNameTableB }
+            };
 
             if (comboBox.SelectedIndex < 0)
-                label.Text = "-";
+            {
+                controls["type"].Text = "-";
+                controls["version"].Text = "-";
+                controls["fileCount"].Text = "-";
+                controls["chunks"].Text = "-";
+                controls["chunks"].Visible = controls["chunksLabel"].Visible = false;
+                controls["missingNameTable"].Visible = false;
+            }
             else
-                label.Text = this.FormatType(this.Archives[comboBox.SelectedIndex].Type);
+            {
+                var archive = this.Archives[comboBox.SelectedIndex];
+                controls["type"].Text = this.FormatType(archive.Type);
+                controls["version"].Text = archive.VersionString;
+                controls["fileCount"].Text = archive.FileCount.ToString();
+                controls["chunks"].Text = archive.Chunks.ToString();
+                controls["chunks"].Visible = controls["chunksLabel"].Visible = archive.Chunks > 0;
+                controls["missingNameTable"].Visible = !archive.HasNameTable;
+            }
 
             this.Compare();
         }
 
+        private void lvArchive_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            if (this.Files.Count <= e.ItemIndex)
+                return;
+
+            var file = this.Files[e.ItemIndex];
+            ListViewItem newItem;
+
+            switch (file.Type)
+            {
+                case CompareType.Added:
+                    newItem = new ListViewItem
+                    {
+                        UseItemStyleForSubItems = false
+                    };
+                    newItem.SubItems.Add(new ListViewItem.ListViewSubItem(newItem, file.FullPath)
+                    {
+                        ForeColor = Color.Green
+                    });
+                    break;
+                case CompareType.Removed:
+                    newItem = new ListViewItem(file.FullPath)
+                    {
+                        ForeColor = Color.Red
+                    };
+                    newItem.SubItems.Add(new ListViewItem.ListViewSubItem());
+                    break;
+                case CompareType.Changed:
+                    newItem = new ListViewItem(file.FullPath)
+                    {
+                        ForeColor = Color.Blue
+                    };
+                    newItem.SubItems.Add(new ListViewItem.ListViewSubItem(newItem, file.FullPath));
+                    break;
+                case CompareType.Identical:
+                    newItem = new ListViewItem(file.FullPath)
+                    {
+                        ForeColor = Color.Gray
+                    };
+                    newItem.SubItems.Add(new ListViewItem.ListViewSubItem(newItem, file.FullPath));
+                    break;
+                default:
+                    throw new Exception("Unknown CompareType");
+            }
+
+            newItem.ToolTipText = file.FullPath;
+
+            e.Item = newItem;
+        }
+
         private void Compare()
         {
-            lvArchiveA.Items.Clear();
-
             if (cbArchiveA.SelectedIndex < 0 || cbArchiveB.SelectedIndex < 0)
                 return;
 
@@ -65,8 +158,21 @@ namespace BSA_Browser
             var archA = this.Archives[cbArchiveA.SelectedIndex];
             var archB = this.Archives[cbArchiveB.SelectedIndex];
 
+            // Type
             lTypeA.ForeColor = archA.Type != archB.Type ? Color.Red : SystemColors.ControlText;
             lTypeB.ForeColor = archA.Type != archB.Type ? Color.Green : SystemColors.ControlText;
+
+            // Version
+            lVersionA.ForeColor = archA.VersionString != archB.VersionString ? Color.Red : SystemColors.ControlText;
+            lVersionB.ForeColor = archB.VersionString != archB.VersionString ? Color.Green : SystemColors.ControlText;
+
+            // File Count
+            lFileCountA.ForeColor = archA.FileCount != archB.FileCount ? Color.Red : SystemColors.ControlText;
+            lFileCountB.ForeColor = archB.FileCount != archB.FileCount ? Color.Green : SystemColors.ControlText;
+
+            // Chunks
+            lChunksA.ForeColor = archA.Chunks != archB.Chunks ? Color.Red : SystemColors.ControlText;
+            lChunksB.ForeColor = archB.Chunks != archB.Chunks ? Color.Green : SystemColors.ControlText;
 
             var archAFileList = archA.Files.ToDictionary(x => x.FullPath);
             var archBFileList = archB.Files.ToDictionary(x => x.FullPath);
@@ -76,82 +182,48 @@ namespace BSA_Browser
             foreach (var file in archBFileList.Keys) dict[file] = file;
             var filelist = dict.Values.ToList();
 
-            var added = new List<ArchiveEntry>();
-            var removed = new List<ArchiveEntry>();
-            var changed = new List<ArchiveEntry>();
-            var identical = new List<ArchiveEntry>();
+            lvArchive.BeginUpdate();
+            this.Files.Clear();
 
             foreach (var file in filelist)
             {
                 if (archAFileList.ContainsKey(file) && !archBFileList.ContainsKey(file))
                 {
-                    removed.Add(archAFileList[file]);
+                    // File appears in left archive only
+                    this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Removed));
                 }
                 else if (!archAFileList.ContainsKey(file) && archBFileList.ContainsKey(file))
                 {
-                    added.Add(archBFileList[file]);
+                    // File appears in right archive only
+                    this.Files.Add(new CompareItem(archBFileList[file].FullPath, CompareType.Added));
                 }
                 else
                 {
                     byte[] a = archAFileList[file].GetRawDataStream().ToArray();
                     byte[] b = archBFileList[file].GetRawDataStream().ToArray();
 
+                    // Compare bytes
                     if (UnsafeCompare(a, b))
                     {
-                        identical.Add(archAFileList[file]);
+                        // Files are identical
+                        this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Identical));
                     }
                     else
                     {
-                        changed.Add(archAFileList[file]);
+                        // Files are different
+                        this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Changed));
                     }
                 }
             }
 
-            foreach (var entry in added)
-            {
-                var item = new ListViewItem();
-                item.UseItemStyleForSubItems = false;
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item,
-                    entry.FullPath,
-                    Color.Green,
-                    Color.Transparent,
-                    lvArchiveA.Font));
-                lvArchiveA.Items.Add(item);
-            }
-
-            foreach (var entry in removed)
-            {
-                var item = new ListViewItem(entry.FullPath);
-                item.ForeColor = Color.Red;
-                item.UseItemStyleForSubItems = false;
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item,
-                    string.Empty,
-                    Color.Red,
-                    Color.Transparent,
-                    lvArchiveA.Font));
-                lvArchiveA.Items.Add(item);
-            }
-
-            foreach (var entry in changed)
-            {
-                var item = new ListViewItem(entry.FullPath);
-                item.ForeColor = Color.Blue;
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, entry.FullPath));
-                lvArchiveA.Items.Add(item);
-            }
-
-            foreach (var entry in identical)
-            {
-                var item = new ListViewItem(entry.FullPath);
-                item.ForeColor = Color.Gray;
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, entry.FullPath));
-                lvArchiveA.Items.Add(item);
-            }
+            lvArchive.VirtualListSize = this.Files.Count;
+            lvArchive.Invalidate();
+            lvArchive.EndUpdate();
 
             this.lComparison.Text = string.Format(CompareTextTemplate,
-                added.Count,
-                removed.Count,
-                changed.Count,
+                this.Files.Count(x => x.Type == CompareType.Added),
+                this.Files.Count(x => x.Type == CompareType.Removed),
+                this.Files.Count(x => x.Type == CompareType.Changed),
                 archAFileList.Count,
                 archBFileList.Count);
         }

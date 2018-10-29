@@ -40,6 +40,10 @@ namespace SharpBSABA2.BSAUtil
 
                     var header = new BSAHeaderMW(this.BinaryReader, magic);
 
+                    this.VersionString = header.Version.ToString("X");
+                    this.FileCount = (int)header.FileCount;
+                    this.HasNameTable = true; // Should be true for all Morrowind archives
+
                     uint dataoffset = 12 + header.HashOffset + header.FileCount * 8;
                     uint fnameOffset1 = 12 + header.FileCount * 8;
                     uint fnameOffset2 = 12 + header.FileCount * 12;
@@ -72,6 +76,10 @@ namespace SharpBSABA2.BSAUtil
                     }
 
                     var header = new BSAHeader(this.BinaryReader);
+
+                    this.VersionString = this.Version.ToString();
+                    this.FileCount = (int)header.FileCount;
+                    this.HasNameTable = (header.ArchiveFlags & 0x1) > 0 && (header.ArchiveFlags & 0x2) > 0; // Should always be true
 
                     int[] numfiles = new int[header.FolderCount];
                     this.Compressed = ((header.ArchiveFlags & OB_BSAARCHIVE_COMPRESSFILES) > 0);
@@ -133,6 +141,9 @@ namespace SharpBSABA2.BSAUtil
                     this.BinaryReader.BaseStream.Position = DataSize - TreeSize - 8;
                     int FileCount = this.BinaryReader.ReadInt32();
 
+                    this.FileCount = FileCount;
+                    this.HasNameTable = true;
+
                     for (int i = 0; i < FileCount; i++)
                     {
                         int fileLen = this.BinaryReader.ReadInt32();
@@ -175,6 +186,10 @@ namespace SharpBSABA2.BSAUtil
         {
             // Read header
             BSAHeader header = new BSAHeader(this.BinaryReader);
+
+            this.VersionString = this.Version.ToString();
+            this.FileCount = (int)header.FileCount;
+            this.HasNameTable = (header.ArchiveFlags & 0x1) > 0 && (header.ArchiveFlags & 0x2) > 0; // Should always be true
 
             this.Compressed = (header.ArchiveFlags & OB_BSAARCHIVE_COMPRESSFILES) > 0;
             this.ContainsFileNameBlobs = (header.ArchiveFlags & F3_BSAARCHIVE_PREFIXFULLFILENAMES) > 0;

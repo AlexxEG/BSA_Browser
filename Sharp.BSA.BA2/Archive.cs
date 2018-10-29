@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression;
@@ -12,6 +13,11 @@ namespace SharpBSABA2
 
         public string FullPath { get; private set; }
         public string FileName => Path.GetFileName(this.FullPath);
+
+        public int Chunks { get; set; }
+        public int FileCount { get; set; }
+        public bool HasNameTable { get; set; }
+        public string VersionString { get; set; } = "None";
 
         public ArchiveTypes Type { get; protected set; }
 
@@ -45,7 +51,7 @@ namespace SharpBSABA2
 
         public ArchiveEntry[] FindFiles(params string[] files)
         {
-            return this.Files.FindAll(x => System.Array.IndexOf(files, x.FullPath) >= 0).ToArray();
+            return this.Files.FindAll(x => Array.IndexOf(files, x.FullPath) >= 0).ToArray();
         }
 
         protected abstract void Open(string filePath);

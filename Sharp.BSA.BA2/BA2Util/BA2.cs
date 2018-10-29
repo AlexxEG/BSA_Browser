@@ -19,6 +19,10 @@ namespace SharpBSABA2.BA2Util
         {
             this.Header = new BA2Header(BinaryReader);
 
+            this.VersionString = this.Header.version.ToString();
+            this.FileCount = (int)this.Header.numFiles;
+            this.HasNameTable = this.Header.nameTableOffset > 0;
+
             // Set archive type
             if (Enum.TryParse("BA2_" + this.Header.Type, out ArchiveTypes type))
                 this.Type = type;
