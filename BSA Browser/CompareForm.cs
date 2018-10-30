@@ -22,10 +22,10 @@ namespace BSA_Browser
 
     public enum CompareType
     {
-        Added,
-        Removed,
-        Changed,
-        Identical
+        Removed = 1,
+        Added = 2,
+        Changed = 3,
+        Identical = 4
     }
 
     public partial class CompareForm : Form
@@ -197,6 +197,8 @@ namespace BSA_Browser
                     }
                 }
             }
+
+            this.Files.Sort((x, y) => ((int)x.Type).CompareTo((int)y.Type));
 
             lvArchive.VirtualListSize = this.Files.Count;
             lvArchive.Invalidate();
