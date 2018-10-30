@@ -151,21 +151,10 @@ namespace BSA_Browser
             var archA = this.Archives[cbArchiveA.SelectedIndex];
             var archB = this.Archives[cbArchiveB.SelectedIndex];
 
-            // Type
-            lTypeA.ForeColor = archA.Type != archB.Type ? Color.Red : SystemColors.ControlText;
-            lTypeB.ForeColor = archA.Type != archB.Type ? Color.Green : SystemColors.ControlText;
-
-            // Version
-            lVersionA.ForeColor = archA.VersionString != archB.VersionString ? Color.Red : SystemColors.ControlText;
-            lVersionB.ForeColor = archB.VersionString != archB.VersionString ? Color.Green : SystemColors.ControlText;
-
-            // File Count
-            lFileCountA.ForeColor = archA.FileCount != archB.FileCount ? Color.Red : SystemColors.ControlText;
-            lFileCountB.ForeColor = archB.FileCount != archB.FileCount ? Color.Green : SystemColors.ControlText;
-
-            // Chunks
-            lChunksA.ForeColor = archA.Chunks != archB.Chunks ? Color.Red : SystemColors.ControlText;
-            lChunksB.ForeColor = archB.Chunks != archB.Chunks ? Color.Green : SystemColors.ControlText;
+            this.SetCompareColor(lTypeA, lTypeB, archA.Type != archB.Type);
+            this.SetCompareColor(lVersionA, lVersionB, archA.VersionString != archB.VersionString);
+            this.SetCompareColor(lFileCountA, lFileCountB, archA.FileCount != archB.FileCount);
+            this.SetCompareColor(lChunksA, lChunksB, archA.Chunks != archB.Chunks);
 
             var archAFileList = archA.Files.ToDictionary(x => x.FullPath);
             var archBFileList = archB.Files.ToDictionary(x => x.FullPath);
@@ -247,7 +236,13 @@ namespace BSA_Browser
             cbArchiveB.Items.Remove(archive.FileName);
         }
 
-        public string FormatType(ArchiveTypes type)
+        private void SetCompareColor(Control a, Control b, bool comparison)
+        {
+            a.ForeColor = comparison ? Color.Red : SystemColors.ControlText;
+            b.ForeColor = comparison ? Color.Green : SystemColors.ControlText;
+        }
+
+        private string FormatType(ArchiveTypes type)
         {
             switch (type)
             {
