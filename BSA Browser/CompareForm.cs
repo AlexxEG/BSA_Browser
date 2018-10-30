@@ -63,35 +63,28 @@ namespace BSA_Browser
         private void cbArchives_SelectedIndexChanged(object sender, EventArgs e)
         {
             var comboBox = sender as ComboBox;
-
-            var controls = new Dictionary<string, Control>()
-            {
-                { "type", sender == cbArchiveA ? lTypeA : lTypeB },
-                { "version", sender == cbArchiveA ? lVersionA : lVersionB },
-                { "fileCount", sender == cbArchiveA ? lFileCountA : lFileCountB },
-                { "chunks", sender == cbArchiveA ? lChunksA : lChunksB },
-                { "chunksLabel", sender == cbArchiveA ? lChunksAA : lChunksBB },
-                { "missingNameTable", sender == cbArchiveA ? lMissingNameTableA : lMissingNameTableB }
-            };
+            var type = sender == cbArchiveA ? lTypeA : lTypeB;
+            var version = sender == cbArchiveA ? lVersionA : lVersionB;
+            var fileCount = sender == cbArchiveA ? lFileCountA : lFileCountB;
+            var chunks = sender == cbArchiveA ? lChunksA : lChunksB;
+            var chunksLabel = sender == cbArchiveA ? lChunksAA : lChunksBB;
+            var missingNameTable = sender == cbArchiveA ? lMissingNameTableA : lMissingNameTableB;
 
             if (comboBox.SelectedIndex < 0)
             {
-                controls["type"].Text = "-";
-                controls["version"].Text = "-";
-                controls["fileCount"].Text = "-";
-                controls["chunks"].Text = "-";
-                controls["chunks"].Visible = controls["chunksLabel"].Visible = false;
-                controls["missingNameTable"].Visible = false;
+                // Reset text and visibility
+                type.Text = version.Text = fileCount.Text = chunks.Text = "-";
+                chunks.Visible = chunksLabel.Visible = missingNameTable.Visible = false;
             }
             else
             {
                 var archive = this.Archives[comboBox.SelectedIndex];
-                controls["type"].Text = this.FormatType(archive.Type);
-                controls["version"].Text = archive.VersionString;
-                controls["fileCount"].Text = archive.FileCount.ToString();
-                controls["chunks"].Text = archive.Chunks.ToString();
-                controls["chunks"].Visible = controls["chunksLabel"].Visible = archive.Chunks > 0;
-                controls["missingNameTable"].Visible = !archive.HasNameTable;
+                type.Text = this.FormatType(archive.Type);
+                version.Text = archive.VersionString;
+                fileCount.Text = archive.FileCount.ToString();
+                chunks.Text = archive.Chunks.ToString();
+                chunks.Visible = chunksLabel.Visible = archive.Chunks > 0;
+                missingNameTable.Visible = !archive.HasNameTable;
             }
 
             this.Compare();
