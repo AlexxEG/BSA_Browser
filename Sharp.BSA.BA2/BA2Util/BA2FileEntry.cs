@@ -9,13 +9,13 @@ namespace SharpBSABA2.BA2Util
 
         public override bool Compressed
         {
-            get { return this.RealSize != 0; }
+            get { return this.Size != 0; }
         }
         public override uint DisplaySize
         {
             get
             {
-                return this.Compressed ? this.RealSize : this.Size;
+                return this.RealSize;
             }
         }
 
