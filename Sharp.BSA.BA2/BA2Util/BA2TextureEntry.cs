@@ -150,39 +150,38 @@ namespace SharpBSABA2.BA2Util
 
         protected void WriteDataToStream(Stream stream, bool decompress)
         {
-            using (var bw = new BinaryWriter(stream))
+            var bw = new BinaryWriter(stream);
+
+            if (decompress)
             {
-                if (decompress)
+                var ddsHeader = this.CreateHeader();
+                bw.Write((uint)DDS.DDS_MAGIC);
+                ddsHeader.Write(bw);
+            }
+
+            for (int i = 0; i < numChunks; i++)
+            {
+                byte[] full = new byte[this.Chunks[i].fullSz];
+                bool isCompressed = this.Chunks[i].packSz != 0;
+
+                this.BinaryReader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
+
+                if (!decompress || !isCompressed)
                 {
-                    var ddsHeader = this.CreateHeader();
-                    bw.Write((uint)DDS.DDS_MAGIC);
-                    ddsHeader.Write(bw);
+                    this.BinaryReader.Read(full, 0, full.Length);
+                }
+                else
+                {
+                    byte[] compressed = new byte[this.Chunks[i].packSz];
+
+                    this.BinaryReader.Read(compressed, 0, compressed.Length);
+                    // Uncompress
+                    this.Archive.Inflater.Reset();
+                    this.Archive.Inflater.SetInput(compressed);
+                    this.Archive.Inflater.Inflate(full);
                 }
 
-                for (int i = 0; i < numChunks; i++)
-                {
-                    byte[] full = new byte[this.Chunks[i].fullSz];
-                    bool isCompressed = this.Chunks[i].packSz != 0;
-
-                    this.BinaryReader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
-
-                    if (!decompress || !isCompressed)
-                    {
-                        this.BinaryReader.Read(full, 0, full.Length);
-                    }
-                    else
-                    {
-                        byte[] compressed = new byte[this.Chunks[i].packSz];
-
-                        this.BinaryReader.Read(compressed, 0, compressed.Length);
-                        // Uncompress
-                        this.Archive.Inflater.Reset();
-                        this.Archive.Inflater.SetInput(compressed);
-                        this.Archive.Inflater.Inflate(full);
-                    }
-
-                    bw.Write(full);
-                }
+                bw.Write(full);
             }
         }
     }
