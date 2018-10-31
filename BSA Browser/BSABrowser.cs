@@ -365,7 +365,7 @@ namespace BSA_Browser
                 var lvis = new List<ArchiveEntry>(rootNode.AllFiles.Count);
 
                 foreach (var lvi in rootNode.AllFiles)
-                    if (lvi.FullPath.StartsWith(path)) lvis.Add(lvi);
+                    if (lvi.FullPath.Replace('/', '\\').StartsWith(path)) lvis.Add(lvi);
 
                 lvis.TrimExcess();
                 rootNode.Files = lvis.ToArray();
