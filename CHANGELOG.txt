@@ -1,6 +1,6 @@
 [1.9.1]
 
-- Fixed some textures not causing invalid DDS header error
+- Fixed some textures causing invalid DDS header error
 
 [1.9]
 
