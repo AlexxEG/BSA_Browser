@@ -150,9 +150,7 @@ namespace SharpBSABA2.BA2Util
 
         protected void WriteDataToStream(Stream stream, bool decompress)
         {
-            var temp = new MemoryStream();
-
-            using (var bw = new BinaryWriter(temp))
+            using (var bw = new BinaryWriter(stream))
             {
                 if (decompress)
                 {
@@ -185,9 +183,6 @@ namespace SharpBSABA2.BA2Util
 
                     bw.Write(full);
                 }
-
-                byte[] bytes = temp.GetBuffer();
-                stream.Write(bytes, 0, bytes.Length);
             }
         }
     }
