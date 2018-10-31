@@ -1,3 +1,10 @@
+[1.9]
+
+- Very early Fallout 76 support
+- Added tool to compare archives. See what has been added, removed or changed
+- Removed "This archive is already opened" message. Bring window to front instead
+- Fixed rare decompress error with certain files (e.g. True Storms, Skyland)
+
 [1.8.5]
 
 - Added support for GNF format .ba2
