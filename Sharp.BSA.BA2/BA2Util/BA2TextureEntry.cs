@@ -137,7 +137,7 @@ namespace SharpBSABA2.BA2Util
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
                 default:
-                    throw new Exception("Unsupported DDS header format.");
+                    throw new Exception("Unsupported DDS header format. File: " + this.FullPath);
             }
 
             return ddsHeader;

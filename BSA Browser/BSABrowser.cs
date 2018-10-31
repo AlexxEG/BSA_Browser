@@ -1097,24 +1097,25 @@ namespace BSA_Browser
         {
             var arguments = e.Argument as ExtractFilesArguments;
             var extracted = new Dictionary<string, int>();
+            var exceptions = new List<Exception>();
 
-            try
+            int progress = 0;
+            int prevProgress = 0;
+            int count = 0;
+
+            foreach (var fe in arguments.Files)
             {
-                int progress = 0;
-                int prevProgress = 0;
-                int count = 0;
-
-                foreach (var fe in arguments.Files)
+                if (bw.CancellationPending)
                 {
-                    if (bw.CancellationPending)
-                    {
-                        e.Result = false;
-                        break;
-                    }
+                    e.Result = false;
+                    break;
+                }
 
-                    // Update ProgressForm's current file
-                    bw.ReportProgress(-1, fe.FileName);
+                // Update ProgressForm's current file
+                bw.ReportProgress(-1, fe.FileName);
 
+                try
+                {
                     if (arguments.UseFolderPath)
                     {
                         fe.Extract(arguments.Folder, arguments.UseFolderPath);
@@ -1136,20 +1137,27 @@ namespace BSA_Browser
                             extracted.Add(fe.FileName, 0);
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add(ex);
+                }
 
-                    count++;
-                    progress = (int)Math.Round(((double)count / arguments.Files.Length) * 100);
-                    if (progress > prevProgress)
-                    {
-                        prevProgress = progress;
-                        bw.ReportProgress(progress);
-                    }
+                count++;
+                progress = (int)Math.Round(((double)count / arguments.Files.Length) * 100);
+                if (progress > prevProgress)
+                {
+                    prevProgress = progress;
+                    bw.ReportProgress(progress);
                 }
             }
-            catch (Exception ex)
+
+            if (exceptions.Count > 0)
             {
-                e.Result = ex;
+                File.WriteAllLines(Path.Combine(arguments.Folder, "_report.txt"), exceptions.Select(x => x.Message));
             }
+
+            e.Result = exceptions;
         }
 
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -1177,9 +1185,11 @@ namespace BSA_Browser
 
             this.Text = _untouchedTitle;
 
-            if (e.Result is Exception)
+            var exceptions = e.Result as List<Exception>;
+
+            if (exceptions?.Count > 0)
             {
-                MessageBox.Show(this, (e.Result as Exception).Message, "Error");
+                MessageBox.Show(this, $"{exceptions.Count} file(s) failed to extract. See report file in destination for details.", "Error");
             }
         }
 
