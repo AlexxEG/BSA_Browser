@@ -93,6 +93,11 @@ namespace SharpBSABA2.BA2Util
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '1');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height / 2); // 4bpp
                     break;
+                case DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM_SRGB: // Not sure if correct yet, but textures are viewable
+                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
+                    ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '1');
+                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height / 2); // 4bpp
+                    break;
                 case DXGI_FORMAT.DXGI_FORMAT_BC2_UNORM:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '3');
@@ -103,7 +108,9 @@ namespace SharpBSABA2.BA2Util
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '5');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
+                case DXGI_FORMAT.DXGI_FORMAT_BC4_UNORM:
                 case DXGI_FORMAT.DXGI_FORMAT_BC5_UNORM:
+                case DXGI_FORMAT.DXGI_FORMAT_BC5_SNORM:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     if ((this.Archive as BA2).UseATIFourCC)
                         ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('A', 'T', 'I', '2'); // this is more correct but the only thing I have found that supports it is the nvidia photoshop plugin
