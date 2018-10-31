@@ -89,10 +89,6 @@ namespace SharpBSABA2.BA2Util
             switch ((DXGI_FORMAT)format)
             {
                 case DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM:
-                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
-                    ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '1');
-                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height / 2); // 4bpp
-                    break;
                 case DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM_SRGB: // Not sure if correct yet, but textures are viewable
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '1');
@@ -104,6 +100,7 @@ namespace SharpBSABA2.BA2Util
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
                 case DXGI_FORMAT.DXGI_FORMAT_BC3_UNORM:
+                case DXGI_FORMAT.DXGI_FORMAT_BC3_UNORM_SRGB:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '5');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
