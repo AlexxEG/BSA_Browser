@@ -1033,16 +1033,10 @@ namespace BSA_Browser
                 pf = new ProgressForm("Unpacking archive");
                 pf.EnableCancel();
                 pf.SetProgressRange(100);
-                pf.Canceled += delegate { bw.CancelAsync(); };
+                pf.Canceled += delegate { bwExtractFiles.CancelAsync(); };
                 pf.Show(this);
 
-                bw = new BackgroundWorker();
-                bw.WorkerReportsProgress = true;
-                bw.WorkerSupportsCancellation = true;
-                bw.DoWork += bw_DoWork;
-                bw.ProgressChanged += bw_ProgressChanged;
-                bw.RunWorkerCompleted += bw_RunWorkerCompleted;
-                bw.RunWorkerAsync(new ExtractFilesArguments()
+                bwExtractFiles.RunWorkerAsync(new ExtractFilesArguments()
                 {
                     UseFolderPath = useFolderPath,
                     Folder = folder,
@@ -1083,7 +1077,6 @@ namespace BSA_Browser
 
         #region ExtractFiles variables
 
-        BackgroundWorker bw;
         ProgressForm pf;
 
         private class ExtractFilesArguments
@@ -1105,14 +1098,14 @@ namespace BSA_Browser
 
             foreach (var fe in arguments.Files)
             {
-                if (bw.CancellationPending)
+                if (bwExtractFiles.CancellationPending)
                 {
                     e.Result = false;
                     break;
                 }
 
                 // Update ProgressForm's current file
-                bw.ReportProgress(-1, fe.FileName);
+                bwExtractFiles.ReportProgress(-1, fe.FileName);
 
                 try
                 {
@@ -1148,7 +1141,7 @@ namespace BSA_Browser
                 if (progress > prevProgress)
                 {
                     prevProgress = progress;
-                    bw.ReportProgress(progress);
+                    bwExtractFiles.ReportProgress(progress);
                 }
             }
 
@@ -1179,9 +1172,6 @@ namespace BSA_Browser
             pf.Close();
             pf.Dispose();
             pf = null;
-
-            bw.Dispose();
-            bw = null;
 
             this.Text = _untouchedTitle;
 

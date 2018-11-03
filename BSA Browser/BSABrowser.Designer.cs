@@ -90,6 +90,7 @@
             this.menuItem8 = new System.Windows.Forms.MenuItem();
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.bwExtractFiles = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -571,6 +572,14 @@
             this.closeMenuItem.Text = "Close";
             this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
             // 
+            // bwExtractFiles
+            // 
+            this.bwExtractFiles.WorkerReportsProgress = true;
+            this.bwExtractFiles.WorkerSupportsCancellation = true;
+            this.bwExtractFiles.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bw_DoWork);
+            this.bwExtractFiles.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_ProgressChanged);
+            this.bwExtractFiles.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bw_RunWorkerCompleted);
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -663,6 +672,7 @@
         private System.Windows.Forms.MenuItem extractArchivesMenuItem;
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem compareArchivesMenuItem;
+        private System.ComponentModel.BackgroundWorker bwExtractFiles;
     }
 }
 
