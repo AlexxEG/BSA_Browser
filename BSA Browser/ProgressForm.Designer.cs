@@ -53,9 +53,9 @@ namespace BSA_Browser
             this.lProgress.AutoSize = true;
             this.lProgress.Location = new System.Drawing.Point(273, 32);
             this.lProgress.Name = "lProgress";
-            this.lProgress.Size = new System.Drawing.Size(28, 13);
+            this.lProgress.Size = new System.Drawing.Size(21, 13);
             this.lProgress.TabIndex = 2;
-            this.lProgress.Text = "AAA";
+            this.lProgress.Text = "0%";
             // 
             // btnCancel
             // 
