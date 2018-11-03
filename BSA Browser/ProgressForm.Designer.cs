@@ -73,9 +73,9 @@ namespace BSA_Browser
             this.lCurrentFile.AutoSize = true;
             this.lCurrentFile.Location = new System.Drawing.Point(12, 9);
             this.lCurrentFile.Name = "lCurrentFile";
-            this.lCurrentFile.Size = new System.Drawing.Size(28, 13);
+            this.lCurrentFile.Size = new System.Drawing.Size(52, 13);
             this.lCurrentFile.TabIndex = 5;
-            this.lCurrentFile.Text = "AAA";
+            this.lCurrentFile.Text = "Waiting...";
             // 
             // ProgressForm
             // 
