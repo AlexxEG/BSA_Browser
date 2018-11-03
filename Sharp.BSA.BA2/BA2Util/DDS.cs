@@ -29,12 +29,16 @@ namespace SharpBSABA2.BA2Util
 
         public const int DDS_SURFACE_FLAGS_TEXTURE = 0x00001000; // DDSCAPS_TEXTURE
         public const int DDS_SURFACE_FLAGS_MIPMAP = 0x00400008; // DDSCAPS_COMPLEX | DDSCAPS_MIPMAP
+
+        public const int DDS_ALPHA_MODE_UNKNOWN = 0x0;
     }
 
     #region dxgiformat.h
 
     public enum DXGI_FORMAT
     {
+        DXGI_FORMAT_R8G8B8A8_UNORM = 28,
+        DXGI_FORMAT_R8G8B8A8_UNORM_SRGB = 29,
         DXGI_FORMAT_R8_UNORM = 61,
         DXGI_FORMAT_BC1_UNORM = 71,
         DXGI_FORMAT_BC1_UNORM_SRGB = 72,
@@ -45,10 +49,18 @@ namespace SharpBSABA2.BA2Util
         DXGI_FORMAT_BC5_UNORM = 83,
         DXGI_FORMAT_BC5_SNORM = 84,
         DXGI_FORMAT_B8G8R8A8_UNORM = 87,
-        DXGI_FORMAT_BC7_UNORM = 98
+        DXGI_FORMAT_BC7_UNORM = 98,
+        DXGI_FORMAT_BC7_UNORM_SRGB = 99
     }
 
     #endregion
+
+    public enum DXT10_RESOURCE_DIMENSION
+    {
+        DIMENSION_TEXTURE1D = 2,
+        DIMENSION_TEXTURE2D = 3,
+        DIMENSION_TEXTURE3D = 4,
+    }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct DDS_HEADER
@@ -103,6 +115,25 @@ namespace SharpBSABA2.BA2Util
             // Just write it multiple times, since it's never assigned a value anyway
             for (int i = 0; i < 3; i++)
                 bw.Write(dwReserved2);
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct DDS_HEADER_DXT10
+    {
+        public uint dxgiFormat;
+        public uint resourceDimension;
+        public uint miscFlag;
+        public uint arraySize;
+        public uint miscFlags2;
+
+        public void Write(System.IO.BinaryWriter bw)
+        {
+            bw.Write(dxgiFormat);
+            bw.Write(resourceDimension);
+            bw.Write(miscFlag);
+            bw.Write(arraySize);
+            bw.Write(miscFlags2);
         }
     }
 
