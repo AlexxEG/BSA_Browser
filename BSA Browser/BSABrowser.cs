@@ -1031,8 +1031,8 @@ namespace BSA_Browser
             if (gui)
             {
                 pf = new ProgressForm("Unpacking archive");
-                pf.EnableCancel();
-                pf.SetProgressRange(100);
+                pf.Cancelable = true;
+                pf.Maximum = 100;
                 pf.Canceled += delegate { bwExtractFiles.CancelAsync(); };
                 pf.Show(this);
 
@@ -1157,18 +1157,18 @@ namespace BSA_Browser
         {
             if (e.ProgressPercentage == -1)
             {
-                pf.SetCurrentFile(e.UserState as string);
+                pf.CurrentFile = e.UserState as string;
             }
             else
             {
-                pf.UpdateProgress(e.ProgressPercentage);
-                this.Text = $"{pf.GetProgressPercentage()}% - {_untouchedTitle}";
+                pf.Progress = e.ProgressPercentage;
+                this.Text = $"{pf.ProgressPercentage}% - {_untouchedTitle}";
             }
         }
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            pf.Unblock();
+            pf.BlockClose = false;
             pf.Close();
             pf.Dispose();
             pf = null;

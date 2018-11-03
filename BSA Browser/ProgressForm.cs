@@ -6,12 +6,67 @@ namespace BSA_Browser
 {
     public partial class ProgressForm : Form
     {
-        private bool blockClose = true;
-
         /// <summary>
         /// Occurs when the "Cancel" button is clicked, or the form is closed.
         /// </summary>
         public event EventHandler Canceled;
+
+        /// <summary>
+        /// Gets or sets whether to block form closing.
+        /// </summary>
+        public bool BlockClose { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets whether Cancel button is enabled.
+        /// </summary>
+        public bool Cancelable
+        {
+            get { return btnCancel.Enabled; }
+            set { btnCancel.Enabled = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the file currently being extracted.
+        /// </summary>
+        public string CurrentFile
+        {
+            get { return lCurrentFile.Text.Substring(0, lCurrentFile.Text.Length - 3); }
+            set { lCurrentFile.Text = $"{value}..."; }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum progress.
+        /// </summary>
+        public int Maximum
+        {
+            get { return pbProgress.Maximum; }
+            set { pbProgress.Maximum = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the progress (NOT percentage).
+        /// </summary>
+        public int Progress
+        {
+            get { return pbProgress.Value; }
+            set
+            {
+                pbProgress.Value = Math.Min(value, pbProgress.Maximum);
+                lProgress.Text = 100 * value / pbProgress.Maximum + "%";
+                if (!Focused) Focus();
+            }
+        }
+
+        /// <summary>
+        /// Gets the progress percentage.
+        /// </summary>
+        public int ProgressPercentage
+        {
+            get
+            {
+                return 100 * pbProgress.Value / pbProgress.Maximum;
+            }
+        }
 
         public ProgressForm(string title)
         {
@@ -28,7 +83,7 @@ namespace BSA_Browser
 
         private void ProgressForm_FormClosing(object sender, CancelEventArgs e)
         {
-            if (blockClose)
+            if (this.BlockClose)
             {
                 e.Cancel = true;
             }
@@ -41,55 +96,6 @@ namespace BSA_Browser
         private void btnCancel_Click(object sender, EventArgs e)
         {
             OnCanceled(EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Enables the "Cancel" button.
-        /// </summary>
-        public void EnableCancel()
-        {
-            btnCancel.Enabled = true;
-        }
-
-        public int GetProgressPercentage()
-        {
-            return ((int)(100 * (float)pbProgress.Value / (float)pbProgress.Maximum));
-        }
-
-        /// <summary>
-        /// Sets the lCurrentFile Text value.
-        /// </summary>
-        public void SetCurrentFile(string file)
-        {
-            lCurrentFile.Text = $"{file}...";
-        }
-
-        /// <summary>
-        /// Sets the ProgressBar maximum value. 
-        /// </summary>
-        /// <param name="high">The maximum value.</param>
-        public void SetProgressRange(int high)
-        {
-            pbProgress.Maximum = high;
-        }
-
-        /// <summary>
-        /// Unblocks the form, allowing it to be closed.
-        /// </summary>
-        public void Unblock()
-        {
-            blockClose = false;
-        }
-
-        /// <summary>
-        /// Updates the ProgressBar value and percentage text.
-        /// </summary>
-        /// <param name="value">The new value.</param>
-        public void UpdateProgress(int value)
-        {
-            pbProgress.Value = Math.Min(value, pbProgress.Maximum);
-            lProgress.Text = ((int)(100 * (float)value / (float)pbProgress.Maximum)).ToString() + "%";
-            if (!Focused) Focus();
         }
 
         private void OnCanceled(EventArgs e)
