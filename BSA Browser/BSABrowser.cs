@@ -1036,12 +1036,7 @@ namespace BSA_Browser
                 pf.Canceled += delegate { bwExtractFiles.CancelAsync(); };
                 pf.Show(this);
 
-                bwExtractFiles.RunWorkerAsync(new ExtractFilesArguments()
-                {
-                    UseFolderPath = useFolderPath,
-                    Folder = folder,
-                    Files = files
-                });
+                bwExtractFiles.RunWorkerAsync(new ExtractFilesArguments(useFolderPath, folder, files));
             }
             else
             {
@@ -1079,11 +1074,18 @@ namespace BSA_Browser
 
         ProgressForm pf;
 
-        private class ExtractFilesArguments
+        private struct ExtractFilesArguments
         {
-            public bool UseFolderPath { get; set; }
-            public string Folder { get; set; }
-            public ArchiveEntry[] Files { get; set; }
+            public bool UseFolderPath;
+            public string Folder;
+            public ArchiveEntry[] Files;
+
+            public ExtractFilesArguments(bool useFolderPath, string folder, ArchiveEntry[] files)
+            {
+                UseFolderPath = useFolderPath;
+                Folder = folder;
+                Files = files;
+            }
         }
 
         private void bw_DoWork(object sender, DoWorkEventArgs e)
