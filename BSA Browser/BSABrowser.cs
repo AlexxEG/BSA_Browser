@@ -1074,11 +1074,11 @@ namespace BSA_Browser
 
         ProgressForm pf;
 
-        private struct ExtractFilesArguments
+        private class ExtractFilesArguments
         {
-            public bool UseFolderPath;
-            public string Folder;
-            public ArchiveEntry[] Files;
+            public bool UseFolderPath { get; private set; }
+            public string Folder { get; private set; }
+            public ArchiveEntry[] Files { get; private set; }
 
             public ExtractFilesArguments(bool useFolderPath, string folder, ArchiveEntry[] files)
             {
