@@ -1034,9 +1034,10 @@ namespace BSA_Browser
                 pf.Cancelable = true;
                 pf.Maximum = 100;
                 pf.Canceled += delegate { bwExtractFiles.CancelAsync(); };
-                pf.Show(this);
 
                 bwExtractFiles.RunWorkerAsync(new ExtractFilesArguments(useFolderPath, folder, files));
+
+                pf.ShowDialog(this);
             }
             else
             {
