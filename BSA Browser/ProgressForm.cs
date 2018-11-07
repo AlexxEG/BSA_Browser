@@ -35,6 +35,24 @@ namespace BSA_Browser
         }
 
         /// <summary>
+        /// Gets or sets the header text.
+        /// </summary>
+        public string Header
+        {
+            get { return lHeader.Text; }
+            set { lHeader.Text = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the footer text.
+        /// </summary>
+        public string Footer
+        {
+            get { return lFooter.Text; }
+            set { lFooter.Text = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the maximum progress.
         /// </summary>
         public int Maximum
