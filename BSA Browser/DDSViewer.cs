@@ -1,5 +1,4 @@
 ﻿using S16.Drawing;
-using SharpBSABA2;
 using System;
 using System.Drawing;
 using System.IO;
@@ -11,26 +10,29 @@ namespace BSA_Browser
     {
         private const int BackgroundBoxSize = 16;
 
+        public string Filename { get; private set; }
+
         public DDSImage DDSImage { get; private set; }
         public Size ImageSize { get; private set; }
 
         Exception _ex;
 
-        private DDSViewer(ArchiveEntry entry)
+        private DDSViewer(string filename, Stream stream)
         {
             InitializeComponent();
 
+            this.Filename = filename;
+            this.Text = filename;
+
             try
             {
-                this.LoadImage(entry);
+                this.LoadImage(stream);
                 this.CalculateStartingSize();
             }
             catch (Exception ex)
             {
                 _ex = ex;
             }
-
-            this.Text = entry.FileName;
         }
 
         private void DDSViewer_FormClosing(object sender, FormClosingEventArgs e)
@@ -119,11 +121,9 @@ namespace BSA_Browser
             this.ClientSize = new Size(windowWidth, windowHeight);
         }
 
-        private void LoadImage(ArchiveEntry entry)
+        private void LoadImage(Stream stream)
         {
-            var stream = entry.GetDataStream();
-
-            if (Path.GetExtension(entry.FileName).ToLower() == ".dds")
+            if (Path.GetExtension(this.Filename).ToLower() == ".dds")
             {
                 var dds = new DDSImage(stream);
                 this.DDSImage = dds;
@@ -138,9 +138,14 @@ namespace BSA_Browser
             }
         }
 
-        public static DialogResult ShowDialog(IWin32Window owner, ArchiveEntry entry)
+        public static DialogResult ShowDialog(IWin32Window owner, string filename, byte[] data)
         {
-            var form = new DDSViewer(entry);
+            return ShowDialog(owner, filename, new MemoryStream(data));
+        }
+
+        public static DialogResult ShowDialog(IWin32Window owner, string filename, Stream stream)
+        {
+            var form = new DDSViewer(filename, stream);
             return form.ShowDialog(owner);
         }
     }

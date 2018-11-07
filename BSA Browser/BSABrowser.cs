@@ -1309,7 +1309,7 @@ namespace BSA_Browser
 
                         try
                         {
-                            DDSViewer.ShowDialog(this, fe);
+                            DDSViewer.ShowDialog(this, fe.FileName, fe.GetDataStream());
                         }
                         catch (Exception ex)
                         {
