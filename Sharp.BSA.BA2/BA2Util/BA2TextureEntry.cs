@@ -112,14 +112,7 @@ namespace SharpBSABA2.BA2Util
                         ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '5');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
-                case DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM:
-                    // totally wrong but not worth writing out the DX10 header
-                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
-                    ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('B', 'C', '7', '\0');
-                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
-                    break;
                 case DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM_SRGB:
-                    // totally wrong but not worth writing out the DX10 header
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', '1', '0');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height / 2); // 4bpp
@@ -127,8 +120,8 @@ namespace SharpBSABA2.BA2Util
                 case DXGI_FORMAT.DXGI_FORMAT_BC3_UNORM_SRGB:
                 case DXGI_FORMAT.DXGI_FORMAT_BC4_UNORM:
                 case DXGI_FORMAT.DXGI_FORMAT_BC5_SNORM:
+                case DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM:
                 case DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM_SRGB:
-                    // totally wrong but not worth writing out the DX10 header
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', '1', '0');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
@@ -171,6 +164,7 @@ namespace SharpBSABA2.BA2Util
                 case DXGI_FORMAT.DXGI_FORMAT_BC3_UNORM_SRGB:
                 case DXGI_FORMAT.DXGI_FORMAT_BC4_UNORM:
                 case DXGI_FORMAT.DXGI_FORMAT_BC5_SNORM:
+                case DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM:
                 case DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM_SRGB:
                     var dxt10 = new DDS_HEADER_DXT10()
                     {
