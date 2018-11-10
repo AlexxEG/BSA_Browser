@@ -1,3 +1,13 @@
+[1.9.5]
+
+Note: Previews are getting outdated, many Fallout 76 textures show incorrectly or don't work at all. Gonna look into updating, but it's not my code so not familiar with it yet
+
+- Implemented DX10 headers for Fallout 76. GIMP DDS support isn't great for Fallout 76, so you might wanna look into Photoshop or other tools
+- Changed how errors are handled during extraction. Extraction continues and a report is written in the destination
+- Updated Progress window
+- Fixed BA2 textures being extracted with null bytes at the end
+- Fixed being able to click extract while one is already active by blocking main window during
+
 [1.9.1]
 
 - Fixed some textures causing invalid DDS header error
