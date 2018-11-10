@@ -1030,9 +1030,13 @@ namespace BSA_Browser
         {
             if (gui)
             {
-                pf = new ProgressForm("Unpacking archive");
-                pf.Cancelable = true;
-                pf.Maximum = 100;
+                pf = new ProgressForm("Unpacking archive")
+                {
+                    Header = "Extracting...",
+                    Footer = $"(0/{files.Length})",
+                    Cancelable = true,
+                    Maximum = 100
+                };
                 pf.Canceled += delegate { bwExtractFiles.CancelAsync(); };
 
                 bwExtractFiles.RunWorkerAsync(new ExtractFilesArguments(useFolderPath, folder, files));
@@ -1095,9 +1099,9 @@ namespace BSA_Browser
             var extracted = new Dictionary<string, int>();
             var exceptions = new List<Exception>();
 
-            int progress = 0;
-            int prevProgress = 0;
-            int count = 0;
+            int progress = 0, prevProgress = 0, count = 0;
+
+            DateTime _startExtraction = DateTime.Now;
 
             foreach (var fe in arguments.Files)
             {
@@ -1107,8 +1111,8 @@ namespace BSA_Browser
                     break;
                 }
 
-                // Update ProgressForm's current file
-                bwExtractFiles.ReportProgress(-1, fe.FileName);
+                // Update current file and count
+                bwExtractFiles.ReportProgress(-1, new object[] { fe.FileName, count, arguments.Files.Length });
 
                 try
                 {
@@ -1144,7 +1148,10 @@ namespace BSA_Browser
                 if (progress > prevProgress)
                 {
                     prevProgress = progress;
-                    bwExtractFiles.ReportProgress(progress);
+
+                    bwExtractFiles.ReportProgress(progress,
+                        (DateTime.Now - _startExtraction).TotalMilliseconds / count * (arguments.Files.Length - count));
+
                 }
             }
 
@@ -1156,21 +1163,38 @@ namespace BSA_Browser
             e.Result = exceptions;
         }
 
+        int _count = 0;
+        int _fileMax = 0;
+        TimeSpan _estimate = TimeSpan.MinValue;
+
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            string footer = "({0}/{1}) Estimated time left (average): {2}";
+
             if (e.ProgressPercentage == -1)
             {
-                pf.CurrentFile = e.UserState as string;
+                object[] args = e.UserState as object[];
+                pf.CurrentFile = (string)args[0];
+                _count = (int)args[1];
+                _fileMax = (int)args[2];
+
+                pf.Footer = string.Format(footer, _count, _fileMax, _estimate.ToString(@"hh\:mm\:ss"));
             }
             else
             {
                 pf.Progress = e.ProgressPercentage;
                 this.Text = $"{pf.ProgressPercentage}% - {_untouchedTitle}";
+                _estimate = TimeSpan.FromMilliseconds((double)e.UserState);
+
+                pf.Footer = string.Format(footer, _count, _fileMax, _estimate.ToString(@"hh\:mm\:ss"));
             }
         }
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            _count = _fileMax = 0;
+            _estimate = TimeSpan.MinValue;
+
             pf.BlockClose = false;
             pf.Close();
             pf.Dispose();
