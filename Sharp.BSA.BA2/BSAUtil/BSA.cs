@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using SharpBSABA2.Enums;
@@ -19,10 +18,88 @@ namespace SharpBSABA2.BSAUtil
         public const int OB_BSAARCHIVE_COMPRESSFILES = 0x4;
         public const int F3_BSAARCHIVE_PREFIXFULLFILENAMES = 0x100;
 
-        public bool Compressed { get; private set; }
-        public bool ContainsFileNameBlobs { get; private set; }
+        public bool Compressed
+        {
+            get
+            {
+                switch (this.Magic)
+                {
+                    case BSA_HEADER_MAGIC:
+                        return ((Header as BSAHeader).ArchiveFlags & OB_BSAARCHIVE_COMPRESSFILES) > 0;
+                    case MW_HEADER_MAGIC:
+                    default:
+                        return false;
+                }
+            }
+        }
+        public bool ContainsFileNameBlobs
+        {
+            get
+            {
+                switch (this.Magic)
+                {
+                    case BSA_HEADER_MAGIC:
+                        BSAHeader header = this.Header as BSAHeader;
 
-        public int Version { get; set; }
+                        if (header.Version == F3_HEADER_VERSION || header.Version == SSE_HEADER_VERSION)
+                            return (header.ArchiveFlags & F3_BSAARCHIVE_PREFIXFULLFILENAMES) > 0;
+                        else
+                            return false;
+                    case MW_HEADER_MAGIC:
+                    default:
+                        return false;
+                }
+            }
+        }
+
+        public uint Magic { get; private set; }
+        public object Header { get; private set; }
+
+        public new bool HasNameTable
+        {
+            get
+            {
+                switch (Magic)
+                {
+                    case BSA_HEADER_MAGIC:
+                        BSAHeader header = Header as BSAHeader;
+                        return (header.ArchiveFlags & 0x1) > 0 && (header.ArchiveFlags & 0x2) > 0; // Should always be true
+                    case MW_HEADER_MAGIC:
+                    default:
+                        return true;
+                }
+            }
+        }
+        public new string VersionString
+        {
+            get
+            {
+                switch (this.Magic)
+                {
+                    case MW_HEADER_MAGIC:
+                        return (Header as BSAHeaderMW).Version.ToString("X");
+                    case BSA_HEADER_MAGIC:
+                        return (Header as BSAHeader).Version.ToString();
+                    default:
+                        return "None";
+                }
+            }
+        }
+        public new ArchiveTypes Type
+        {
+            get
+            {
+                switch (this.Magic)
+                {
+                    case MW_HEADER_MAGIC:
+                        return ArchiveTypes.BSA_MW;
+                    case BSA_HEADER_MAGIC:
+                        return (Header as BSAHeader).Version == SSE_HEADER_VERSION ? ArchiveTypes.BSA_SE : ArchiveTypes.BSA;
+                    default:
+                        return ArchiveTypes.DAT_F2;
+                }
+            }
+        }
 
         public BSA(string filePath) : base(filePath)
         {
@@ -32,17 +109,14 @@ namespace SharpBSABA2.BSAUtil
         {
             try
             {
-                uint magic = this.BinaryReader.ReadUInt32();
+                this.Magic = this.BinaryReader.ReadUInt32();
 
-                if (magic == MW_HEADER_MAGIC) // Morrowind uses this as version
+                if (this.Magic == MW_HEADER_MAGIC) // Morrowind uses this as version
                 {
-                    this.Type = ArchiveTypes.BSA_MW;
+                    var header = new BSAHeaderMW(this.BinaryReader, this.Magic);
 
-                    var header = new BSAHeaderMW(this.BinaryReader, magic);
-
-                    this.VersionString = header.Version.ToString("X");
+                    this.Header = header;
                     this.FileCount = (int)header.FileCount;
-                    this.HasNameTable = true; // Should be true for all Morrowind archives
 
                     uint dataoffset = 12 + header.HashOffset + header.FileCount * 8;
                     uint fnameOffset1 = 12 + header.FileCount * 8;
@@ -56,49 +130,32 @@ namespace SharpBSABA2.BSAUtil
                         this.BinaryReader.BaseStream.Position = fnameOffset1 + i * 4;
                         this.BinaryReader.BaseStream.Position = this.BinaryReader.ReadInt32() + fnameOffset2;
 
-                        string name = this.ReadStringTo(this.BinaryReader, '\0');
+                        string name = this.BinaryReader.ReadStringTo('\0');
 
-                        this.Files.Add(new BSAFileEntry(this, i, name, offset, size));
+                        this.Files.Add(new BSAFileEntry(this, name, offset, size));
                     }
                 }
-                else if (magic == BSA_HEADER_MAGIC)
+                else if (this.Magic == BSA_HEADER_MAGIC)
                 {
-                    this.Type = ArchiveTypes.BSA;
-                    this.Version = this.BinaryReader.ReadInt32();
-
-                    if (this.Version == SSE_HEADER_VERSION)
-                    {
-                        this.Type = ArchiveTypes.BSA_SE;
-                        // ToDo: Merge these two methods together, with version checks instead.
-                        // This is just a lazy lazy implementation for now.
-                        this.OpenSSE();
-                        return;
-                    }
-
                     var header = new BSAHeader(this.BinaryReader);
 
-                    this.VersionString = this.Version.ToString();
+                    this.Header = header;
                     this.FileCount = (int)header.FileCount;
-                    this.HasNameTable = (header.ArchiveFlags & 0x1) > 0 && (header.ArchiveFlags & 0x2) > 0; // Should always be true
 
                     int[] numfiles = new int[header.FolderCount];
-                    this.Compressed = ((header.ArchiveFlags & OB_BSAARCHIVE_COMPRESSFILES) > 0);
-                    this.ContainsFileNameBlobs = ((header.ArchiveFlags & F3_BSAARCHIVE_PREFIXFULLFILENAMES) > 0 && this.Version == F3_HEADER_VERSION);
-
                     for (int i = 0; i < header.FolderCount; i++)
                     {
                         // Skip hash
                         this.BinaryReader.BaseStream.Position += 8;
                         // Read fileCount
                         numfiles[i] = this.BinaryReader.ReadInt32();
-                        // Skip offset
-                        this.BinaryReader.BaseStream.Position += 4;
+                        // Skip Unk1 (4 bytes) + offset (8 bytes) if SSE. Otherwise only offset (4 bytes)
+                        this.BinaryReader.BaseStream.Position += header.Version == SSE_HEADER_VERSION ? 12 : 4;
                     }
 
                     for (int i = 0; i < header.FolderCount; i++)
                     {
-                        int k = this.BinaryReader.ReadByte();
-                        string folder = this.BinaryReader.ReadString(k - 1);
+                        string folder = BinaryReader.ReadString(BinaryReader.ReadByte() - 1);
                         this.BinaryReader.BaseStream.Position++;
 
                         for (int j = 0; j < numfiles[i]; j++)
@@ -106,6 +163,7 @@ namespace SharpBSABA2.BSAUtil
                             // Skip hash
                             this.BinaryReader.BaseStream.Position += 8;
                             uint size = this.BinaryReader.ReadUInt32();
+                            uint offset = this.BinaryReader.ReadUInt32();
                             bool comp = this.Compressed;
 
                             if ((size & (1 << 30)) != 0)
@@ -113,21 +171,22 @@ namespace SharpBSABA2.BSAUtil
                                 comp = !comp;
                                 size ^= 1 << 30;
                             }
-                            this.Files.Add(new BSAFileEntry(this, i,
-                                comp, folder, this.BinaryReader.ReadUInt32(), size));
+
+                            this.Files.Add(new BSAFileEntry(this, comp, folder, offset, size));
                         }
                     }
 
+                    // Read name table
                     for (int i = 0; i < header.FileCount; i++)
                     {
-                        string name = this.ReadStringTo(this.BinaryReader, '\0');
-                        this.Files[i].FullPath = Path.Combine(this.Files[i].FullPath, name);
+                        this.Files[i].FullPath = Path.Combine(
+                            this.Files[i].FullPath,
+                            this.BinaryReader.ReadStringTo('\0'));
                     }
                 }
                 else
                 {
-                    //Might be a fallout 2 dat
-                    this.Type = ArchiveTypes.DAT_F2;
+                    // Assume it's a Fallout 2 DAT
                     this.BinaryReader.BaseStream.Position = this.BinaryReader.BaseStream.Length - 8;
                     uint TreeSize = this.BinaryReader.ReadUInt32();
                     uint DataSize = this.BinaryReader.ReadUInt32();
@@ -142,7 +201,6 @@ namespace SharpBSABA2.BSAUtil
                     int FileCount = this.BinaryReader.ReadInt32();
 
                     this.FileCount = FileCount;
-                    this.HasNameTable = true;
 
                     for (int i = 0; i < FileCount; i++)
                     {
@@ -157,78 +215,16 @@ namespace SharpBSABA2.BSAUtil
                         if (path.StartsWith("\\"))
                             path.Remove(0, 1);
 
-                        this.Files.Add(new BSAFileEntry(this, i,
+                        this.Files.Add(new BSAFileEntry(this,
                             path, offset, compSize, comp == 0 ? 0 : realSize));
                     }
                 }
             }
             catch (Exception ex)
             {
-                if (this.BinaryReader != null)
-                    this.BinaryReader.Close();
+                this.BinaryReader?.Close();
 
                 throw new Exception("An error occured trying to open the archive.", ex);
-            }
-        }
-
-        private string ReadStringTo(BinaryReader reader, char endChar)
-        {
-            var sb = new StringBuilder();
-            char c;
-            while ((c = reader.ReadChar()) != endChar)
-            {
-                sb.Append(c);
-            }
-            return sb.ToString();
-        }
-
-        private void OpenSSE()
-        {
-            // Read header
-            BSAHeader header = new BSAHeader(this.BinaryReader);
-
-            this.VersionString = this.Version.ToString();
-            this.FileCount = (int)header.FileCount;
-            this.HasNameTable = (header.ArchiveFlags & 0x1) > 0 && (header.ArchiveFlags & 0x2) > 0; // Should always be true
-
-            this.Compressed = (header.ArchiveFlags & OB_BSAARCHIVE_COMPRESSFILES) > 0;
-            this.ContainsFileNameBlobs = (header.ArchiveFlags & F3_BSAARCHIVE_PREFIXFULLFILENAMES) > 0;
-
-            var folderInfos = new List<BSAFolderInfo>();
-            for (int i = 0; i < header.FolderCount; i++)
-            {
-                folderInfos.Add(new BSAFolderInfo(this.BinaryReader, this.Version));
-            }
-
-            for (int i = 0; i < folderInfos.Count; i++)
-            {
-                int len = this.BinaryReader.ReadByte();
-                folderInfos[i].FolderName = this.BinaryReader.ReadString(len - 1);
-                this.BinaryReader.ReadChar(); // Skip '\0' char
-
-                var fileInfos = new List<BSAFileInfo>();
-                while (fileInfos.Count < folderInfos[i].FileCount)
-                {
-                    fileInfos.Add(new BSAFileInfo(this.BinaryReader));
-                }
-
-                for (int j = 0; j < fileInfos.Count; j++)
-                {
-                    this.Files.Add(new BSAFileEntry(this, i,
-                        this.Compressed,
-                        folderInfos[i].FolderName,
-                        fileInfos[j].Offset,
-                        fileInfos[j].SizeFlags));
-                }
-
-                folderInfos[i].Files.AddRange(fileInfos);
-            }
-
-            for (int i = 0; i < header.FileCount; i++)
-            {
-                this.Files[i].FullPath = Path.Combine(
-                    this.Files[i].FullPath,
-                    this.ReadStringTo(this.BinaryReader, '\0'));
             }
         }
 

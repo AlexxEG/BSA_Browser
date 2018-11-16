@@ -2,19 +2,19 @@
 
 namespace SharpBSABA2.BSAUtil
 {
-    public struct BSAHeaderMW
+    public class BSAHeaderMW
     {
-        public uint Version;
-        public uint HashOffset;
-        public uint FileCount;
-
         public const uint Size = 12;
+
+        public uint Version { get; private set; }
+        public uint HashOffset { get; private set; }
+        public uint FileCount { get; private set; }
 
         public BSAHeaderMW(BinaryReader br, uint version)
         {
-            this.Version = version;
-            this.HashOffset = br.ReadUInt32();
-            this.FileCount = br.ReadUInt32();
+            Version = version;
+            HashOffset = br.ReadUInt32();
+            FileCount = br.ReadUInt32();
         }
     }
 }

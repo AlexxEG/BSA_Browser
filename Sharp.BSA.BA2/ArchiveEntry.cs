@@ -9,11 +9,6 @@ namespace SharpBSABA2
         public uint dirHash { get; protected set; }
 
         /// <summary>
-        /// Gets the index of this file in the BA2 archive.
-        /// </summary>
-        public int Index { get; private set; }
-
-        /// <summary>
         /// Gets the file extension.
         /// </summary>
         public string Extension { get; protected set; }
@@ -71,10 +66,9 @@ namespace SharpBSABA2
 
         public BinaryReader BinaryReader { get { return this.Archive.BinaryReader; } }
 
-        protected ArchiveEntry(Archive archive, int index)
+        protected ArchiveEntry(Archive archive)
         {
             this.Archive = archive;
-            this.Index = index;
         }
 
         public virtual void Extract(bool preserveFolder)

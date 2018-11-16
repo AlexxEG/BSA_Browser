@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using SharpBSABA2.Enums;
 using SharpBSABA2.Extensions;
 
 namespace SharpBSABA2.BSAUtil
@@ -23,8 +24,8 @@ namespace SharpBSABA2.BSAUtil
 
         public BSAFileVersion Version { get; private set; }
 
-        public BSAFileEntry(Archive archive, int index, bool compressed, string folder, uint offset, uint size)
-            : base(archive, index)
+        public BSAFileEntry(Archive archive, bool compressed, string folder, uint offset, uint size)
+            : base(archive)
         {
             this.Version = BSAFileVersion.BSA;
 
@@ -39,8 +40,8 @@ namespace SharpBSABA2.BSAUtil
             }
         }
 
-        public BSAFileEntry(Archive archive, int index, string path, uint offset, uint size)
-            : base(archive, index)
+        public BSAFileEntry(Archive archive, string path, uint offset, uint size)
+            : base(archive)
         {
             this.Version = BSAFileVersion.Morrowind;
 
@@ -49,8 +50,8 @@ namespace SharpBSABA2.BSAUtil
             this.Size = size;
         }
 
-        public BSAFileEntry(Archive archive, int index, string path, uint offset, uint size, uint realSize)
-            : base(archive, index)
+        public BSAFileEntry(Archive archive, string path, uint offset, uint size, uint realSize)
+            : base(archive)
         {
             this.Version = BSAFileVersion.Fallout2;
 
@@ -80,7 +81,7 @@ namespace SharpBSABA2.BSAUtil
         {
             this.BinaryReader.BaseStream.Position = (long)Offset;
 
-            if (this.Archive.Version == BSA.SSE_HEADER_VERSION)
+            if (this.Archive.Type == ArchiveTypes.BSA_SE)
             {
                 // Separate Skyrim Special Edition extraction
                 ulong filesz = this.Size & 0x3fffffff;

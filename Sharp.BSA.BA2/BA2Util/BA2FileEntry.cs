@@ -19,7 +19,7 @@ namespace SharpBSABA2.BA2Util
             }
         }
 
-        public BA2FileEntry(Archive ba2, int index) : base(ba2, index)
+        public BA2FileEntry(Archive ba2) : base(ba2)
         {
             nameHash = ba2.BinaryReader.ReadUInt32();
             Extension = new string(ba2.BinaryReader.ReadChars(4));
