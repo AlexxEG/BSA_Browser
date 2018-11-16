@@ -42,10 +42,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.chbUseATIFourCC = new System.Windows.Forms.CheckBox();
             this.chbRetrieveRealSize = new System.Windows.Forms.CheckBox();
             this.chbSortBSADirectories = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.chbUseATIFourCC = new System.Windows.Forms.CheckBox();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -200,6 +200,18 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // chbUseATIFourCC
+            // 
+            this.chbUseATIFourCC.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.chbUseATIFourCC.Location = new System.Drawing.Point(13, 59);
+            this.chbUseATIFourCC.Name = "chbUseATIFourCC";
+            this.chbUseATIFourCC.Size = new System.Drawing.Size(370, 84);
+            this.chbUseATIFourCC.TabIndex = 2;
+            this.chbUseATIFourCC.Text = "Use ATI header for textures\r\n\r\nThis makes some textures more accurate but only th" +
+    "e Photoshop plugin seems to be able to open.\r\n\r\nRe-open archives to apply this c" +
+    "hange.";
+            this.chbUseATIFourCC.UseVisualStyleBackColor = true;
+            // 
             // chbRetrieveRealSize
             // 
             this.chbRetrieveRealSize.AutoSize = true;
@@ -209,7 +221,6 @@
             this.chbRetrieveRealSize.TabIndex = 1;
             this.chbRetrieveRealSize.Text = "Always use real file size, even if slower (Reopen archives to take effect)";
             this.chbRetrieveRealSize.UseVisualStyleBackColor = true;
-            this.chbRetrieveRealSize.Visible = false;
             // 
             // chbSortBSADirectories
             // 
@@ -231,18 +242,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Quick Extract";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // chbUseATIFourCC
-            // 
-            this.chbUseATIFourCC.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.chbUseATIFourCC.Location = new System.Drawing.Point(13, 59);
-            this.chbUseATIFourCC.Name = "chbUseATIFourCC";
-            this.chbUseATIFourCC.Size = new System.Drawing.Size(370, 84);
-            this.chbUseATIFourCC.TabIndex = 2;
-            this.chbUseATIFourCC.Text = "Use ATI header for textures\r\n\r\nThis makes some textures more accurate but only th" +
-    "e Photoshop plugin seems to be able to open.\r\n\r\nRe-open archives to apply this c" +
-    "hange.";
-            this.chbUseATIFourCC.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
