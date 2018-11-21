@@ -188,21 +188,20 @@ namespace SharpBSABA2.BSAUtil
                 {
                     // Assume it's a Fallout 2 DAT
                     this.BinaryReader.BaseStream.Position = this.BinaryReader.BaseStream.Length - 8;
-                    uint TreeSize = this.BinaryReader.ReadUInt32();
-                    uint DataSize = this.BinaryReader.ReadUInt32();
+                    uint treeSize = this.BinaryReader.ReadUInt32();
+                    uint dataSize = this.BinaryReader.ReadUInt32();
 
-                    if (DataSize != this.BinaryReader.BaseStream.Length)
+                    if (dataSize != this.BinaryReader.BaseStream.Length)
                     {
                         this.BinaryReader.Close();
                         throw new ArgumentException("File is not a valid bsa archive.", nameof(filePath));
                     }
 
-                    this.BinaryReader.BaseStream.Position = DataSize - TreeSize - 8;
-                    int FileCount = this.BinaryReader.ReadInt32();
+                    this.BinaryReader.BaseStream.Position = dataSize - treeSize - 8;
 
-                    this.FileCount = FileCount;
+                    this.FileCount = this.BinaryReader.ReadInt32();
 
-                    for (int i = 0; i < FileCount; i++)
+                    for (int i = 0; i < this.FileCount; i++)
                     {
                         int fileLen = this.BinaryReader.ReadInt32();
                         string path = this.BinaryReader.ReadString(fileLen);
