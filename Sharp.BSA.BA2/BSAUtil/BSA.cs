@@ -114,25 +114,24 @@ namespace SharpBSABA2.BSAUtil
                 if (this.Magic == MW_HEADER_MAGIC) // Morrowind uses this as version
                 {
                     var header = new BSAHeaderMW(this.BinaryReader, this.Magic);
-
                     this.Header = header;
                     this.FileCount = (int)header.FileCount;
-
-                    uint dataoffset = 12 + header.HashOffset + header.FileCount * 8;
-                    uint fnameOffset1 = 12 + header.FileCount * 8;
-                    uint fnameOffset2 = 12 + header.FileCount * 12;
+                    uint dataOffset = 12 + header.HashOffset + header.FileCount * 8;
 
                     for (int i = 0; i < header.FileCount; i++)
                     {
-                        this.BinaryReader.BaseStream.Position = 12 + i * 8;
                         uint size = this.BinaryReader.ReadUInt32();
-                        uint offset = this.BinaryReader.ReadUInt32() + dataoffset;
-                        this.BinaryReader.BaseStream.Position = fnameOffset1 + i * 4;
-                        this.BinaryReader.BaseStream.Position = this.BinaryReader.ReadInt32() + fnameOffset2;
+                        uint offset = this.BinaryReader.ReadUInt32() + dataOffset;
 
-                        string name = this.BinaryReader.ReadStringTo('\0');
+                        this.Files.Add(new BSAFileEntry(this, offset.ToString(), offset, size));
+                    }
 
-                        this.Files.Add(new BSAFileEntry(this, name, offset, size));
+                    // Seek to name table
+                    this.BinaryReader.BaseStream.Position = 12 + header.FileCount * 12;
+
+                    for (int i = 0; i < header.FileCount; i++)
+                    {
+                        this.Files[i].FullPath = this.BinaryReader.ReadStringTo('\0');
                     }
                 }
                 else if (this.Magic == BSA_HEADER_MAGIC)
