@@ -149,7 +149,7 @@ namespace SharpBSABA2.BSAUtil
                         this.BinaryReader.BaseStream.Position += 8;
                         // Read fileCount
                         numfiles[i] = this.BinaryReader.ReadInt32();
-                        // Skip Unk1 (4 bytes) + offset (8 bytes) if SSE. Otherwise only offset (4 bytes)
+                        // Skip Unk1 + offset (4 + 8 bytes) if SSE. Otherwise only offset (4 bytes)
                         this.BinaryReader.BaseStream.Position += header.Version == SSE_HEADER_VERSION ? 12 : 4;
                     }
 
