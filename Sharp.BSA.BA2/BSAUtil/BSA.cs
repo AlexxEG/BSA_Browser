@@ -203,19 +203,9 @@ namespace SharpBSABA2.BSAUtil
 
                     for (int i = 0; i < this.FileCount; i++)
                     {
-                        int fileLen = this.BinaryReader.ReadInt32();
-                        string path = this.BinaryReader.ReadString(fileLen);
+                        var entry = new DAT2FileEntry(this.BinaryReader);
 
-                        byte comp = this.BinaryReader.ReadByte();
-                        uint realSize = this.BinaryReader.ReadUInt32();
-                        uint compSize = this.BinaryReader.ReadUInt32();
-                        uint offset = this.BinaryReader.ReadUInt32();
-
-                        if (path.StartsWith("\\"))
-                            path.Remove(0, 1);
-
-                        this.Files.Add(new BSAFileEntry(this,
-                            path, offset, compSize, comp == 0 ? 0 : realSize));
+                        this.Files.Add(new BSAFileEntry(this, entry));
                     }
                 }
             }

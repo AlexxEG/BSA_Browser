@@ -50,16 +50,16 @@ namespace SharpBSABA2.BSAUtil
             this.Size = size;
         }
 
-        public BSAFileEntry(Archive archive, string path, uint offset, uint size, uint realSize)
+        public BSAFileEntry(Archive archive, DAT2FileEntry entry)
             : base(archive)
         {
             this.Version = BSAFileVersion.Fallout2;
 
-            this.FullPath = path;
-            this.Offset = offset;
-            this.Size = size;
-            this.RealSize = realSize;
-            this.Compressed = realSize != 0;
+            this.FullPath = entry.Filename;
+            this.Offset = entry.Offset;
+            this.Size = entry.PackedSize;
+            this.RealSize = entry.RealSize;
+            this.Compressed = entry.Compressed;
         }
 
         public override MemoryStream GetRawDataStream()
