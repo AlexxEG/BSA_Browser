@@ -1351,7 +1351,7 @@ namespace BSA_Browser
                         break;
                     default:
                         MessageBox.Show(this,
-                            "Filetype not supported.\n" +
+                            "Filetype not supported.\n\n" +
                             "Currently only .txt, .xml, .lst, .psc, .dds, .bmp, .png and .jpg files can be previewed.",
                             "Error");
                         break;
