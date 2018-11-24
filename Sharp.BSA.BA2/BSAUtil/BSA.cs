@@ -197,7 +197,6 @@ namespace SharpBSABA2.BSAUtil
                     }
 
                     this.BinaryReader.BaseStream.Position = dataSize - treeSize - 8;
-
                     this.FileCount = this.BinaryReader.ReadInt32();
 
                     for (int i = 0; i < this.FileCount; i++)
