@@ -11,6 +11,10 @@ namespace SharpBSABA2.BA2Util
 
         public bool UseATIFourCC { get; set; } = false;
 
+        public new int FileCount => (int)Header.numFiles;
+        public new bool HasNameTable => Header.nameTableOffset > 0;
+        public new string VersionString => Header.version.ToString();
+
         public BA2(string filePath) : base(filePath)
         {
         }
@@ -19,34 +23,30 @@ namespace SharpBSABA2.BA2Util
         {
             this.Header = new BA2Header(BinaryReader);
 
-            this.VersionString = this.Header.version.ToString();
-            this.FileCount = (int)this.Header.numFiles;
-            this.HasNameTable = this.Header.nameTableOffset > 0;
-
             // Set archive type
             if (Enum.TryParse("BA2_" + this.Header.Type, out ArchiveTypes type))
                 this.Type = type;
             else
                 throw new Exception($"Unknown {nameof(BA2HeaderType)} value: {this.Header.Type}");
 
-            for (int i = 0; i < this.Header.numFiles; i++)
+            for (int i = 0; i < this.FileCount; i++)
                 if (this.Header.Type == BA2HeaderType.GNRL)
-                    this.Files.Add(new BA2FileEntry(this, i));
+                    this.Files.Add(new BA2FileEntry(this));
                 else if (this.Header.Type == BA2HeaderType.DX10)
-                    this.Files.Add(new BA2TextureEntry(this, i));
+                    this.Files.Add(new BA2TextureEntry(this));
                 else if (this.Header.Type == BA2HeaderType.GNMF)
-                    this.Files.Add(new BA2GNFEntry(this, i));
+                    this.Files.Add(new BA2GNFEntry(this));
 
-            if (this.Header.nameTableOffset > 0)
+            if (this.HasNameTable)
             {
                 // Seek to name table
-                BinaryReader.BaseStream.Seek((long)this.Header.nameTableOffset, SeekOrigin.Begin);
+                BinaryReader.BaseStream.Seek((long)Header.nameTableOffset, SeekOrigin.Begin);
             }
 
             // Assign full names to each file
-            for (int i = 0; i < this.Header.numFiles; i++)
+            for (int i = 0; i < this.FileCount; i++)
             {
-                if (this.Header.nameTableOffset == 0)
+                if (!this.HasNameTable)
                 {
                     this.Files[i].FullPath = this.Files[i].nameHash.ToString("X");
                 }

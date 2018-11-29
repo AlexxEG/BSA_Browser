@@ -19,7 +19,7 @@ namespace SharpBSABA2.BA2Util
             }
         }
 
-        public BA2FileEntry(Archive ba2, int index) : base(ba2, index)
+        public BA2FileEntry(Archive ba2) : base(ba2)
         {
             nameHash = ba2.BinaryReader.ReadUInt32();
             Extension = new string(ba2.BinaryReader.ReadChars(4));
@@ -63,9 +63,7 @@ namespace SharpBSABA2.BA2Util
             {
                 byte[] uncompressed = new byte[this.RealSize];
 
-                this.Archive.Inflater.Reset();
-                this.Archive.Inflater.SetInput(bytes);
-                this.Archive.Inflater.Inflate(uncompressed);
+                this.Archive.Decompress(bytes, uncompressed);
 
                 stream.Write(uncompressed, 0, uncompressed.Length);
             }

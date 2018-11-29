@@ -66,6 +66,7 @@
     <Compile Include="BSAUtil\BSAHeader.cs" />
     <Compile Include="BSAUtil\BSAFolderInfo.cs" />
     <Compile Include="BSAUtil\BSAHeaderMW.cs" />
+    <Compile Include="BSAUtil\DAT2FileEntry.cs" />
     <Compile Include="Enums\ArchiveTypes.cs" />
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

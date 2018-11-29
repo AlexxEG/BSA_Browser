@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 
 namespace SharpBSABA2.Extensions
 {
@@ -7,6 +8,17 @@ namespace SharpBSABA2.Extensions
         public static string ReadString(this BinaryReader reader, int charCount)
         {
             return new string(reader.ReadChars(charCount));
+        }
+
+        public static string ReadStringTo(this BinaryReader reader, char endChar)
+        {
+            var sb = new StringBuilder();
+            char c;
+            while ((c = reader.ReadChar()) != endChar)
+            {
+                sb.Append(c);
+            }
+            return sb.ToString();
         }
 
         /// <summary>

@@ -22,16 +22,7 @@ namespace SharpBSABA2.BSAUtil
             if (version == BSA.SSE_HEADER_VERSION)
                 this.Unk1 = reader.ReadUInt32();
 
-            this.Offset = reader.ReadUInt64();
+            this.Offset = version == BSA.SSE_HEADER_VERSION ? reader.ReadUInt64() : reader.ReadUInt32();
         }
-
-        public static int SizeOf(int version)
-        {
-            if (version == BSA.SSE_HEADER_VERSION)
-                return 24;
-            else
-                return 20;
-        }
-
     }
 }

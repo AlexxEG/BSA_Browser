@@ -39,7 +39,7 @@ namespace SharpBSABA2.BA2Util
             }
         }
 
-        public BA2GNFEntry(Archive ba2, int index) : base(ba2, index)
+        public BA2GNFEntry(Archive ba2) : base(ba2)
         {
             nameHash = ba2.BinaryReader.ReadUInt32();
             Extension = new string(ba2.BinaryReader.ReadChars(4));
@@ -112,9 +112,7 @@ namespace SharpBSABA2.BA2Util
             {
                 try
                 {
-                    this.Archive.Inflater.Reset();
-                    this.Archive.Inflater.SetInput(bytes);
-                    this.Archive.Inflater.Inflate(uncompressed);
+                    this.Archive.Decompress(bytes, uncompressed);
                 }
                 catch (Exception ex)
                 {
@@ -144,9 +142,7 @@ namespace SharpBSABA2.BA2Util
                 else
                 {
                     // Uncompress
-                    this.Archive.Inflater.Reset();
-                    this.Archive.Inflater.SetInput(compressed);
-                    this.Archive.Inflater.Inflate(full);
+                    this.Archive.Decompress(compressed, full);
 
                     stream.Write(full, 0, full.Length);
                 }
