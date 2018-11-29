@@ -210,9 +210,7 @@ namespace SharpBSABA2.BA2Util
 
                     this.BinaryReader.Read(compressed, 0, compressed.Length);
                     // Uncompress
-                    this.Archive.Inflater.Reset();
-                    this.Archive.Inflater.SetInput(compressed);
-                    this.Archive.Inflater.Inflate(full);
+                    this.Archive.Decompress(compressed, full);
                 }
 
                 bw.Write(full);

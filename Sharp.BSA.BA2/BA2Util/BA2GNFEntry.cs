@@ -112,9 +112,7 @@ namespace SharpBSABA2.BA2Util
             {
                 try
                 {
-                    this.Archive.Inflater.Reset();
-                    this.Archive.Inflater.SetInput(bytes);
-                    this.Archive.Inflater.Inflate(uncompressed);
+                    this.Archive.Decompress(bytes, uncompressed);
                 }
                 catch (Exception ex)
                 {
@@ -144,9 +142,7 @@ namespace SharpBSABA2.BA2Util
                 else
                 {
                     // Uncompress
-                    this.Archive.Inflater.Reset();
-                    this.Archive.Inflater.SetInput(compressed);
-                    this.Archive.Inflater.Inflate(full);
+                    this.Archive.Decompress(compressed, full);
 
                     stream.Write(full, 0, full.Length);
                 }

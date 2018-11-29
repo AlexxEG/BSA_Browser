@@ -63,9 +63,7 @@ namespace SharpBSABA2.BA2Util
             {
                 byte[] uncompressed = new byte[this.RealSize];
 
-                this.Archive.Inflater.Reset();
-                this.Archive.Inflater.SetInput(bytes);
-                this.Archive.Inflater.Inflate(uncompressed);
+                this.Archive.Decompress(bytes, uncompressed);
 
                 stream.Write(uncompressed, 0, uncompressed.Length);
             }
