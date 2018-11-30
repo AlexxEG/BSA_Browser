@@ -26,12 +26,12 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Gets or sets the file currently being extracted.
+        /// Gets or sets the description.
         /// </summary>
-        public string CurrentFile
+        public string Description
         {
-            get { return lCurrentFile.Text.Substring(0, lCurrentFile.Text.Length - 3); }
-            set { lCurrentFile.Text = $"{value}..."; }
+            get { return lDescription.Text; }
+            set { lDescription.Text = value; }
         }
 
         /// <summary>
@@ -70,7 +70,6 @@ namespace BSA_Browser
             set
             {
                 pbProgress.Value = Math.Min(value, pbProgress.Maximum);
-                lProgress.Text = 100 * value / pbProgress.Maximum + "%";
                 if (!Focused) Focus();
             }
         }

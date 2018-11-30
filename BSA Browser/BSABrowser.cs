@@ -1030,18 +1030,18 @@ namespace BSA_Browser
         {
             if (gui)
             {
-                pf = new ProgressForm("Unpacking archive")
+                progressForm = new ProgressForm("Unpacking archive")
                 {
                     Header = "Extracting...",
                     Footer = $"(0/{files.Length})",
                     Cancelable = true,
                     Maximum = 100
                 };
-                pf.Canceled += delegate { bwExtractFiles.CancelAsync(); };
+                progressForm.Canceled += delegate { bwExtractFiles.CancelAsync(); };
 
                 bwExtractFiles.RunWorkerAsync(new ExtractFilesArguments(useFolderPath, folder, files));
 
-                pf.ShowDialog(this);
+                progressForm.ShowDialog(this);
             }
             else
             {
@@ -1077,8 +1077,6 @@ namespace BSA_Browser
 
         #region ExtractFiles variables
 
-        ProgressForm pf;
-
         private class ExtractFilesArguments
         {
             public bool UseFolderPath { get; private set; }
@@ -1092,6 +1090,25 @@ namespace BSA_Browser
                 Files = files;
             }
         }
+
+        private class ProgressUpdateInfo
+        {
+            public string FileName { get; private set; }
+            public int Count { get; private set; }
+            public int Files { get; private set; }
+
+            public ProgressUpdateInfo(string filename, int count, int files)
+            {
+                this.FileName = filename;
+                this.Count = count;
+                this.Files = files;
+            }
+        }
+
+        ProgressForm progressForm;
+        int _count = 0;
+        int _filesTotal = 0;
+        TimeSpan _estimate = TimeSpan.MinValue;
 
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -1112,7 +1129,7 @@ namespace BSA_Browser
                 }
 
                 // Update current file and count
-                bwExtractFiles.ReportProgress(-1, new object[] { fe.FileName, count, arguments.Files.Length });
+                bwExtractFiles.ReportProgress(-1, new ProgressUpdateInfo(fe.FileName, count, arguments.Files.Length));
 
                 try
                 {
@@ -1163,42 +1180,34 @@ namespace BSA_Browser
             e.Result = exceptions;
         }
 
-        int _count = 0;
-        int _fileMax = 0;
-        TimeSpan _estimate = TimeSpan.MinValue;
-
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            string footer = "({0}/{1}) Estimated time left (average): {2}";
-
             if (e.ProgressPercentage == -1)
             {
-                object[] args = e.UserState as object[];
-                pf.CurrentFile = (string)args[0];
-                _count = (int)args[1];
-                _fileMax = (int)args[2];
-
-                pf.Footer = string.Format(footer, _count, _fileMax, _estimate.ToString(@"hh\:mm\:ss"));
+                var args = (ProgressUpdateInfo)e.UserState;
+                _count = args.Count;
+                _filesTotal = args.Files;
+                progressForm.Description = args.FileName + "\n" + Common.FormatTimeRemaining(_estimate);
+                progressForm.Footer = $"({_count}/{_filesTotal})";
             }
             else
             {
-                pf.Progress = e.ProgressPercentage;
-                this.Text = $"{pf.ProgressPercentage}% - {_untouchedTitle}";
                 _estimate = TimeSpan.FromMilliseconds((double)e.UserState);
-
-                pf.Footer = string.Format(footer, _count, _fileMax, _estimate.ToString(@"hh\:mm\:ss"));
+                this.Text = $"{progressForm.ProgressPercentage}% - {_untouchedTitle}";
+                progressForm.Progress = e.ProgressPercentage;
+                progressForm.Description = progressForm.Description.Split('\n')[0] + "\n" + Common.FormatTimeRemaining(_estimate);
             }
         }
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _count = _fileMax = 0;
+            _count = _filesTotal = 0;
             _estimate = TimeSpan.MinValue;
 
-            pf.BlockClose = false;
-            pf.Close();
-            pf.Dispose();
-            pf = null;
+            progressForm.BlockClose = false;
+            progressForm.Close();
+            progressForm.Dispose();
+            progressForm = null;
 
             this.Text = _untouchedTitle;
 
@@ -1211,26 +1220,6 @@ namespace BSA_Browser
         }
 
         #endregion
-
-        /// <summary>
-        /// Formats the given file size to a more readable string.
-        /// </summary>
-        /// <param name="bytes">The file size to format.</param>
-        private string FormatBytes(long bytes)
-        {
-            const int scale = 1024;
-            string[] orders = new string[] { "GB", "MB", "KB", "Bytes" };
-            long max = (long)Math.Pow(scale, orders.Length - 1);
-
-            foreach (string order in orders)
-            {
-                if (bytes > max)
-                    return string.Format("{0:##.##} {1}", decimal.Divide(bytes, max), order);
-
-                max /= scale;
-            }
-            return "0 Bytes";
-        }
 
         /// <summary>
         /// Returns the root node of the given TreeNode.
