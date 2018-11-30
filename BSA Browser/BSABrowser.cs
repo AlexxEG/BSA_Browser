@@ -40,7 +40,7 @@ namespace BSA_Browser
         CompareForm _compareForm;
 
         /// <summary>
-        /// Get the selected archive.
+        /// Gets the selected <see cref="ArchiveNode"/>.
         /// </summary>
         private ArchiveNode SelectedArchiveNode
         {
@@ -274,7 +274,7 @@ namespace BSA_Browser
             var file = _files[e.ItemIndex];
             var lvi = new ListViewItem(Path.Combine(file.Folder, file.FileName));
 
-            lvi.SubItems.Add(this.FormatBytes(file.DisplaySize));
+            lvi.SubItems.Add(Common.FormatBytes(file.DisplaySize));
             lvi.Tag = file;
 
             e.Item = lvi;
@@ -746,7 +746,7 @@ namespace BSA_Browser
         #endregion
 
         /// <summary>
-        /// Opens the given archive, adding it to the TreeView and making it browsable.
+        /// Opens the given archive, adding it to the <see cref="TreeView"/> and making it browsable.
         /// </summary>
         /// <param name="path">The archive file path.</param>
         /// <param name="addToRecentFiles">True if archive should be added to recent files list.</param>
@@ -868,7 +868,7 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Clears the virtual ListView.
+        /// Clears the virtual <see cref="ListView"/>.
         /// </summary>
         private void ClearList()
         {
@@ -879,7 +879,7 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Closes the given archive, removing it from the TreeView.
+        /// Closes the given archive, removing it from the <see cref="TreeView"/>.
         /// </summary>
         /// <param name="archiveNode"></param>
         private void CloseArchive(ArchiveNode archiveNode)
@@ -903,7 +903,7 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Closes all open archives, clearing the TreeView.
+        /// Closes all open archives, clearing the <see cref="TreeView"/>.
         /// </summary>
         private void CloseArchives()
         {
@@ -924,7 +924,7 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Returns string with game name if given path is a Fallout 3 or Fallout New Vegas file
+        /// Returns <see cref="string"/> with game name if given path is a Fallout 3 or Fallout New Vegas file
         /// since these two games share a lot of file names.
         /// </summary>
         private string DetectGame(string path)
@@ -1024,7 +1024,7 @@ namespace BSA_Browser
         /// </summary>
         /// <param name="folder">The path to extract files to.</param>
         /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
-        /// <param name="gui">True to show a progression dialog.</param>
+        /// <param name="gui">True to show a <see cref="ProgressForm"/>.</param>
         /// <param name="files">The files in the selected archive to extract.</param>
         private void ExtractFiles(string folder, bool useFolderPath, bool gui, params ArchiveEntry[] files)
         {
@@ -1058,7 +1058,7 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Opens folder browser to select where to extract file(s).
+        /// Opens <see cref="OpenFolderDialog"/> to select where to extract file(s).
         /// </summary>
         /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
         /// <param name="gui">True to show a progression dialog.</param>
@@ -1222,9 +1222,9 @@ namespace BSA_Browser
         #endregion
 
         /// <summary>
-        /// Returns the root node of the given TreeNode.
+        /// Returns the root node of the given <see cref="TreeNode"/>.
         /// </summary>
-        /// <param name="node">The TreeNode to get root node from.</param>
+        /// <param name="node">The <see cref="TreeNode"/> to get root node from.</param>
         private ArchiveNode GetRootNode(TreeNode node)
         {
             if (node == null)
@@ -1364,9 +1364,9 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Returns the given file's MenuItem.
+        /// Returns the given file's <see cref="MenuItem"/>.
         /// </summary>
-        /// <param name="file">The file to get MenuItem from.</param>
+        /// <param name="file">The file to get <see cref="MenuItem"/> from.</param>
         private MenuItem RecentListGetItemByString(string file)
         {
             return recentFilesMenuItem.MenuItems
@@ -1375,7 +1375,7 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Saves the recent files list to Settings.
+        /// Saves the recent files list to <see cref="Settings"/>.
         /// </summary>
         private void SaveRecentFiles()
         {
@@ -1390,7 +1390,7 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Adds update marker (UpdateMarker constant) to Help & Check for update menu items if there is an update available.
+        /// Adds update marker (UpdateMarker constant) to Help and Check for update menu items if there is an update available.
         /// </summary>
         private async void ShowUpdateNotification()
         {
@@ -1427,9 +1427,9 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Sorts all nodes in given TreeNode.
+        /// Sorts all nodes in given <see cref="TreeNode"/>.
         /// </summary>
-        /// <param name="rootNode">The TreeNode whose children is to be sorted.</param>
+        /// <param name="rootNode">The <see cref="TreeNode"/> whose children is to be sorted.</param>
         private void SortNodes(TreeNode rootNode)
         {
             foreach (TreeNode node in rootNode.Nodes)

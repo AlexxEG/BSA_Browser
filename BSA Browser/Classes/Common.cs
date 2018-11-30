@@ -6,7 +6,7 @@ namespace BSA_Browser.Classes
     public class Common
     {
         /// <summary>
-        /// Formats file size into a human readable string.
+        /// Formats file size into a human readable <see cref="string"/>.
         /// </summary>
         /// <param name="bytes">The file size to format.</param>
         public static string FormatBytes(long bytes)
@@ -26,9 +26,9 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
-        /// Formats TimeSpan into a human readable string.
+        /// Formats <see cref="TimeSpan"/> into a human readable <see cref="string"/>.
         /// </summary>
-        /// <param name="time">The TimeSpan to format.</param>
+        /// <param name="time">The <see cref="TimeSpan"/> to format.</param>
         public static string FormatTimeRemaining(TimeSpan time)
         {
             List<string> ss = new List<string>();
