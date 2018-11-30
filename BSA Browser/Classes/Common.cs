@@ -9,7 +9,7 @@ namespace BSA_Browser.Classes
         /// Formats file size into a human readable string.
         /// </summary>
         /// <param name="bytes">The file size to format.</param>
-        private string FormatBytes(long bytes)
+        public static string FormatBytes(long bytes)
         {
             const int scale = 1024;
             string[] orders = new string[] { "GB", "MB", "KB", "Bytes" };
