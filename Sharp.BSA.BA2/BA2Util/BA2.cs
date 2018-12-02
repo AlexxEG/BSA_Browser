@@ -11,9 +11,9 @@ namespace SharpBSABA2.BA2Util
 
         public bool UseATIFourCC { get; set; } = false;
 
-        public new int FileCount => (int)Header.numFiles;
-        public new bool HasNameTable => Header.nameTableOffset > 0;
-        public new string VersionString => Header.version.ToString();
+        public new int FileCount => (int)Header.NumFiles;
+        public new bool HasNameTable => Header.NameTableOffset > 0;
+        public new string VersionString => Header.Version.ToString();
 
         public BA2(string filePath) : base(filePath)
         {
@@ -22,40 +22,44 @@ namespace SharpBSABA2.BA2Util
         protected override void Open(string filePath)
         {
             this.Header = new BA2Header(BinaryReader);
-
-            // Set archive type
-            if (Enum.TryParse("BA2_" + this.Header.Type, out ArchiveTypes type))
-                this.Type = type;
-            else
-                throw new Exception($"Unknown {nameof(BA2HeaderType)} value: {this.Header.Type}");
+            // Set more detailed archive type, used for comparing
+            this.Type = this.ConvertType(this.Header.Type);
 
             for (int i = 0; i < this.FileCount; i++)
-                if (this.Header.Type == BA2HeaderType.GNRL)
-                    this.Files.Add(new BA2FileEntry(this));
-                else if (this.Header.Type == BA2HeaderType.DX10)
-                    this.Files.Add(new BA2TextureEntry(this));
-                else if (this.Header.Type == BA2HeaderType.GNMF)
-                    this.Files.Add(new BA2GNFEntry(this));
+                switch (this.Header.Type)
+                {
+                    case BA2HeaderType.GNRL: Files.Add(new BA2FileEntry(this)); break;
+                    case BA2HeaderType.DX10: Files.Add(new BA2TextureEntry(this)); break;
+                    case BA2HeaderType.GNMF: Files.Add(new BA2GNFEntry(this)); break;
+                    default:
+                        throw new Exception($"Unknown {nameof(BA2HeaderType)} value: " + this.Header.Type);
+                }
 
             if (this.HasNameTable)
             {
                 // Seek to name table
-                BinaryReader.BaseStream.Seek((long)Header.nameTableOffset, SeekOrigin.Begin);
+                BinaryReader.BaseStream.Seek((long)Header.NameTableOffset, SeekOrigin.Begin);
             }
 
             // Assign full names to each file
             for (int i = 0; i < this.FileCount; i++)
             {
                 if (!this.HasNameTable)
-                {
                     this.Files[i].FullPath = this.Files[i].nameHash.ToString("X");
-                }
                 else
-                {
-                    short length = BinaryReader.ReadInt16();
-                    this.Files[i].FullPath = this.BinaryReader.ReadString(length);
-                }
-            }
+                    this.Files[i].FullPath = BinaryReader.ReadString(BinaryReader.ReadInt16());
+            } 
+        }
+
+        /// <summary>
+        /// Converts <see cref="BA2HeaderType"/> to <see cref="ArchiveTypes"/> for more detailed information.
+        /// </summary>
+        private ArchiveTypes ConvertType(BA2HeaderType type)
+        {
+            if (Enum.TryParse("BA2_" + this.Header.Type, out ArchiveTypes typeConverted))
+                return typeConverted;
+            else
+                throw new Exception($"Unable to convert value '{this.Header.Type}' to {nameof(ArchiveTypes)}");
         }
     }
 }

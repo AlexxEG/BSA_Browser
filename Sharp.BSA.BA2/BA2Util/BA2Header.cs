@@ -5,33 +5,42 @@ namespace SharpBSABA2.BA2Util
 {
     public class BA2Header
     {
-        public BA2HeaderMagic Magic { get; set; }
-        public uint version { get; set; }
-        public BA2HeaderType Type { get; set; }
-        public uint numFiles { get; set; }
-        public ulong nameTableOffset { get; set; }
+        public BA2HeaderMagic Magic { get; private set; }
+        public uint Version { get; private set; }
+        public BA2HeaderType Type { get; private set; }
+        public uint NumFiles { get; private set; }
+        public ulong NameTableOffset { get; private set; }
 
         public BA2Header(BinaryReader br)
         {
-            if (Enum.TryParse(new string(br.ReadChars(4)), true, out BA2HeaderMagic magicParsed))
-                this.Magic = magicParsed;
+            Magic = this.ParseMagic(br.ReadChars(4));
+            Version = br.ReadUInt32();
+            Type = this.ParseType(br.ReadChars(4));
+            NumFiles = br.ReadUInt32();
+            NameTableOffset = br.ReadUInt64();
+        }
+
+        private BA2HeaderMagic ParseMagic(char[] chars)
+        {
+            string magic = new string(chars);
+            if (Enum.TryParse(magic, true, out BA2HeaderMagic magicParsed))
+                return magicParsed;
             else
-                this.Magic = BA2HeaderMagic.Unknown;
+                throw new Exception($"Unknown {nameof(BA2Header)}.{nameof(Magic)} value: ${magic}");
+        }
 
-            version = br.ReadUInt32();
-
-            if (Enum.TryParse(new string(br.ReadChars(4)), true, out BA2HeaderType typeParsed))
-                this.Type = typeParsed;
+        private BA2HeaderType ParseType(char[] chars)
+        {
+            string type = new string(chars);
+            if (Enum.TryParse(type, true, out BA2HeaderType typeParsed))
+                return typeParsed;
             else
-                this.Type = BA2HeaderType.Unknown;
-
-            numFiles = br.ReadUInt32();
-            nameTableOffset = br.ReadUInt64();
+                throw new Exception($"Unknown {nameof(BA2Header)}.{nameof(Type)} value: ${type}");
         }
 
         public override string ToString()
         {
-            return $"magic: {Magic} version: {version} type: {Type} numFiles: {numFiles} nameTableOffset: {nameTableOffset}";
+            return $"Magic: {Magic} Version: {Version} Type: {Type} NumFiles: {NumFiles} NameTableOffset: {NameTableOffset}";
         }
     }
 }
