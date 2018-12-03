@@ -39,16 +39,11 @@ namespace SharpBSABA2.BA2Util
             {
                 // Seek to name table
                 BinaryReader.BaseStream.Seek((long)Header.NameTableOffset, SeekOrigin.Begin);
-            }
 
-            // Assign full names to each file
-            for (int i = 0; i < this.FileCount; i++)
-            {
-                if (!this.HasNameTable)
-                    this.Files[i].FullPath = this.Files[i].nameHash.ToString("X");
-                else
+                // Assign full names to each file
+                for (int i = 0; i < this.FileCount; i++)
                     this.Files[i].FullPath = BinaryReader.ReadString(BinaryReader.ReadInt16());
-            } 
+            }
         }
 
         /// <summary>
