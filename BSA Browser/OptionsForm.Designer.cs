@@ -42,6 +42,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.nudMaxRecentFiles = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
             this.chbUseATIFourCC = new System.Windows.Forms.CheckBox();
             this.chbRetrieveRealSize = new System.Windows.Forms.CheckBox();
             this.chbSortBSADirectories = new System.Windows.Forms.CheckBox();
@@ -49,6 +51,7 @@
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxRecentFiles)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -189,6 +192,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.nudMaxRecentFiles);
+            this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.chbUseATIFourCC);
             this.tabPage1.Controls.Add(this.chbRetrieveRealSize);
             this.tabPage1.Controls.Add(this.chbSortBSADirectories);
@@ -200,10 +205,38 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // nudMaxRecentFiles
+            // 
+            this.nudMaxRecentFiles.Location = new System.Drawing.Point(94, 13);
+            this.nudMaxRecentFiles.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.nudMaxRecentFiles.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudMaxRecentFiles.Name = "nudMaxRecentFiles";
+            this.nudMaxRecentFiles.Size = new System.Drawing.Size(43, 20);
+            this.nudMaxRecentFiles.TabIndex = 4;
+            this.nudMaxRecentFiles.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(10, 15);
+            this.label2.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(84, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Max recent files:";
+            // 
             // chbUseATIFourCC
             // 
             this.chbUseATIFourCC.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.chbUseATIFourCC.Location = new System.Drawing.Point(13, 59);
+            this.chbUseATIFourCC.Location = new System.Drawing.Point(13, 85);
             this.chbUseATIFourCC.Name = "chbUseATIFourCC";
             this.chbUseATIFourCC.Size = new System.Drawing.Size(370, 84);
             this.chbUseATIFourCC.TabIndex = 2;
@@ -215,7 +248,7 @@
             // chbRetrieveRealSize
             // 
             this.chbRetrieveRealSize.AutoSize = true;
-            this.chbRetrieveRealSize.Location = new System.Drawing.Point(13, 36);
+            this.chbRetrieveRealSize.Location = new System.Drawing.Point(13, 62);
             this.chbRetrieveRealSize.Name = "chbRetrieveRealSize";
             this.chbRetrieveRealSize.Size = new System.Drawing.Size(363, 17);
             this.chbRetrieveRealSize.TabIndex = 1;
@@ -225,7 +258,7 @@
             // chbSortBSADirectories
             // 
             this.chbSortBSADirectories.AutoSize = true;
-            this.chbSortBSADirectories.Location = new System.Drawing.Point(13, 13);
+            this.chbSortBSADirectories.Location = new System.Drawing.Point(13, 39);
             this.chbSortBSADirectories.Name = "chbSortBSADirectories";
             this.chbSortBSADirectories.Size = new System.Drawing.Size(306, 17);
             this.chbSortBSADirectories.TabIndex = 0;
@@ -265,6 +298,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxRecentFiles)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -289,5 +323,7 @@
         private System.Windows.Forms.CheckBox chbSortBSADirectories;
         private System.Windows.Forms.CheckBox chbRetrieveRealSize;
         private System.Windows.Forms.CheckBox chbUseATIFourCC;
+        private System.Windows.Forms.NumericUpDown nudMaxRecentFiles;
+        private System.Windows.Forms.Label label2;
     }
 }

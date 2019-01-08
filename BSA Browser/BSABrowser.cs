@@ -439,6 +439,12 @@ namespace BSA_Browser
 
                     // Sync changes to UI
                     this.LoadQuickExtractPaths();
+
+                    // Add 2 to include the permanent menu items
+                    while (recentFilesMenuItem.MenuItems.Count > (Settings.Default.RecentFiles_MaxFiles + 2))
+                    {
+                        recentFilesMenuItem.MenuItems.RemoveAt(recentFilesMenuItem.MenuItems.Count - 1);
+                    }
                 }
             }
         }
@@ -864,6 +870,12 @@ namespace BSA_Browser
                 var item = new MenuItem(file, recentFiles_Click);
                 item.Tag = file;
                 recentFilesMenuItem.MenuItems.Add(2, item);
+            }
+
+            // Add 2 to include the permanent menu items
+            while (recentFilesMenuItem.MenuItems.Count > (Settings.Default.RecentFiles_MaxFiles + 2))
+            {
+                recentFilesMenuItem.MenuItems.RemoveAt(recentFilesMenuItem.MenuItems.Count - 1);
             }
         }
 
