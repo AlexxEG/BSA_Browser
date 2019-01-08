@@ -105,6 +105,7 @@
             this.columnFilePath,
             this.columnFileSize});
             this.lvFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvFiles.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lvFiles.FullRowSelect = true;
             this.lvFiles.LabelWrap = false;
             this.lvFiles.Location = new System.Drawing.Point(0, 0);
