@@ -1,3 +1,11 @@
+[1.9.6]
+
+- Added option to set max recent files
+- Changed file list font to Segoe UI
+- Updated the progress dialog appearance. The ETA isn't super accurate, but best I can do atm. It's going to be improved
+- Increased Morrowind archive reading speed by up to 387.587% (7s average -> 1.5s average reading the Morrowind.bsa 100 times)
+- Fixed error opening some archives caused by always using system default encoding. This caused errors on some systems, for example systems set to Japanese locale
+
 [1.9.5]
 
 Note: Previews are getting outdated, many Fallout 76 textures show incorrectly or don't work at all. Gonna look into updating, but it's not my code so not familiar with it yet
