@@ -70,6 +70,9 @@
             this.helpMenuItem = new System.Windows.Forms.MenuItem();
             this.checkForUpdateMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.fallout4NexusPageMenuItem = new System.Windows.Forms.MenuItem();
+            this.skyrimSENexusPageMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem13 = new System.Windows.Forms.MenuItem();
             this.aboutMenuItem = new System.Windows.Forms.MenuItem();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.extractMenuItem = new System.Windows.Forms.MenuItem();
@@ -91,6 +94,7 @@
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bwExtractFiles = new System.ComponentModel.BackgroundWorker();
+            this.githubMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -429,6 +433,10 @@
             this.helpMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.checkForUpdateMenuItem,
             this.menuItem3,
+            this.githubMenuItem,
+            this.fallout4NexusPageMenuItem,
+            this.skyrimSENexusPageMenuItem,
+            this.menuItem13,
             this.aboutMenuItem});
             this.helpMenuItem.Text = "Help";
             this.helpMenuItem.Popup += new System.EventHandler(this.helpMenuItem_Popup);
@@ -444,9 +452,26 @@
             this.menuItem3.Index = 1;
             this.menuItem3.Text = "-";
             // 
+            // fallout4NexusPageMenuItem
+            // 
+            this.fallout4NexusPageMenuItem.Index = 3;
+            this.fallout4NexusPageMenuItem.Text = "Fallout 4 Nexus Page";
+            this.fallout4NexusPageMenuItem.Click += new System.EventHandler(this.fallout4NexusPageMenuItem_Click);
+            // 
+            // skyrimSENexusPageMenuItem
+            // 
+            this.skyrimSENexusPageMenuItem.Index = 4;
+            this.skyrimSENexusPageMenuItem.Text = "Skyrim SE Nexus Page";
+            this.skyrimSENexusPageMenuItem.Click += new System.EventHandler(this.skyrimSENexusPageMenuItem_Click);
+            // 
+            // menuItem13
+            // 
+            this.menuItem13.Index = 5;
+            this.menuItem13.Text = "-";
+            // 
             // aboutMenuItem
             // 
-            this.aboutMenuItem.Index = 2;
+            this.aboutMenuItem.Index = 6;
             this.aboutMenuItem.Text = "About BSA Browser";
             this.aboutMenuItem.Click += new System.EventHandler(this.aboutMenuItem_Click);
             // 
@@ -581,6 +606,12 @@
             this.bwExtractFiles.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_ProgressChanged);
             this.bwExtractFiles.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bw_RunWorkerCompleted);
             // 
+            // githubMenuItem
+            // 
+            this.githubMenuItem.Index = 2;
+            this.githubMenuItem.Text = "GitHub";
+            this.githubMenuItem.Click += new System.EventHandler(this.githubMenuItem_Click);
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -674,6 +705,10 @@
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem compareArchivesMenuItem;
         private System.ComponentModel.BackgroundWorker bwExtractFiles;
+        private System.Windows.Forms.MenuItem fallout4NexusPageMenuItem;
+        private System.Windows.Forms.MenuItem skyrimSENexusPageMenuItem;
+        private System.Windows.Forms.MenuItem menuItem13;
+        private System.Windows.Forms.MenuItem githubMenuItem;
     }
 }
 

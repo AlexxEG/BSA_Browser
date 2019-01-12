@@ -592,7 +592,7 @@ namespace BSA_Browser
                             "Update available",
                             MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        Process.Start(Program.Website);
+                        Process.Start(Program.SkyrimSENexus);
                     }
                 }
                 else
@@ -608,6 +608,21 @@ namespace BSA_Browser
             {
                 MessageBox.Show(this, "Error checking for update.\n\n" + ex.Message);
             }
+        }
+
+        private void githubMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(Program.GitHub);
+        }
+
+        private void fallout4NexusPageMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(Program.Fallout4Nexus);
+        }
+
+        private void skyrimSENexusPageMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(Program.SkyrimSENexus);
         }
 
         private void aboutMenuItem_Click(object sender, EventArgs e)
