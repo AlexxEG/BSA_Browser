@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace BSA_Browser
@@ -22,9 +24,24 @@ namespace BSA_Browser
         static void Main(string[] args)
         {
             Application.SetCompatibleTextRenderingDefault(false);
+            Application.ThreadException += Application_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            App myApp = new App();
-            myApp.Run(args);
+            new App().Run(args);
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+#if (!DEBUG)
+            Program.SaveException(e.ExceptionObject as Exception);
+#endif
+        }
+
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+#if (!DEBUG)
+            Program.SaveException(e.Exception);
+#endif
         }
 
         internal static string CreateTempDirectory()
@@ -44,9 +61,19 @@ namespace BSA_Browser
 
         public static string GetVersion()
         {
-            Version v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Version v = Assembly.GetExecutingAssembly().GetName().Version;
 
             return $"{v.Major}.{v.Minor}.{v.Build}";
+        }
+
+        private static void SaveException(Exception exception)
+        {
+            string dir = Path.Combine(Application.StartupPath, "stack traces");
+
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            File.WriteAllText(Path.Combine(dir, DateTime.Now.ToString("yyyy.MM.dd-HH-mm-ss-fff")) + ".log", exception.ToString());
         }
     }
 
