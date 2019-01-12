@@ -150,7 +150,7 @@ namespace BSA_Browser_CLI
                 }
             }
 
-            if (_arguments.List)
+            if (_arguments.List || (!_arguments.List && !_arguments.Extract && !_arguments.Help))
             {
                 PrintFileList(_arguments.Inputs.ToList(), _arguments.ListOptions);
             }
@@ -300,6 +300,7 @@ namespace BSA_Browser_CLI
             Console.WriteLine();
             Console.WriteLine("bsab [/e] [/l:[options]] [/ati] [/f [pattern]] [/regex [pattern]] [FILE] [DESTINATION]");
             Console.WriteLine();
+            Console.WriteLine("  /? \t\t Display this help page");
             Console.WriteLine("  /e \t\t Extract all files");
             Console.WriteLine("  /l \t\t List all files");
             Console.WriteLine("    options \t  A \t Prepend each line with archive filename");
