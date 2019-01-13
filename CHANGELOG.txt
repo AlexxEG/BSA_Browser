@@ -1,3 +1,10 @@
+[1.9.7]
+
+- Fixed broken extraction for many BSA archives
+- Added links to Fallout 4 and Skyrim Nexus Pages and to GitHub in Help menu
+- All unhandled exceptions are now saved to 'stack traces' folder. Useful when reporting bugs
+- CLI: Defaults to list (/l) option
+
 [1.9.6]
 
 - Added option to set max recent files
