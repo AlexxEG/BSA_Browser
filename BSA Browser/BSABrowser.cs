@@ -1141,7 +1141,7 @@ namespace BSA_Browser
         {
             var arguments = e.Argument as ExtractFilesArguments;
             var extracted = new Dictionary<string, int>();
-            var exceptions = new List<Exception>();
+            var exceptions = new List<Tuple<string, Exception>>();
 
             int progress = 0, prevProgress = 0, count = 0;
 
@@ -1184,7 +1184,7 @@ namespace BSA_Browser
                 }
                 catch (Exception ex)
                 {
-                    exceptions.Add(ex);
+                    exceptions.Add(new Tuple<string, Exception>(fe.FullPath, ex));
                 }
 
                 count++;
@@ -1201,7 +1201,14 @@ namespace BSA_Browser
 
             if (exceptions.Count > 0)
             {
-                File.WriteAllLines(Path.Combine(arguments.Folder, "_report.txt"), exceptions.Select(x => x.Message));
+                var sb = new StringBuilder();
+                sb.AppendLine($"{arguments.Files[0].Archive.FileName} - RetrieveRealSize: {arguments.Files[0].Archive.RetrieveRealSize}");
+                sb.AppendLine();
+
+                foreach (var ex in exceptions)
+                    sb.AppendLine($"{ex.Item1}{Environment.NewLine}{ex.Item2}{Environment.NewLine}");
+
+                File.WriteAllText(Path.Combine(arguments.Folder, "_report.txt"), sb.ToString());
             }
 
             e.Result = exceptions;
@@ -1238,7 +1245,7 @@ namespace BSA_Browser
 
             this.Text = _untouchedTitle;
 
-            var exceptions = e.Result as List<Exception>;
+            var exceptions = e.Result as List<Tuple<string, Exception>>;
 
             if (exceptions?.Count > 0)
             {
