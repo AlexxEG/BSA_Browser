@@ -113,16 +113,16 @@ namespace SharpBSABA2.BSAUtil
                 if (this.Archive.ContainsFileNameBlobs)
                     this.BinaryReader.BaseStream.Position += this.BinaryReader.ReadByte() + 1;
 
-                byte[] content = this.BinaryReader.ReadBytes(!decompress ? (int)this.Size : (int)this.Size - 4);
-
                 if (!decompress)
                 {
+                    byte[] content = this.BinaryReader.ReadBytes((int)this.Size);
                     stream.Write(content, 0, content.Length);
                 }
                 else
                 {
                     byte[] uncompressed = new byte[this.RealSize == 0 ? BinaryReader.ReadUInt32() : this.RealSize];
-                    this.Archive.Decompress(content, uncompressed);
+                    byte[] compressed = this.BinaryReader.ReadBytes((int)this.Size - 4);
+                    this.Archive.Decompress(compressed, uncompressed);
                     stream.Write(uncompressed, 0, uncompressed.Length);
                 }
             }
