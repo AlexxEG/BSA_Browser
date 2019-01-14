@@ -30,7 +30,7 @@ namespace SharpBSABA2
         public Archive(string filePath)
         {
             this.FullPath = filePath;
-            this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), Encoding.UTF8);
+            this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), Encoding.UTF7);
 
             this.Open(filePath);
         }
