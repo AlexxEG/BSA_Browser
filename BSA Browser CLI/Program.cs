@@ -185,17 +185,31 @@ namespace BSA_Browser_CLI
                 {
                     int count = 0;
                     int total = archive.Files.Count(x => Filter(x.FullPath));
-                    int line = Console.CursorTop;
-                    int prevLength = 0;
+					int line = -1;
+					int prevLength = 0;
+
+					// Some Console properties might not be available in certain situations, 
+					// e.g. when redirecting stdout. To prevent crashing, setting the cursor position should only
+					// be done if there actually is a cursor to be set.
+					try {
+						line = Console.CursorTop;
+					}
+					catch (IOException) {}
 
                     foreach (var entry in archive.Files)
                     {
                         if (!Filter(entry.FullPath))
                             continue;
 
-                        Console.SetCursorPosition(0, line);
-                        string output = $"Extracting: {++count}/{total} - {entry.FullPath}";
-                        Console.Write(output.PadRight(prevLength));
+						string output = $"Extracting: {++count}/{total} - {entry.FullPath}".PadRight(prevLength);
+
+						if (line > -1) {
+							Console.SetCursorPosition(0, line);
+							Console.Write(output);
+						}
+						else {
+							Console.WriteLine(output);
+						}
                         prevLength = output.Length;
 
                         entry.Extract(destination, true);
