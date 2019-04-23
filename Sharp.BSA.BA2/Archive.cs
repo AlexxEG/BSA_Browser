@@ -15,12 +15,12 @@ namespace SharpBSABA2
         public string FullPath { get; private set; }
         public string FileName => Path.GetFileName(this.FullPath);
 
-        public int Chunks { get; set; }
-        public int FileCount { get; set; }
-        public bool HasNameTable { get; set; }
-        public string VersionString { get; set; } = "None";
+        public virtual int Chunks { get; set; }
+        public virtual int FileCount { get; set; }
+        public virtual bool HasNameTable { get; set; }
+        public virtual string VersionString { get; set; } = "None";
 
-        public ArchiveTypes Type { get; protected set; }
+        public virtual ArchiveTypes Type { get; protected set; }
 
         public Inflater Inflater { get; private set; } = new Inflater();
         public List<ArchiveEntry> Files { get; private set; } = new List<ArchiveEntry>();

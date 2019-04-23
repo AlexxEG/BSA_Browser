@@ -11,9 +11,9 @@ namespace SharpBSABA2.BA2Util
 
         public bool UseATIFourCC { get; set; } = false;
 
-        public new int FileCount => (int)Header.NumFiles;
-        public new bool HasNameTable => Header.NameTableOffset > 0;
-        public new string VersionString => Header.Version.ToString();
+        public override int FileCount => (int)Header.NumFiles;
+        public override bool HasNameTable => Header.NameTableOffset > 0;
+        public override string VersionString => Header.Version.ToString();
 
         public BA2(string filePath) : base(filePath)
         {

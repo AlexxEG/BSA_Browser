@@ -55,7 +55,7 @@ namespace SharpBSABA2.BSAUtil
         public uint Magic { get; private set; }
         public object Header { get; private set; }
 
-        public new bool HasNameTable
+        public override bool HasNameTable
         {
             get
             {
@@ -70,7 +70,7 @@ namespace SharpBSABA2.BSAUtil
                 }
             }
         }
-        public new string VersionString
+        public override string VersionString
         {
             get
             {
@@ -85,7 +85,7 @@ namespace SharpBSABA2.BSAUtil
                 }
             }
         }
-        public new ArchiveTypes Type
+        public override ArchiveTypes Type
         {
             get
             {
