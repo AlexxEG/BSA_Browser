@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Alexander Ellingsen")]
 [assembly: AssemblyProduct("BSA Browser")]
-[assembly: AssemblyCopyright("Copyright ©  2010, 2014-2016 Timeslip, Q, Alexander Ellingsen")]
+[assembly: AssemblyCopyright("Copyright ©  2010-2019 Timeslip, Q, Alexander Ellingsen")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
