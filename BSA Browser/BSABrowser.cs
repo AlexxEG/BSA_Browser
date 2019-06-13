@@ -1367,6 +1367,7 @@ namespace BSA_Browser
                     case ".xml":
                     case ".lst":
                     case ".psc":
+                    case ".json":
                         string dest = Program.CreateTempDirectory();
 
                         fe.Extract(dest, false);
@@ -1375,7 +1376,7 @@ namespace BSA_Browser
                     default:
                         MessageBox.Show(this,
                             "Filetype not supported.\n\n" +
-                            "Currently only .txt, .xml, .lst, .psc, .dds, .bmp, .png and .jpg files can be previewed.",
+                            "Currently only .txt, .xml, .lst, .psc, .json, .dds, .bmp, .png and .jpg files can be previewed.",
                             "Error");
                         break;
                 }
