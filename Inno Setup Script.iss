@@ -45,15 +45,9 @@ Name: "ba2aassociation"; Description: "Associate "".ba2"" extension"; GroupDescr
 Source: "BSA Browser\bin\Release\BSA Browser.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\BSA Browser.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "BSA Browser\bin\Release\K4os.Compression.LZ4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "BSA Browser\bin\Release\K4os.Compression.LZ4.Streams.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "BSA Browser\bin\Release\K4os.Hash.xxHash.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "BSA Browser\bin\Release\lz4.AnyCPU.loader.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\Sharp.BSA.BA2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "BSA Browser\bin\Release\System.Buffers.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\System.Management.Automation.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "BSA Browser\bin\Release\System.Memory.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "BSA Browser\bin\Release\System.Runtime.CompilerServices.Unsafe.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "BSA Browser\bin\Release\lz4.AnyCPU.loader.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 ; Optional
 Source: "BSA Browser CLI\bin\Release\bsab.exe"; DestDir: "{app}"; Flags: ignoreversion; Tasks: cli

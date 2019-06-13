@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression;
-using K4os.Compression.LZ4.Streams;
+using lz4;
 using SharpBSABA2.Enums;
 
 namespace SharpBSABA2
@@ -27,6 +27,11 @@ namespace SharpBSABA2
 
         public BinaryReader BinaryReader { get; private set; }
 
+        static Archive()
+        {
+            lz4.AnyCPU.loader.LZ4Loader.DisableVCRuntimeDetection = true;
+        }
+
         public Archive(string filePath)
         {
             this.FullPath = filePath;
@@ -45,7 +50,7 @@ namespace SharpBSABA2
         public void DecompressLZ4(byte[] data, Stream stream)
         {
             using (var ms = new MemoryStream(data, false))
-            using (var lz4Stream = LZ4Stream.Decode(ms))
+            using (var lz4Stream = LZ4Stream.CreateDecompressor(ms, LZ4StreamMode.Read))
             {
                 lz4Stream.CopyTo(stream);
             }
