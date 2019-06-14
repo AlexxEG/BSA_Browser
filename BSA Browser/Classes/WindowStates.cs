@@ -60,6 +60,9 @@ namespace BSA_Browser.Classes
             {
                 string strWindowName = reader["name"];
 
+                if (string.IsNullOrEmpty(strWindowName))
+                    continue;
+
                 XmlSerializer xsrWindowState = new XmlSerializer(typeof(WindowState));
                 windowStates.Add(strWindowName, (WindowState)xsrWindowState.Deserialize(reader));
             }
