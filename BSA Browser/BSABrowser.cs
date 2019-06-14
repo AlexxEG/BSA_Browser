@@ -1368,10 +1368,7 @@ namespace BSA_Browser
                     case ".lst":
                     case ".psc":
                     case ".json":
-                        string dest = Program.CreateTempDirectory();
-
-                        fe.Extract(dest, false);
-                        Process.Start(Path.Combine(dest, fe.FileName));
+                        new TextViewer(fe).Show(this);
                         break;
                     default:
                         MessageBox.Show(this,

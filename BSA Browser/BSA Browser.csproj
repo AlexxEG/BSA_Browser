@@ -63,6 +63,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.TextEditor, Version=4.2.0.0, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
+      <HintPath>..\packages\ICSharpCode.TextEditor.Extended.4.2.4\lib\net45\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -122,6 +125,12 @@
     <Compile Include="Dialogs\QuickExtractDialog.Designer.cs">
       <DependentUpon>QuickExtractDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\TextViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TextViewer.Designer.cs">
+      <DependentUpon>TextViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\ListViewExtensions.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
@@ -158,6 +167,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\QuickExtractDialog.resx">
       <DependentUpon>QuickExtractDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\TextViewer.resx">
+      <DependentUpon>TextViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.resx">
       <DependentUpon>OptionsForm.cs</DependentUpon>

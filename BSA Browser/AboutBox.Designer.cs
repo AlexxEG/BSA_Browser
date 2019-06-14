@@ -38,22 +38,26 @@
             this.llGitHub = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
+            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.SuspendLayout();
             // 
             // logoPictureBox
@@ -159,6 +163,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Location = new System.Drawing.Point(12, 88);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -178,6 +183,16 @@
             this.tabPage1.Text = "BSA Browser";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(15, 141);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(187, 13);
+            this.label1.TabIndex = 32;
+            this.label1.Text = "BSA Browser is licensed under GPLv3";
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.linkLabel1);
@@ -189,70 +204,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "SharpZipLib";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.linkLabel2);
-            this.tabPage3.Controls.Add(this.label3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(12);
-            this.tabPage3.Size = new System.Drawing.Size(472, 166);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "K4os.Compression.LZ4";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.linkLabel3);
-            this.tabPage4.Controls.Add(this.label4);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(12);
-            this.tabPage4.Size = new System.Drawing.Size(472, 166);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "CoreFx (System)";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 141);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(204, 13);
-            this.label4.TabIndex = 31;
-            this.label4.Text = "CoreFX is licensed under the MIT License";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 141);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(278, 13);
-            this.label3.TabIndex = 32;
-            this.label3.Text = "K4os.Compression.LZ4 is licensed under the MIT License";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 141);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(226, 13);
-            this.label2.TabIndex = 32;
-            this.label2.Text = "SharpZipLib is licensed under the MIT License";
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 141);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(187, 13);
-            this.label1.TabIndex = 32;
-            this.label1.Text = "BSA Browser is licensed under GPLv3";
             // 
             // linkLabel1
             // 
@@ -267,6 +218,28 @@
             this.linkLabel1.Text = "GitHub";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_LinkClicked);
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(15, 141);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(226, 13);
+            this.label2.TabIndex = 32;
+            this.label2.Text = "SharpZipLib is licensed under the MIT License";
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.linkLabel2);
+            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(12);
+            this.tabPage3.Size = new System.Drawing.Size(472, 166);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "K4os.Compression.LZ4";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
@@ -280,6 +253,28 @@
             this.linkLabel2.Text = "GitHub";
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_LinkClicked);
             // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(15, 141);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(278, 13);
+            this.label3.TabIndex = 32;
+            this.label3.Text = "K4os.Compression.LZ4 is licensed under the MIT License";
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.linkLabel3);
+            this.tabPage4.Controls.Add(this.label4);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(12);
+            this.tabPage4.Size = new System.Drawing.Size(472, 166);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "CoreFx (System)";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
             // linkLabel3
             // 
             this.linkLabel3.AutoSize = true;
@@ -292,6 +287,51 @@
             this.linkLabel3.Tag = "https://github.com/dotnet/corefx";
             this.linkLabel3.Text = "GitHub";
             this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_LinkClicked);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(15, 141);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(204, 13);
+            this.label4.TabIndex = 31;
+            this.label4.Text = "CoreFX is licensed under the MIT License";
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.linkLabel4);
+            this.tabPage5.Controls.Add(this.label5);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(12);
+            this.tabPage5.Size = new System.Drawing.Size(472, 166);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "TextEditor.Extended";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(15, 141);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(357, 13);
+            this.label5.TabIndex = 32;
+            this.label5.Text = "ICSharpCode.TextEditor.Extended is licensed under the LGPL 2.1 License";
+            // 
+            // linkLabel4
+            // 
+            this.linkLabel4.AutoSize = true;
+            this.linkLabel4.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.linkLabel4.Location = new System.Drawing.Point(15, 12);
+            this.linkLabel4.Name = "linkLabel4";
+            this.linkLabel4.Size = new System.Drawing.Size(40, 13);
+            this.linkLabel4.TabIndex = 33;
+            this.linkLabel4.TabStop = true;
+            this.linkLabel4.Tag = "https://github.com/megakraken/ICSharpCode.TextEditor";
+            this.linkLabel4.Text = "GitHub";
+            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_LinkClicked);
             // 
             // AboutBox
             // 
@@ -324,6 +364,8 @@
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -351,5 +393,8 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.LinkLabel linkLabel4;
+        private System.Windows.Forms.Label label5;
     }
 }
