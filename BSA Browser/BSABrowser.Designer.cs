@@ -123,11 +123,9 @@
             this.lvFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvFiles_ColumnClick);
             this.lvFiles.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.lvFiles_ItemDrag);
             this.lvFiles.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.lvFiles_RetrieveVirtualItem);
-            this.lvFiles.SelectedIndexChanged += new System.EventHandler(this.lvFiles_SelectedIndexChanged);
             this.lvFiles.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
             this.lvFiles.DragOver += new System.Windows.Forms.DragEventHandler(this.File_DragOver);
             this.lvFiles.DoubleClick += new System.EventHandler(this.lvFiles_DoubleClick);
-            this.lvFiles.Enter += new System.EventHandler(this.lvFiles_Enter);
             this.lvFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvFiles_KeyDown);
             // 
             // columnFilePath

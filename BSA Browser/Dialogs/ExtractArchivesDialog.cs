@@ -41,18 +41,6 @@ namespace BSA_Browser.Dialogs
             }
 
             lvArchives.EnableVisualStyles();
-            lvArchives.EnableVisualStylesSelection();
-            lvArchives.HideFocusRectangle();
-        }
-
-        private void lvArchives_Enter(object sender, EventArgs e)
-        {
-            lvArchives.HideFocusRectangle();
-        }
-
-        private void lvArchives_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            lvArchives.HideFocusRectangle();
         }
 
         public static ExtractArchivesDialog ShowDialog(IWin32Window owner, ICollection<Archive> archives)

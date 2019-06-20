@@ -23,50 +23,44 @@ namespace BSA_Browser.Controls
         private const int UISF_HIDEFOCUS = 0x10001;
         private const int WM_CHANGEUISTATE = 0x0127;
 
-        public static void EnableVisualStyles(this ListView lv)
+        private static void HideFocusRectangle(this ListView lv)
         {
-            SetWindowTheme(lv.Handle,
-                "explorer",
-                null);
+            SendMessage(lv.Handle, WM_CHANGEUISTATE, UISF_HIDEFOCUS, 0);
         }
 
-        public static void EnableVisualStylesSelection(this ListView lv)
+        public static void EnableVisualStyles(this ListView lv)
         {
+            // Enable Visual Styles
+            SetWindowTheme(lv.Handle, "explorer", null);
+
+            // Visual Style Selection
             SendMessage(lv.Handle,
                 LVM_SETEXTENDEDLISTVIEWSTYLE,
                 LVS_EX_DOUBLEBUFFER,
                 LVS_EX_DOUBLEBUFFER);
-        }
 
-        public static void HideFocusRectangle(this ListView lv)
-        {
-            SendMessage(lv.Handle,
-                WM_CHANGEUISTATE,
-                UISF_HIDEFOCUS,
-                0);
+            lv.HideFocusRectangle();
+
+            // Re-hide focus rectangle after certain events
+            lv.Enter += delegate { lv.HideFocusRectangle(); };
+            lv.SelectedIndexChanged += delegate { lv.HideFocusRectangle(); };
         }
 
         public static void SetCue(this TextBox txt, string cue)
         {
-            SendMessage(txt.Handle,
-                EM_SETCUEBANNER,
-                IntPtr.Zero.ToInt32(),
-                cue);
-        }
-
-        public static void EnableAutoScroll(this TreeView tv)
-        {
-            SendMessage(tv.Handle,
-                TVM_SETEXTENDEDSTYLE,
-                TVS_EX_AUTOHSCROLL,
-                TVS_EX_AUTOHSCROLL);
+            SendMessage(txt.Handle, EM_SETCUEBANNER, IntPtr.Zero.ToInt32(), cue);
         }
 
         public static void EnableVisualStyles(this TreeView tv)
         {
-            SetWindowTheme(tv.Handle,
-                "explorer",
-                null);
+            // Enable Visual Styles
+            SetWindowTheme(tv.Handle, "explorer", null);
+
+            // Enable Auto Scroll
+            SendMessage(tv.Handle,
+                TVM_SETEXTENDEDSTYLE,
+                TVS_EX_AUTOHSCROLL,
+                TVS_EX_AUTOHSCROLL);
         }
     }
 }

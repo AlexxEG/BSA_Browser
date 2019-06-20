@@ -42,8 +42,6 @@
             this.lvArchives.TabIndex = 0;
             this.lvArchives.UseCompatibleStateImageBehavior = false;
             this.lvArchives.View = System.Windows.Forms.View.List;
-            this.lvArchives.SelectedIndexChanged += new System.EventHandler(this.lvArchives_SelectedIndexChanged);
-            this.lvArchives.Enter += new System.EventHandler(this.lvArchives_Enter);
             // 
             // btnExtract
             // 

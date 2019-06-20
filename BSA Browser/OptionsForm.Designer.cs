@@ -145,8 +145,6 @@
             this.lvQuickExtract.TabIndex = 1;
             this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
             this.lvQuickExtract.View = System.Windows.Forms.View.Details;
-            this.lvQuickExtract.SelectedIndexChanged += new System.EventHandler(this.lvQuickExtract_SelectedIndexChanged);
-            this.lvQuickExtract.Enter += new System.EventHandler(this.lvQuickExtract_Enter);
             // 
             // columnHeader1
             // 

@@ -30,8 +30,6 @@ namespace BSA_Browser
             }
 
             lvQuickExtract.EnableVisualStyles();
-            lvQuickExtract.EnableVisualStylesSelection();
-            lvQuickExtract.HideFocusRectangle();
         }
 
         public OptionsForm(int tabPage)
@@ -69,14 +67,7 @@ namespace BSA_Browser
             this.DialogResult = DialogResult.OK;
         }
 
-        private void lvQuickExtract_Enter(object sender, EventArgs e)
         {
-            lvQuickExtract.HideFocusRectangle();
-        }
-
-        private void lvQuickExtract_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            lvQuickExtract.HideFocusRectangle();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

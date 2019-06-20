@@ -95,11 +95,7 @@ namespace BSA_Browser
 
             // Enable visual styles
             tvFolders.EnableVisualStyles();
-            tvFolders.EnableAutoScroll();
-
             lvFiles.EnableVisualStyles();
-            lvFiles.EnableVisualStylesSelection();
-            lvFiles.HideFocusRectangle();
 
             // Set TextBox cue
             txtSearch.SetCue("Search term...");
@@ -227,11 +223,6 @@ namespace BSA_Browser
             this.PreviewSelected();
         }
 
-        private void lvFiles_Enter(object sender, EventArgs e)
-        {
-            lvFiles.HideFocusRectangle();
-        }
-
         private void lvFiles_ItemDrag(object sender, ItemDragEventArgs e)
         {
             if (!(lvFiles.SelectedIndices.Count >= 1))
@@ -259,11 +250,6 @@ namespace BSA_Browser
             {
                 lvFiles.SelectAllItems();
             }
-        }
-
-        private void lvFiles_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            lvFiles.HideFocusRectangle();
         }
 
         private void lvFiles_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
