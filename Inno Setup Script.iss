@@ -42,9 +42,11 @@ Name: "bsaassociation"; Description: "Associate "".bsa"" extension"; GroupDescri
 Name: "ba2aassociation"; Description: "Associate "".ba2"" extension"; GroupDescription: File extensions:
 
 [Files]
+Source: "Licenses\*"; DestDir: "{app}\Licenses"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\BSA Browser.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\BSA Browser.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "BSA Browser\bin\Release\ICSharpCode.TextEditor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\lz4.AnyCPU.loader.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\Sharp.BSA.BA2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\System.Management.Automation.dll"; DestDir: "{app}"; Flags: ignoreversion
