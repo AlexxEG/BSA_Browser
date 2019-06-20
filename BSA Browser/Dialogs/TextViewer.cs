@@ -12,6 +12,8 @@ namespace BSA_Browser.Dialogs
 {
     public partial class TextViewer : Form
     {
+        Timer _hideLabelTimer;
+
         public ArchiveEntry Entry { get; private set; }
 
         public TextViewer(ArchiveEntry entry)
@@ -107,22 +109,6 @@ namespace BSA_Browser.Dialogs
                 txtFind.Focus();
         }
 
-        Timer _hideLabelTimer;
-
-        private void ReachedEOD()
-        {
-            if (_hideLabelTimer == null)
-            {
-                _hideLabelTimer = new Timer();
-                _hideLabelTimer.Interval = 2000;
-                _hideLabelTimer.Tick += delegate { lReachedEOD.Visible = false; _hideLabelTimer.Stop(); };
-            }
-
-            _hideLabelTimer.Stop();
-            lReachedEOD.Visible = true;
-            _hideLabelTimer.Start();
-        }
-
         private void findNextMenuItem_Click(object sender, EventArgs e)
         {
             int startIndex = textEditorControl1.ActiveTextAreaControl.SelectionManager.SelectionCollection.Count > 0 ?
@@ -215,6 +201,20 @@ namespace BSA_Browser.Dialogs
             while (offset >= 0);
 
             textEditorControl1.ActiveTextAreaControl.Refresh();
+        }
+
+        private void ReachedEOD()
+        {
+            if (_hideLabelTimer == null)
+            {
+                _hideLabelTimer = new Timer();
+                _hideLabelTimer.Interval = 2000;
+                _hideLabelTimer.Tick += delegate { lReachedEOD.Visible = false; _hideLabelTimer.Stop(); };
+            }
+
+            _hideLabelTimer.Stop();
+            lReachedEOD.Visible = true;
+            _hideLabelTimer.Start();
         }
     }
 }
