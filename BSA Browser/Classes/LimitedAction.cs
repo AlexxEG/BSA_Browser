@@ -21,7 +21,7 @@ namespace BSA_Browser.Classes
             else
             {
                 var newTimer = new Timer() { Interval = ms };
-                newTimer.Tick += delegate { action(); };
+                newTimer.Tick += delegate (object timer, EventArgs e) { action(); (timer as Timer).Stop(); };
                 _timers.Add(id, newTimer);
             }
 
