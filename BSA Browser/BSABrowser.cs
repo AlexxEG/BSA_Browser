@@ -280,7 +280,7 @@ namespace BSA_Browser
         {
             var rootNode = this.GetRootNode(e.Node);
 
-            // This event only needs to run once, so return if AllFiles is NOT null
+            // Check if node structure has already been built
             if (rootNode.AllFiles != null)
                 return;
 
@@ -289,11 +289,12 @@ namespace BSA_Browser
             rootNode.AllFiles = new List<ArchiveEntry>(rootNode.Files);
             rootNode.AllFiles.Sort(_filesSorter);
 
-            // This builds the all TreeNodes
+            // Build the whole node structure
             foreach (var lvi in rootNode.AllFiles)
             {
                 string path = Path.GetDirectoryName(lvi.FullPath);
 
+                // Ignore files under root node and already processed nodes
                 if (path == string.Empty || nodes.ContainsKey(path))
                     continue;
 
@@ -308,15 +309,23 @@ namespace BSA_Browser
                         var tn = new TreeNode(dirs[i]);
                         tn.Tag = newpath;
 
-                        if (i == 0)
+                        if (i == 0) // Root node
                             e.Node.Nodes.Add(tn);
-                        else
+                        else // Sub nodes
                             nodes[path].Nodes.Add(tn);
 
                         nodes.Add(newpath, tn);
                     }
                     path = newpath;
                 }
+            }
+
+            // Insert <Files> nodes under each directory
+            foreach (var node in nodes)
+            {
+                // Only add if there are sub nodes. Node without sub nodes already behaves the same
+                if (node.Value.Nodes.Count > 0)
+                    node.Value.Nodes.Insert(0, new TreeNode("<Files>") { Tag = node.Key });
             }
 
             if (Settings.Default.SortArchiveDirectories)
@@ -342,7 +351,20 @@ namespace BSA_Browser
                 var lvis = new List<ArchiveEntry>(rootNode.AllFiles.Count);
 
                 foreach (var lvi in rootNode.AllFiles)
-                    if (lvi.FullPath.Replace('/', '\\').StartsWith(path)) lvis.Add(lvi);
+                {
+                    string selectedPath = Path.GetDirectoryName(lvi.FullPath.Replace('/', '\\'));
+
+                    if (e.Node.Text == "<Files>")
+                    {
+                        // Show files in current node, not including sub nodes
+                        if (selectedPath == path) lvis.Add(lvi);
+                    }
+                    else
+                    {
+                        // Show all files under current node, including sub nodes
+                        if (lvi.FullPath.Replace('/', '\\').StartsWith(path)) lvis.Add(lvi);
+                    }
+                }
 
                 lvis.TrimExcess();
                 rootNode.Files = lvis.ToArray();
@@ -1498,7 +1520,8 @@ namespace BSA_Browser
             }
             else
             {
-                return b == null ? 1 : a.Text.CompareTo(b.Text);
+                // Sort in alphabetical order, except for "<Files>" node
+                return b == null ? 1 : a.Text == "<Files>" ? 0 : a.Text.CompareTo(b.Text);
             }
         }
     }
