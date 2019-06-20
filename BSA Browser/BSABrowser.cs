@@ -1,4 +1,10 @@
-﻿using System;
+﻿using BSA_Browser.Classes;
+using BSA_Browser.Controls;
+using BSA_Browser.Dialogs;
+using BSA_Browser.Extensions;
+using BSA_Browser.Properties;
+using SharpBSABA2;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -11,12 +17,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BSA_Browser.Classes;
-using BSA_Browser.Controls;
-using BSA_Browser.Dialogs;
-using BSA_Browser.Extensions;
-using BSA_Browser.Properties;
-using SharpBSABA2;
 
 namespace BSA_Browser
 {
