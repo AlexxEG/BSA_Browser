@@ -92,6 +92,7 @@
     <Compile Include="Classes\ArchiveNode.cs" />
     <Compile Include="Classes\Common.cs" />
     <Compile Include="Classes\DDSImage.cs" />
+    <Compile Include="Classes\LimitedAction.cs" />
     <Compile Include="Classes\OpenFolderDialog.cs" />
     <Compile Include="Classes\QuickExtractPath.cs" />
     <Compile Include="Classes\QuickExtractPaths.cs" />

@@ -1,4 +1,6 @@
-﻿using BSA_Browser.Properties;
+﻿using BSA_Browser.Classes;
+using BSA_Browser.Properties;
+using ICSharpCode.TextEditor.Document;
 using SharpBSABA2;
 using System;
 using System.Drawing;
@@ -25,6 +27,8 @@ namespace BSA_Browser.Dialogs
             }
 
             textEditorControl1.SetHighlighting(this.DetectHighlighting(entry.FileName));
+
+            splitContainer1.Panel2Collapsed = true;
         }
 
         private void TextViewer_Load(object sender, EventArgs e)
@@ -36,7 +40,7 @@ namespace BSA_Browser.Dialogs
             }
 
             // Restore window state
-            Settings.Default.WindowStates[this.Name].RestoreForm(this);
+            Settings.Default.WindowStates[this.Name].RestoreForm(this, splitContainers: false);
 
             if (Application.OpenForms.Cast<Form>().Any(x => x != this && x.Name == this.Name))
             {
@@ -47,8 +51,25 @@ namespace BSA_Browser.Dialogs
         private void TextViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Save window state
-            Settings.Default.WindowStates[this.Name].SaveForm(this);
+            Settings.Default.WindowStates[this.Name].SaveForm(this, splitContainers: false);
             Settings.Default.Save();
+        }
+
+        private void SplitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+            // Draw a top border
+            e.Graphics.DrawLine(SystemPens.ActiveBorder, 0, 0, e.ClipRectangle.Right, 0);
+        }
+
+        private void txtFind_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                splitContainer1.Panel2Collapsed = true;
+                // Suppress sound when clicking Esc
+                e.Handled = e.SuppressKeyPress = true;
+                textEditorControl1.Focus();
+            }
         }
 
         private void extractMenuItem_Click(object sender, EventArgs e)
@@ -76,6 +97,89 @@ namespace BSA_Browser.Dialogs
             this.Close();
         }
 
+        private void findMenuItem_Click(object sender, EventArgs e)
+        {
+            splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
+
+            if (splitContainer1.Panel2Collapsed)
+                textEditorControl1.Focus();
+            else
+                txtFind.Focus();
+        }
+
+        Timer _hideLabelTimer;
+
+        private void ReachedEOD()
+        {
+            if (_hideLabelTimer == null)
+            {
+                _hideLabelTimer = new Timer();
+                _hideLabelTimer.Interval = 2000;
+                _hideLabelTimer.Tick += delegate { lReachedEOD.Visible = false; _hideLabelTimer.Stop(); };
+            }
+
+            _hideLabelTimer.Stop();
+            lReachedEOD.Visible = true;
+            _hideLabelTimer.Start();
+        }
+
+        private void findNextMenuItem_Click(object sender, EventArgs e)
+        {
+            int startIndex = textEditorControl1.ActiveTextAreaControl.SelectionManager.SelectionCollection.Count > 0 ?
+                textEditorControl1.ActiveTextAreaControl.SelectionManager.SelectionCollection[0].EndOffset : 0;
+            int offset = textEditorControl1.Text.IndexOf(txtFind.Text, startIndex,
+                chbCaseSensitive.Checked ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
+
+            if (offset == -1)
+            {
+                this.ReachedEOD();
+                return;
+            }
+
+            var startPos = textEditorControl1.Document.OffsetToPosition(offset);
+            var endPos = textEditorControl1.Document.OffsetToPosition(offset + txtFind.Text.Length);
+
+            textEditorControl1.ActiveTextAreaControl.SelectionManager.SetSelection(startPos, endPos);
+            textEditorControl1.ActiveTextAreaControl.ScrollTo(startPos.Line, startPos.Column);
+        }
+
+        private void findPreviousMenuItem_Click(object sender, EventArgs e)
+        {
+            int startIndex = textEditorControl1.ActiveTextAreaControl.SelectionManager.SelectionCollection.Count > 0 ?
+                textEditorControl1.ActiveTextAreaControl.SelectionManager.SelectionCollection[0].Offset : textEditorControl1.ActiveTextAreaControl.Caret.Offset;
+            int offset = textEditorControl1.Text.LastIndexOf(txtFind.Text, startIndex, startIndex,
+                chbCaseSensitive.Checked ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
+
+            if (offset == -1)
+            {
+                this.ReachedEOD();
+                return;
+            }
+
+            var startPos = textEditorControl1.Document.OffsetToPosition(offset);
+            var endPos = textEditorControl1.Document.OffsetToPosition(offset + txtFind.Text.Length);
+
+            textEditorControl1.ActiveTextAreaControl.SelectionManager.SetSelection(startPos, endPos);
+            textEditorControl1.ActiveTextAreaControl.ScrollTo(startPos.Line, startPos.Column);
+        }
+
+        private void txtFind_TextChanged(object sender, EventArgs e)
+        {
+            LimitedAction.RunAfter(1, 500, delegate
+            {
+                if (string.IsNullOrEmpty(txtFind.Text))
+                    this.ClearHighlighting();
+                else
+                    this.HighlightText(txtFind.Text);
+            });
+        }
+
+        private void ClearHighlighting()
+        {
+            textEditorControl1.Document.MarkerStrategy.RemoveAll(x => true);
+            textEditorControl1.ActiveTextAreaControl.Refresh();
+        }
+
         private string DetectHighlighting(string fileName)
         {
             switch (Path.GetExtension(fileName).ToLower())
@@ -87,6 +191,30 @@ namespace BSA_Browser.Dialogs
                 default:
                     return "Default";
             }
+        }
+
+        private void HighlightText(string text)
+        {
+            textEditorControl1.Document.MarkerStrategy.RemoveAll(x => true);
+
+            int startIndex = 0;
+            int offset = -1;
+
+            do
+            {
+                offset = textEditorControl1.Text.IndexOf(text, startIndex);
+
+                if (offset < 0)
+                    continue;
+
+                startIndex = offset + text.Length;
+
+                textEditorControl1.Document.MarkerStrategy.AddMarker(
+                    new TextMarker(offset, text.Length, TextMarkerType.SolidBlock, Color.Yellow, Color.Black));
+            }
+            while (offset >= 0);
+
+            textEditorControl1.ActiveTextAreaControl.Refresh();
         }
     }
 }
