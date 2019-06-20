@@ -36,7 +36,6 @@ namespace BSA_Browser
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
         List<ArchiveEntry> _files = new List<ArchiveEntry>();
         ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
-        Timer _searchDelayTimer;
         CompareForm _compareForm;
 
         /// <summary>
@@ -268,15 +267,7 @@ namespace BSA_Browser
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (_searchDelayTimer == null)
-            {
-                _searchDelayTimer = new Timer();
-                _searchDelayTimer.Tick += delegate { DoSearch(); };
-                _searchDelayTimer.Interval = 500;
-            }
-
-            _searchDelayTimer.Stop();
-            _searchDelayTimer.Start();
+            LimitedAction.RunAfter(1, 500, delegate { DoSearch(); });
         }
 
         private void cbRegex_CheckedChanged(object sender, EventArgs e)
@@ -962,7 +953,7 @@ namespace BSA_Browser
         /// </summary>
         private void DoSearch()
         {
-            _searchDelayTimer?.Stop();
+            LimitedAction.Stop(1);
 
             if (tvFolders.GetNodeCount(false) < 1 || tvFolders.SelectedNode == null)
                 return;

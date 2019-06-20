@@ -151,7 +151,7 @@ namespace BSA_Browser.Dialogs
 
         private void txtFind_TextChanged(object sender, EventArgs e)
         {
-            LimitedAction.RunAfter(1, 500, delegate
+            LimitedAction.RunAfter(2, 500, delegate
             {
                 if (string.IsNullOrEmpty(txtFind.Text))
                     this.ClearHighlighting();

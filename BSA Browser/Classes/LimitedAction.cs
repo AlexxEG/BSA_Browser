@@ -27,5 +27,14 @@ namespace BSA_Browser.Classes
 
             _timers[id].Start();
         }
+
+        /// <summary>
+        /// Stops timer for given id.
+        /// </summary>
+        public static void Stop(int id)
+        {
+            if (_timers.ContainsKey(id))
+                _timers[id].Stop();
+        }
     }
 }
