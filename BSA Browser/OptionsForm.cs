@@ -1,15 +1,26 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using BSA_Browser.Classes;
+﻿using BSA_Browser.Classes;
 using BSA_Browser.Controls;
 using BSA_Browser.Dialogs;
 using BSA_Browser.Properties;
+using System;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
 
 namespace BSA_Browser
 {
     public partial class OptionsForm : Form
     {
+        private Encoding[] _encodings = new Encoding[]
+        {
+            Encoding.UTF7,
+            Encoding.Default,
+            Encoding.ASCII,
+            Encoding.Unicode,
+            Encoding.UTF32,
+            Encoding.UTF8
+        };
+
         public OptionsForm()
         {
             InitializeComponent();
@@ -18,6 +29,9 @@ namespace BSA_Browser
             chbSortBSADirectories.Checked = Settings.Default.SortArchiveDirectories;
             chbRetrieveRealSize.Checked = Settings.Default.RetrieveRealSize;
             chbUseATIFourCC.Checked = Settings.Default.UseATIFourCC;
+
+            cbEncodings.Items.AddRange(_encodings);
+            cbEncodings.SelectedItem = Encoding.GetEncoding(Settings.Default.EncodingCodePage);
 
             foreach (var path in Settings.Default.QuickExtractPaths)
             {
@@ -67,7 +81,17 @@ namespace BSA_Browser
             this.DialogResult = DialogResult.OK;
         }
 
+        private void cbEncodings_Format(object sender, ListControlConvertEventArgs e)
         {
+            if (e.ListItem is Encoding)
+            {
+                if (e.ListItem == Encoding.UTF7)
+                    e.Value = "UTF-7 (Default)";
+                else if (e.ListItem == Encoding.Default)
+                    e.Value = "System Default (" + ((Encoding)e.ListItem).BodyName + ")";
+                else
+                    e.Value = ((Encoding)e.ListItem).EncodingName;
+            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -127,6 +151,7 @@ namespace BSA_Browser
             Settings.Default.SortArchiveDirectories = chbSortBSADirectories.Checked;
             Settings.Default.RetrieveRealSize = chbRetrieveRealSize.Checked;
             Settings.Default.UseATIFourCC = chbUseATIFourCC.Checked;
+            Settings.Default.EncodingCodePage = (cbEncodings.SelectedItem as Encoding).CodePage;
 
             Settings.Default.QuickExtractPaths.Clear();
 

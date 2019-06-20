@@ -765,6 +765,7 @@ namespace BSA_Browser
             try
             {
                 string extension = Path.GetExtension(path);
+                Encoding encoding = Encoding.GetEncoding(Settings.Default.EncodingCodePage);
 
                 // ToDo: Read file header to find archive type, not just extension
                 switch (extension.ToLower())
@@ -780,13 +781,13 @@ namespace BSA_Browser
                                 return;
                         }
 
-                        archive = new SharpBSABA2.BSAUtil.BSA(path)
+                        archive = new SharpBSABA2.BSAUtil.BSA(path, encoding)
                         {
                             RetrieveRealSize = Settings.Default.RetrieveRealSize
                         };
                         break;
                     case ".ba2":
-                        archive = new SharpBSABA2.BA2Util.BA2(path)
+                        archive = new SharpBSABA2.BA2Util.BA2(path, encoding)
                         {
                             RetrieveRealSize = Settings.Default.RetrieveRealSize,
                             UseATIFourCC = Settings.Default.UseATIFourCC

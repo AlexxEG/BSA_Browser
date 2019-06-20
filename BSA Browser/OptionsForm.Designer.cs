@@ -42,6 +42,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cbEncodings = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.nudMaxRecentFiles = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.chbUseATIFourCC = new System.Windows.Forms.CheckBox();
@@ -190,6 +192,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.cbEncodings);
+            this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.nudMaxRecentFiles);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.chbUseATIFourCC);
@@ -202,6 +206,25 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cbEncodings
+            // 
+            this.cbEncodings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbEncodings.FormattingEnabled = true;
+            this.cbEncodings.Location = new System.Drawing.Point(122, 248);
+            this.cbEncodings.Name = "cbEncodings";
+            this.cbEncodings.Size = new System.Drawing.Size(417, 21);
+            this.cbEncodings.TabIndex = 6;
+            this.cbEncodings.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.cbEncodings_Format);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(13, 251);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(103, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "(Caution!) Encoding:";
             // 
             // nudMaxRecentFiles
             // 
@@ -323,5 +346,7 @@
         private System.Windows.Forms.CheckBox chbUseATIFourCC;
         private System.Windows.Forms.NumericUpDown nudMaxRecentFiles;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cbEncodings;
+        private System.Windows.Forms.Label label3;
     }
 }

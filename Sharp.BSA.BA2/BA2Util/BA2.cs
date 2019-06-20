@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using SharpBSABA2.Enums;
 using SharpBSABA2.Extensions;
 
@@ -15,9 +16,8 @@ namespace SharpBSABA2.BA2Util
         public override bool HasNameTable => Header.NameTableOffset > 0;
         public override string VersionString => Header.Version.ToString();
 
-        public BA2(string filePath) : base(filePath)
-        {
-        }
+        public BA2(string filePath) : base(filePath) { }
+        public BA2(string filePath, Encoding encoding) : base(filePath, encoding) { }
 
         protected override void Open(string filePath)
         {

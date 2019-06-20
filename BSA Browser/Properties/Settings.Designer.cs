@@ -175,5 +175,17 @@ namespace BSA_Browser.Properties {
                 this["RetrieveRealSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int EncodingCodePage {
+            get {
+                return ((int)(this["EncodingCodePage"]));
+            }
+            set {
+                this["EncodingCodePage"] = value;
+            }
+        }
     }
 }

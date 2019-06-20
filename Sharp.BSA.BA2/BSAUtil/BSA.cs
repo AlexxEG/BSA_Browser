@@ -101,9 +101,8 @@ namespace SharpBSABA2.BSAUtil
             }
         }
 
-        public BSA(string filePath) : base(filePath)
-        {
-        }
+        public BSA(string filePath) : base(filePath) { }
+        public BSA(string filePath, Encoding encoding) : base(filePath, encoding) { }
 
         protected override void Open(string filePath)
         {

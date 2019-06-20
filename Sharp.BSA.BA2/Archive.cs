@@ -32,10 +32,14 @@ namespace SharpBSABA2
             lz4.AnyCPU.loader.LZ4Loader.DisableVCRuntimeDetection = true;
         }
 
-        public Archive(string filePath)
+        public Archive(string filePath) : this(filePath, Encoding.UTF7) { }
+
+        public Archive(string filePath, Encoding encoding)
         {
+            Console.WriteLine(encoding.ToString());
+
             this.FullPath = filePath;
-            this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), Encoding.UTF7);
+            this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), encoding);
 
             this.Open(filePath);
         }
