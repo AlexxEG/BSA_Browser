@@ -88,7 +88,7 @@ namespace BSA_Browser.Classes
         /// width and <see cref="System.Windows.Forms.SplitContainer"/> splitter distance.
         /// </summary>
         /// <param name="form">The <see cref="System.Windows.Forms.Form"/> to restore.</param>
-        public void RestoreForm(Form form)
+        public void RestoreForm(Form form, bool columns = true, bool splitContainers = true)
         {
             if (!this.Size.IsEmpty)
             {
@@ -102,8 +102,8 @@ namespace BSA_Browser.Classes
 
             form.WindowState = this.FormWindowState;
 
-            RestoreColumns(form);
-            RestoreSplitContainers(form);
+            if (columns) RestoreColumns(form);
+            if (splitContainers) RestoreSplitContainers(form);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace BSA_Browser.Classes
         /// width and <see cref="System.Windows.Forms.SplitContainer"/> splitter distance.
         /// </summary>
         /// <param name="form">The <see cref="System.Windows.Forms.Form"/> to save.</param>
-        public void SaveForm(Form form)
+        public void SaveForm(Form form, bool columns = true, bool splitContainers = true)
         {
             if (!(form.WindowState == FormWindowState.Maximized))
             {
@@ -127,39 +127,45 @@ namespace BSA_Browser.Classes
 
             this.FormWindowState = form.WindowState;
 
-            foreach (ColumnHeader col in GetColumns(form.Controls))
+            if (columns)
             {
-                // Skip column if Name is null or empty, since it can't be identified.
-                if (string.IsNullOrEmpty(col.ListView.Name))
-                    continue;
-
-                string key = string.Format("{0} - {1}", col.ListView.Name, col.DisplayIndex);
-
-                if (this.ColumnWidths.ContainsKey(key))
+                foreach (ColumnHeader col in GetColumns(form.Controls))
                 {
-                    this.ColumnWidths[key] = col.Width;
-                }
-                else
-                {
-                    this.ColumnWidths.Add(key, col.Width);
+                    // Skip column if Name is null or empty, since it can't be identified.
+                    if (string.IsNullOrEmpty(col.ListView.Name))
+                        continue;
+
+                    string key = string.Format("{0} - {1}", col.ListView.Name, col.DisplayIndex);
+
+                    if (this.ColumnWidths.ContainsKey(key))
+                    {
+                        this.ColumnWidths[key] = col.Width;
+                    }
+                    else
+                    {
+                        this.ColumnWidths.Add(key, col.Width);
+                    }
                 }
             }
 
-            foreach (SplitContainer splitContainer in GetSplitContainers(form.Controls))
+            if (splitContainers)
             {
-                string key = splitContainer.Name;
-
-                // Skip container if Name is null or empty, since it can't be identified.
-                if (string.IsNullOrEmpty(key))
-                    continue;
-
-                if (this.SplitterDistances.ContainsKey(key))
+                foreach (SplitContainer splitContainer in GetSplitContainers(form.Controls))
                 {
-                    this.SplitterDistances[key] = splitContainer.SplitterDistance;
-                }
-                else
-                {
-                    this.SplitterDistances.Add(key, splitContainer.SplitterDistance);
+                    string key = splitContainer.Name;
+
+                    // Skip container if Name is null or empty, since it can't be identified.
+                    if (string.IsNullOrEmpty(key))
+                        continue;
+
+                    if (this.SplitterDistances.ContainsKey(key))
+                    {
+                        this.SplitterDistances[key] = splitContainer.SplitterDistance;
+                    }
+                    else
+                    {
+                        this.SplitterDistances.Add(key, splitContainer.SplitterDistance);
+                    }
                 }
             }
         }
