@@ -1,5 +1,4 @@
 ﻿using BSA_Browser.Classes;
-using BSA_Browser.Controls;
 using BSA_Browser.Dialogs;
 using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
@@ -267,7 +266,7 @@ namespace BSA_Browser
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            LimitedAction.RunAfter(1, 500, delegate { DoSearch(); });
+            LimitedAction.RunAfter(1, 500, this.DoSearch);
         }
 
         private void cbRegex_CheckedChanged(object sender, EventArgs e)
