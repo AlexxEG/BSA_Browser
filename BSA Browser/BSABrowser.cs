@@ -288,10 +288,16 @@ namespace BSA_Browser
             rootNode.AllFiles = new List<ArchiveEntry>(rootNode.Files);
             rootNode.AllFiles.Sort(_filesSorter);
 
+            // Keep track of directories with files directly under them
+            var directoriesWithFiles = new List<string>();
+
             // Build the whole node structure
             foreach (var lvi in rootNode.AllFiles)
             {
                 string path = Path.GetDirectoryName(lvi.FullPath);
+
+                if (!directoriesWithFiles.Contains(path))
+                    directoriesWithFiles.Add(path);
 
                 // Ignore files under root node and already processed nodes
                 if (path == string.Empty || nodes.ContainsKey(path))
@@ -323,7 +329,7 @@ namespace BSA_Browser
             foreach (var node in nodes)
             {
                 // Only add if there are sub nodes. Node without sub nodes already behaves the same
-                if (node.Value.Nodes.Count > 0)
+                if (node.Value.Nodes.Count > 0 && directoriesWithFiles.Contains(node.Key))
                     node.Value.Nodes.Insert(0, new TreeNode("<Files>") { Tag = node.Key });
             }
 
