@@ -42,7 +42,7 @@ namespace BSA_Browser.Dialogs
             }
 
             // Restore window state
-            Settings.Default.WindowStates[this.Name].RestoreForm(this, splitContainers: false);
+            Settings.Default.WindowStates[this.Name].RestoreForm(this, restoreSplitContainers: false);
 
             if (Application.OpenForms.Cast<Form>().Any(x => x != this && x.Name == this.Name))
             {
@@ -53,7 +53,7 @@ namespace BSA_Browser.Dialogs
         private void TextViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Save window state
-            Settings.Default.WindowStates[this.Name].SaveForm(this, splitContainers: false);
+            Settings.Default.WindowStates[this.Name].SaveForm(this, saveSplitContainers: false);
             Settings.Default.Save();
         }
 

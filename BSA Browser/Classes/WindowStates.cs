@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -20,12 +21,12 @@ namespace BSA_Browser.Classes
         /// <summary>
         /// Indexer
         /// </summary>
-        /// <param name="form">The <see cref="System.Windows.Forms.Form"/> to find.</param>
-        public WindowState this[string form]
+        /// <param name="formName">The <see cref="Form"/> to find.</param>
+        public WindowState this[string formName]
         {
             get
             {
-                return windowStates[form];
+                return windowStates[formName];
             }
         }
 
@@ -45,28 +46,15 @@ namespace BSA_Browser.Classes
         /// <param name="reader">The stream from which the object will be deserialized.</param>
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            bool booIsEmpty = reader.IsEmptyElement;
-
-            reader.ReadStartElement();
-
-            if (booIsEmpty)
-                return;
-
-            // Move to first WindowState start element, if any.
-            if (reader.MoveToContent() != XmlNodeType.Element)
-                return;
-
+            reader.ReadToFollowing("WindowState");
             do
             {
                 string strWindowName = reader["name"];
 
-                if (string.IsNullOrEmpty(strWindowName))
-                    continue;
-
-                XmlSerializer xsrWindowState = new XmlSerializer(typeof(WindowState));
+                var xsrWindowState = new XmlSerializer(typeof(WindowState));
                 windowStates.Add(strWindowName, (WindowState)xsrWindowState.Deserialize(reader));
             }
-            while (reader.Read() && reader.NodeType == XmlNodeType.Element);
+            while (reader.ReadToNextSibling("WindowState"));
         }
 
         /// <summary>
@@ -75,9 +63,9 @@ namespace BSA_Browser.Classes
         /// <param name="writer">The stream to which this object will be serialized.</param>
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            foreach (KeyValuePair<string, WindowState> kvpWindowState in windowStates)
+            foreach (var kvpWindowState in windowStates)
             {
-                XmlSerializer xsrLocationInfo = new XmlSerializer(typeof(WindowState));
+                var xsrLocationInfo = new XmlSerializer(typeof(WindowState));
                 xsrLocationInfo.Serialize(writer, kvpWindowState.Value);
             }
         }
@@ -85,21 +73,57 @@ namespace BSA_Browser.Classes
         #endregion
 
         /// <summary>
-        /// Adds a new <see cref="WindowState"/> to handle <see cref="System.Windows.Forms.Form"/>.
+        /// Adds a new <see cref="WindowState"/> to handle <see cref="Form"/>.
         /// </summary>
-        /// <param name="form">The <see cref="System.Windows.Forms.Form"/> name.</param>
-        public void Add(string form)
+        /// <param name="formName">The <see cref="Form"/> name.</param>
+        public void Add(string formName)
         {
-            this.windowStates.Add(form, new WindowState(form));
+            this.windowStates.Add(formName, new WindowState(formName));
         }
 
         /// <summary>
-        /// Determines whether an <see cref="WindowState"/> already exists for given <see cref="System.Windows.Forms.Form"/>.
+        /// Determines whether an <see cref="WindowState"/> already exists for given <see cref="Form"/>.
         /// </summary>
-        /// <param name="form">The <see cref="System.Windows.Forms.Form"/> name.</param>
-        public bool Contains(string form)
+        /// <param name="formName">The <see cref="Form"/> name.</param>
+        public bool Contains(string formName)
         {
-            return this.windowStates.ContainsKey(form);
+            return this.windowStates.ContainsKey(formName);
+        }
+
+        /// <summary>
+        /// Restores <see cref="Form"/>, <see cref="ColumnHeader"/> and <see cref="SplitContainer"/> states.
+        /// </summary>
+        /// <param name="form">The <see cref="Form"/> to restore.</param>
+        /// <param name="throwErrorIfNotFound">Throw <see cref="KeyNotFoundException"/> exception if <paramref name="form"/> is not found.</param>
+        /// <param name="restoreColumns">True to restore all <see cref="ColumnHeader"/> found in <paramref name="form"/>.</param>
+        /// <param name="restoreSplitContainers">True to restore all <see cref="SplitContainer"/> found in <paramref name="form"/>.</param>
+        public void Restore(Form form, bool throwErrorIfNotFound, bool restoreColumns = true, bool restoreSplitContainers = true)
+        {
+            if (this.Contains(form.Name))
+            {
+                this[form.Name].RestoreForm(form, restoreColumns, restoreSplitContainers);
+            }
+            else
+            {
+                if (throwErrorIfNotFound)
+                    throw new KeyNotFoundException($"WindowState for Form '{form.Name}' not found.");
+            }
+        }
+
+        /// <summary>
+        /// Saves <see cref="Form"/>, <see cref="ColumnHeader"/> and <see cref="SplitContainer"/> states.
+        /// </summary>
+        /// <param name="form">The <see cref="Form"/> to save.</param>
+        /// <param name="restoreColumns">True to save all <see cref="ColumnHeader"/> found in <paramref name="form"/>.</param>
+        /// <param name="restoreSplitContainers">True to save all <see cref="SplitContainer"/> found in <paramref name="form"/>.</param>
+        public void Save(Form form, bool saveColumns = true, bool saveSplitContainers = true)
+        {
+            if (!this.Contains(form.Name))
+            {
+                this.Add(form.Name);
+            }
+
+            this[form.Name].SaveForm(form, saveColumns, saveSplitContainers);
         }
     }
 }

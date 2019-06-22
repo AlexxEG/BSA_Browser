@@ -11,32 +11,32 @@ namespace BSA_Browser.Classes
     public class WindowState : IXmlSerializable
     {
         /// <summary>
-        /// Gets the <see cref="System.Windows.Forms.Form"/> name.
+        /// Gets the <see cref="Form"/> name.
         /// </summary>
         public string FormName { get; private set; }
         /// <summary>
-        /// Gets or sets the saved <see cref="System.Windows.Forms.Form"/> size.
+        /// Gets or sets the saved <see cref="Form"/> size.
         /// </summary>
         public Size Size { get; set; }
         /// <summary>
-        /// Gets or sets the saved <see cref="System.Windows.Forms.Form"/> location.
+        /// Gets or sets the saved <see cref="Form"/> location.
         /// </summary>
         public Point Location { get; set; }
         /// <summary>
-        /// Gets or sets the saved <see cref="System.Windows.Forms.Form"/> window state.
+        /// Gets or sets the saved <see cref="Form"/> window state.
         /// </summary>
         public FormWindowState FormWindowState { get; set; }
         /// <summary>
-        /// Gets list of saved <see cref="System.Windows.Forms.ColumnHeader"/> widths.
+        /// Gets list of saved <see cref="ColumnHeader"/> widths.
         /// </summary>
         public Dictionary<string, int> ColumnWidths { get; set; }
         /// <summary>
-        /// Gets list of saved <see cref="System.Windows.Forms.SplitContainer"/> splitter distances.
+        /// Gets list of saved <see cref="SplitContainer"/> splitter distances.
         /// </summary>
         public Dictionary<string, int> SplitterDistances { get; set; }
 
         /// <summary>
-        /// Used by IXmlSerializable, shouldn't be used.
+        /// Used by <see cref="IXmlSerializable"/>, shouldn't be used.
         /// </summary>
         private WindowState()
         {
@@ -61,58 +61,39 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
-        /// Makes sure the location is within the screen's working area.
+        /// Restores <see cref="Form"/>'s
+        /// size, location and window state. Also restores <see cref="ColumnHeader"/>
+        /// width and <see cref="SplitContainer"/> splitter distance.
         /// </summary>
-        /// <param name="form">The <see cref="System.Windows.Forms.Form"/> to restore.</param>
-        /// <param name="location">The location to check.</param>
-        public Point CheckLocation(Form form, Point location)
+        /// <param name="form">The <see cref="Form"/> to restore.</param>
+        public void RestoreForm(Form form, bool restoreColumns = true, bool restoreSplitContainers = true)
         {
-            Size screenSize = Screen.FromHandle(form.Handle).WorkingArea.Size;
+            if (!this.Location.IsEmpty)
+            {
+                form.Location = this.Location;
+            }
 
-            if (location.X > screenSize.Width)
-                location.X = screenSize.Width - form.Size.Width;
-
-            location.X = Math.Max(0, location.X);
-
-            if (location.Y > screenSize.Height)
-                location.Y = screenSize.Height - form.Size.Height;
-
-            location.Y = Math.Max(0, location.Y);
-
-            return location;
-        }
-
-        /// <summary>
-        /// Restores <see cref="System.Windows.Forms.Form"/>'s
-        /// size, location and window state. Also restores <see cref="System.Windows.Forms.ColumnHeader"/>
-        /// width and <see cref="System.Windows.Forms.SplitContainer"/> splitter distance.
-        /// </summary>
-        /// <param name="form">The <see cref="System.Windows.Forms.Form"/> to restore.</param>
-        public void RestoreForm(Form form, bool columns = true, bool splitContainers = true)
-        {
             if (!this.Size.IsEmpty)
             {
                 form.Size = this.Size;
             }
 
-            if (!this.Location.IsEmpty)
-            {
-                form.Location = CheckLocation(form, this.Location);
-            }
-
             form.WindowState = this.FormWindowState;
 
-            if (columns) RestoreColumns(form);
-            if (splitContainers) RestoreSplitContainers(form);
+            if (restoreColumns)
+                this.RestoreColumns(form);
+
+            if (restoreSplitContainers)
+                this.RestoreSplitContainers(form);
         }
 
         /// <summary>
-        /// Saves <see cref="System.Windows.Forms.Form"/>'s
-        /// size, location and window state. Also saves <see cref="System.Windows.Forms.ColumnHeader"/>
-        /// width and <see cref="System.Windows.Forms.SplitContainer"/> splitter distance.
+        /// Saves <see cref="Form"/>'s
+        /// size, location and window state. Also saves <see cref="ColumnHeader"/>
+        /// width and <see cref="SplitContainer"/> splitter distance.
         /// </summary>
-        /// <param name="form">The <see cref="System.Windows.Forms.Form"/> to save.</param>
-        public void SaveForm(Form form, bool columns = true, bool splitContainers = true)
+        /// <param name="form">The <see cref="Form"/> to save.</param>
+        public void SaveForm(Form form, bool saveColumns = true, bool saveSplitContainers = true)
         {
             if (!(form.WindowState == FormWindowState.Maximized))
             {
@@ -127,47 +108,11 @@ namespace BSA_Browser.Classes
 
             this.FormWindowState = form.WindowState;
 
-            if (columns)
-            {
-                foreach (ColumnHeader col in GetColumns(form.Controls))
-                {
-                    // Skip column if Name is null or empty, since it can't be identified.
-                    if (string.IsNullOrEmpty(col.ListView.Name))
-                        continue;
+            if (saveColumns)
+                this.SaveColumns(form);
 
-                    string key = string.Format("{0} - {1}", col.ListView.Name, col.DisplayIndex);
-
-                    if (this.ColumnWidths.ContainsKey(key))
-                    {
-                        this.ColumnWidths[key] = col.Width;
-                    }
-                    else
-                    {
-                        this.ColumnWidths.Add(key, col.Width);
-                    }
-                }
-            }
-
-            if (splitContainers)
-            {
-                foreach (SplitContainer splitContainer in GetSplitContainers(form.Controls))
-                {
-                    string key = splitContainer.Name;
-
-                    // Skip container if Name is null or empty, since it can't be identified.
-                    if (string.IsNullOrEmpty(key))
-                        continue;
-
-                    if (this.SplitterDistances.ContainsKey(key))
-                    {
-                        this.SplitterDistances[key] = splitContainer.SplitterDistance;
-                    }
-                    else
-                    {
-                        this.SplitterDistances.Add(key, splitContainer.SplitterDistance);
-                    }
-                }
-            }
+            if (saveSplitContainers)
+                this.SaveSplitContainers(form);
         }
 
         #region IXmlSerializable Members
@@ -186,17 +131,17 @@ namespace BSA_Browser.Classes
         /// <param name="reader">The stream from which the object will be deserialized.</param>
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            bool booIsEmpty = reader.IsEmptyElement;
-
-            if (booIsEmpty)
-                return;
-
             this.FormName = reader.GetAttribute("name");
             this.Location = new Point(int.Parse(reader.GetAttribute("x")), int.Parse(reader.GetAttribute("y")));
             this.Size = new Size(int.Parse(reader.GetAttribute("width")), int.Parse(reader.GetAttribute("height")));
             this.FormWindowState = (FormWindowState)Enum.Parse(typeof(FormWindowState), reader.GetAttribute("windowState"), true);
 
-            while (reader.Read() && reader.NodeType == XmlNodeType.Element)
+            if (reader.IsEmptyElement)
+                return;
+
+            var subtree = reader.ReadSubtree();
+
+            while (subtree.Read())
             {
                 switch (reader.LocalName)
                 {
@@ -233,7 +178,7 @@ namespace BSA_Browser.Classes
             writer.WriteAttributeString("height", this.Size.Height.ToString());
             writer.WriteAttributeString("windowState", this.FormWindowState.ToString());
 
-            foreach (KeyValuePair<string, int> pair in this.ColumnWidths)
+            foreach (var pair in this.ColumnWidths)
             {
                 writer.WriteStartElement("column");
                 writer.WriteAttributeString("name", pair.Key);
@@ -241,7 +186,7 @@ namespace BSA_Browser.Classes
                 writer.WriteEndElement();
             }
 
-            foreach (KeyValuePair<string, int> pair in this.SplitterDistances)
+            foreach (var pair in this.SplitterDistances)
             {
                 writer.WriteStartElement("splitter");
                 writer.WriteAttributeString("name", pair.Key);
@@ -253,14 +198,14 @@ namespace BSA_Browser.Classes
         #endregion
 
         /// <summary>
-        /// Returns all <see cref="System.Windows.Forms.ColumnHeader"/> in
-        /// <see cref="System.Windows.Forms.ListView"/> by looking through given
-        /// <see cref="System.Windows.Forms.Control.ControlCollection"/>.
+        /// Returns all <see cref="ColumnHeader"/> in
+        /// <see cref="ListView"/> by looking through given
+        /// <see cref="Control.ControlCollection"/>.
         /// </summary>
-        /// <param name="controls">The <see cref="System.Windows.Forms.Control.ControlCollection"/> to look through.</param>
+        /// <param name="controls">The <see cref="Control.ControlCollection"/> to look through.</param>
         private ICollection<ColumnHeader> GetColumns(Control.ControlCollection controls)
         {
-            List<ColumnHeader> columns = new List<ColumnHeader>();
+            var columns = new List<ColumnHeader>();
 
             foreach (Control c in controls)
             {
@@ -281,13 +226,13 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
-        /// Returns all <see cref="System.Windows.Forms.SplitContainer"/> in given
-        /// <see cref="System.Windows.Forms.Control.ControlCollection"/>.
+        /// Returns all <see cref="SplitContainer"/> in given
+        /// <see cref="Control.ControlCollection"/>.
         /// </summary>
-        /// <param name="controls">The <see cref="System.Windows.Forms.Control.ControlCollection"/> to look through.</param>
+        /// <param name="controls">The <see cref="Control.ControlCollection"/> to look through.</param>
         private ICollection<SplitContainer> GetSplitContainers(Control.ControlCollection controls)
         {
-            List<SplitContainer> columns = new List<SplitContainer>();
+            var columns = new List<SplitContainer>();
 
             foreach (Control c in controls)
             {
@@ -305,13 +250,13 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
-        /// Restores all <see cref="System.Windows.Forms.ColumnHeader.Width"/> in
-        /// <see cref="System.Windows.Forms.Form"/>.
+        /// Restores all <see cref="ColumnHeader.Width"/> in
+        /// <see cref="Form"/>.
         /// </summary>
-        /// <param name="form">The <see cref="System.Windows.Forms.Form"/> to restore columns from.</param>
+        /// <param name="form">The <see cref="Form"/> to restore columns from.</param>
         private void RestoreColumns(Form form)
         {
-            foreach (ColumnHeader col in GetColumns(form.Controls))
+            foreach (var col in GetColumns(form.Controls))
             {
                 string key = string.Format("{0} - {1}", col.ListView.Name, col.DisplayIndex);
 
@@ -323,19 +268,69 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
-        /// Restores all <see cref="System.Windows.Forms.SplitContainer.SplitterDistance"/> in
-        /// <see cref="System.Windows.Forms.Form"/>.
+        /// Restores all <see cref="SplitContainer.SplitterDistance"/> in
+        /// <see cref="Form"/>.
         /// </summary>
-        /// <param name="form">The <see cref="System.Windows.Forms.Form"/> to restore columns from.</param>
+        /// <param name="form">The <see cref="Form"/> to restore columns from.</param>
         private void RestoreSplitContainers(Form form)
         {
-            foreach (SplitContainer splitContainer in GetSplitContainers(form.Controls))
+            foreach (var splitContainer in GetSplitContainers(form.Controls))
             {
                 string key = splitContainer.Name;
 
                 if (this.SplitterDistances.ContainsKey(key))
                 {
                     splitContainer.SplitterDistance = this.SplitterDistances[key];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves any <see cref="ColumnHeader"/>'s width found in <see cref="Form"/>.
+        /// </summary>
+        /// <param name="form"></param>
+        private void SaveColumns(Form form)
+        {
+            foreach (var col in GetColumns(form.Controls))
+            {
+                // Skip column if Name is null or empty, since it can't be identified.
+                if (string.IsNullOrEmpty(col.ListView.Name))
+                    continue;
+
+                string key = string.Format("{0} - {1}", col.ListView.Name, col.DisplayIndex);
+
+                if (this.ColumnWidths.ContainsKey(key))
+                {
+                    this.ColumnWidths[key] = col.Width;
+                }
+                else
+                {
+                    this.ColumnWidths.Add(key, col.Width);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves any <see cref="SplitContainer"/>'s distance found in <see cref="Form"/>.
+        /// </summary>
+        /// <param name="form"></param>
+        private void SaveSplitContainers(Form form)
+        {
+            foreach (var splitContainer in GetSplitContainers(form.Controls))
+            {
+                string key = splitContainer.Name;
+
+                // Skip container if Name is null or empty, since it can't be identified.
+                if (string.IsNullOrEmpty(key))
+                    continue;
+
+                if (this.SplitterDistances.ContainsKey(key))
+                {
+                    this.SplitterDistances[key] = splitContainer.SplitterDistance;
+                }
+                else
+                {
+                    this.SplitterDistances.Add(key, splitContainer.SplitterDistance);
                 }
             }
         }
