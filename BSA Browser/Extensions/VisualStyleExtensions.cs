@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace BSA_Browser.Controls
+namespace BSA_Browser.Extensions
 {
     public static class VisualStyleExtensions
     {

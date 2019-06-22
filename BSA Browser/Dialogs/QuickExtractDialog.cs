@@ -1,6 +1,6 @@
-﻿using System;
+﻿using BSA_Browser.Classes;
+using System;
 using System.Windows.Forms;
-using BSA_Browser.Classes;
 
 namespace BSA_Browser.Dialogs
 {

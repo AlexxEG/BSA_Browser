@@ -1,10 +1,10 @@
-﻿using System;
+﻿using SharpBSABA2;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Text.RegularExpressions;
-using SharpBSABA2;
 
 namespace BSA_Browser_CLI
 {
@@ -166,7 +166,7 @@ namespace BSA_Browser_CLI
                 ExtractFiles(_arguments.Inputs.ToList(), _arguments.ATI, _arguments.Destination);
             }
 
-            exit:;
+        exit:;
 
 #if DEBUG
             Console.WriteLine("Press any key to exit...");

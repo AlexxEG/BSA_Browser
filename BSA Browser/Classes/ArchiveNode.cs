@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using SharpBSABA2;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using SharpBSABA2;
 
 namespace BSA_Browser.Classes
 {

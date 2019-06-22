@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ICSharpCode.SharpZipLib.Zip.Compression;
+using lz4;
+using SharpBSABA2.Enums;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using lz4;
-using SharpBSABA2.Enums;
 
 namespace SharpBSABA2
 {

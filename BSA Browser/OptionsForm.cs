@@ -1,6 +1,6 @@
 ﻿using BSA_Browser.Classes;
-using BSA_Browser.Controls;
 using BSA_Browser.Dialogs;
+using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
 using System;
 using System.Drawing;

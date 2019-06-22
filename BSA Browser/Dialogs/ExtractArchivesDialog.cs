@@ -1,9 +1,8 @@
-﻿using System;
+﻿using BSA_Browser.Extensions;
+using SharpBSABA2;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using BSA_Browser.Controls;
-using SharpBSABA2;
 
 namespace BSA_Browser.Dialogs
 {

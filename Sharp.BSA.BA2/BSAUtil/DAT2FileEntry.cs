@@ -1,5 +1,5 @@
-﻿using System.IO;
-using SharpBSABA2.Extensions;
+﻿using SharpBSABA2.Extensions;
+using System.IO;
 
 namespace SharpBSABA2.BSAUtil
 {

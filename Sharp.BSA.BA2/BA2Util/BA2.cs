@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SharpBSABA2.Enums;
+using SharpBSABA2.Extensions;
+using System;
 using System.IO;
 using System.Text;
-using SharpBSABA2.Enums;
-using SharpBSABA2.Extensions;
 
 namespace SharpBSABA2.BA2Util
 {
