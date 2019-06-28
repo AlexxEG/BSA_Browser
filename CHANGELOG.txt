@@ -1,3 +1,16 @@
+[1.9.9]
+
+- Added <Files> nodes to directories that only shows files directly under it, excluding sub directories
+- Added text previewer. Including syntax highlighting for .JSON and .XML
+- Added option to set encoding. Useful for non-english environments. Be careful with this
+- Added licenses for third party libraries (should have been there from the start)
+- Added .NIF to previewing in default program
+- Updated to .NET Framework 4.6
+- Updated copyright years
+- Improved window state saving
+- Fixed requiring specific VC++ versions
+- Fixed crash in CLI when trying to set console cursor when one isn't available. Thanks to Bioruebe
+
 [1.9.8]
 
 - More detailed report when files fail to extract
