@@ -44,13 +44,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-            this.label3 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.label5 = new System.Windows.Forms.Label();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -231,13 +230,12 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.linkLabel2);
-            this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(12);
             this.tabPage3.Size = new System.Drawing.Size(472, 166);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "K4os.Compression.LZ4";
+            this.tabPage3.Text = "IonKiwi.lz4.net";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // linkLabel2
@@ -249,19 +247,9 @@
             this.linkLabel2.Size = new System.Drawing.Size(40, 13);
             this.linkLabel2.TabIndex = 33;
             this.linkLabel2.TabStop = true;
-            this.linkLabel2.Tag = "https://github.com/MiloszKrajewski/K4os.Compression.LZ4";
+            this.linkLabel2.Tag = "https://github.com/IonKiwi/lz4.net";
             this.linkLabel2.Text = "GitHub";
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_LinkClicked);
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 141);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(278, 13);
-            this.label3.TabIndex = 32;
-            this.label3.Text = "K4os.Compression.LZ4 is licensed under the MIT License";
             // 
             // tabPage4
             // 
@@ -310,16 +298,6 @@
             this.tabPage5.Text = "TextEditor.Extended";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // label5
-            // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 141);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(357, 13);
-            this.label5.TabIndex = 32;
-            this.label5.Text = "ICSharpCode.TextEditor.Extended is licensed under the LGPL 2.1 License";
-            // 
             // linkLabel4
             // 
             this.linkLabel4.AutoSize = true;
@@ -332,6 +310,16 @@
             this.linkLabel4.Tag = "https://github.com/megakraken/ICSharpCode.TextEditor";
             this.linkLabel4.Text = "GitHub";
             this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel_LinkClicked);
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(15, 141);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(357, 13);
+            this.label5.TabIndex = 32;
+            this.label5.Text = "ICSharpCode.TextEditor.Extended is licensed under the LGPL 2.1 License";
             // 
             // AboutBox
             // 
@@ -388,7 +376,6 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.LinkLabel linkLabel2;
