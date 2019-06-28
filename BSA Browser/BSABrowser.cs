@@ -1343,12 +1343,6 @@ namespace BSA_Browser
 
                 switch (extension)
                 {
-                    /*case ".nif":
-                        MessageBox.Show("Viewing of nif's disabled as their format differs from oblivion");
-                        return;
-                    case ".tga":
-                        System.Diagnostics.Process.Start("obmm\\NifViewer.exe", fe.LowerName);
-                        break;*/
                     case ".dds":
                     case ".bmp":
                     case ".png":
@@ -1375,10 +1369,16 @@ namespace BSA_Browser
                     case ".json":
                         new TextViewer(fe).Show(this);
                         break;
+                    case ".nif":
+                        string dest = Program.CreateTempDirectory();
+
+                        fe.Extract(dest, false);
+                        Process.Start(Path.Combine(dest, fe.FileName));
+                        break;
                     default:
                         MessageBox.Show(this,
                             "Filetype not supported.\n\n" +
-                            "Currently only .txt, .xml, .lst, .psc, .json, .dds, .bmp, .png and .jpg files can be previewed.",
+                            "Currently only .txt, .xml, .lst, .psc, .json, .dds, .bmp, .png, .jpg and .nif files can be previewed.",
                             "Error");
                         break;
                 }
