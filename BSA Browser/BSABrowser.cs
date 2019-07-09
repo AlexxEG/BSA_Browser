@@ -1280,10 +1280,11 @@ namespace BSA_Browser
         /// </summary>
         private bool IsSupportedFile(string file)
         {
-            switch (Path.GetExtension(file))
+            switch (Path.GetExtension(file).ToLower())
             {
                 case ".bsa":
                 case ".ba2":
+                case ".dat":
                     return true;
             }
 
