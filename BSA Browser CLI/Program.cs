@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace BSA_Browser_CLI
@@ -34,6 +35,8 @@ namespace BSA_Browser_CLI
 
         public string Destination { get; private set; }
         public string FilterString { get; private set; }
+
+        public Encoding Encoding { get; private set; } = Encoding.UTF7;
 
         public IReadOnlyCollection<string> Inputs { get; private set; }
 
@@ -76,6 +79,10 @@ namespace BSA_Browser_CLI
                             this.Filtering = Filtering.Regex;
                             this.FilterString = args[++i];
                             break;
+                        case "/enc":
+                        case "/encoding":
+                            this.Encoding = this.ParseEncoding(args[++i]);
+                            break;
                         default:
                             throw new ArgumentException("Unrecognized argument: " + arg);
                     }
@@ -101,6 +108,21 @@ namespace BSA_Browser_CLI
             }
 
             this.Inputs = input.AsReadOnly();
+        }
+
+        private Encoding ParseEncoding(string encoding)
+        {
+            switch (encoding.ToLower())
+            {
+                case "utf7": return Encoding.UTF7;
+                case "system": return Encoding.Default;
+                case "ascii": return Encoding.ASCII;
+                case "unicode": return Encoding.Unicode;
+                case "utf32": return Encoding.UTF32;
+                case "utf8": return Encoding.UTF8;
+                default:
+                    throw new ArgumentException("Unrecognized encoding: " + encoding, nameof(encoding));
+            }
         }
     }
 
@@ -235,10 +257,10 @@ namespace BSA_Browser_CLI
                 {
                     case ".bsa":
                     case ".dat":
-                        archive = new SharpBSABA2.BSAUtil.BSA(file);
+                        archive = new SharpBSABA2.BSAUtil.BSA(file, _arguments.Encoding);
                         break;
                     case ".ba2":
-                        archive = new SharpBSABA2.BA2Util.BA2(file) { UseATIFourCC = ati };
+                        archive = new SharpBSABA2.BA2Util.BA2(file, _arguments.Encoding) { UseATIFourCC = ati };
                         break;
                     default:
                         throw new Exception($"Unrecognized archive file type ({extension}).");
@@ -315,7 +337,7 @@ namespace BSA_Browser_CLI
         {
             Console.WriteLine("Extract or list files inside .bsa and .ba2 archives.");
             Console.WriteLine();
-            Console.WriteLine("bsab [/e] [/l:[options]] [/ati] [/f [pattern]] [/regex [pattern]] [FILE] [DESTINATION]");
+            Console.WriteLine("bsab [/e] [/l:[options]] [/ati] [/f [pattern]] [/regex [pattern]] [/enc [encoding]] [FILE] [DESTINATION]");
             Console.WriteLine();
             Console.WriteLine("  /? \t\t Display this help page");
             Console.WriteLine("  /e \t\t Extract all files");
@@ -326,6 +348,13 @@ namespace BSA_Browser_CLI
             Console.WriteLine("  /f \t\t Simple filtering. Wildcard supported");
             Console.WriteLine("  /regex \t Regex filtering");
             Console.WriteLine("  /ati \t\t Use ATI header for textures");
+            Console.WriteLine("  /enc \t\t Set encoding to use");
+            Console.WriteLine("    encodings \t  utf7   \t (Default)");
+            Console.WriteLine("    \t   \t  system \t Use System's default encoding");
+            Console.WriteLine("    \t   \t  ascii");
+            Console.WriteLine("    \t   \t  unicode");
+            Console.WriteLine("    \t   \t  utf32");
+            Console.WriteLine("    \t   \t  utf8");
             Console.WriteLine();
         }
     }
