@@ -51,10 +51,10 @@ namespace SharpBSABA2.BA2Util
         /// </summary>
         private ArchiveTypes ConvertType(BA2HeaderType type)
         {
-            if (Enum.TryParse("BA2_" + this.Header.Type, out ArchiveTypes typeConverted))
+            if (Enum.TryParse("BA2_" + type, out ArchiveTypes typeConverted))
                 return typeConverted;
             else
-                throw new Exception($"Unable to convert value '{this.Header.Type}' to {nameof(ArchiveTypes)}");
+                throw new Exception($"Unable to convert value '{type}' to {nameof(ArchiveTypes)}");
         }
     }
 }
