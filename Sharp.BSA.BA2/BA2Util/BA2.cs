@@ -42,7 +42,14 @@ namespace SharpBSABA2.BA2Util
 
                 // Assign full names to each file
                 for (int i = 0; i < this.FileCount; i++)
-                    this.Files[i].FullPath = BinaryReader.ReadString(BinaryReader.ReadInt16());
+                    try
+                    {
+                        this.Files[i].FullPath = BinaryReader.ReadString(BinaryReader.ReadInt16());
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Error reading name table. Try different encoding.", ex);
+                    }
             }
         }
 
