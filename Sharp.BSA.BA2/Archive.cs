@@ -36,8 +36,6 @@ namespace SharpBSABA2
 
         public Archive(string filePath, Encoding encoding)
         {
-            Console.WriteLine(encoding.ToString());
-
             this.FullPath = filePath;
             this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), encoding);
 
