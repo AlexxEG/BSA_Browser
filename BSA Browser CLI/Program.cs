@@ -153,7 +153,22 @@ namespace BSA_Browser_CLI
 
         static void Main(string[] args)
         {
-            _arguments = new Arguments(args);
+            try
+            {
+                _arguments = new Arguments(args);
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("Input file not found: " + ex.FileName);
+                Environment.ExitCode = ERROR_FILE_NOT_FOUND;
+                goto exit;
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Environment.ExitCode = ERROR_PATH_NOT_FOUND;
+                goto exit;
+            }
 
             // Print help screen. Ignore other arguments
             if (args.Length == 0 || _arguments.Help)
