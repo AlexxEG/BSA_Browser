@@ -39,8 +39,6 @@ namespace SharpBSABA2.BA2Util
         {
             get
             {
-                // ToDo: Chunks are NOT always lined up after each other. Find another way to calculate this, or maybe just remove it completely.
-                // It's not really usefull information to the user. (I don't think at least)
                 return this.Chunks[0].offset;
             }
         }
