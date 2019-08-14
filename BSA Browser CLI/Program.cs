@@ -364,6 +364,7 @@ namespace BSA_Browser_CLI
         {
             archives.ForEach(archivePath =>
             {
+                // If there are multiple archives print archive filename to differentiate
                 if (archives.Count > 1)
                     Console.WriteLine($"{Path.GetFileName(archivePath)}:");
 
