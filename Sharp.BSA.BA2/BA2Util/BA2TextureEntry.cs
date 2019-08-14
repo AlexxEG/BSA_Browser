@@ -8,14 +8,14 @@ namespace SharpBSABA2.BA2Util
     {
         public List<BA2TextureChunk> Chunks { get; private set; } = new List<BA2TextureChunk>();
 
-        readonly byte unk8;
-        readonly byte numChunks;
-        readonly ushort chunkHdrLen;
-        readonly ushort height;
-        readonly ushort width;
-        readonly byte numMips;
+        public readonly byte unk8;
+        public readonly byte numChunks;
+        public readonly ushort chunkHdrLen;
+        public readonly ushort height;
+        public readonly ushort width;
+        public readonly byte numMips;
         public readonly byte format;
-        readonly ushort unk16;
+        public readonly ushort unk16;
 
         public override bool Compressed
         {
