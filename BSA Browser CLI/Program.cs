@@ -195,6 +195,7 @@ namespace BSA_Browser_CLI
                 }
             }
 
+            // Default to list if no other options have been given
             if (_arguments.List || (!_arguments.List && !_arguments.Extract && !_arguments.Help))
             {
                 try
