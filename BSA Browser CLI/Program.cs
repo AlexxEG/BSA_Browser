@@ -135,7 +135,7 @@ namespace BSA_Browser_CLI
                 case "utf32": return Encoding.UTF32;
                 case "utf8": return Encoding.UTF8;
                 default:
-                    throw new ArgumentException("Unrecognized encoding: " + encoding, nameof(encoding));
+                    throw new ArgumentException("Unrecognized encoding: " + encoding);
             }
         }
     }
