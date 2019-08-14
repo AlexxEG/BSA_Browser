@@ -75,7 +75,7 @@ namespace BSA_Browser_CLI
                         case "-l":
                             this.List = true;
 
-                            char[] options = arg.Split(':').Last().ToLower().ToCharArray();
+                            char[] options = arg.Split(':', '=').Last().ToLower().ToCharArray();
 
                             if (options.Contains('a')) this.ListOptions = ListOptions.Archive;
                             if (options.Contains('f')) this.ListOptions = (this.ListOptions | ListOptions.FullPath);
