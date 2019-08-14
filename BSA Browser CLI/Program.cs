@@ -224,13 +224,6 @@ namespace BSA_Browser_CLI
 
             if (_arguments.Extract)
             {
-                if (string.IsNullOrEmpty(_arguments.Destination) || !Directory.Exists(_arguments.Destination))
-                {
-                    Console.WriteLine($"Destination \'{_arguments.Destination}\' not found!");
-                    Environment.ExitCode = ERROR_PATH_NOT_FOUND;
-                    goto exit;
-                }
-
                 try
                 {
                     ExtractFiles(_arguments.Inputs.ToList(), _arguments.ATI, _arguments.Destination);
