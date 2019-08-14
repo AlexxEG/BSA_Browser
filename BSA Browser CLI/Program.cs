@@ -153,22 +153,9 @@ namespace BSA_Browser_CLI
 
         static void Main(string[] args)
         {
-            try
-            {
-                _arguments = new Arguments(args);
-            }
-            catch (FileNotFoundException ex)
-            {
-                Console.WriteLine("Input file not found: " + ex.FileName);
-                Environment.ExitCode = ERROR_FILE_NOT_FOUND;
+            // Parse arguments. Go to exit if null, errors has occurred and been handled
+            if ((_arguments = ParseArguments(args)) == null)
                 goto exit;
-            }
-            catch (DirectoryNotFoundException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Environment.ExitCode = ERROR_PATH_NOT_FOUND;
-                goto exit;
-            }
 
             // Print help screen. Ignore other arguments
             if (args.Length == 0 || _arguments.Help)
@@ -345,6 +332,31 @@ namespace BSA_Browser_CLI
             }
 
             return true;
+        }
+
+        static Arguments ParseArguments(params string[] args)
+        {
+            try
+            {
+                return new Arguments(args);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Environment.ExitCode = ERROR_BAD_ARGUMENTS;
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("Input file not found: " + ex.FileName);
+                Environment.ExitCode = ERROR_FILE_NOT_FOUND;
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Environment.ExitCode = ERROR_PATH_NOT_FOUND;
+            }
+
+            return null;
         }
 
         static void PrintFileList(List<string> archives, ListOptions options)
