@@ -354,7 +354,7 @@ namespace BSA_Browser_CLI
             return true;
         }
 
-        private static void PrintFileList(List<string> archives, ListOptions options)
+        static void PrintFileList(List<string> archives, ListOptions options)
         {
             archives.ForEach(archivePath =>
             {
