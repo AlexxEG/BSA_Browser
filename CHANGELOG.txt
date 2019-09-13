@@ -1,3 +1,14 @@
+[1.10.0]
+
+- Added specific error for when reading name table fails, which will inform you to try another encoding
+- Fixed not being able to drag open archives with upper casing extension
+- CLI: Added option to set encoding
+- CLI: Added -i option to ignore errors
+- CLI: Allow hyphens and slashes for options
+- CLI: Allow colon and equals sign for sub-options (-l for example)
+- CLI: Make use of exit codes
+- CLI: Removed encoding being printed to console
+
 [1.9.9]
 
 - Added <Files> nodes to directories that only shows files directly under it, excluding sub directories
