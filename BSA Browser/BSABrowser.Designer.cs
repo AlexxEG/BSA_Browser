@@ -70,6 +70,7 @@
             this.helpMenuItem = new System.Windows.Forms.MenuItem();
             this.checkForUpdateMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.githubMenuItem = new System.Windows.Forms.MenuItem();
             this.fallout4NexusPageMenuItem = new System.Windows.Forms.MenuItem();
             this.skyrimSENexusPageMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem13 = new System.Windows.Forms.MenuItem();
@@ -94,7 +95,6 @@
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bwExtractFiles = new System.ComponentModel.BackgroundWorker();
-            this.githubMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -111,6 +111,7 @@
             this.lvFiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvFiles.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lvFiles.FullRowSelect = true;
+            this.lvFiles.HideSelection = false;
             this.lvFiles.LabelWrap = false;
             this.lvFiles.Location = new System.Drawing.Point(0, 0);
             this.lvFiles.Name = "lvFiles";
@@ -450,6 +451,12 @@
             this.menuItem3.Index = 1;
             this.menuItem3.Text = "-";
             // 
+            // githubMenuItem
+            // 
+            this.githubMenuItem.Index = 2;
+            this.githubMenuItem.Text = "GitHub";
+            this.githubMenuItem.Click += new System.EventHandler(this.githubMenuItem_Click);
+            // 
             // fallout4NexusPageMenuItem
             // 
             this.fallout4NexusPageMenuItem.Index = 3;
@@ -603,12 +610,6 @@
             this.bwExtractFiles.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bw_DoWork);
             this.bwExtractFiles.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_ProgressChanged);
             this.bwExtractFiles.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bw_RunWorkerCompleted);
-            // 
-            // githubMenuItem
-            // 
-            this.githubMenuItem.Index = 2;
-            this.githubMenuItem.Text = "GitHub";
-            this.githubMenuItem.Click += new System.EventHandler(this.githubMenuItem_Click);
             // 
             // BSABrowser
             // 
