@@ -27,6 +27,11 @@ namespace BSA_Browser
         FileType
     }
 
+    public enum SystemErrorCodes : int
+    {
+        ERROR_CANCELLED = 0x4C7
+    }
+
     public partial class BSABrowser : Form
     {
         private const string UpdateMarker = "(!) ";
@@ -1337,56 +1342,62 @@ namespace BSA_Browser
             if (lvFiles.SelectedIndices.Count == 0)
                 return;
 
-            if (lvFiles.SelectedIndices.Count == 1)
-            {
-                var fe = _files[lvFiles.SelectedIndices[0]];
-                var extension = Path.GetExtension(fe.LowerPath);
-
-                switch (extension)
-                {
-                    case ".dds":
-                    case ".bmp":
-                    case ".png":
-                    case ".jpg":
-                        if (fe is SharpBSABA2.BA2Util.BA2GNFEntry)
-                        {
-                            MessageBox.Show(this, "Can't preview GNF .dds files.");
-                            return;
-                        }
-
-                        try
-                        {
-                            DDSViewer.ShowDialog(this, fe.FileName, fe.GetDataStream());
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(this, ex.Message);
-                        }
-                        break;
-                    case ".txt":
-                    case ".xml":
-                    case ".lst":
-                    case ".psc":
-                    case ".json":
-                        new TextViewer(fe).Show(this);
-                        break;
-                    case ".nif":
-                        string dest = Program.CreateTempDirectory();
-
-                        fe.Extract(dest, false);
-                        Process.Start(Path.Combine(dest, fe.FileName));
-                        break;
-                    default:
-                        MessageBox.Show(this,
-                            "Filetype not supported.\n\n" +
-                            "Currently only .txt, .xml, .lst, .psc, .json, .dds, .bmp, .png, .jpg and .nif files can be previewed.",
-                            "Error");
-                        break;
-                }
-            }
-            else
+            if (lvFiles.SelectedIndices.Count > 1)
             {
                 MessageBox.Show(this, "Can only preview one file at a time", "Error");
+                return;
+            }
+
+            var fe = _files[lvFiles.SelectedIndices[0]];
+            var extension = Path.GetExtension(fe.LowerPath);
+
+            switch (extension)
+            {
+                case ".dds":
+                case ".bmp":
+                case ".png":
+                case ".jpg":
+                    if (fe is SharpBSABA2.BA2Util.BA2GNFEntry)
+                    {
+                        MessageBox.Show(this, "Can't preview GNF .dds files.");
+                        return;
+                    }
+
+                    try
+                    {
+                        DDSViewer.ShowDialog(this, fe.FileName, fe.GetDataStream());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(this, ex.Message);
+                    }
+                    break;
+                case ".txt":
+                case ".xml":
+                case ".lst":
+                case ".psc":
+                case ".json":
+                    new TextViewer(fe).Show(this);
+                    break;
+                default:
+                    string dest = Program.CreateTempDirectory();
+                    fe.Extract(dest, false);
+
+                    try
+                    {
+                        Process.Start(new ProcessStartInfo(Path.Combine(dest, fe.FileName))
+                        {
+                            ErrorDialog = true
+                        });
+                    }
+                    catch (Win32Exception ex)
+                    {
+                        if (ex.NativeErrorCode != (int)SystemErrorCodes.ERROR_CANCELLED)
+                        {
+                            MessageBox.Show(this, ex.Message, "Preview Error");
+                        }
+                    }
+                    break;
             }
         }
 
