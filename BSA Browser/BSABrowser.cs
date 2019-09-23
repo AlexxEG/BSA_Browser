@@ -305,7 +305,7 @@ namespace BSA_Browser
                     directoriesWithFiles.Add(path);
 
                 // Ignore files under root node and already processed nodes
-                if (path == string.Empty || nodes.ContainsKey(path))
+                if (path == string.Empty || nodes.ContainsKey(path.ToLower()))
                     continue;
 
                 string[] dirs = path.Split('\\');
@@ -314,7 +314,7 @@ namespace BSA_Browser
                 {
                     string newpath = string.Join("\\", dirs, 0, i + 1);
 
-                    if (!nodes.ContainsKey(newpath))
+                    if (!nodes.ContainsKey(newpath.ToLower()))
                     {
                         var tn = new TreeNode(dirs[i]);
                         tn.Tag = newpath;
@@ -322,9 +322,9 @@ namespace BSA_Browser
                         if (i == 0) // Root node
                             e.Node.Nodes.Add(tn);
                         else // Sub nodes
-                            nodes[path].Nodes.Add(tn);
+                            nodes[path.ToLower()].Nodes.Add(tn);
 
-                        nodes.Add(newpath, tn);
+                        nodes.Add(newpath.ToLower(), tn);
                     }
                     path = newpath;
                 }
