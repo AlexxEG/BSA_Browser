@@ -154,11 +154,9 @@ namespace BSA_Browser
             Settings.Default.EncodingCodePage = (cbEncodings.SelectedItem as Encoding).CodePage;
 
             Settings.Default.QuickExtractPaths.Clear();
+            Settings.Default.QuickExtractPaths.AddRange(lvQuickExtract.Items
+                .Cast<ListViewItem>().Select(x => (QuickExtractPath)x.Tag));
 
-            foreach (ListViewItem item in lvQuickExtract.Items)
-            {
-                Settings.Default.QuickExtractPaths.Add((QuickExtractPath)item.Tag);
-            }
         }
     }
 }
