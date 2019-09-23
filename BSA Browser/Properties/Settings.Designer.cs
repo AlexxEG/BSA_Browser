@@ -12,7 +12,7 @@ namespace BSA_Browser.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.2.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -178,13 +178,36 @@ namespace BSA_Browser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("65000")]
         public int EncodingCodePage {
             get {
                 return ((int)(this["EncodingCodePage"]));
             }
             set {
                 this["EncodingCodePage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>.dds</string>
+  <string>.bmp</string>
+  <string>.png</string>
+  <string>.jpg</string>
+  <string>.txt</string>
+  <string>.xml</string>
+  <string>.lst</string>
+  <string>.psc</string>
+  <string>.json</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection UseBuiltInPreview {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["UseBuiltInPreview"]));
+            }
+            set {
+                this["UseBuiltInPreview"] = value;
             }
         }
     }

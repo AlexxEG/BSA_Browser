@@ -4,6 +4,7 @@ using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -44,6 +45,12 @@ namespace BSA_Browser
             }
 
             lvQuickExtract.EnableVisualStyles();
+            lvPreviewing.EnableVisualStyles();
+
+            foreach (ListViewItem item in lvPreviewing.Items)
+            {
+                item.Checked = Settings.Default.UseBuiltInPreview.Contains(item.Text);
+            }
         }
 
         public OptionsForm(int tabPage)
@@ -157,6 +164,9 @@ namespace BSA_Browser
             Settings.Default.QuickExtractPaths.AddRange(lvQuickExtract.Items
                 .Cast<ListViewItem>().Select(x => (QuickExtractPath)x.Tag));
 
+            Settings.Default.UseBuiltInPreview.Clear();
+            Settings.Default.UseBuiltInPreview.AddRange(lvPreviewing.Items
+                .Cast<ListViewItem>().Where(x => x.Checked).Select(x => x.Text).ToArray());
         }
     }
 }

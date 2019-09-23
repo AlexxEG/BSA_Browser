@@ -1357,6 +1357,9 @@ namespace BSA_Browser
                 case ".bmp":
                 case ".png":
                 case ".jpg":
+                    if (!Settings.Default.UseBuiltInPreview.Contains(extension))
+                        goto default;
+
                     if (fe is SharpBSABA2.BA2Util.BA2GNFEntry)
                     {
                         MessageBox.Show(this, "Can't preview GNF .dds files.");
@@ -1377,6 +1380,9 @@ namespace BSA_Browser
                 case ".lst":
                 case ".psc":
                 case ".json":
+                    if (!Settings.Default.UseBuiltInPreview.Contains(extension))
+                        goto default;
+
                     new TextViewer(fe).Show(this);
                     break;
                 default:
