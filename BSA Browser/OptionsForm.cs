@@ -67,7 +67,7 @@ namespace BSA_Browser
             }
 
             // Restore only columns.
-            Settings.Default.WindowStates[this.Name].RestoreForm(this);
+            Settings.Default.WindowStates[this.Name].RestoreForm(this, true, false);
 
             // Center form to Owner
             if (this.Owner != null)

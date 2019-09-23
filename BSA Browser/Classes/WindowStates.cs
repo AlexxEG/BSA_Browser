@@ -97,11 +97,15 @@ namespace BSA_Browser.Classes
         /// <param name="throwErrorIfNotFound">Throw <see cref="KeyNotFoundException"/> exception if <paramref name="form"/> is not found.</param>
         /// <param name="restoreColumns">True to restore all <see cref="ColumnHeader"/> found in <paramref name="form"/>.</param>
         /// <param name="restoreSplitContainers">True to restore all <see cref="SplitContainer"/> found in <paramref name="form"/>.</param>
-        public void Restore(Form form, bool throwErrorIfNotFound, bool restoreColumns = true, bool restoreSplitContainers = true)
+        public void Restore(Form form, bool throwErrorIfNotFound, bool location = true, bool size = true, bool restoreColumns = true, bool restoreSplitContainers = true)
         {
             if (this.Contains(form.Name))
             {
-                this[form.Name].RestoreForm(form, restoreColumns, restoreSplitContainers);
+                this[form.Name].RestoreForm(form,
+                    location: location,
+                    size: size,
+                    restoreColumns: restoreColumns,
+                    restoreSplitContainers: restoreSplitContainers);
             }
             else
             {

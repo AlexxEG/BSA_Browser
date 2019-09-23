@@ -66,14 +66,14 @@ namespace BSA_Browser.Classes
         /// width and <see cref="SplitContainer"/> splitter distance.
         /// </summary>
         /// <param name="form">The <see cref="Form"/> to restore.</param>
-        public void RestoreForm(Form form, bool restoreColumns = true, bool restoreSplitContainers = true)
+        public void RestoreForm(Form form, bool location = true, bool size = true, bool restoreColumns = true, bool restoreSplitContainers = true)
         {
-            if (!this.Location.IsEmpty)
+            if (location && !this.Location.IsEmpty)
             {
                 form.Location = this.Location;
             }
 
-            if (!this.Size.IsEmpty)
+            if (size && !this.Size.IsEmpty)
             {
                 form.Size = this.Size;
             }
