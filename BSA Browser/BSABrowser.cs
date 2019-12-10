@@ -1209,8 +1209,7 @@ namespace BSA_Browser
             var arguments = e.Argument as ExtractFilesArguments;
             var extracted = new Dictionary<string, int>();
             var exceptions = new List<Tuple<string, Exception>>();
-
-            int progress = 0, prevProgress = 0, count = 0;
+            int prevProgress = 0, count = 0;
 
             DateTime _startExtraction = DateTime.Now;
 
@@ -1255,7 +1254,7 @@ namespace BSA_Browser
                 }
 
                 count++;
-                progress = (int)Math.Round(((double)count / arguments.Files.Length) * 100);
+                int progress = (int)Math.Round(((double)count / arguments.Files.Length) * 100);
                 if (progress > prevProgress)
                 {
                     prevProgress = progress;
