@@ -64,7 +64,7 @@
             this.copyFolderPathMenuItem = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem = new System.Windows.Forms.MenuItem();
             this.selectAllMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.toolsMenuItem = new System.Windows.Forms.MenuItem();
             this.compareArchivesMenuItem = new System.Windows.Forms.MenuItem();
             this.openFoldersMenuItem = new System.Windows.Forms.MenuItem();
             this.helpMenuItem = new System.Windows.Forms.MenuItem();
@@ -266,7 +266,7 @@
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.fileMenuItem,
             this.editMenuItem,
-            this.menuItem2,
+            this.toolsMenuItem,
             this.openFoldersMenuItem,
             this.helpMenuItem});
             // 
@@ -408,12 +408,12 @@
             this.selectAllMenuItem.Text = "Select All";
             this.selectAllMenuItem.Click += new System.EventHandler(this.selectAllMenuItem_Click);
             // 
-            // menuItem2
+            // toolsMenuItem
             // 
-            this.menuItem2.Index = 2;
-            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.toolsMenuItem.Index = 2;
+            this.toolsMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.compareArchivesMenuItem});
-            this.menuItem2.Text = "Tools";
+            this.toolsMenuItem.Text = "Tools";
             // 
             // compareArchivesMenuItem
             // 
@@ -701,7 +701,7 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.MenuItem menuItem4;
         private System.Windows.Forms.MenuItem extractArchivesMenuItem;
-        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem toolsMenuItem;
         private System.Windows.Forms.MenuItem compareArchivesMenuItem;
         private System.ComponentModel.BackgroundWorker bwExtractFiles;
         private System.Windows.Forms.MenuItem fallout4NexusPageMenuItem;

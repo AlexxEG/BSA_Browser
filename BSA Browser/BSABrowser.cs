@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -102,7 +103,55 @@ namespace BSA_Browser
 
             // Set TextBox cue
             txtSearch.SetCue("Search term...");
+
+#if DEBUG
+            this.SetupDebugTools();
+#endif
         }
+
+#if DEBUG
+        #region Debug Tools
+
+        private Stopwatch _debugStopwatch = new Stopwatch();
+
+        private void SetupDebugTools()
+        {
+            toolsMenuItem.MenuItems.Add("-");
+            toolsMenuItem.MenuItems.Add("Average extraction speed of selected item", ExtractionSpeedAverage_Click);
+        }
+
+        private void ExtractionSpeedAverage_Click(object sender, EventArgs e)
+        {
+            if (lvFiles.SelectedIndices.Count == 0)
+                return;
+
+            if (lvFiles.SelectedIndices.Count > 1)
+            {
+                MessageBox.Show(this, "Can only test one file at a time", "Error");
+                return;
+            }
+
+            var fe = _files[lvFiles.SelectedIndices[0]];
+            Stopwatch sw = new Stopwatch();
+            int count = 0;
+            List<long> results = new List<long>();
+
+            while (count < 1000)
+            {
+                sw.Restart();
+                using (var ms = fe.GetDataStream())
+                {
+                    sw.Stop();
+                    results.Add(sw.ElapsedMilliseconds);
+                    count++;
+                }
+            }
+
+            Console.WriteLine($"Average: {results.Sum() / results.Count}ms");
+        }
+
+        #endregion
+#endif
 
         public BSABrowser(string[] args)
             : this()
@@ -1079,6 +1128,11 @@ namespace BSA_Browser
                 };
                 progressForm.Canceled += delegate { bwExtractFiles.CancelAsync(); };
 
+#if DEBUG
+                // Track extraction speed
+                _debugStopwatch.Restart();
+#endif
+
                 bwExtractFiles.RunWorkerAsync(new ExtractFilesArguments(useFolderPath, folder, files));
 
                 progressForm.ShowDialog(this);
@@ -1248,6 +1302,11 @@ namespace BSA_Browser
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+#if DEBUG
+            _debugStopwatch.Stop();
+            Console.WriteLine($"Extraction complete. {_debugStopwatch.ElapsedMilliseconds}ms elapsed");
+#endif
+
             _count = _filesTotal = 0;
             _estimate = TimeSpan.MinValue;
 
