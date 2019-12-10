@@ -137,8 +137,11 @@ namespace BSA_Browser
 
             OpenArchiveDialog.InitialDirectory = Settings.Default.OpenArchiveDialog;
 
-            // Show ! in main menu if update is available
-            this.ShowUpdateNotification();
+            if (Settings.Default.CheckForUpdates)
+            {
+                // Show ! in main menu if update is available
+                this.ShowUpdateNotification();
+            }
         }
 
         private void BSABrowser_FormClosing(object sender, FormClosingEventArgs e)

@@ -27,6 +27,7 @@ namespace BSA_Browser
             InitializeComponent();
 
             nudMaxRecentFiles.Value = Settings.Default.RecentFiles_MaxFiles;
+            chbCheckForUpdates.Checked = Settings.Default.CheckForUpdates;
             chbSortBSADirectories.Checked = Settings.Default.SortArchiveDirectories;
             chbRetrieveRealSize.Checked = Settings.Default.RetrieveRealSize;
             chbUseATIFourCC.Checked = Settings.Default.UseATIFourCC;
@@ -155,6 +156,7 @@ namespace BSA_Browser
         public void SaveChanges()
         {
             Settings.Default.RecentFiles_MaxFiles = (int)nudMaxRecentFiles.Value;
+            Settings.Default.CheckForUpdates = chbCheckForUpdates.Checked;
             Settings.Default.SortArchiveDirectories = chbSortBSADirectories.Checked;
             Settings.Default.RetrieveRealSize = chbRetrieveRealSize.Checked;
             Settings.Default.UseATIFourCC = chbUseATIFourCC.Checked;

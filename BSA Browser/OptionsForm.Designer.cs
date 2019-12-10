@@ -53,13 +53,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chbSortBSADirectories = new System.Windows.Forms.CheckBox();
+            this.chbRetrieveRealSize = new System.Windows.Forms.CheckBox();
             this.cbEncodings = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.chbCheckForUpdates = new System.Windows.Forms.CheckBox();
             this.nudMaxRecentFiles = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.chbUseATIFourCC = new System.Windows.Forms.CheckBox();
-            this.chbRetrieveRealSize = new System.Windows.Forms.CheckBox();
-            this.chbSortBSADirectories = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -68,6 +70,7 @@
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxRecentFiles)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -211,39 +214,82 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.cbEncodings);
-            this.tabPage1.Controls.Add(this.label3);
+            this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.chbCheckForUpdates);
             this.tabPage1.Controls.Add(this.nudMaxRecentFiles);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.chbUseATIFourCC);
-            this.tabPage1.Controls.Add(this.chbRetrieveRealSize);
-            this.tabPage1.Controls.Add(this.chbSortBSADirectories);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(10);
-            this.tabPage1.Size = new System.Drawing.Size(552, 282);
+            this.tabPage1.Size = new System.Drawing.Size(612, 322);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.chbSortBSADirectories);
+            this.groupBox2.Controls.Add(this.chbRetrieveRealSize);
+            this.groupBox2.Controls.Add(this.cbEncodings);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Location = new System.Drawing.Point(13, 74);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(401, 112);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Archive Options";
+            // 
+            // chbSortBSADirectories
+            // 
+            this.chbSortBSADirectories.AutoSize = true;
+            this.chbSortBSADirectories.Location = new System.Drawing.Point(6, 19);
+            this.chbSortBSADirectories.Name = "chbSortBSADirectories";
+            this.chbSortBSADirectories.Size = new System.Drawing.Size(306, 17);
+            this.chbSortBSADirectories.TabIndex = 0;
+            this.chbSortBSADirectories.Text = "Sort directories in archives (Reopen archives to take effect)";
+            this.chbSortBSADirectories.UseVisualStyleBackColor = true;
+            // 
+            // chbRetrieveRealSize
+            // 
+            this.chbRetrieveRealSize.AutoSize = true;
+            this.chbRetrieveRealSize.Location = new System.Drawing.Point(6, 42);
+            this.chbRetrieveRealSize.Name = "chbRetrieveRealSize";
+            this.chbRetrieveRealSize.Size = new System.Drawing.Size(363, 17);
+            this.chbRetrieveRealSize.TabIndex = 1;
+            this.chbRetrieveRealSize.Text = "Always use real file size, even if slower (Reopen archives to take effect)";
+            this.chbRetrieveRealSize.UseVisualStyleBackColor = true;
             // 
             // cbEncodings
             // 
             this.cbEncodings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbEncodings.FormattingEnabled = true;
-            this.cbEncodings.Location = new System.Drawing.Point(122, 248);
+            this.cbEncodings.Location = new System.Drawing.Point(115, 68);
+            this.cbEncodings.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.cbEncodings.Name = "cbEncodings";
-            this.cbEncodings.Size = new System.Drawing.Size(417, 21);
+            this.cbEncodings.Size = new System.Drawing.Size(210, 21);
             this.cbEncodings.TabIndex = 6;
             this.cbEncodings.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.cbEncodings_Format);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 251);
+            this.label3.Location = new System.Drawing.Point(6, 71);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(103, 13);
             this.label3.TabIndex = 5;
             this.label3.Text = "(Caution!) Encoding:";
+            // 
+            // chbCheckForUpdates
+            // 
+            this.chbCheckForUpdates.AutoSize = true;
+            this.chbCheckForUpdates.Location = new System.Drawing.Point(13, 39);
+            this.chbCheckForUpdates.Name = "chbCheckForUpdates";
+            this.chbCheckForUpdates.Size = new System.Drawing.Size(177, 17);
+            this.chbCheckForUpdates.TabIndex = 7;
+            this.chbCheckForUpdates.Text = "Check for updates automatically";
+            this.chbCheckForUpdates.UseVisualStyleBackColor = true;
             // 
             // nudMaxRecentFiles
             // 
@@ -276,7 +322,7 @@
             // chbUseATIFourCC
             // 
             this.chbUseATIFourCC.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.chbUseATIFourCC.Location = new System.Drawing.Point(13, 85);
+            this.chbUseATIFourCC.Location = new System.Drawing.Point(13, 195);
             this.chbUseATIFourCC.Name = "chbUseATIFourCC";
             this.chbUseATIFourCC.Size = new System.Drawing.Size(370, 84);
             this.chbUseATIFourCC.TabIndex = 2;
@@ -285,33 +331,13 @@
     "hange.";
             this.chbUseATIFourCC.UseVisualStyleBackColor = true;
             // 
-            // chbRetrieveRealSize
-            // 
-            this.chbRetrieveRealSize.AutoSize = true;
-            this.chbRetrieveRealSize.Location = new System.Drawing.Point(13, 62);
-            this.chbRetrieveRealSize.Name = "chbRetrieveRealSize";
-            this.chbRetrieveRealSize.Size = new System.Drawing.Size(363, 17);
-            this.chbRetrieveRealSize.TabIndex = 1;
-            this.chbRetrieveRealSize.Text = "Always use real file size, even if slower (Reopen archives to take effect)";
-            this.chbRetrieveRealSize.UseVisualStyleBackColor = true;
-            // 
-            // chbSortBSADirectories
-            // 
-            this.chbSortBSADirectories.AutoSize = true;
-            this.chbSortBSADirectories.Location = new System.Drawing.Point(13, 39);
-            this.chbSortBSADirectories.Name = "chbSortBSADirectories";
-            this.chbSortBSADirectories.Size = new System.Drawing.Size(306, 17);
-            this.chbSortBSADirectories.TabIndex = 0;
-            this.chbSortBSADirectories.Text = "Sort directories in archives (Reopen archives to take effect)";
-            this.chbSortBSADirectories.UseVisualStyleBackColor = true;
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.groupBox5);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(552, 282);
+            this.tabPage2.Size = new System.Drawing.Size(612, 322);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Quick Extract";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -420,6 +446,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxRecentFiles)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
@@ -455,5 +483,7 @@
         private System.Windows.Forms.ListView lvPreviewing;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox chbCheckForUpdates;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
