@@ -3,6 +3,7 @@ using BSA_Browser.Dialogs;
 using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
 using SharpBSABA2;
+using SharpBSABA2.BA2Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -116,8 +117,11 @@ namespace BSA_Browser
 
         private void SetupDebugTools()
         {
+            lvFiles.Columns.Add("Extra", 200);
+
             toolsMenuItem.MenuItems.Add("-");
             toolsMenuItem.MenuItems.Add("Average extraction speed of selected item", ExtractionSpeedAverage_Click);
+            toolsMenuItem.MenuItems.Add("Check if all textures formats are supported", CheckTextureFormats_Click);
         }
 
         private void ExtractionSpeedAverage_Click(object sender, EventArgs e)
@@ -148,6 +152,26 @@ namespace BSA_Browser
             }
 
             Console.WriteLine($"Average: {results.Sum() / results.Count}ms");
+        }
+
+        private void CheckTextureFormats_Click(object sender, EventArgs e)
+        {
+            int checkedTextures = 0;
+            int unsupported = 0;
+            var sw = new Stopwatch();
+
+            sw.Start();
+
+            foreach (var fe in _files.Where(x => x is BA2TextureEntry))
+            {
+                checkedTextures++;
+
+                if (!(fe as BA2TextureEntry).IsFormatSupported())
+                    unsupported++;
+            }
+
+            sw.Stop();
+            MessageBox.Show($"Checked {checkedTextures} textures in {sw.ElapsedMilliseconds}ms, {unsupported} unsupported textures.");
         }
 
         #endregion
@@ -317,6 +341,10 @@ namespace BSA_Browser
 
             lvi.SubItems.Add(Common.FormatBytes(file.DisplaySize));
             lvi.Tag = file;
+
+#if DEBUG
+            if (file is BA2TextureEntry) lvi.SubItems.Add(Enum.GetName(typeof(DXGI_FORMAT), (file as BA2TextureEntry).format));
+#endif
 
             e.Item = lvi;
         }
@@ -773,7 +801,7 @@ namespace BSA_Browser
             foreach (int index in lvFiles.SelectedIndices)
                 files.Add(_files[index]);
 
-            ExtractFiles(path.Path, path.UseFolderPath, true, files.ToArray());
+            ExtractFiles(path.Path, path.UseFolderPath, true, files);
         }
 
         private void copyPathMenuItem1_Click(object sender, EventArgs e)
@@ -871,7 +899,7 @@ namespace BSA_Browser
                         };
                         break;
                     case ".ba2":
-                        archive = new SharpBSABA2.BA2Util.BA2(path, encoding)
+                        archive = new BA2(path, encoding)
                         {
                             RetrieveRealSize = Settings.Default.RetrieveRealSize,
                             UseATIFourCC = Settings.Default.UseATIFourCC
@@ -954,6 +982,14 @@ namespace BSA_Browser
             {
                 recentFilesMenuItem.MenuItems.RemoveAt(recentFilesMenuItem.MenuItems.Count - 1);
             }
+        }
+
+        /// <summary>
+        /// Returns true if there are any unsupported textures.
+        /// </summary>
+        private bool CheckForUnsupportedTextures(IList<ArchiveEntry> entries)
+        {
+            return entries.Any(x => (x as BA2TextureEntry)?.IsFormatSupported() == false);
         }
 
         /// <summary>
@@ -1115,14 +1151,43 @@ namespace BSA_Browser
         /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
         /// <param name="gui">True to show a <see cref="ProgressForm"/>.</param>
         /// <param name="files">The files in the selected archive to extract.</param>
-        private void ExtractFiles(string folder, bool useFolderPath, bool gui, params ArchiveEntry[] files)
+        private void ExtractFiles(string folder, bool useFolderPath, bool gui, IList<ArchiveEntry> files)
         {
+            // Check for unsupported textures and prompt the user what to do if there is
+            if (this.CheckForUnsupportedTextures(files))
+            {
+                DialogResult result = MessageBox.Show(this,
+                    "There are unsupported textures about to be extracted. These are missing DDS headers that can't (currently) be generated.\n\n" +
+                    "Do you want to extract the raw data without DDS header? Selecting 'No' will skip these textures.",
+                    "Unsupported Textures", MessageBoxButtons.YesNoCancel);
+
+                if (result == DialogResult.Cancel)
+                    return;
+
+                if (result == DialogResult.No)
+                {
+                    // Remove unsupported textures
+                    for (int i = files.Count; i-- > 0;)
+                    {
+                        if ((files[i] as BA2TextureEntry)?.IsFormatSupported() == false)
+                            files.RemoveAt(i);
+                    }
+                }
+                else if (result == DialogResult.Yes)
+                {
+                    foreach (var fe in files.Where(x => (x as BA2TextureEntry)?.IsFormatSupported() == false))
+                    {
+                        (fe as BA2TextureEntry).GenerateTextureHeader = false;
+                    }
+                }
+            }
+
             if (gui)
             {
                 progressForm = new ProgressForm("Unpacking archive")
                 {
                     Header = "Extracting...",
-                    Footer = $"(0/{files.Length})",
+                    Footer = $"(0/{files.Count})",
                     Cancelable = true,
                     Maximum = 100
                 };
@@ -1134,7 +1199,6 @@ namespace BSA_Browser
 #endif
 
                 bwExtractFiles.RunWorkerAsync(new ExtractFilesArguments(useFolderPath, folder, files));
-
                 progressForm.ShowDialog(this);
             }
             else
@@ -1165,7 +1229,7 @@ namespace BSA_Browser
 
             if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                this.ExtractFiles(_openFolderDialog.Folder, useFolderPath, gui, selector.Invoke().ToArray());
+                this.ExtractFiles(_openFolderDialog.Folder, useFolderPath, gui, selector.Invoke().ToList());
             }
         }
 
@@ -1175,9 +1239,9 @@ namespace BSA_Browser
         {
             public bool UseFolderPath { get; private set; }
             public string Folder { get; private set; }
-            public ArchiveEntry[] Files { get; private set; }
+            public IList<ArchiveEntry> Files { get; private set; }
 
-            public ExtractFilesArguments(bool useFolderPath, string folder, ArchiveEntry[] files)
+            public ExtractFilesArguments(bool useFolderPath, string folder, IList<ArchiveEntry> files)
             {
                 UseFolderPath = useFolderPath;
                 Folder = folder;
@@ -1222,7 +1286,7 @@ namespace BSA_Browser
                 }
 
                 // Update current file and count
-                bwExtractFiles.ReportProgress(-1, new ProgressUpdateInfo(fe.FileName, count, arguments.Files.Length));
+                bwExtractFiles.ReportProgress(-1, new ProgressUpdateInfo(fe.FileName, count, arguments.Files.Count));
 
                 try
                 {
@@ -1254,13 +1318,13 @@ namespace BSA_Browser
                 }
 
                 count++;
-                int progress = (int)Math.Round(((double)count / arguments.Files.Length) * 100);
+                int progress = (int)Math.Round(((double)count / arguments.Files.Count) * 100);
                 if (progress > prevProgress)
                 {
                     prevProgress = progress;
 
                     bwExtractFiles.ReportProgress(progress,
-                        (DateTime.Now - _startExtraction).TotalMilliseconds / count * (arguments.Files.Length - count));
+                        (DateTime.Now - _startExtraction).TotalMilliseconds / count * (arguments.Files.Count - count));
 
                 }
             }
@@ -1421,7 +1485,7 @@ namespace BSA_Browser
                     if (!Settings.Default.UseBuiltInPreview.Contains(extension))
                         goto default;
 
-                    if (fe is SharpBSABA2.BA2Util.BA2GNFEntry)
+                    if (fe is BA2GNFEntry)
                     {
                         MessageBox.Show(this, "Can't preview GNF .dds files.");
                         return;

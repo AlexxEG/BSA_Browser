@@ -13,6 +13,10 @@ namespace SharpBSABA2.BA2Util
 
     public class BA2TextureEntry : ArchiveEntry
     {
+        /// <summary>
+        /// Gets or sets whether to generate DDS header.
+        /// </summary>
+        public bool GenerateTextureHeader { get; set; } = true;
         public List<BA2TextureChunk> Chunks { get; private set; } = new List<BA2TextureChunk>();
 
         public readonly byte unk8;
@@ -79,6 +83,11 @@ namespace SharpBSABA2.BA2Util
 
             ms.Seek(0, SeekOrigin.Begin);
             return ms;
+        }
+
+        public bool IsFormatSupported()
+        {
+            return Enum.IsDefined(typeof(DXGI_FORMAT), (int)format);
         }
 
         private void WriteHeader(BinaryWriter bw)
@@ -195,7 +204,7 @@ namespace SharpBSABA2.BA2Util
         {
             var bw = new BinaryWriter(stream);
 
-            if (decompress)
+            if (decompress && GenerateTextureHeader)
             {
                 this.WriteHeader(bw);
             }
