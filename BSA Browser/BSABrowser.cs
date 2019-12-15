@@ -714,6 +714,11 @@ namespace BSA_Browser
             Process.Start(Program.SkyrimSENexus);
         }
 
+        private void discordMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(Program.Discord);
+        }
+
         private void aboutMenuItem_Click(object sender, EventArgs e)
         {
             using (var ab = new AboutBox())

@@ -95,6 +95,7 @@
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bwExtractFiles = new System.ComponentModel.BackgroundWorker();
+            this.discordMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -435,6 +436,7 @@
             this.githubMenuItem,
             this.fallout4NexusPageMenuItem,
             this.skyrimSENexusPageMenuItem,
+            this.discordMenuItem,
             this.menuItem13,
             this.aboutMenuItem});
             this.helpMenuItem.Text = "Help";
@@ -471,12 +473,12 @@
             // 
             // menuItem13
             // 
-            this.menuItem13.Index = 5;
+            this.menuItem13.Index = 6;
             this.menuItem13.Text = "-";
             // 
             // aboutMenuItem
             // 
-            this.aboutMenuItem.Index = 6;
+            this.aboutMenuItem.Index = 7;
             this.aboutMenuItem.Text = "About BSA Browser";
             this.aboutMenuItem.Click += new System.EventHandler(this.aboutMenuItem_Click);
             // 
@@ -611,6 +613,12 @@
             this.bwExtractFiles.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_ProgressChanged);
             this.bwExtractFiles.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bw_RunWorkerCompleted);
             // 
+            // discordMenuItem
+            // 
+            this.discordMenuItem.Index = 5;
+            this.discordMenuItem.Text = "Discord";
+            this.discordMenuItem.Click += new System.EventHandler(this.discordMenuItem_Click);
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -708,6 +716,7 @@
         private System.Windows.Forms.MenuItem skyrimSENexusPageMenuItem;
         private System.Windows.Forms.MenuItem menuItem13;
         private System.Windows.Forms.MenuItem githubMenuItem;
+        private System.Windows.Forms.MenuItem discordMenuItem;
     }
 }
 

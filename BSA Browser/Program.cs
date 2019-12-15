@@ -12,6 +12,7 @@ namespace BSA_Browser
         public const string Fallout4Nexus = "https://www.nexusmods.com/fallout4/mods/17061";
         public const string SkyrimSENexus = "https://www.nexusmods.com/skyrimspecialedition/mods/1756";
         public const string GitHub = "https://github.com/AlexxEG/BSA_Browser";
+        public const string Discord = "https://discord.gg/k97ACqK";
         public const string VersionUrl = "https://raw.githubusercontent.com/AlexxEG/BSA_Browser/master/VERSION";
 
         public static readonly string tmpPath = Path.Combine(Path.GetTempPath(), "bsa_browser");
