@@ -4,6 +4,13 @@ using System.IO;
 
 namespace SharpBSABA2.BA2Util
 {
+    public class UnsupportedDDSException : Exception
+    {
+        public UnsupportedDDSException() : base() { }
+        public UnsupportedDDSException(string message) : base(message) { }
+        public UnsupportedDDSException(string message, Exception innerException) : base(message, innerException) { }
+    }
+
     public class BA2TextureEntry : ArchiveEntry
     {
         public List<BA2TextureChunk> Chunks { get; private set; } = new List<BA2TextureChunk>();
@@ -152,7 +159,7 @@ namespace SharpBSABA2.BA2Util
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
                 default:
-                    throw new Exception("Unsupported DDS header format. File: " + this.FullPath);
+                    throw new UnsupportedDDSException("Unsupported DDS header format. File: " + this.FullPath);
             }
 
             bw.Write((uint)DDS.DDS_MAGIC);
