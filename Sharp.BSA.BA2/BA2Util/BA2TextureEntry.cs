@@ -88,22 +88,22 @@ namespace SharpBSABA2.BA2Util
 
             switch ((DXGI_FORMAT)format)
             {
-                case DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM:
+                case DXGI_FORMAT.BC1_UNORM:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '1');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height / 2); // 4bpp
                     break;
-                case DXGI_FORMAT.DXGI_FORMAT_BC2_UNORM:
+                case DXGI_FORMAT.BC2_UNORM:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '3');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
-                case DXGI_FORMAT.DXGI_FORMAT_BC3_UNORM:
+                case DXGI_FORMAT.BC3_UNORM:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '5');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
-                case DXGI_FORMAT.DXGI_FORMAT_BC5_UNORM:
+                case DXGI_FORMAT.BC5_UNORM:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     if ((this.Archive as BA2).UseATIFourCC)
                         ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('A', 'T', 'I', '2'); // this is more correct but the only thing I have found that supports it is the nvidia photoshop plugin
@@ -111,22 +111,22 @@ namespace SharpBSABA2.BA2Util
                         ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', 'T', '5');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
-                case DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM_SRGB:
+                case DXGI_FORMAT.BC1_UNORM_SRGB:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', '1', '0');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height / 2); // 4bpp
                     break;
-                case DXGI_FORMAT.DXGI_FORMAT_BC3_UNORM_SRGB:
-                case DXGI_FORMAT.DXGI_FORMAT_BC4_UNORM:
-                case DXGI_FORMAT.DXGI_FORMAT_BC5_SNORM:
-                case DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM:
-                case DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM_SRGB:
+                case DXGI_FORMAT.BC3_UNORM_SRGB:
+                case DXGI_FORMAT.BC4_UNORM:
+                case DXGI_FORMAT.BC5_SNORM:
+                case DXGI_FORMAT.BC7_UNORM:
+                case DXGI_FORMAT.BC7_UNORM_SRGB:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
                     ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('D', 'X', '1', '0');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
-                case DXGI_FORMAT.DXGI_FORMAT_R8G8B8A8_UNORM:
-                case DXGI_FORMAT.DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+                case DXGI_FORMAT.R8G8B8A8_UNORM:
+                case DXGI_FORMAT.R8G8B8A8_UNORM_SRGB:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_RGBA;
                     ddsHeader.PixelFormat.dwRGBBitCount = 32;
                     ddsHeader.PixelFormat.dwRBitMask = 0x000000FF;
@@ -135,8 +135,8 @@ namespace SharpBSABA2.BA2Util
                     ddsHeader.PixelFormat.dwABitMask = 0xFF000000;
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height * 4); // 32bpp
                     break;
-                case DXGI_FORMAT.DXGI_FORMAT_B8G8R8A8_UNORM:
-                case DXGI_FORMAT.DXGI_FORMAT_B8G8R8X8_UNORM:
+                case DXGI_FORMAT.B8G8R8A8_UNORM:
+                case DXGI_FORMAT.B8G8R8X8_UNORM:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_RGBA;
                     ddsHeader.PixelFormat.dwRGBBitCount = 32;
                     ddsHeader.PixelFormat.dwRBitMask = 0x00FF0000;
@@ -145,7 +145,7 @@ namespace SharpBSABA2.BA2Util
                     ddsHeader.PixelFormat.dwABitMask = 0xFF000000;
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height * 4); // 32bpp
                     break;
-                case DXGI_FORMAT.DXGI_FORMAT_R8_UNORM:
+                case DXGI_FORMAT.R8_UNORM:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_RGB;
                     ddsHeader.PixelFormat.dwRGBBitCount = 8;
                     ddsHeader.PixelFormat.dwRBitMask = 0xFF;
@@ -160,12 +160,12 @@ namespace SharpBSABA2.BA2Util
 
             switch ((DXGI_FORMAT)format)
             {
-                case DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM_SRGB:
-                case DXGI_FORMAT.DXGI_FORMAT_BC3_UNORM_SRGB:
-                case DXGI_FORMAT.DXGI_FORMAT_BC4_UNORM:
-                case DXGI_FORMAT.DXGI_FORMAT_BC5_SNORM:
-                case DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM:
-                case DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM_SRGB:
+                case DXGI_FORMAT.BC1_UNORM_SRGB:
+                case DXGI_FORMAT.BC3_UNORM_SRGB:
+                case DXGI_FORMAT.BC4_UNORM:
+                case DXGI_FORMAT.BC5_SNORM:
+                case DXGI_FORMAT.BC7_UNORM:
+                case DXGI_FORMAT.BC7_UNORM_SRGB:
                     var dxt10 = new DDS_HEADER_DXT10()
                     {
                         dxgiFormat = format,

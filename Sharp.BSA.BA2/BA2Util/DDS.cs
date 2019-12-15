@@ -37,21 +37,21 @@ namespace SharpBSABA2.BA2Util
 
     public enum DXGI_FORMAT
     {
-        DXGI_FORMAT_R8G8B8A8_UNORM = 28,
-        DXGI_FORMAT_R8G8B8A8_UNORM_SRGB = 29,
-        DXGI_FORMAT_R8_UNORM = 61,
-        DXGI_FORMAT_BC1_UNORM = 71,
-        DXGI_FORMAT_BC1_UNORM_SRGB = 72,
-        DXGI_FORMAT_BC2_UNORM = 74,
-        DXGI_FORMAT_BC3_UNORM = 77,
-        DXGI_FORMAT_BC3_UNORM_SRGB = 78,
-        DXGI_FORMAT_BC4_UNORM = 80,
-        DXGI_FORMAT_BC5_UNORM = 83,
-        DXGI_FORMAT_BC5_SNORM = 84,
-        DXGI_FORMAT_B8G8R8A8_UNORM = 87,
-        DXGI_FORMAT_B8G8R8X8_UNORM = 88,
-        DXGI_FORMAT_BC7_UNORM = 98,
-        DXGI_FORMAT_BC7_UNORM_SRGB = 99
+        R8G8B8A8_UNORM = 28,
+        R8G8B8A8_UNORM_SRGB = 29,
+        R8_UNORM = 61,
+        BC1_UNORM = 71,
+        BC1_UNORM_SRGB = 72,
+        BC2_UNORM = 74,
+        BC3_UNORM = 77,
+        BC3_UNORM_SRGB = 78,
+        BC4_UNORM = 80,
+        BC5_UNORM = 83,
+        BC5_SNORM = 84,
+        B8G8R8A8_UNORM = 87,
+        B8G8R8X8_UNORM = 88,
+        BC7_UNORM = 98,
+        BC7_UNORM_SRGB = 99
     }
 
     #endregion
