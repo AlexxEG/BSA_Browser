@@ -71,9 +71,10 @@
             this.checkForUpdateMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.githubMenuItem = new System.Windows.Forms.MenuItem();
+            this.discordMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.fallout4NexusPageMenuItem = new System.Windows.Forms.MenuItem();
             this.skyrimSENexusPageMenuItem = new System.Windows.Forms.MenuItem();
-            this.discordMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem13 = new System.Windows.Forms.MenuItem();
             this.aboutMenuItem = new System.Windows.Forms.MenuItem();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
@@ -96,7 +97,6 @@
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bwExtractFiles = new System.ComponentModel.BackgroundWorker();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -461,6 +461,17 @@
             this.githubMenuItem.Text = "GitHub";
             this.githubMenuItem.Click += new System.EventHandler(this.githubMenuItem_Click);
             // 
+            // discordMenuItem
+            // 
+            this.discordMenuItem.Index = 3;
+            this.discordMenuItem.Text = "Discord (Help/Discussion)";
+            this.discordMenuItem.Click += new System.EventHandler(this.discordMenuItem_Click);
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 4;
+            this.menuItem2.Text = "-";
+            // 
             // fallout4NexusPageMenuItem
             // 
             this.fallout4NexusPageMenuItem.Index = 5;
@@ -472,12 +483,6 @@
             this.skyrimSENexusPageMenuItem.Index = 6;
             this.skyrimSENexusPageMenuItem.Text = "Skyrim SE Nexus Page";
             this.skyrimSENexusPageMenuItem.Click += new System.EventHandler(this.skyrimSENexusPageMenuItem_Click);
-            // 
-            // discordMenuItem
-            // 
-            this.discordMenuItem.Index = 3;
-            this.discordMenuItem.Text = "Discord (Help/Discussion)";
-            this.discordMenuItem.Click += new System.EventHandler(this.discordMenuItem_Click);
             // 
             // menuItem13
             // 
@@ -620,11 +625,6 @@
             this.bwExtractFiles.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bw_DoWork);
             this.bwExtractFiles.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_ProgressChanged);
             this.bwExtractFiles.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bw_RunWorkerCompleted);
-            // 
-            // menuItem2
-            // 
-            this.menuItem2.Index = 4;
-            this.menuItem2.Text = "-";
             // 
             // BSABrowser
             // 
