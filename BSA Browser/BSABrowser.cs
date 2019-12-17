@@ -1487,18 +1487,18 @@ namespace BSA_Browser
                 case ".bmp":
                 case ".png":
                 case ".jpg":
+                    if ((fe as BA2TextureEntry)?.IsFormatSupported() == false)
+                    {
+                        MessageBox.Show(this, "Unsupported DDS texture.");
+                        return;
+                    }
+
                     if (!Settings.Default.UseBuiltInPreview.Contains(extension))
                         goto default;
 
                     if (fe is BA2GNFEntry)
                     {
                         MessageBox.Show(this, "Can't preview GNF .dds files.");
-                        return;
-                    }
-
-                    if ((fe as BA2TextureEntry)?.IsFormatSupported() == false)
-                    {
-                        MessageBox.Show(this, "Unsupported DDS texture.");
                         return;
                     }
 
