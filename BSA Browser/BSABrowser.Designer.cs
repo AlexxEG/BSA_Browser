@@ -73,6 +73,7 @@
             this.githubMenuItem = new System.Windows.Forms.MenuItem();
             this.fallout4NexusPageMenuItem = new System.Windows.Forms.MenuItem();
             this.skyrimSENexusPageMenuItem = new System.Windows.Forms.MenuItem();
+            this.discordMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem13 = new System.Windows.Forms.MenuItem();
             this.aboutMenuItem = new System.Windows.Forms.MenuItem();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
@@ -95,7 +96,7 @@
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bwExtractFiles = new System.ComponentModel.BackgroundWorker();
-            this.discordMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -434,9 +435,10 @@
             this.checkForUpdateMenuItem,
             this.menuItem3,
             this.githubMenuItem,
+            this.discordMenuItem,
+            this.menuItem2,
             this.fallout4NexusPageMenuItem,
             this.skyrimSENexusPageMenuItem,
-            this.discordMenuItem,
             this.menuItem13,
             this.aboutMenuItem});
             this.helpMenuItem.Text = "Help";
@@ -461,24 +463,30 @@
             // 
             // fallout4NexusPageMenuItem
             // 
-            this.fallout4NexusPageMenuItem.Index = 3;
+            this.fallout4NexusPageMenuItem.Index = 5;
             this.fallout4NexusPageMenuItem.Text = "Fallout 4 Nexus Page";
             this.fallout4NexusPageMenuItem.Click += new System.EventHandler(this.fallout4NexusPageMenuItem_Click);
             // 
             // skyrimSENexusPageMenuItem
             // 
-            this.skyrimSENexusPageMenuItem.Index = 4;
+            this.skyrimSENexusPageMenuItem.Index = 6;
             this.skyrimSENexusPageMenuItem.Text = "Skyrim SE Nexus Page";
             this.skyrimSENexusPageMenuItem.Click += new System.EventHandler(this.skyrimSENexusPageMenuItem_Click);
             // 
+            // discordMenuItem
+            // 
+            this.discordMenuItem.Index = 3;
+            this.discordMenuItem.Text = "Discord (Help/Discussion)";
+            this.discordMenuItem.Click += new System.EventHandler(this.discordMenuItem_Click);
+            // 
             // menuItem13
             // 
-            this.menuItem13.Index = 6;
+            this.menuItem13.Index = 7;
             this.menuItem13.Text = "-";
             // 
             // aboutMenuItem
             // 
-            this.aboutMenuItem.Index = 7;
+            this.aboutMenuItem.Index = 8;
             this.aboutMenuItem.Text = "About BSA Browser";
             this.aboutMenuItem.Click += new System.EventHandler(this.aboutMenuItem_Click);
             // 
@@ -613,11 +621,10 @@
             this.bwExtractFiles.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_ProgressChanged);
             this.bwExtractFiles.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bw_RunWorkerCompleted);
             // 
-            // discordMenuItem
+            // menuItem2
             // 
-            this.discordMenuItem.Index = 5;
-            this.discordMenuItem.Text = "Discord";
-            this.discordMenuItem.Click += new System.EventHandler(this.discordMenuItem_Click);
+            this.menuItem2.Index = 4;
+            this.menuItem2.Text = "-";
             // 
             // BSABrowser
             // 
@@ -717,6 +724,7 @@
         private System.Windows.Forms.MenuItem menuItem13;
         private System.Windows.Forms.MenuItem githubMenuItem;
         private System.Windows.Forms.MenuItem discordMenuItem;
+        private System.Windows.Forms.MenuItem menuItem2;
     }
 }
 
