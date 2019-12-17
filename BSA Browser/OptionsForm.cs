@@ -102,6 +102,16 @@ namespace BSA_Browser
             }
         }
 
+        private void btnResetToDefault_Click(object sender, EventArgs e)
+        {
+            nudMaxRecentFiles.Value = 30;
+            chbCheckForUpdates.Checked = true;
+            chbSortBSADirectories.Checked = true;
+            chbRetrieveRealSize.Checked = false;
+            cbEncodings.SelectedIndex = 0;
+            chbUseATIFourCC.Checked = false;
+        }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             using (var cpd = new QuickExtractDialog())
