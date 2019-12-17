@@ -1496,13 +1496,20 @@ namespace BSA_Browser
                         return;
                     }
 
+                    if ((fe as BA2TextureEntry)?.IsFormatSupported() == false)
+                    {
+                        MessageBox.Show(this, "Unsupported DDS texture.");
+                        return;
+                    }
+
                     try
                     {
                         DDSViewer.ShowDialog(this, fe.FileName, fe.GetDataStream());
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(this, ex.Message);
+                        Debug.WriteLine(ex);
+                        goto default;
                     }
                     break;
                 case ".txt":

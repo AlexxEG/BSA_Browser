@@ -15,8 +15,6 @@ namespace BSA_Browser
         public DDSImage DDSImage { get; private set; }
         public Size ImageSize { get; private set; }
 
-        Exception _ex;
-
         private DDSViewer(string filename, Stream stream)
         {
             InitializeComponent();
@@ -31,7 +29,7 @@ namespace BSA_Browser
             }
             catch (Exception ex)
             {
-                _ex = ex;
+                throw ex;
             }
         }
 
@@ -82,15 +80,6 @@ namespace BSA_Browser
             else
             {
                 ImageBox.SizeMode = PictureBoxSizeMode.CenterImage;
-            }
-        }
-
-        private void DDSViewer_Shown(object sender, EventArgs e)
-        {
-            if (_ex != null)
-            {
-                MessageBox.Show(this, "Couldn't load image.\n\n" + _ex, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
             }
         }
 
