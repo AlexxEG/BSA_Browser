@@ -1,3 +1,16 @@
+[1.11.0]
+
+- Added DXGI_FORMAT_B8G8R8X8_UNORM as supported format
+- Added option to disable check for updates
+- Added 'Reset to Default' button to Options
+- Added prompt to extract unsupported textures in BA2 archives without generated DDS header for advanced users
+- Added Discord link in menu
+- Any file can now be previewed by passing it off to OS if there isn't a built-in tool
+- Additionally, added tab in Options where you can disable built-in tool for specific file types
+- Additionally 2, textures that are supported but can't be previewed with the built-in one will be passed off to the system default (GIMP, Paint.net etc)
+- Fixed creating multiple nodes for same folder because of upper/lower case
+- Fixed Options tab order
+
 [1.10.0]
 
 - Added specific error for when reading name table fails, which will inform you to try another encoding
