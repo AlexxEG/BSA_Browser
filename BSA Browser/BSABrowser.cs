@@ -13,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -1301,6 +1300,7 @@ namespace BSA_Browser
                     }
                     else
                     {
+                        // Keep track of what files have been extracted previously and add number to files with identical filenames
                         if (extracted.ContainsKey(fe.FileName))
                         {
                             string filename = Path.GetFileNameWithoutExtension(fe.FileName);
