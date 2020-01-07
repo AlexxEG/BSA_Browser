@@ -1,24 +1,28 @@
 ## BSA Browser
 
 ### Introduction
-This is [Fallout Mod Manager](https://sourceforge.net/projects/fomm/)'s BSA Browser as a standalone application, with some new features.
+BSA Browser is a Bethesda Archive browser & extractor application for Windows. Games that are supported includes the Fallout series and Elder Scrolls series (except Elder Scrolls Online).
 
-Read more at [BSA Browser](http://www.nexusmods.com/fallout4/mods/17061/?) on Fallout 4 Nexus Mods.
+BSA Browser started as a fork of [Fallout Mod Manager](https://sourceforge.net/projects/fomm/)'s BSA Browser as a standalone application & has been steadily improved with more features.
 
-Requires .NET Framework 4.5
+Read more at [BSA Browser](https://www.nexusmods.com/skyrimspecialedition/mods/1756) on Nexus Mods.
+
+Requires .NET Framework 4.6
 
 ### Features
- - Browse and extract files from .BSA/.BA2
+ - Browse & extract files from .BSA/.BA2/.DAT archives
  - Browse multiple archive files simultaneously
+ - Drag & drop for opening archives and extracting
  - File search, with wildcard and regex support
- - Preview files
+ - Preview supported files with built-in tools. And for all other files open with the default system application
  - Recent Files list
- - Quick exporting (See Tools -> Options menu)
+ - Setup quick exporting for frequently used paths (See Tools -> Options)
  - Copy full path, folder path or file name
  - Compare archives, see new, changed or removed files
+ - Supports PS4 modding (Though untested by me)
  
-### Original Version
-This fork is based on Fallout Mod Manager [v0.13.21](https://sourceforge.net/p/fomm/code/685/tree/branches/qfomm/)
+### Forked Version
+Fork is based on Fallout Mod Manager [v0.13.21](https://sourceforge.net/p/fomm/code/685/tree/branches/qfomm/)
 
 ### License and Copyright
 [Fallout Mod Manager](https://sourceforge.net/projects/fomm/) is licensed under GPLv3.
