@@ -1,4 +1,5 @@
 ﻿using SharpBSABA2;
+using SharpBSABA2.BA2Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +31,7 @@ namespace BSA_Browser_CLI
         public bool List { get; private set; }
         public bool ATI { get; private set; }
         public bool IgnoreErrors { get; private set; }
+        public bool NoHeaders { get; private set; }
 
         public Filtering Filtering { get; private set; } = Filtering.None;
         public ListOptions ListOptions { get; private set; } = ListOptions.None;
@@ -96,6 +98,10 @@ namespace BSA_Browser_CLI
                         case "/encoding":
                         case "--encoding":
                             this.Encoding = this.ParseEncoding(args[++i]);
+                            break;
+                        case "/noheaders":
+                        case "--noheaders":
+                            this.NoHeaders = true;
                             break;
                         default:
                             throw new ArgumentException("Unrecognized argument: " + arg);
@@ -264,6 +270,8 @@ namespace BSA_Browser_CLI
                 }
                 catch (IOException) { }
 
+                HandleUnsupportedTextures(archive.Files);
+
                 foreach (var entry in archive.Files)
                 {
                     if (!Filter(entry.FullPath))
@@ -297,6 +305,29 @@ namespace BSA_Browser_CLI
 
                 Console.WriteLine();
             });
+        }
+
+        static void HandleUnsupportedTextures(List<ArchiveEntry> files)
+        {
+            if (files.All(x => (x as BA2TextureEntry)?.IsFormatSupported() != false))
+                return;
+
+            if (_arguments.NoHeaders)
+            {
+                foreach (var fe in files.Where(x => (x as BA2TextureEntry)?.IsFormatSupported() == false))
+                {
+                    (fe as BA2TextureEntry).GenerateTextureHeader = false;
+                }
+            }
+            else
+            {
+                // Remove unsupported textures to skip them
+                for (int i = files.Count; i-- > 0;)
+                {
+                    if ((files[i] as BA2TextureEntry)?.IsFormatSupported() == false)
+                        files.RemoveAt(i);
+                }
+            }
         }
 
         static Archive OpenArchive(string file, bool ati)
@@ -431,6 +462,7 @@ namespace BSA_Browser_CLI
             Console.WriteLine("                           unicode");
             Console.WriteLine("                           utf32");
             Console.WriteLine("                           utf8");
+            Console.WriteLine("  --noheaders            Extract unsupported textures without DDS header instead of skipping");
             Console.WriteLine();
         }
     }
