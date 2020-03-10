@@ -33,6 +33,12 @@ namespace BSA_Browser
             }
         }
 
+        private void DDSViewer_Load(object sender, EventArgs e)
+        {
+            string pixelFormat = DDSImage?.Format.ToString() + " - ";
+            this.Text += $" - {pixelFormat}{ImageSize.Width}x{ImageSize.Height}";
+        }
+
         private void DDSViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.ImageBox.Image = null;

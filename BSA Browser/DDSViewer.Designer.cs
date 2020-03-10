@@ -55,6 +55,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Preview";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DDSViewer_FormClosing);
+            this.Load += new System.EventHandler(this.DDSViewer_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.DDSViewer_Paint);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DDSViewer_KeyUp);
             this.Resize += new System.EventHandler(this.DDSViewer_Resize);

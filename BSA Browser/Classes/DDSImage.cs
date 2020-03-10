@@ -81,6 +81,8 @@ namespace S16.Drawing
                     byte[] rawData = this.DecompressData(header, data, pixelFormat);
                     this.m_bitmap = this.CreateBitmap((int)header.width, (int)header.height, rawData);
                 }
+
+                this.Format = pixelFormat;
             }
         }
 
@@ -1762,6 +1764,11 @@ namespace S16.Drawing
         {
             get { return this.m_isValid; }
         }
+
+        /// <summary>
+        /// Returns the PixelFormat.
+        /// </summary>
+        public PixelFormat Format { get; private set; }
         #endregion
 
         #region Operators
@@ -1910,7 +1917,7 @@ namespace S16.Drawing
         /// <summary>
         /// Various pixel formats/compressors used by the DDS image.
         /// </summary>
-        private enum PixelFormat
+        public enum PixelFormat
         {
             /// <summary>
             /// 32-bit image, with 8-bit red, green, blue and alpha.
