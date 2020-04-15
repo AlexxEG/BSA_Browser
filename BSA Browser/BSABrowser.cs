@@ -22,10 +22,9 @@ namespace BSA_Browser
 {
     public enum ArchiveFileSortOrder
     {
-        FolderName,
+        FilePath,
         FileSize,
-        FileName,
-        FileType
+        Extra
     }
 
     public enum SystemErrorCodes : int
@@ -1658,15 +1657,29 @@ namespace BSA_Browser
         {
             switch (order)
             {
-                case ArchiveFileSortOrder.FolderName:
-                    return (desc) ? string.CompareOrdinal(a.LowerPath, b.LowerPath) : string.CompareOrdinal(b.LowerPath, a.LowerPath);
-                case ArchiveFileSortOrder.FileName:
-                    return (desc) ? string.CompareOrdinal(a.FileName, b.FileName) : string.CompareOrdinal(b.FileName, a.FileName);
+                case ArchiveFileSortOrder.FilePath:
+                    return (desc) ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
+                                    string.CompareOrdinal(b.LowerPath, a.LowerPath);
+
                 case ArchiveFileSortOrder.FileSize:
-                    return (desc) ? a.DisplaySize.CompareTo(b.DisplaySize) : b.DisplaySize.CompareTo(a.DisplaySize);
-                case ArchiveFileSortOrder.FileType:
-                    return (desc) ? string.CompareOrdinal(Path.GetExtension(a.FileName), Path.GetExtension(b.FileName)) :
-                                    string.CompareOrdinal(Path.GetExtension(b.FileName), Path.GetExtension(a.FileName));
+                    return (desc) ? a.DisplaySize.CompareTo(b.DisplaySize) :
+                                    b.DisplaySize.CompareTo(a.DisplaySize);
+
+                case ArchiveFileSortOrder.Extra:
+                    if (a is BA2TextureEntry && b is BA2TextureEntry)
+                    {
+                        string af = Enum.GetName(typeof(DXGI_FORMAT), (a as BA2TextureEntry).format);
+                        string bf = Enum.GetName(typeof(DXGI_FORMAT), (b as BA2TextureEntry).format);
+                        return (desc) ? string.CompareOrdinal(af, bf) :
+                                        string.CompareOrdinal(bf, af);
+                    }
+                    else
+                    {
+                        // Sort by file path since Extra will be empty
+                        return (desc) ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
+                                        string.CompareOrdinal(b.LowerPath, a.LowerPath);
+                    }
+
                 default:
                     return 0;
             }

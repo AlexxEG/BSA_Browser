@@ -95,7 +95,7 @@ namespace BSA_Browser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("FolderName")]
+        [global::System.Configuration.DefaultSettingValueAttribute("FilePath")]
         public global::BSA_Browser.ArchiveFileSortOrder SortType {
             get {
                 return ((global::BSA_Browser.ArchiveFileSortOrder)(this["SortType"]));
