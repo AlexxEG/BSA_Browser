@@ -70,6 +70,9 @@
       <HintPath>..\packages\IonKiwi.lz4.net.1.0.12\lib\net46\lz4.AnyCPU.loader.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Pfim, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pfim.0.9.1\lib\netstandard2.0\Pfim.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -94,7 +97,6 @@
     </Compile>
     <Compile Include="Classes\ArchiveNode.cs" />
     <Compile Include="Classes\Common.cs" />
-    <Compile Include="Classes\DDSImage.cs" />
     <Compile Include="Classes\LimitedAction.cs" />
     <Compile Include="Classes\OpenFolderDialog.cs" />
     <Compile Include="Classes\QuickExtractPath.cs" />

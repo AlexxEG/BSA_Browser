@@ -1,7 +1,9 @@
-﻿using S16.Drawing;
+﻿using Pfim;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace BSA_Browser
@@ -10,9 +12,9 @@ namespace BSA_Browser
     {
         private const int BackgroundBoxSize = 16;
 
+        public string DDSFormat { get; private set; }
         public string Filename { get; private set; }
 
-        public DDSImage DDSImage { get; private set; }
         public Size ImageSize { get; private set; }
 
         private DDSViewer(string filename, Stream stream)
@@ -35,15 +37,13 @@ namespace BSA_Browser
 
         private void DDSViewer_Load(object sender, EventArgs e)
         {
-            string pixelFormat = DDSImage?.Format.ToString() + " - ";
+            string pixelFormat = string.IsNullOrEmpty(this.DDSFormat) ? string.Empty : this.DDSFormat + " - ";
             this.Text += $" - {pixelFormat}{ImageSize.Width}x{ImageSize.Height}";
         }
 
         private void DDSViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.ImageBox.Image = null;
-            this.DDSImage?.Dispose();
-            this.DDSImage = null;
         }
 
         private void DDSViewer_KeyUp(object sender, KeyEventArgs e)
@@ -120,10 +120,36 @@ namespace BSA_Browser
         {
             if (Path.GetExtension(this.Filename).ToLower() == ".dds")
             {
-                var dds = new DDSImage(stream);
-                this.DDSImage = dds;
-                this.ImageSize = new Size(dds.BitmapImage.Width, dds.BitmapImage.Height);
-                this.ImageBox.Image = dds.BitmapImage;
+                PixelFormat format;
+
+                Dds image = (Dds)Pfim.Pfim.FromStream(stream);
+
+                switch (image.Format)
+                {
+                    case Pfim.ImageFormat.Rgb24:
+                        format = PixelFormat.Format24bppRgb;
+                        break;
+                    case Pfim.ImageFormat.Rgba32:
+                        format = PixelFormat.Format32bppArgb;
+                        break;
+                    default:
+                        throw new NotImplementedException("Unsupported Pfim image format: " + image.Format.ToString());
+                }
+
+                this.DDSFormat = image.Header.PixelFormat.FourCC.ToString();
+
+                var handle = GCHandle.Alloc(image.Data, GCHandleType.Pinned);
+                try
+                {
+                    var data = Marshal.UnsafeAddrOfPinnedArrayElement(image.Data, 0);
+                    var bitmap = new Bitmap(image.Width, image.Height, image.Stride, format, data);
+                    this.ImageSize = new Size(bitmap.Width, bitmap.Height);
+                    this.ImageBox.Image = bitmap;
+                }
+                finally
+                {
+                    handle.Free();
+                }
             }
             else
             {
