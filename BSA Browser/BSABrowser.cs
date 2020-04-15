@@ -342,7 +342,10 @@ namespace BSA_Browser
             lvi.Tag = file;
 
 #if DEBUG
-            if (file is BA2TextureEntry) lvi.SubItems.Add(Enum.GetName(typeof(DXGI_FORMAT), (file as BA2TextureEntry).format));
+            if (file is BA2TextureEntry)
+                lvi.SubItems.Add(Enum.GetName(typeof(DXGI_FORMAT), (file as BA2TextureEntry).format));
+            else
+                lvi.SubItems.Add(string.Empty);
 #endif
 
             e.Item = lvi;
