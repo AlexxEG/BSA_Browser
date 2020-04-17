@@ -106,6 +106,11 @@ namespace BSA_Browser
 #if DEBUG
             this.SetupDebugTools();
 #endif
+
+            imageList1.Images.Add(new System.Drawing.Bitmap(16, 16));
+            imageList1.Images.Add(DefaultIcons.FolderSmall);
+            imageList1.Images.Add(DefaultIcons.Files);
+            imageList1.Images.Add((System.Drawing.Icon)this.Icon.Clone());
         }
 
 #if DEBUG
@@ -397,7 +402,7 @@ namespace BSA_Browser
 
                     if (!nodes.ContainsKey(newpath.ToLower()))
                     {
-                        var tn = new TreeNode(dirs[i]);
+                        var tn = new TreeNode(dirs[i], 1, 1);
                         tn.Tag = newpath;
 
                         if (i == 0) // Root node
@@ -416,7 +421,7 @@ namespace BSA_Browser
             {
                 // Only add if there are sub nodes. Node without sub nodes already behaves the same
                 if (node.Value.Nodes.Count > 0 && directoriesWithFiles.Contains(node.Key))
-                    node.Value.Nodes.Insert(0, new TreeNode("<Files>") { Tag = node.Key });
+                    node.Value.Nodes.Insert(0, new TreeNode("<Files>", 2, 2) { Tag = node.Key });
             }
 
             if (Settings.Default.SortArchiveDirectories)
@@ -925,6 +930,7 @@ namespace BSA_Browser
                 Path.GetFileNameWithoutExtension(path) + this.DetectGame(path),
                 archive);
 
+            newNode.ImageIndex = newNode.SelectedImageIndex = 3;
             newNode.ContextMenu = archiveContextMenu;
             newNode.Files = archive.Files.ToArray();
             newNode.Nodes.Add("empty");
