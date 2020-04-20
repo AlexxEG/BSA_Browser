@@ -83,7 +83,6 @@ namespace BSA_Browser.Classes
         [DllImport("user32.dll")]
         private static extern bool DestroyIcon(IntPtr handle);
 
-        // https://docs.microsoft.com/nb-no/windows/win32/api/shellapi/ne-shellapi-shstockiconid
         private enum SHSTOCKICONID : uint
         {
             SIID_DOCNOASSOC = 0x0,
