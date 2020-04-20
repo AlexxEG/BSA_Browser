@@ -29,7 +29,6 @@ namespace BSA_Browser_CLI
         public bool Extract { get; private set; }
         public bool Help { get; private set; }
         public bool List { get; private set; }
-        public bool ATI { get; private set; }
         public bool IgnoreErrors { get; private set; }
         public bool NoHeaders { get; private set; }
 
@@ -83,10 +82,6 @@ namespace BSA_Browser_CLI
                             if (options.Contains('f')) this.ListOptions = (this.ListOptions | ListOptions.FullPath);
                             if (options.Contains('s')) this.ListOptions = (this.ListOptions | ListOptions.FileSize);
 
-                            break;
-                        case "/ati":
-                        case "--ati":
-                            this.ATI = true;
                             break;
                         case "/regex":
                         case "--regex":
@@ -220,7 +215,7 @@ namespace BSA_Browser_CLI
             {
                 try
                 {
-                    ExtractFiles(_arguments.Inputs.ToList(), _arguments.ATI, _arguments.Destination);
+                    ExtractFiles(_arguments.Inputs.ToList(), _arguments.Destination);
                 }
                 catch (Exception ex)
                 {
@@ -238,7 +233,7 @@ namespace BSA_Browser_CLI
 #endif
         }
 
-        static void ExtractFiles(List<string> archives, bool ati, string destination)
+        static void ExtractFiles(List<string> archives, string destination)
         {
             archives.ForEach(archivePath =>
             {
@@ -246,7 +241,7 @@ namespace BSA_Browser_CLI
 
                 try
                 {
-                    archive = OpenArchive(archivePath, ati);
+                    archive = OpenArchive(archivePath);
                 }
                 catch (Exception ex)
                 {
@@ -330,7 +325,7 @@ namespace BSA_Browser_CLI
             }
         }
 
-        static Archive OpenArchive(string file, bool ati)
+        static Archive OpenArchive(string file)
         {
             Archive archive = null;
             string extension = Path.GetExtension(file);
@@ -342,7 +337,7 @@ namespace BSA_Browser_CLI
                     archive = new SharpBSABA2.BSAUtil.BSA(file, _arguments.Encoding);
                     break;
                 case ".ba2":
-                    archive = new SharpBSABA2.BA2Util.BA2(file, _arguments.Encoding) { UseATIFourCC = ati };
+                    archive = new SharpBSABA2.BA2Util.BA2(file, _arguments.Encoding);
                     break;
                 default:
                     throw new Exception($"Unrecognized archive file type ({extension}).");
@@ -403,7 +398,7 @@ namespace BSA_Browser_CLI
 
                 try
                 {
-                    archive = OpenArchive(archivePath, false);
+                    archive = OpenArchive(archivePath);
                 }
                 catch (Exception ex)
                 {
@@ -454,7 +449,6 @@ namespace BSA_Browser_CLI
             Console.WriteLine("                           S   Display file size");
             Console.WriteLine("  -f FILTER              Simple filtering. Wildcard supported");
             Console.WriteLine("  --regex REGEX          Regex filtering");
-            Console.WriteLine("  --ati                  Use ATI header for textures");
             Console.WriteLine("  --encoding ENCODING    Set encoding to use");
             Console.WriteLine("     encodings             utf7     (Default)");
             Console.WriteLine("                           system   Use System's default encoding");

@@ -46,6 +46,10 @@
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
+            this.lvQuickExtract = new L0ki.Controls.ReordableItemListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -58,16 +62,11 @@
             this.chbCheckForUpdates = new System.Windows.Forms.CheckBox();
             this.nudMaxRecentFiles = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.chbUseATIFourCC = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lvPreviewing = new System.Windows.Forms.ListView();
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.lvQuickExtract = new L0ki.Controls.ReordableItemListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -150,6 +149,42 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
+            // lvQuickExtract
+            // 
+            this.lvQuickExtract.AllowDrop = true;
+            this.lvQuickExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvQuickExtract.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.lvQuickExtract.FullRowSelect = true;
+            this.lvQuickExtract.HideSelection = false;
+            this.lvQuickExtract.Location = new System.Drawing.Point(6, 85);
+            this.lvQuickExtract.Name = "lvQuickExtract";
+            this.lvQuickExtract.ShowGroups = false;
+            this.lvQuickExtract.Size = new System.Drawing.Size(528, 149);
+            this.lvQuickExtract.TabIndex = 1;
+            this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
+            this.lvQuickExtract.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 120;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Path";
+            this.columnHeader2.Width = 282;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Maintain folder path";
+            this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader3.Width = 120;
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -184,7 +219,6 @@
             this.tabPage1.Controls.Add(this.chbCheckForUpdates);
             this.tabPage1.Controls.Add(this.nudMaxRecentFiles);
             this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.chbUseATIFourCC);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(10);
@@ -296,18 +330,6 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Max recent files:";
             // 
-            // chbUseATIFourCC
-            // 
-            this.chbUseATIFourCC.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.chbUseATIFourCC.Location = new System.Drawing.Point(13, 195);
-            this.chbUseATIFourCC.Name = "chbUseATIFourCC";
-            this.chbUseATIFourCC.Size = new System.Drawing.Size(370, 84);
-            this.chbUseATIFourCC.TabIndex = 4;
-            this.chbUseATIFourCC.Text = "Use ATI header for textures\r\n\r\nThis makes some textures more accurate but only th" +
-    "e Photoshop plugin seems to be able to open.\r\n\r\nRe-open archives to apply this c" +
-    "hange.";
-            this.chbUseATIFourCC.UseVisualStyleBackColor = true;
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.groupBox5);
@@ -401,42 +423,6 @@
             this.columnHeader4.Text = "File Type";
             this.columnHeader4.Width = 240;
             // 
-            // lvQuickExtract
-            // 
-            this.lvQuickExtract.AllowDrop = true;
-            this.lvQuickExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvQuickExtract.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.lvQuickExtract.FullRowSelect = true;
-            this.lvQuickExtract.HideSelection = false;
-            this.lvQuickExtract.Location = new System.Drawing.Point(6, 85);
-            this.lvQuickExtract.Name = "lvQuickExtract";
-            this.lvQuickExtract.ShowGroups = false;
-            this.lvQuickExtract.Size = new System.Drawing.Size(528, 149);
-            this.lvQuickExtract.TabIndex = 1;
-            this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
-            this.lvQuickExtract.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 120;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Path";
-            this.columnHeader2.Width = 282;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Maintain folder path";
-            this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader3.Width = 120;
-            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOK;
@@ -487,7 +473,6 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.CheckBox chbSortBSADirectories;
         private System.Windows.Forms.CheckBox chbRetrieveRealSize;
-        private System.Windows.Forms.CheckBox chbUseATIFourCC;
         private System.Windows.Forms.NumericUpDown nudMaxRecentFiles;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbEncodings;

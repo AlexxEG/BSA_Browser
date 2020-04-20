@@ -10,8 +10,6 @@ namespace SharpBSABA2.BA2Util
     {
         public BA2Header Header { get; set; }
 
-        public bool UseATIFourCC { get; set; } = false;
-
         public override int FileCount => (int)Header.NumFiles;
         public override bool HasNameTable => Header.NameTableOffset > 0;
         public override string VersionString => Header.Version.ToString();

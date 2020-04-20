@@ -30,7 +30,6 @@ namespace BSA_Browser
             chbCheckForUpdates.Checked = Settings.Default.CheckForUpdates;
             chbSortBSADirectories.Checked = Settings.Default.SortArchiveDirectories;
             chbRetrieveRealSize.Checked = Settings.Default.RetrieveRealSize;
-            chbUseATIFourCC.Checked = Settings.Default.UseATIFourCC;
 
             cbEncodings.Items.AddRange(_encodings);
             cbEncodings.SelectedItem = Encoding.GetEncoding(Settings.Default.EncodingCodePage);
@@ -109,7 +108,6 @@ namespace BSA_Browser
             chbSortBSADirectories.Checked = true;
             chbRetrieveRealSize.Checked = false;
             cbEncodings.SelectedIndex = 0;
-            chbUseATIFourCC.Checked = false;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -169,7 +167,6 @@ namespace BSA_Browser
             Settings.Default.CheckForUpdates = chbCheckForUpdates.Checked;
             Settings.Default.SortArchiveDirectories = chbSortBSADirectories.Checked;
             Settings.Default.RetrieveRealSize = chbRetrieveRealSize.Checked;
-            Settings.Default.UseATIFourCC = chbUseATIFourCC.Checked;
             Settings.Default.EncodingCodePage = (cbEncodings.SelectedItem as Encoding).CodePage;
 
             Settings.Default.QuickExtractPaths.Clear();

@@ -915,8 +915,7 @@ namespace BSA_Browser
                     case ".ba2":
                         archive = new BA2(path, encoding)
                         {
-                            RetrieveRealSize = Settings.Default.RetrieveRealSize,
-                            UseATIFourCC = Settings.Default.UseATIFourCC
+                            RetrieveRealSize = Settings.Default.RetrieveRealSize
                         };
                         break;
                     default:
