@@ -17,6 +17,19 @@ namespace BSA_Browser.Classes
         public static Icon FolderLargeOpen => GetCachedIcon(nameof(FolderLargeOpen), SHSTOCKICONID.SIID_FOLDEROPEN, SHGFI_LARGEICON);
         public static Icon FolderSmallOpen => GetCachedIcon(nameof(FolderSmallOpen), SHSTOCKICONID.SIID_FOLDEROPEN, SHGFI_SMALLICON);
 
+        public static Icon GetFileIcon(string filepath)
+        {
+            SHFILEINFO shfi = new SHFILEINFO();
+            uint flags = SHGFI_ICON | SHGFI_USEFILEATTRIBUTES | SHGFI_SMALLICON;
+
+            SHGetFileInfo(filepath, FILE_ATTRIBUTE_NORMAL, ref shfi, (uint)Marshal.SizeOf(shfi), flags);
+
+            Icon icon = (Icon)Icon.FromHandle(shfi.hIcon).Clone(); // Get a copy that doesn't use the original handle
+            DestroyIcon(shfi.hIcon); // Clean up native icon to prevent resource leak
+
+            return icon;
+        }
+
         private static Icon GetCachedIcon(string name, SHSTOCKICONID type, uint size)
         {
             if (!_cache.ContainsKey(name))
@@ -37,6 +50,19 @@ namespace BSA_Browser.Classes
             return icon;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SHFILEINFO
+        {
+            public const int NAMESIZE = 80;
+            public IntPtr hIcon;
+            public int iIcon;
+            public uint dwAttributes;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+            public string szDisplayName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = NAMESIZE)]
+            public string szTypeName;
+        };
+
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         private struct SHSTOCKICONINFO
         {
@@ -47,6 +73,9 @@ namespace BSA_Browser.Classes
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
             public string szPath;
         }
+
+        [DllImport("Shell32.dll")]
+        private static extern int SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
 
         [DllImport("shell32.dll")]
         private static extern int SHGetStockIconInfo(uint siid, uint uFlags, ref SHSTOCKICONINFO psii);
@@ -63,8 +92,11 @@ namespace BSA_Browser.Classes
             SIID_DRIVEFIXED = 0x8
         }
 
+        private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
+
         private const uint SHGFI_ICON = 0x100;
         private const uint SHGFI_LARGEICON = 0x0;
         private const uint SHGFI_SMALLICON = 0x1;
+        private const uint SHGFI_USEFILEATTRIBUTES = 0x10;
     }
 }

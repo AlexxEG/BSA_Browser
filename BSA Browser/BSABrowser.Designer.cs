@@ -98,6 +98,7 @@
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bwExtractFiles = new System.ComponentModel.BackgroundWorker();
+            this.filesImageList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -120,6 +121,7 @@
             this.lvFiles.Name = "lvFiles";
             this.lvFiles.ShowItemToolTips = true;
             this.lvFiles.Size = new System.Drawing.Size(499, 261);
+            this.lvFiles.SmallImageList = this.filesImageList;
             this.lvFiles.TabIndex = 0;
             this.lvFiles.UseCompatibleStateImageBehavior = false;
             this.lvFiles.View = System.Windows.Forms.View.Details;
@@ -637,6 +639,12 @@
             this.bwExtractFiles.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_ProgressChanged);
             this.bwExtractFiles.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bw_RunWorkerCompleted);
             // 
+            // filesImageList
+            // 
+            this.filesImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.filesImageList.ImageSize = new System.Drawing.Size(16, 16);
+            this.filesImageList.TransparentColor = System.Drawing.Color.Transparent;
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -737,6 +745,7 @@
         private System.Windows.Forms.MenuItem discordMenuItem;
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ImageList filesImageList;
     }
 }
 

@@ -107,6 +107,8 @@ namespace BSA_Browser
             this.SetupDebugTools();
 #endif
 
+            filesImageList.Images.Add("NoAssoc", SystemIcons.FilesNoAssoc);
+
             imageList1.Images.Add(new System.Drawing.Bitmap(16, 16));
             imageList1.Images.Add(SystemIcons.FolderSmall);
             imageList1.Images.Add(SystemIcons.Files);
@@ -340,7 +342,8 @@ namespace BSA_Browser
                 return;
 
             var file = _files[e.ItemIndex];
-            var lvi = new ListViewItem(Path.Combine(file.Folder, file.FileName));
+            var fullpath = Path.Combine(file.Folder, file.FileName);
+            var lvi = new ListViewItem(fullpath, GetFileIconIndex(fullpath));
 
             lvi.SubItems.Add(Common.FormatBytes(file.DisplaySize));
             lvi.Tag = file;
@@ -1402,6 +1405,26 @@ namespace BSA_Browser
         }
 
         #endregion
+
+        /// <summary>
+        /// Returns index for file icon in <see cref="filesImageList"/>.
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        private int GetFileIconIndex(string filepath)
+        {
+            string ext = Path.GetExtension(filepath).TrimStart('.');
+
+            // Return icon for no association if no ext
+            if (string.IsNullOrEmpty(ext))
+                return 0;
+
+            // Add missing icons
+            if (!filesImageList.Images.ContainsKey(ext))
+                filesImageList.Images.Add(ext, SystemIcons.GetFileIcon(filepath));
+
+            return filesImageList.Images.IndexOfKey(ext);
+        }
 
         /// <summary>
         /// Returns the root node of the given <see cref="TreeNode"/>.
