@@ -108,8 +108,8 @@ namespace BSA_Browser
 #endif
 
             imageList1.Images.Add(new System.Drawing.Bitmap(16, 16));
-            imageList1.Images.Add(DefaultIcons.FolderSmall);
-            imageList1.Images.Add(DefaultIcons.Files);
+            imageList1.Images.Add(SystemIcons.FolderSmall);
+            imageList1.Images.Add(SystemIcons.Files);
             imageList1.Images.Add((System.Drawing.Icon)this.Icon.Clone());
         }
 
