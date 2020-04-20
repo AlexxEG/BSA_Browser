@@ -227,7 +227,7 @@
             this.tvFolders.HideSelection = false;
             this.tvFolders.ImageIndex = 0;
             this.tvFolders.ImageList = this.imageList1;
-            this.tvFolders.ItemHeight = 18;
+            this.tvFolders.ItemHeight = 19;
             this.tvFolders.Location = new System.Drawing.Point(0, 0);
             this.tvFolders.Name = "tvFolders";
             this.tvFolders.SelectedImageIndex = 0;
