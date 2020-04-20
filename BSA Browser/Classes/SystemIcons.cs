@@ -10,12 +10,12 @@ namespace BSA_Browser.Classes
     {
         private static Dictionary<string, Icon> _cache = new Dictionary<string, Icon>();
 
-        public static Icon Files => GetCachedIcon(nameof(Files), SHSTOCKICONID.SIID_DRIVEFIXED, SHGSI_SMALLICON);
-        public static Icon FilesNoAssoc => GetCachedIcon(nameof(FilesNoAssoc), SHSTOCKICONID.SIID_DOCNOASSOC, SHGSI_SMALLICON);
-        public static Icon FolderLarge => GetCachedIcon(nameof(FolderLarge), SHSTOCKICONID.SIID_FOLDER, SHGSI_LARGEICON);
-        public static Icon FolderSmall => GetCachedIcon(nameof(FolderSmall), SHSTOCKICONID.SIID_FOLDER, SHGSI_SMALLICON);
-        public static Icon FolderLargeOpen => GetCachedIcon(nameof(FolderLargeOpen), SHSTOCKICONID.SIID_FOLDEROPEN, SHGSI_LARGEICON);
-        public static Icon FolderSmallOpen => GetCachedIcon(nameof(FolderSmallOpen), SHSTOCKICONID.SIID_FOLDEROPEN, SHGSI_SMALLICON);
+        public static Icon Files => GetCachedIcon(nameof(Files), SHSTOCKICONID.SIID_DRIVEFIXED, SHGFI_SMALLICON);
+        public static Icon FilesNoAssoc => GetCachedIcon(nameof(FilesNoAssoc), SHSTOCKICONID.SIID_DOCNOASSOC, SHGFI_SMALLICON);
+        public static Icon FolderLarge => GetCachedIcon(nameof(FolderLarge), SHSTOCKICONID.SIID_FOLDER, SHGFI_LARGEICON);
+        public static Icon FolderSmall => GetCachedIcon(nameof(FolderSmall), SHSTOCKICONID.SIID_FOLDER, SHGFI_SMALLICON);
+        public static Icon FolderLargeOpen => GetCachedIcon(nameof(FolderLargeOpen), SHSTOCKICONID.SIID_FOLDEROPEN, SHGFI_LARGEICON);
+        public static Icon FolderSmallOpen => GetCachedIcon(nameof(FolderSmallOpen), SHSTOCKICONID.SIID_FOLDEROPEN, SHGFI_SMALLICON);
 
         private static Icon GetCachedIcon(string name, SHSTOCKICONID type, uint size)
         {
@@ -29,7 +29,7 @@ namespace BSA_Browser.Classes
             var info = new SHSTOCKICONINFO();
             info.cbSize = (uint)Marshal.SizeOf(info);
 
-            SHGetStockIconInfo((uint)type, SHGSI_ICON | size, ref info);
+            SHGetStockIconInfo((uint)type, SHGFI_ICON | size, ref info);
 
             var icon = (Icon)Icon.FromHandle(info.hIcon).Clone(); // Get a copy that doesn't use the original handle
             DestroyIcon(info.hIcon); // Clean up native icon to prevent resource leak
@@ -63,8 +63,8 @@ namespace BSA_Browser.Classes
             SIID_DRIVEFIXED = 0x8
         }
 
-        private const uint SHGSI_ICON = 0x100;
-        private const uint SHGSI_LARGEICON = 0x0;
-        private const uint SHGSI_SMALLICON = 0x1;
+        private const uint SHGFI_ICON = 0x100;
+        private const uint SHGFI_LARGEICON = 0x0;
+        private const uint SHGFI_SMALLICON = 0x1;
     }
 }
