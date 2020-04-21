@@ -42,8 +42,10 @@ namespace BSA_Browser.Extensions
             lv.HideFocusRectangle();
 
             // Re-hide focus rectangle after certain events
-            lv.Enter += delegate { lv.HideFocusRectangle(); };
-            lv.SelectedIndexChanged += delegate { lv.HideFocusRectangle(); };
+            lv.Enter -= ListView_Enter;
+            lv.Enter += ListView_Enter;
+            lv.SelectedIndexChanged -= ListView_SelectedIndexChanged;
+            lv.SelectedIndexChanged += ListView_SelectedIndexChanged;
         }
 
         public static void SetCue(this TextBox txt, string cue)
@@ -61,6 +63,16 @@ namespace BSA_Browser.Extensions
                 TVM_SETEXTENDEDSTYLE,
                 TVS_EX_AUTOHSCROLL,
                 TVS_EX_AUTOHSCROLL);
+        }
+
+        private static void ListView_Enter(object sender, EventArgs e)
+        {
+            (sender as ListView).HideFocusRectangle();
+        }
+
+        private static void ListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            (sender as ListView).HideFocusRectangle();
         }
     }
 }
