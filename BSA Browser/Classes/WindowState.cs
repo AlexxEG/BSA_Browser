@@ -280,7 +280,10 @@ namespace BSA_Browser.Classes
 
                 if (this.SplitterDistances.ContainsKey(key))
                 {
-                    splitContainer.SplitterDistance = this.SplitterDistances[key];
+                    int saved = this.SplitterDistances[key];
+                    int distance = Math.Max(splitContainer.Panel1MinSize, Math.Min(saved, splitContainer.Width - splitContainer.Panel2MinSize));
+
+                    splitContainer.SplitterDistance = distance;
                 }
             }
         }
