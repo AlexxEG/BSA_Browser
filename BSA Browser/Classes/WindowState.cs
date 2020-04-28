@@ -36,6 +36,27 @@ namespace BSA_Browser.Classes
         public Dictionary<string, int> SplitterDistances { get; set; }
 
         /// <summary>
+        /// Class to hold all attributes for easy editing.
+        /// </summary>
+        private class Attributes
+        {
+            public const string Name = "name";
+            public const string X = "x";
+            public const string Y = "y";
+            public const string Height = "height";
+            public const string Width = "width";
+            public const string WindowState = "windowState";
+
+            public const string Column = "column";
+            public const string ColumnName = "name";
+            public const string ColumnWidth = "width";
+
+            public const string Splitter = "splitter";
+            public const string SplitterName = "name";
+            public const string SplitterDistance = "distance";
+        }
+
+        /// <summary>
         /// Used by <see cref="IXmlSerializable"/>, shouldn't be used.
         /// </summary>
         private WindowState()
@@ -66,7 +87,11 @@ namespace BSA_Browser.Classes
         /// width and <see cref="SplitContainer"/> splitter distance.
         /// </summary>
         /// <param name="form">The <see cref="Form"/> to restore.</param>
-        public void RestoreForm(Form form, bool location = true, bool size = true, bool restoreColumns = true, bool restoreSplitContainers = true)
+        public void RestoreForm(Form form,
+                                bool location = true,
+                                bool size = true,
+                                bool restoreColumns = true,
+                                bool restoreSplitContainers = true)
         {
             // Check if Location has value, and if not let Windows chose starting location
             if (location && this.Location.HasValue)
@@ -94,7 +119,9 @@ namespace BSA_Browser.Classes
         /// width and <see cref="SplitContainer"/> splitter distance.
         /// </summary>
         /// <param name="form">The <see cref="Form"/> to save.</param>
-        public void SaveForm(Form form, bool saveColumns = true, bool saveSplitContainers = true)
+        public void SaveForm(Form form,
+                             bool saveColumns = true,
+                             bool saveSplitContainers = true)
         {
             if (!(form.WindowState == FormWindowState.Maximized))
             {
@@ -132,10 +159,16 @@ namespace BSA_Browser.Classes
         /// <param name="reader">The stream from which the object will be deserialized.</param>
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            this.FormName = reader.GetAttribute("name");
-            this.Location = new Point(int.Parse(reader.GetAttribute("x")), int.Parse(reader.GetAttribute("y")));
-            this.Size = new Size(int.Parse(reader.GetAttribute("width")), int.Parse(reader.GetAttribute("height")));
-            this.FormWindowState = (FormWindowState)Enum.Parse(typeof(FormWindowState), reader.GetAttribute("windowState"), true);
+            this.FormName = reader.GetAttribute(Attributes.Name);
+            this.Location = new Point(
+                int.Parse(reader.GetAttribute(Attributes.X)),
+                int.Parse(reader.GetAttribute(Attributes.Y))
+            );
+            this.Size = new Size(
+                int.Parse(reader.GetAttribute(Attributes.Width)),
+                int.Parse(reader.GetAttribute(Attributes.Height))
+            );
+            this.FormWindowState = (FormWindowState)Enum.Parse(typeof(FormWindowState), reader.GetAttribute(Attributes.WindowState), true);
 
             if (reader.IsEmptyElement)
                 return;
@@ -146,18 +179,18 @@ namespace BSA_Browser.Classes
             {
                 switch (reader.LocalName)
                 {
-                    case "column":
+                    case Attributes.Column:
                         {
-                            string name = reader.GetAttribute("name");
-                            int width = int.Parse(reader.GetAttribute("width"));
+                            string name = reader.GetAttribute(Attributes.ColumnName);
+                            int width = int.Parse(reader.GetAttribute(Attributes.ColumnWidth));
 
                             this.ColumnWidths.Add(name, width);
                             break;
                         }
-                    case "splitter":
+                    case Attributes.Splitter:
                         {
-                            string name = reader.GetAttribute("name");
-                            int distance = int.Parse(reader.GetAttribute("distance"));
+                            string name = reader.GetAttribute(Attributes.SplitterName);
+                            int distance = int.Parse(reader.GetAttribute(Attributes.SplitterDistance));
 
                             this.SplitterDistances.Add(name, distance);
                             break;
@@ -172,26 +205,26 @@ namespace BSA_Browser.Classes
         /// <param name="writer">The stream to which this object will be serialized.</param>
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            writer.WriteAttributeString("name", this.FormName);
-            writer.WriteAttributeString("x", this.Location.X.ToString());
-            writer.WriteAttributeString("y", this.Location.Y.ToString());
-            writer.WriteAttributeString("width", this.Size.Width.ToString());
-            writer.WriteAttributeString("height", this.Size.Height.ToString());
-            writer.WriteAttributeString("windowState", this.FormWindowState.ToString());
+            writer.WriteAttributeString(Attributes.Name, this.FormName);
+            writer.WriteAttributeString(Attributes.X, this.Location.Value.X.ToString());
+            writer.WriteAttributeString(Attributes.Y, this.Location.Value.Y.ToString());
+            writer.WriteAttributeString(Attributes.Width, this.Size.Width.ToString());
+            writer.WriteAttributeString(Attributes.Height, this.Size.Height.ToString());
+            writer.WriteAttributeString(Attributes.WindowState, this.FormWindowState.ToString());
 
             foreach (var pair in this.ColumnWidths)
             {
-                writer.WriteStartElement("column");
-                writer.WriteAttributeString("name", pair.Key);
-                writer.WriteAttributeString("width", pair.Value.ToString());
+                writer.WriteStartElement(Attributes.Column);
+                writer.WriteAttributeString(Attributes.ColumnName, pair.Key);
+                writer.WriteAttributeString(Attributes.ColumnWidth, pair.Value.ToString());
                 writer.WriteEndElement();
             }
 
             foreach (var pair in this.SplitterDistances)
             {
-                writer.WriteStartElement("splitter");
-                writer.WriteAttributeString("name", pair.Key);
-                writer.WriteAttributeString("distance", pair.Value.ToString());
+                writer.WriteStartElement(Attributes.Splitter);
+                writer.WriteAttributeString(Attributes.SplitterName, pair.Key);
+                writer.WriteAttributeString(Attributes.SplitterDistance, pair.Value.ToString());
                 writer.WriteEndElement();
             }
         }
