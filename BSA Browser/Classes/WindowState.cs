@@ -21,7 +21,7 @@ namespace BSA_Browser.Classes
         /// <summary>
         /// Gets or sets the saved <see cref="Form"/> location.
         /// </summary>
-        public Point Location { get; set; }
+        public Point? Location { get; set; } = null;
         /// <summary>
         /// Gets or sets the saved <see cref="Form"/> window state.
         /// </summary>
@@ -68,9 +68,10 @@ namespace BSA_Browser.Classes
         /// <param name="form">The <see cref="Form"/> to restore.</param>
         public void RestoreForm(Form form, bool location = true, bool size = true, bool restoreColumns = true, bool restoreSplitContainers = true)
         {
-            if (location && !this.Location.IsEmpty)
+            // Check if Location has value, and if not let Windows chose starting location
+            if (location && this.Location.HasValue)
             {
-                form.Location = this.Location;
+                form.Location = SanitizeLocation(this.Size, this.Location.Value);
             }
 
             if (size && !this.Size.IsEmpty)
@@ -247,6 +248,19 @@ namespace BSA_Browser.Classes
             }
 
             return columns.ToArray();
+        }
+
+        /// <summary>
+        /// Makes sure <paramref name="location"/> is always within the viewable desktop area.
+        /// </summary>
+        private Point SanitizeLocation(Size formSize, Point location)
+        {
+            // Ensure a grabbable area of the title bar is visible
+            int minX = (formSize.Width * -1) + 200;
+            int minY = 0;
+            return new Point(
+                Math.Max(minX, location.X),
+                Math.Max(minY, location.Y));
         }
 
         /// <summary>
