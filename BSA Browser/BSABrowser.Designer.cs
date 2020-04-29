@@ -33,6 +33,7 @@
             this.lvFiles = new System.Windows.Forms.ListView();
             this.columnFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnFileSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.filesImageList = new System.Windows.Forms.ImageList(this.components);
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnExtractAll = new System.Windows.Forms.Button();
             this.OpenArchiveDialog = new System.Windows.Forms.OpenFileDialog();
@@ -98,7 +99,6 @@
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bwExtractFiles = new System.ComponentModel.BackgroundWorker();
-            this.filesImageList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -144,6 +144,12 @@
             this.columnFileSize.Text = "File Size";
             this.columnFileSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnFileSize.Width = 80;
+            // 
+            // filesImageList
+            // 
+            this.filesImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.filesImageList.ImageSize = new System.Drawing.Size(16, 16);
+            this.filesImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // btnOpen
             // 
@@ -638,12 +644,6 @@
             this.bwExtractFiles.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bw_DoWork);
             this.bwExtractFiles.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_ProgressChanged);
             this.bwExtractFiles.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bw_RunWorkerCompleted);
-            // 
-            // filesImageList
-            // 
-            this.filesImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.filesImageList.ImageSize = new System.Drawing.Size(16, 16);
-            this.filesImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // BSABrowser
             // 

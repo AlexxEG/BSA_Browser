@@ -67,6 +67,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lvPreviewing = new System.Windows.Forms.ListView();
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chbIconsFolderTree = new System.Windows.Forms.CheckBox();
+            this.chbIconsFileList = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -75,6 +79,7 @@
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
@@ -214,6 +219,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.btnResetToDefault);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.chbCheckForUpdates);
@@ -423,6 +429,51 @@
             this.columnHeader4.Text = "File Type";
             this.columnHeader4.Width = 240;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.chbIconsFileList);
+            this.groupBox3.Controls.Add(this.chbIconsFolderTree);
+            this.groupBox3.Location = new System.Drawing.Point(13, 198);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(177, 85);
+            this.groupBox3.TabIndex = 4;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Icons";
+            // 
+            // chbIconsFolderTree
+            // 
+            this.chbIconsFolderTree.AutoSize = true;
+            this.chbIconsFolderTree.Location = new System.Drawing.Point(9, 55);
+            this.chbIconsFolderTree.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.chbIconsFolderTree.Name = "chbIconsFolderTree";
+            this.chbIconsFolderTree.Size = new System.Drawing.Size(80, 17);
+            this.chbIconsFolderTree.TabIndex = 1;
+            this.chbIconsFolderTree.Text = "Folder Tree";
+            this.chbIconsFolderTree.UseVisualStyleBackColor = true;
+            // 
+            // chbIconsFileList
+            // 
+            this.chbIconsFileList.AutoSize = true;
+            this.chbIconsFileList.Location = new System.Drawing.Point(9, 38);
+            this.chbIconsFileList.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.chbIconsFileList.Name = "chbIconsFileList";
+            this.chbIconsFileList.Size = new System.Drawing.Size(61, 17);
+            this.chbIconsFileList.TabIndex = 0;
+            this.chbIconsFileList.Text = "File List";
+            this.chbIconsFileList.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 19);
+            this.label4.Margin = new System.Windows.Forms.Padding(3);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(76, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Show icons in:";
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOK;
@@ -451,6 +502,8 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -484,5 +537,9 @@
         private System.Windows.Forms.CheckBox chbCheckForUpdates;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnResetToDefault;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox chbIconsFileList;
+        private System.Windows.Forms.CheckBox chbIconsFolderTree;
+        private System.Windows.Forms.Label label4;
     }
 }

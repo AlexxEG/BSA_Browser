@@ -34,6 +34,9 @@ namespace BSA_Browser
             cbEncodings.Items.AddRange(_encodings);
             cbEncodings.SelectedItem = Encoding.GetEncoding(Settings.Default.EncodingCodePage);
 
+            chbIconsFileList.Checked = Settings.Default.Icons.HasFlag(Enums.Icons.FileList);
+            chbIconsFolderTree.Checked = Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree);
+
             foreach (var path in Settings.Default.QuickExtractPaths)
             {
                 var item = new ListViewItem(path.Name);
@@ -168,6 +171,11 @@ namespace BSA_Browser
             Settings.Default.SortArchiveDirectories = chbSortBSADirectories.Checked;
             Settings.Default.RetrieveRealSize = chbRetrieveRealSize.Checked;
             Settings.Default.EncodingCodePage = (cbEncodings.SelectedItem as Encoding).CodePage;
+
+            Enums.Icons icons = Enums.Icons.None;
+            if (chbIconsFileList.Checked) icons |= Enums.Icons.FileList;
+            if (chbIconsFolderTree.Checked) icons |= Enums.Icons.FolderTree;
+            Settings.Default.Icons = icons;
 
             Settings.Default.QuickExtractPaths.Clear();
             Settings.Default.QuickExtractPaths.AddRange(lvQuickExtract.Items

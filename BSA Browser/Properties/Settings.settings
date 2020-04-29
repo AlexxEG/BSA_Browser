@@ -58,5 +58,8 @@
     <Setting Name="CheckForUpdates" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="Icons" Type="BSA_Browser.Enums.Icons" Scope="User">
+      <Value Profile="(Default)">FileList,FolderTree</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

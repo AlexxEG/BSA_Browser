@@ -540,6 +540,8 @@ namespace BSA_Browser
                     // Sync changes to UI
                     this.LoadQuickExtractPaths();
 
+                    this.RefreshIcons();
+
                     // Add 2 to include the permanent menu items
                     while (recentFilesMenuItem.MenuItems.Count > (Settings.Default.RecentFiles_MaxFiles + 2))
                     {
@@ -1414,6 +1416,9 @@ namespace BSA_Browser
         /// <returns></returns>
         private int GetFileIconIndex(string filepath)
         {
+            if (lvFiles.SmallImageList == null)
+                return -1;
+
             string ext = Path.GetExtension(filepath).TrimStart('.');
 
             // Return icon for no association if no ext
@@ -1596,6 +1601,40 @@ namespace BSA_Browser
             return recentFilesMenuItem.MenuItems
                 .Cast<MenuItem>()
                 .First(x => x.Tag != null && x.Tag.ToString() == file);
+        }
+
+        private void RefreshIcons()
+        {
+            bool requiresReloadFiles = (!Settings.Default.Icons.HasFlag(Enums.Icons.FileList) && lvFiles.SmallImageList != null) ||
+                                       (Settings.Default.Icons == Enums.Icons.None && lvFiles.SmallImageList != null);
+            bool requiresReloadFolders = (!Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree) && tvFolders.ImageList != null) ||
+                                         (Settings.Default.Icons == Enums.Icons.None && tvFolders.ImageList != null);
+
+            if (requiresReloadFiles)
+            {
+                lvFiles.SmallImageList = null;
+                // Need to call this to fix icon spacing persisting after disabling
+                lvFiles.GetType().GetMethod(
+                    "RecreateHandle",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                .Invoke(lvFiles, null);
+                lvFiles.EnableVisualStyles();
+            }
+
+            if (requiresReloadFolders)
+            {
+                tvFolders.ImageList = null;
+            }
+
+            if (Settings.Default.Icons.HasFlag(Enums.Icons.FileList))
+            {
+                lvFiles.SmallImageList = filesImageList;
+            }
+
+            if (Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree))
+            {
+                tvFolders.ImageList = imageList1;
+            }
         }
 
         /// <summary>

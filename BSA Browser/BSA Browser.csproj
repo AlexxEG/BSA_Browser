@@ -110,6 +110,7 @@
     <Compile Include="Controls\ReorderableItemListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Enums\Icons.cs" />
     <Compile Include="Extensions\VisualStyleExtensions.cs" />
     <Compile Include="DDSViewer.cs">
       <SubType>Form</SubType>

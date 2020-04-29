@@ -210,5 +210,17 @@ namespace BSA_Browser.Properties {
                 this["CheckForUpdates"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("FileList,FolderTree")]
+        public global::BSA_Browser.Enums.Icons Icons {
+            get {
+                return ((global::BSA_Browser.Enums.Icons)(this["Icons"]));
+            }
+            set {
+                this["Icons"] = value;
+            }
+        }
     }
 }
