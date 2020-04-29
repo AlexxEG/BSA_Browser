@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using MsVB = Microsoft.VisualBasic.ApplicationServices;
 
 namespace BSA_Browser
 {
@@ -81,13 +82,13 @@ namespace BSA_Browser
     ///  We inherit from WindowsFormApplicationBase which contains the logic for the application model, including
     ///  the single-instance functionality.
     /// </summary>
-    class App : Microsoft.VisualBasic.ApplicationServices.WindowsFormsApplicationBase
+    class App : MsVB.WindowsFormsApplicationBase
     {
         public App()
         {
             this.IsSingleInstance = true; // makes this a single-instance app
             this.EnableVisualStyles = true; // C# windowsForms apps typically turn this on.  We'll do the same thing here.
-            this.ShutdownStyle = Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses; // the vb app model supports two different shutdown styles.  We'll use this one for the sample.
+            this.ShutdownStyle = MsVB.ShutdownMode.AfterMainFormCloses; // the vb app model supports two different shutdown styles.  We'll use this one for the sample.
         }
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace BSA_Browser
         /// and then the subsequent instances will just exit.  You might use this method to open the requested doc, or whatever 
         /// </summary>
         /// <param name="eventArgs"></param>
-        protected override void OnStartupNextInstance(Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs eventArgs)
+        protected override void OnStartupNextInstance(MsVB.StartupNextInstanceEventArgs eventArgs)
         {
             base.OnStartupNextInstance(eventArgs);
             eventArgs.BringToForeground = true;
