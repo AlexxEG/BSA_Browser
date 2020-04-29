@@ -42,7 +42,7 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tvFolders = new System.Windows.Forms.TreeView();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.foldersImageList = new System.Windows.Forms.ImageList(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.cbRegex = new System.Windows.Forms.CheckBox();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
@@ -121,7 +121,6 @@
             this.lvFiles.Name = "lvFiles";
             this.lvFiles.ShowItemToolTips = true;
             this.lvFiles.Size = new System.Drawing.Size(499, 261);
-            this.lvFiles.SmallImageList = this.filesImageList;
             this.lvFiles.TabIndex = 0;
             this.lvFiles.UseCompatibleStateImageBehavior = false;
             this.lvFiles.View = System.Windows.Forms.View.Details;
@@ -231,12 +230,9 @@
             this.tvFolders.AllowDrop = true;
             this.tvFolders.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvFolders.HideSelection = false;
-            this.tvFolders.ImageIndex = 0;
-            this.tvFolders.ImageList = this.imageList1;
             this.tvFolders.ItemHeight = 19;
             this.tvFolders.Location = new System.Drawing.Point(0, 0);
             this.tvFolders.Name = "tvFolders";
-            this.tvFolders.SelectedImageIndex = 0;
             this.tvFolders.Size = new System.Drawing.Size(107, 261);
             this.tvFolders.TabIndex = 0;
             this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
@@ -244,11 +240,11 @@
             this.tvFolders.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
             this.tvFolders.DragOver += new System.Windows.Forms.DragEventHandler(this.File_DragOver);
             // 
-            // imageList1
+            // foldersImageList
             // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.foldersImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.foldersImageList.ImageSize = new System.Drawing.Size(16, 16);
+            this.foldersImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // splitContainer1
             // 
@@ -744,7 +740,7 @@
         private System.Windows.Forms.MenuItem githubMenuItem;
         private System.Windows.Forms.MenuItem discordMenuItem;
         private System.Windows.Forms.MenuItem menuItem2;
-        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ImageList foldersImageList;
         private System.Windows.Forms.ImageList filesImageList;
     }
 }

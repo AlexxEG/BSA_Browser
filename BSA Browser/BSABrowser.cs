@@ -109,10 +109,20 @@ namespace BSA_Browser
 
             filesImageList.Images.Add("NoAssoc", SystemIcons.FilesNoAssoc);
 
-            imageList1.Images.Add(new System.Drawing.Bitmap(16, 16));
-            imageList1.Images.Add(SystemIcons.FolderSmall);
-            imageList1.Images.Add(SystemIcons.Files);
-            imageList1.Images.Add((System.Drawing.Icon)this.Icon.Clone());
+            foldersImageList.Images.Add(new System.Drawing.Bitmap(16, 16));
+            foldersImageList.Images.Add(SystemIcons.FolderSmall);
+            foldersImageList.Images.Add(SystemIcons.Files);
+            foldersImageList.Images.Add((System.Drawing.Icon)this.Icon.Clone());
+
+            if (Settings.Default.Icons.HasFlag(Enums.Icons.FileList))
+            {
+                lvFiles.SmallImageList = filesImageList;
+            }
+
+            if (Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree))
+            {
+                tvFolders.ImageList = foldersImageList;
+            }
         }
 
 #if DEBUG
@@ -1633,7 +1643,7 @@ namespace BSA_Browser
 
             if (Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree))
             {
-                tvFolders.ImageList = imageList1;
+                tvFolders.ImageList = foldersImageList;
             }
         }
 
