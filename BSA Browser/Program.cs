@@ -67,14 +67,43 @@ namespace BSA_Browser
             return $"{v.Major}.{v.Minor}.{v.Build}";
         }
 
+        private static bool HasWriteAccess(string folderPath)
+        {
+            try
+            {
+                System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(folderPath);
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
+        }
+
         private static void SaveException(Exception exception)
         {
             string dir = Path.Combine(Application.StartupPath, "stack traces");
 
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
+            try
+            {
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BSA Browser", "stack traces");
 
-            File.WriteAllText(Path.Combine(dir, DateTime.Now.ToString("yyyy.MM.dd-HH-mm-ss-fff")) + ".log", exception.ToString());
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                File.WriteAllText(Path.Combine(dir, DateTime.Now.ToString("yyyy.MM.dd-HH-mm-ss-fff")) + ".log", exception.ToString());
+            }
         }
     }
 
