@@ -124,9 +124,11 @@ namespace BSA_Browser
         {
             lvFiles.Columns.Add("Extra", 200);
 
-            toolsMenuItem.MenuItems.Add("-");
-            toolsMenuItem.MenuItems.Add("Average extraction speed of selected item", ExtractionSpeedAverage_Click);
-            toolsMenuItem.MenuItems.Add("Check if all textures formats are supported", CheckTextureFormats_Click);
+            MenuItem debugMenuItem = new MenuItem("DEBUG");
+            mainMenu1.MenuItems.Add(debugMenuItem);
+
+            debugMenuItem.MenuItems.Add("Average extraction speed of selected item", ExtractionSpeedAverage_Click);
+            debugMenuItem.MenuItems.Add("Check if all textures formats are supported", CheckTextureFormats_Click);
         }
 
         private void ExtractionSpeedAverage_Click(object sender, EventArgs e)
