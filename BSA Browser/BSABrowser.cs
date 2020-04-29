@@ -392,8 +392,8 @@ namespace BSA_Browser
             {
                 string path = Path.GetDirectoryName(lvi.FullPath);
 
-                if (!directoriesWithFiles.Contains(path))
-                    directoriesWithFiles.Add(path);
+                if (!directoriesWithFiles.Contains(path.ToLower()))
+                    directoriesWithFiles.Add(path.ToLower());
 
                 // Ignore files under root node and already processed nodes
                 if (path == string.Empty || nodes.ContainsKey(path.ToLower()))
@@ -425,7 +425,7 @@ namespace BSA_Browser
             foreach (var node in nodes)
             {
                 // Only add if there are sub nodes. Node without sub nodes already behaves the same
-                if (node.Value.Nodes.Count > 0 && directoriesWithFiles.Contains(node.Key))
+                if (node.Value.Nodes.Count > 0 && directoriesWithFiles.Contains(node.Key.ToLower()))
                     node.Value.Nodes.Insert(0, new TreeNode("<Files>", 2, 2) { Tag = node.Key });
             }
 
@@ -458,7 +458,7 @@ namespace BSA_Browser
                     if (e.Node.Text == "<Files>")
                     {
                         // Show files in current node, not including sub nodes
-                        if (selectedPath == path) lvis.Add(lvi);
+                        if (selectedPath.ToLower() == path) lvis.Add(lvi);
                     }
                     else
                     {
