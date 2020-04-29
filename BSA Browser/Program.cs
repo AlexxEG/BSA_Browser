@@ -25,25 +25,26 @@ namespace BSA_Browser
         static void Main(string[] args)
         {
             Application.SetCompatibleTextRenderingDefault(false);
+
+#if (!DEBUG)
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+#endif
 
             new App().Run(args);
         }
 
+#if (!DEBUG)
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-#if (!DEBUG)
             Program.SaveException(e.ExceptionObject as Exception);
-#endif
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-#if (!DEBUG)
             Program.SaveException(e.Exception);
-#endif
         }
+#endif
 
         internal static string CreateTempDirectory()
         {
@@ -67,6 +68,7 @@ namespace BSA_Browser
             return $"{v.Major}.{v.Minor}.{v.Build}";
         }
 
+#if (!DEBUG)
         private static bool HasWriteAccess(string folderPath)
         {
             try
@@ -105,6 +107,7 @@ namespace BSA_Browser
                 File.WriteAllText(Path.Combine(dir, DateTime.Now.ToString("yyyy.MM.dd-HH-mm-ss-fff")) + ".log", exception.ToString());
             }
         }
+#endif
     }
 
     /// <summary>
