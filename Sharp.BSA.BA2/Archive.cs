@@ -63,9 +63,9 @@ namespace SharpBSABA2
             this.BinaryReader?.Close();
         }
 
-        public void Extract(string filePath, string destination, bool preserveFolder)
+        public void Extract(string filePath, string destination, bool preserveFolder, bool overwrite = false)
         {
-            this.FindFile(filePath).Extract(destination, preserveFolder);
+            this.FindFile(filePath).Extract(destination, preserveFolder, overwrite);
         }
 
         public ArchiveEntry FindFile(string fullpath)
