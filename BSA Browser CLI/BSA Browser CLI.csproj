@@ -34,6 +34,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowedReferenceRelatedFileExtensions>
+      <!-- Prevent default XML and PDB files copied to output in RELEASE. 
+Only *.allowedextension files will be included, which doesn't exist in my case.
+-->
+      .none
+    </AllowedReferenceRelatedFileExtensions>
+    <DebugType>None</DebugType>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>BSA_Browser_CLI.Program</StartupObject>
@@ -62,8 +69,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <EmbeddedResource Include="App.config" />
+    <EmbeddedResource Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sharp.BSA.BA2\Sharp.BSA.BA2.csproj">
