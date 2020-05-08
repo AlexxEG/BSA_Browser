@@ -178,29 +178,6 @@ namespace BSA_Browser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>.dds</string>
-  <string>.bmp</string>
-  <string>.png</string>
-  <string>.jpg</string>
-  <string>.txt</string>
-  <string>.xml</string>
-  <string>.lst</string>
-  <string>.psc</string>
-  <string>.json</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection UseBuiltInPreview {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["UseBuiltInPreview"]));
-            }
-            set {
-                this["UseBuiltInPreview"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool CheckForUpdates {
             get {
@@ -213,13 +190,37 @@ namespace BSA_Browser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("FileList,FolderTree")]
+        [global::System.Configuration.DefaultSettingValueAttribute("FileList, FolderTree")]
         public global::BSA_Browser.Enums.Icons Icons {
             get {
                 return ((global::BSA_Browser.Enums.Icons)(this["Icons"]));
             }
             set {
                 this["Icons"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>.dds</string>
+  <string>.bmp</string>
+  <string>.png</string>
+  <string>.jpg</string>
+  <string>.txt</string>
+  <string>.bat</string>
+  <string>.xml</string>
+  <string>.lst</string>
+  <string>.psc</string>
+  <string>.json</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection BuiltInPreviewing {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["BuiltInPreviewing"]));
+            }
+            set {
+                this["BuiltInPreviewing"] = value;
             }
         }
     }

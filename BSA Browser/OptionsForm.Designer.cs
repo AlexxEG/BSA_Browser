@@ -35,10 +35,11 @@
             System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(".png");
             System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(".jpg");
             System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(".txt");
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(".xml");
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(".lst");
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(".psc");
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(".json");
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(".bat");
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(".xml");
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(".lst");
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(".psc");
+            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem(".json");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionsForm));
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -53,6 +54,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.chbIconsFileList = new System.Windows.Forms.CheckBox();
+            this.chbIconsFolderTree = new System.Windows.Forms.CheckBox();
             this.btnResetToDefault = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.chbSortBSADirectories = new System.Windows.Forms.CheckBox();
@@ -67,19 +72,15 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lvPreviewing = new System.Windows.Forms.ListView();
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.chbIconsFolderTree = new System.Windows.Forms.CheckBox();
-            this.chbIconsFileList = new System.Windows.Forms.CheckBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxRecentFiles)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
@@ -232,6 +233,51 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.chbIconsFileList);
+            this.groupBox3.Controls.Add(this.chbIconsFolderTree);
+            this.groupBox3.Location = new System.Drawing.Point(13, 198);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(177, 85);
+            this.groupBox3.TabIndex = 4;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Icons";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 19);
+            this.label4.Margin = new System.Windows.Forms.Padding(3);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(76, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Show icons in:";
+            // 
+            // chbIconsFileList
+            // 
+            this.chbIconsFileList.AutoSize = true;
+            this.chbIconsFileList.Location = new System.Drawing.Point(9, 38);
+            this.chbIconsFileList.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.chbIconsFileList.Name = "chbIconsFileList";
+            this.chbIconsFileList.Size = new System.Drawing.Size(61, 17);
+            this.chbIconsFileList.TabIndex = 0;
+            this.chbIconsFileList.Text = "File List";
+            this.chbIconsFileList.UseVisualStyleBackColor = true;
+            // 
+            // chbIconsFolderTree
+            // 
+            this.chbIconsFolderTree.AutoSize = true;
+            this.chbIconsFolderTree.Location = new System.Drawing.Point(9, 55);
+            this.chbIconsFolderTree.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.chbIconsFolderTree.Name = "chbIconsFolderTree";
+            this.chbIconsFolderTree.Size = new System.Drawing.Size(80, 17);
+            this.chbIconsFolderTree.TabIndex = 1;
+            this.chbIconsFolderTree.Text = "Folder Tree";
+            this.chbIconsFolderTree.UseVisualStyleBackColor = true;
             // 
             // btnResetToDefault
             // 
@@ -407,6 +453,8 @@
             listViewItem8.StateImageIndex = 0;
             listViewItem9.Group = listViewGroup2;
             listViewItem9.StateImageIndex = 0;
+            listViewItem10.Group = listViewGroup2;
+            listViewItem10.StateImageIndex = 0;
             this.lvPreviewing.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1,
             listViewItem2,
@@ -416,7 +464,8 @@
             listViewItem6,
             listViewItem7,
             listViewItem8,
-            listViewItem9});
+            listViewItem9,
+            listViewItem10});
             this.lvPreviewing.Location = new System.Drawing.Point(6, 19);
             this.lvPreviewing.Name = "lvPreviewing";
             this.lvPreviewing.Size = new System.Drawing.Size(576, 263);
@@ -428,51 +477,6 @@
             // 
             this.columnHeader4.Text = "File Type";
             this.columnHeader4.Width = 240;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.chbIconsFileList);
-            this.groupBox3.Controls.Add(this.chbIconsFolderTree);
-            this.groupBox3.Location = new System.Drawing.Point(13, 198);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(177, 85);
-            this.groupBox3.TabIndex = 4;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Icons";
-            // 
-            // chbIconsFolderTree
-            // 
-            this.chbIconsFolderTree.AutoSize = true;
-            this.chbIconsFolderTree.Location = new System.Drawing.Point(9, 55);
-            this.chbIconsFolderTree.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.chbIconsFolderTree.Name = "chbIconsFolderTree";
-            this.chbIconsFolderTree.Size = new System.Drawing.Size(80, 17);
-            this.chbIconsFolderTree.TabIndex = 1;
-            this.chbIconsFolderTree.Text = "Folder Tree";
-            this.chbIconsFolderTree.UseVisualStyleBackColor = true;
-            // 
-            // chbIconsFileList
-            // 
-            this.chbIconsFileList.AutoSize = true;
-            this.chbIconsFileList.Location = new System.Drawing.Point(9, 38);
-            this.chbIconsFileList.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.chbIconsFileList.Name = "chbIconsFileList";
-            this.chbIconsFileList.Size = new System.Drawing.Size(61, 17);
-            this.chbIconsFileList.TabIndex = 0;
-            this.chbIconsFileList.Text = "File List";
-            this.chbIconsFileList.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 19);
-            this.label4.Margin = new System.Windows.Forms.Padding(3);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(76, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Show icons in:";
             // 
             // OptionsForm
             // 
@@ -496,14 +500,14 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxRecentFiles)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }

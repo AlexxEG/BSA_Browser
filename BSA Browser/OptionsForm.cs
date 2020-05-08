@@ -52,7 +52,7 @@ namespace BSA_Browser
 
             foreach (ListViewItem item in lvPreviewing.Items)
             {
-                item.Checked = Settings.Default.UseBuiltInPreview.Contains(item.Text);
+                item.Checked = Settings.Default.BuiltInPreviewing.Contains(item.Text);
             }
         }
 
@@ -181,8 +181,8 @@ namespace BSA_Browser
             Settings.Default.QuickExtractPaths.AddRange(lvQuickExtract.Items
                 .Cast<ListViewItem>().Select(x => (QuickExtractPath)x.Tag));
 
-            Settings.Default.UseBuiltInPreview.Clear();
-            Settings.Default.UseBuiltInPreview.AddRange(lvPreviewing.Items
+            Settings.Default.BuiltInPreviewing.Clear();
+            Settings.Default.BuiltInPreviewing.AddRange(lvPreviewing.Items
                 .Cast<ListViewItem>().Where(x => x.Checked).Select(x => x.Text).ToArray());
         }
     }

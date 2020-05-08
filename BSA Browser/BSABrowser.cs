@@ -1540,7 +1540,7 @@ namespace BSA_Browser
                         return;
                     }
 
-                    if (!Settings.Default.UseBuiltInPreview.Contains(extension))
+                    if (!Settings.Default.BuiltInPreviewing.Contains(extension))
                         goto default;
 
                     if (fe is BA2GNFEntry)
@@ -1560,11 +1560,12 @@ namespace BSA_Browser
                     }
                     break;
                 case ".txt":
+                case ".bat":
                 case ".xml":
                 case ".lst":
                 case ".psc":
                 case ".json":
-                    if (!Settings.Default.UseBuiltInPreview.Contains(extension))
+                    if (!Settings.Default.BuiltInPreviewing.Contains(extension))
                         goto default;
 
                     new TextViewer(fe).Show(this);

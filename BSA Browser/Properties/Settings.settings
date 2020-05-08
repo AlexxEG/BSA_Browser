@@ -41,7 +41,13 @@
     <Setting Name="EncodingCodePage" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">65000</Value>
     </Setting>
-    <Setting Name="UseBuiltInPreview" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="CheckForUpdates" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Icons" Type="BSA_Browser.Enums.Icons" Scope="User">
+      <Value Profile="(Default)">FileList, FolderTree</Value>
+    </Setting>
+    <Setting Name="BuiltInPreviewing" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;.dds&lt;/string&gt;
@@ -49,17 +55,12 @@
   &lt;string&gt;.png&lt;/string&gt;
   &lt;string&gt;.jpg&lt;/string&gt;
   &lt;string&gt;.txt&lt;/string&gt;
+  &lt;string&gt;.bat&lt;/string&gt;
   &lt;string&gt;.xml&lt;/string&gt;
   &lt;string&gt;.lst&lt;/string&gt;
   &lt;string&gt;.psc&lt;/string&gt;
   &lt;string&gt;.json&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
-    </Setting>
-    <Setting Name="CheckForUpdates" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="Icons" Type="BSA_Browser.Enums.Icons" Scope="User">
-      <Value Profile="(Default)">FileList,FolderTree</Value>
     </Setting>
   </Settings>
 </SettingsFile>
