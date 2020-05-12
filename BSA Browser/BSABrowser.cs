@@ -448,16 +448,18 @@ namespace BSA_Browser
         private void tvFolders_AfterSelect(object sender, TreeViewEventArgs e)
         {
             var rootNode = this.GetRootNode(e.Node);
-            string path = (string)e.Node.Tag;
 
             // If AllFiles is null, trigger event which will populate it
             if (rootNode.AllFiles == null)
                 tvFolders_BeforeExpand(null, new TreeViewCancelEventArgs(e.Node, false, TreeViewAction.Unknown));
 
-            if (path == null) // Root node is selected, so show all files
+            if (e.Node.Tag == null) // Root node is selected, so show all files
                 rootNode.Files = rootNode.AllFiles.ToArray();
             else
             {
+                // Ignore casing
+                string lowerPath = ((string)e.Node.Tag).ToLower();
+
                 // Only show files under selected node
                 var lvis = new List<ArchiveEntry>(rootNode.AllFiles.Count);
 
@@ -468,12 +470,12 @@ namespace BSA_Browser
                     if (e.Node.Text == "<Files>")
                     {
                         // Show files in current node, not including sub nodes
-                        if (selectedPath.ToLower() == path) lvis.Add(lvi);
+                        if (selectedPath.ToLower() == lowerPath) lvis.Add(lvi);
                     }
                     else
                     {
                         // Show all files under current node, including sub nodes
-                        if (lvi.FullPath.Replace('/', '\\').StartsWith(path)) lvis.Add(lvi);
+                        if (lvi.FullPath.ToLower().Replace('/', '\\').StartsWith(lowerPath)) lvis.Add(lvi);
                     }
                 }
 
