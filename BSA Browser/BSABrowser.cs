@@ -570,6 +570,13 @@ namespace BSA_Browser
 
         private void emptyListMenuItem_Click(object sender, EventArgs e)
         {
+            if (MessageBox.Show(this,
+                                "Are you sure?",
+                                "Confirmation",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning) == DialogResult.No)
+                return;
+
             for (int i = recentFilesMenuItem.MenuItems.Count - 1; i != 1; i--)
                 recentFilesMenuItem.MenuItems.RemoveAt(i);
         }
