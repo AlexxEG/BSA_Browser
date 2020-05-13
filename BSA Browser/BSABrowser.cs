@@ -29,7 +29,8 @@ namespace BSA_Browser
 
     public enum SystemErrorCodes : int
     {
-        ERROR_CANCELLED = 0x4C7
+        ERROR_CANCELLED = 0x4C7,
+        ERROR_NO_ASSOCIATION = 0x483
     }
 
     public partial class BSABrowser : Form
@@ -1581,21 +1582,19 @@ namespace BSA_Browser
                     break;
                 default:
                     string dest = Program.CreateTempDirectory();
+                    string file = Path.Combine(dest, fe.FileName);
                     fe.Extract(dest, false);
 
                     try
                     {
-                        Process.Start(new ProcessStartInfo(Path.Combine(dest, fe.FileName))
-                        {
-                            ErrorDialog = true
-                        });
+                        Process.Start(new ProcessStartInfo(file));
                     }
                     catch (Win32Exception ex)
                     {
-                        if (ex.NativeErrorCode != (int)SystemErrorCodes.ERROR_CANCELLED)
-                        {
+                        if (ex.NativeErrorCode == (int)SystemErrorCodes.ERROR_NO_ASSOCIATION)
+                            ShellExecute.OpenWith(file);
+                        else if (ex.NativeErrorCode != (int)SystemErrorCodes.ERROR_CANCELLED)
                             MessageBox.Show(this, ex.Message, "Preview Error");
-                        }
                     }
                     break;
             }
