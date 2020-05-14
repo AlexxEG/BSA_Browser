@@ -240,7 +240,7 @@ namespace BSA_Browser_CLI
 #endif
         }
 
-        static void ExtractFiles(List<string> archives, string destination, bool overwrite = false)
+        static void ExtractFiles(List<string> archives, string destination, bool overwrite)
         {
             archives.ForEach(archivePath =>
             {
@@ -262,6 +262,7 @@ namespace BSA_Browser_CLI
                 int total = archive.Files.Count(x => Filter(x.FullPath));
                 int line = -1;
                 int prevLength = 0;
+                int skipped = 0;
 
                 // Some Console properties might not be available in certain situations, 
                 // e.g. when redirecting stdout. To prevent crashing, setting the cursor position should only
@@ -294,7 +295,14 @@ namespace BSA_Browser_CLI
 
                     try
                     {
-                        entry.Extract(destination, true, overwrite);
+                        if (!overwrite && File.Exists(Path.Combine(destination, entry.FullPath)))
+                        {
+                            skipped++;
+                        }
+                        else
+                        {
+                            entry.Extract(destination, true);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -306,6 +314,9 @@ namespace BSA_Browser_CLI
                 }
 
                 Console.WriteLine();
+
+                if (skipped > 0)
+                    Console.WriteLine($"Skipped {skipped} existing files");
             });
         }
 

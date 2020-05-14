@@ -71,17 +71,17 @@ namespace SharpBSABA2
             this.Archive = archive;
         }
 
-        public virtual void Extract(bool preserveFolder, bool overwrite = false)
+        public virtual void Extract(bool preserveFolder)
         {
-            this.Extract(string.Empty, preserveFolder, overwrite);
+            this.Extract(string.Empty, preserveFolder);
         }
 
-        public virtual void Extract(string destination, bool preserveFolder, bool overwrite = false)
+        public virtual void Extract(string destination, bool preserveFolder)
         {
-            this.Extract(destination, preserveFolder, this.FileName, overwrite);
+            this.Extract(destination, preserveFolder, this.FileName);
         }
 
-        public virtual void Extract(string destination, bool preserveFolder, string newName, bool overwrite = false)
+        public virtual void Extract(string destination, bool preserveFolder, string newName)
         {
             string path = preserveFolder ? this.Folder : string.Empty;
 
@@ -93,13 +93,8 @@ namespace SharpBSABA2
             if (!Directory.Exists(Path.GetDirectoryName(path)))
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
 
-            if(overwrite == true || !File.Exists(path))
-            {
-                using (var fs = File.Create(path))
-                {
-                    this.WriteDataToStream(fs);
-                }
-            }
+            using (var fs = File.Create(path))
+                this.WriteDataToStream(fs);
         }
 
         /// <summary>
