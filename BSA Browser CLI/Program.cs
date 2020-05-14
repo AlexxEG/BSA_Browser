@@ -101,8 +101,8 @@ namespace BSA_Browser_CLI
                             break;
                         case "/o":
                         case "-o":
-                        case "--overwrite":
                         case "/overwrite":
+                        case "--overwrite":
                             this.Overwrite = true;
                             break;
                         default:
@@ -454,7 +454,7 @@ namespace BSA_Browser_CLI
             Console.WriteLine("     options               A   Prepend each line with archive filename");
             Console.WriteLine("                           F   Prepend each line with full archive file path");
             Console.WriteLine("                           S   Display file size");
-            Console.WriteLine("  -o                     Overwrite existing files");
+            Console.WriteLine("  -o, --overwrite        Overwrite existing files");
             Console.WriteLine("  -f FILTER              Simple filtering. Wildcard supported");
             Console.WriteLine("  --regex REGEX          Regex filtering");
             Console.WriteLine("  --encoding ENCODING    Set encoding to use");
