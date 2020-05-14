@@ -29,6 +29,7 @@ namespace BSA_Browser_CLI
         public bool Extract { get; private set; }
         public bool Help { get; private set; }
         public bool List { get; private set; }
+        public bool Overwrite { get; private set; }
         public bool IgnoreErrors { get; private set; }
         public bool NoHeaders { get; private set; }
 
@@ -97,6 +98,12 @@ namespace BSA_Browser_CLI
                         case "/noheaders":
                         case "--noheaders":
                             this.NoHeaders = true;
+                            break;
+                        case "/o":
+                        case "-o":
+                        case "/overwrite":
+                        case "--overwrite":
+                            this.Overwrite = true;
                             break;
                         default:
                             throw new ArgumentException("Unrecognized argument: " + arg);
@@ -215,7 +222,7 @@ namespace BSA_Browser_CLI
             {
                 try
                 {
-                    ExtractFiles(_arguments.Inputs.ToList(), _arguments.Destination);
+                    ExtractFiles(_arguments.Inputs.ToList(), _arguments.Destination, _arguments.Overwrite);
                 }
                 catch (Exception ex)
                 {
@@ -233,7 +240,7 @@ namespace BSA_Browser_CLI
 #endif
         }
 
-        static void ExtractFiles(List<string> archives, string destination)
+        static void ExtractFiles(List<string> archives, string destination, bool overwrite)
         {
             archives.ForEach(archivePath =>
             {
@@ -255,6 +262,7 @@ namespace BSA_Browser_CLI
                 int total = archive.Files.Count(x => Filter(x.FullPath));
                 int line = -1;
                 int prevLength = 0;
+                int skipped = 0;
 
                 // Some Console properties might not be available in certain situations, 
                 // e.g. when redirecting stdout. To prevent crashing, setting the cursor position should only
@@ -287,7 +295,14 @@ namespace BSA_Browser_CLI
 
                     try
                     {
-                        entry.Extract(destination, true);
+                        if (!overwrite && File.Exists(Path.Combine(destination, entry.FullPath)))
+                        {
+                            skipped++;
+                        }
+                        else
+                        {
+                            entry.Extract(destination, true);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -299,6 +314,9 @@ namespace BSA_Browser_CLI
                 }
 
                 Console.WriteLine();
+
+                if (skipped > 0)
+                    Console.WriteLine($"Skipped {skipped} existing files");
             });
         }
 
@@ -447,6 +465,7 @@ namespace BSA_Browser_CLI
             Console.WriteLine("     options               A   Prepend each line with archive filename");
             Console.WriteLine("                           F   Prepend each line with full archive file path");
             Console.WriteLine("                           S   Display file size");
+            Console.WriteLine("  -o, --overwrite        Overwrite existing files");
             Console.WriteLine("  -f FILTER              Simple filtering. Wildcard supported");
             Console.WriteLine("  --regex REGEX          Regex filtering");
             Console.WriteLine("  --encoding ENCODING    Set encoding to use");
