@@ -36,6 +36,29 @@ namespace SharpBSABA2.BA2Util
                 return this.Chunks[0].packSz != 0;
             }
         }
+        public override uint Size
+        {
+            get
+            {
+                uint size = 0;
+                bool compressed = Chunks[0].packSz != 0;
+
+                foreach (var chunk in Chunks)
+                    size += compressed ? chunk.packSz : chunk.fullSz;
+
+                return size;
+            }
+        }
+        public override uint RealSize
+        {
+            get
+            {
+                uint size = 0;
+                foreach (var chunk in Chunks)
+                    size += Math.Max(chunk.fullSz, chunk.packSz);
+                return size;
+            }
+        }
         public override uint DisplaySize
         {
             get
