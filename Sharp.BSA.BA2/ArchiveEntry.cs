@@ -115,6 +115,11 @@ namespace SharpBSABA2
             throw new NotImplementedException();
         }
 
+        public virtual string GetToolTipText()
+        {
+            return "Undefined";
+        }
+
         protected abstract void WriteDataToStream(Stream stream);
     }
 }

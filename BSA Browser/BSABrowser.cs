@@ -359,6 +359,7 @@ namespace BSA_Browser
             var lvi = new ListViewItem(fullpath, GetFileIconIndex(fullpath));
 
             lvi.SubItems.Add(Common.FormatBytes(file.DisplaySize));
+            lvi.ToolTipText = file.GetToolTipText();
             lvi.Tag = file;
 
 #if DEBUG

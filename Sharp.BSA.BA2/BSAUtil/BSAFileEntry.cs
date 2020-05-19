@@ -81,6 +81,16 @@ namespace SharpBSABA2.BSAUtil
             return ms;
         }
 
+        public override string GetToolTipText()
+        {
+            return $"{nameof(Version)}: {Version}\n" +
+                $"{nameof(FullPath)}: {FullPath}\n" +
+                $"{nameof(Offset)}: {Offset}\n" +
+                $"{nameof(Size)}: {Size}\n" +
+                $"{nameof(RealSize)}: {RealSize}\n" +
+                $"{nameof(Compressed)}: {Compressed}";
+        }
+
         protected override void WriteDataToStream(Stream stream)
         {
             this.WriteDataToStream(stream, true);
