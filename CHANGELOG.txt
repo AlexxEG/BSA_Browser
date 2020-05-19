@@ -1,3 +1,27 @@
+[1.12.0]
+
+- Added icons for file list and folder tree with options to disable them individually
+- Added texture information in Title of the DDS preview window
+- Added .bat files to supported formats for Text Previewer
+- Added confirmation message for emptying recents list
+- Added extraction speed to progress dialog
+- Improved/fixed previewing of F4/Skyrim/F76 textures using Pfim: https://github.com/nickbabcock/Pfim
+- Improved previewing files outside of built-in viewers, files without extension and without any associated programs will now automatically prompt the "Open with" window
+- Reset user settings for previewing because of above change, make sure to check them again if needed
+- Removed ATI header options for textures, default behaviour now because GIMP/Paint.net etc can open these textures now
+- Tweaked font size a bit
+- Updated .NET Framework to 4.7.2
+- Updated SharpZipLib from 1.1.0 to 1.2.0
+- Updated IonKiwi.lz4.net from 1.0.12 to 1.0.15
+- Fixed <Files> nodes not working correctly for some archives
+- Fixed application starting outside of viewable bounds, appearing only in taskbar. Now the top left point of the window will always be visible
+- Fixed saving stack traces to containing folder. If program doesn't have access to it (for example when installing in Program Files) write to '%appdata%\BSA Browser' folder instead
+- Fixed some files not appearing because of mismatched casing
+- Fixed "Always use real file size" option not working at all, and changed the text
+- CLI: Added --noheaders option to extract unsupported textures without DDS header instead of skipping
+- CLI: Added --overwrite option to overwrite existing files. Default behavior is to skip existing files now. Thanks to Wynadorn
+- CLI: Removed --ati option for same reason stated above
+
 [1.11.0]
 
 - Added DXGI_FORMAT_B8G8R8X8_UNORM as supported format
