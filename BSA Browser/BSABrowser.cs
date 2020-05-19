@@ -140,6 +140,7 @@ namespace BSA_Browser
 
             debugMenuItem.MenuItems.Add("Average opening speed of archive", OpeningSpeedAverage_Click);
             debugMenuItem.MenuItems.Add("Average extraction speed of selected item", ExtractionSpeedAverage_Click);
+            debugMenuItem.MenuItems.Add("Average extraction speed of selected archive", ExtractionSpeedAverageArchive_Click);
             debugMenuItem.MenuItems.Add("Check if all textures formats are supported", CheckTextureFormats_Click);
         }
 
@@ -225,6 +226,34 @@ namespace BSA_Browser
             }
 
             Console.WriteLine($"Average: {results.Sum() / results.Count}ms");
+        }
+
+        private void ExtractionSpeedAverageArchive_Click(object sender, EventArgs e)
+        {
+            if (tvFolders.SelectedNode == null)
+                return;
+
+            Stopwatch sw = new Stopwatch();
+            int count = 0;
+            List<long> results = new List<long>();
+
+            while (count < 50)
+            {
+                sw.Restart();
+                using (var ms = new MemoryStream())
+                {
+                    foreach (var file in SelectedArchiveNode.Archive.Files)
+                    {
+                        file.GetDataStream().CopyTo(ms);
+                    }
+                }
+                sw.Stop();
+                results.Add(sw.ElapsedMilliseconds);
+                count++;
+                Console.WriteLine($"{count} - Average: {results.Sum() / results.Count}ms");
+            }
+
+            MessageBox.Show($"Average: {results.Sum() / results.Count}ms");
         }
 
         private void CheckTextureFormats_Click(object sender, EventArgs e)
