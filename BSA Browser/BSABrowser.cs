@@ -1301,22 +1301,27 @@ namespace BSA_Browser
 
             if (gui)
             {
-                progressForm = new ProgressForm("Unpacking archive")
+                var operation = new ExtractOperation(folder, files, useFolderPath);
+                operation.StateChange += ExtractOperation_StateChange;
+                operation.ProgressPercentageUpdate += ExtractOperation_ProgressPercentageUpdate;
+                operation.Completed += ExtractOperation_Completed;
+
+                _progressForm = new ProgressForm("Unpacking archive")
                 {
                     Header = "Extracting...",
                     Footer = $"(0/{files.Count})",
                     Cancelable = true,
                     Maximum = 100
                 };
-                progressForm.Canceled += delegate { bwExtractFiles.CancelAsync(); };
+                _progressForm.Canceled += delegate { operation.Cancel(); };
 
 #if DEBUG
                 // Track extraction speed
                 _debugStopwatch.Restart();
 #endif
 
-                bwExtractFiles.RunWorkerAsync(new ExtractFilesArguments(useFolderPath, folder, files));
-                progressForm.ShowDialog(this);
+                operation.Start();
+                _progressForm.ShowDialog(this);
             }
             else
             {
@@ -1352,157 +1357,46 @@ namespace BSA_Browser
 
         #region ExtractFiles variables
 
-        private class ExtractFilesArguments
-        {
-            public bool UseFolderPath { get; private set; }
-            public string Folder { get; private set; }
-            public IList<ArchiveEntry> Files { get; private set; }
+        ProgressForm _progressForm;
 
-            public ExtractFilesArguments(bool useFolderPath, string folder, IList<ArchiveEntry> files)
-            {
-                UseFolderPath = useFolderPath;
-                Folder = folder;
-                Files = files;
-            }
+        private void ExtractOperation_StateChange(ExtractOperation sender, StateChangeEventArgs e)
+        {
+            _progressForm.Description = e.FileName + '\n' + Common.FormatTimeRemaining(sender.EstimateTimeRemaining);
+            _progressForm.Footer = $"({e.Count}/{e.FilesTotal}) {Common.FormatBytes(sender.SpeedBytes)}/s";
         }
 
-        private class ProgressUpdateInfo
+        private void ExtractOperation_ProgressPercentageUpdate(ExtractOperation sender, ProgressPercentageUpdateEventArgs e)
         {
-            public string FileName { get; private set; }
-            public int Count { get; private set; }
-            public int Files { get; private set; }
-
-            public ProgressUpdateInfo(string filename, int count, int files)
-            {
-                this.FileName = filename;
-                this.Count = count;
-                this.Files = files;
-            }
+            this.Text = $"{e.ProgressPercentage}% - {_untouchedTitle}";
+            _progressForm.Progress = e.ProgressPercentage;
+            _progressForm.Description = _progressForm.Description.Split('\n')[0] + "\n" + Common.FormatTimeRemaining(e.RemainingEstimate);
         }
 
-        ProgressForm progressForm;
-        int _count = 0;
-        int _filesTotal = 0;
-        TimeSpan _estimate = TimeSpan.MinValue;
-
-        private void bw_DoWork(object sender, DoWorkEventArgs e)
-        {
-            var arguments = e.Argument as ExtractFilesArguments;
-            var extracted = new Dictionary<string, int>();
-            var exceptions = new List<Tuple<string, Exception>>();
-            int prevProgress = 0, count = 0;
-
-            DateTime _startExtraction = DateTime.Now;
-
-            foreach (var fe in arguments.Files)
-            {
-                if (bwExtractFiles.CancellationPending)
-                {
-                    e.Result = false;
-                    break;
-                }
-
-                // Update current file and count
-                bwExtractFiles.ReportProgress(-1, new ProgressUpdateInfo(fe.FileName, count, arguments.Files.Count));
-
-                try
-                {
-                    if (arguments.UseFolderPath)
-                    {
-                        fe.Extract(arguments.Folder, arguments.UseFolderPath);
-                    }
-                    else
-                    {
-                        // Keep track of what files have been extracted previously and add number to files with identical filenames
-                        if (extracted.ContainsKey(fe.FileName))
-                        {
-                            string filename = Path.GetFileNameWithoutExtension(fe.FileName);
-                            string extension = Path.GetExtension(fe.FileName);
-
-                            fe.Extract(arguments.Folder,
-                                arguments.UseFolderPath,
-                                $"{filename} ({++extracted[fe.FileName]}){extension}");
-                        }
-                        else
-                        {
-                            fe.Extract(arguments.Folder, arguments.UseFolderPath);
-                            extracted.Add(fe.FileName, 0);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    exceptions.Add(new Tuple<string, Exception>(fe.FullPath, ex));
-                }
-
-                count++;
-                int progress = (int)Math.Round(((double)count / arguments.Files.Count) * 100);
-                if (progress > prevProgress)
-                {
-                    prevProgress = progress;
-
-                    bwExtractFiles.ReportProgress(progress,
-                        (DateTime.Now - _startExtraction).TotalMilliseconds / count * (arguments.Files.Count - count));
-
-                }
-            }
-
-            if (exceptions.Count > 0)
-            {
-                var sb = new StringBuilder();
-                sb.AppendLine($"{arguments.Files[0].Archive.FileName} - RetrieveRealSize: {arguments.Files[0].Archive.RetrieveRealSize}");
-                sb.AppendLine();
-
-                foreach (var ex in exceptions)
-                    sb.AppendLine($"{ex.Item1}{Environment.NewLine}{ex.Item2}{Environment.NewLine}");
-
-                File.WriteAllText(Path.Combine(arguments.Folder, "_report.txt"), sb.ToString());
-            }
-
-            e.Result = exceptions;
-        }
-
-        private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (e.ProgressPercentage == -1)
-            {
-                var args = (ProgressUpdateInfo)e.UserState;
-                _count = args.Count;
-                _filesTotal = args.Files;
-                progressForm.Description = args.FileName + "\n" + Common.FormatTimeRemaining(_estimate);
-                progressForm.Footer = $"({_count}/{_filesTotal})";
-            }
-            else
-            {
-                _estimate = TimeSpan.FromMilliseconds((double)e.UserState);
-                this.Text = $"{progressForm.ProgressPercentage}% - {_untouchedTitle}";
-                progressForm.Progress = e.ProgressPercentage;
-                progressForm.Description = progressForm.Description.Split('\n')[0] + "\n" + Common.FormatTimeRemaining(_estimate);
-            }
-        }
-
-        private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void ExtractOperation_Completed(ExtractOperation sender, CompletedEventArgs e)
         {
 #if DEBUG
             _debugStopwatch.Stop();
             Console.WriteLine($"Extraction complete. {_debugStopwatch.ElapsedMilliseconds}ms elapsed");
 #endif
-
-            _count = _filesTotal = 0;
-            _estimate = TimeSpan.MinValue;
-
-            progressForm.BlockClose = false;
-            progressForm.Close();
-            progressForm.Dispose();
-            progressForm = null;
+            _progressForm.BlockClose = false;
+            _progressForm.Close();
+            _progressForm.Dispose();
+            _progressForm = null;
 
             this.Text = _untouchedTitle;
 
-            var exceptions = e.Result as List<Tuple<string, Exception>>;
-
-            if (exceptions?.Count > 0)
+            // Save exceptions to _report.txt file in destination path
+            if (e.Exceptions.Count > 0)
             {
-                MessageBox.Show(this, $"{exceptions.Count} file(s) failed to extract. See report file in destination for details.", "Error");
+                var sb = new StringBuilder();
+                sb.AppendLine($"{sender.Files[0].Archive.FileName} - RetrieveRealSize: {sender.Files[0].Archive.RetrieveRealSize}");
+                sb.AppendLine();
+
+                foreach (var ex in e.Exceptions)
+                    sb.AppendLine($"{ex.ArchiveEntry.FullPath}{Environment.NewLine}{ex.Exception}{Environment.NewLine}");
+
+                File.WriteAllText(Path.Combine(sender.Folder, "_report.txt"), sb.ToString());
+                MessageBox.Show(this, $"{e.Exceptions.Count} file(s) failed to extract. See report file in destination for details.", "Error");
             }
         }
 
