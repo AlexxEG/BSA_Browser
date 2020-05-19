@@ -119,12 +119,20 @@ namespace SharpBSABA2.BSAUtil
                     filesz -= 4;
                 }
 
-                byte[] content = this.BinaryReader.ReadBytes((int)filesz);
-
                 if (!decompress)
-                    stream.Write(content, 0, content.Length);
+                {
+                    Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                                                 filesz,
+                                                 stream,
+                                                 bytesWritten => this.BytesWritten = bytesWritten);
+                }
                 else
-                    this.Archive.DecompressLZ4(content, stream);
+                {
+                    this.Archive.DecompressLZ4(BinaryReader.BaseStream,
+                                               (uint)filesz,
+                                               stream,
+                                               bytesWritten => this.BytesWritten = bytesWritten);
+                }
             }
             else
             {
@@ -134,15 +142,20 @@ namespace SharpBSABA2.BSAUtil
 
                 if (!decompress)
                 {
-                    byte[] content = this.BinaryReader.ReadBytes((int)this.Size);
-                    stream.Write(content, 0, content.Length);
+                    Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                                                 this.Size,
+                                                 stream,
+                                                 bytesWritten => this.BytesWritten = bytesWritten);
                 }
                 else
                 {
-                    byte[] uncompressed = new byte[this.RealSize == 0 ? BinaryReader.ReadUInt32() : this.RealSize];
-                    byte[] compressed = this.BinaryReader.ReadBytes((int)this.Size - 4);
-                    this.Archive.Decompress(compressed, uncompressed);
-                    stream.Write(uncompressed, 0, uncompressed.Length);
+                    if (this.Compressed)
+                        BinaryReader.ReadUInt32(); // Skip
+
+                    Archive.Decompress(BinaryReader.BaseStream,
+                                       this.Size - 4,
+                                       stream,
+                                       bytesWriten => this.BytesWritten = bytesWriten);
                 }
             }
         }

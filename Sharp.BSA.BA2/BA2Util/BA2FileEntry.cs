@@ -62,24 +62,22 @@ namespace SharpBSABA2.BA2Util
 
         protected void WriteDataToStream(Stream stream, bool decompress)
         {
-            BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
-
             uint len = this.Compressed ? this.Size : this.RealSize;
-            byte[] bytes = new byte[len];
-
-            BinaryReader.Read(bytes, 0, bytes.Length);
+            BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
 
             if (!decompress || !this.Compressed)
             {
-                stream.Write(bytes, 0, bytes.Length);
+                Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                                             len,
+                                             stream,
+                                             bytesWritten => this.BytesWritten = bytesWritten);
             }
             else
             {
-                byte[] uncompressed = new byte[this.RealSize];
-
-                this.Archive.Decompress(bytes, uncompressed);
-
-                stream.Write(uncompressed, 0, uncompressed.Length);
+                Archive.Decompress(BinaryReader.BaseStream,
+                                   len,
+                                   stream,
+                                   bytesWritten => this.BytesWritten = bytesWritten);
             }
         }
     }

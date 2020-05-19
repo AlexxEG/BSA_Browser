@@ -80,47 +80,31 @@ namespace SharpBSABA2.BA2Util
 
         protected void WriteDateToStream(Stream stream, bool decompress)
         {
-            if (decompress)
-            {
-                var writer = new BinaryWriter(stream);
-
-                writer.Write(GNF_HEADER_MAGIC); // 'GNF ' magic
-                writer.Write(GNF_HEADER_CONTENT_SIZE); // Content-size. Seems to be either 4 or 8 bytes
-
-                writer.Write((byte)0x2); // Version
-                writer.Write((byte)0x1); // Texture Count
-                writer.Write((byte)0x8); // Alignment
-                writer.Write((byte)0x0); // Unused
-
-                writer.Write(BitConverter.GetBytes(this.RealSize + 256).Reverse().ToArray()); // File size + header size
-                writer.Write(this.GNFHeader);
-
-                for (int i = 0; i < 208; i++)
-                    writer.Write((byte)0x0); // Padding
-            }
-
-            byte[] bytes = new byte[this.Size];
-            byte[] uncompressed = new byte[this.RealSize];
-
+            this.BytesWritten = 0;
             BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
-            BinaryReader.Read(bytes, 0, (int)this.Size);
 
             if (!decompress)
             {
-                stream.Write(bytes, 0, bytes.Length);
+                Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                                             Math.Max(this.Size, this.RealSize), // Lazy hack, only one should be set when not compressed
+                                             stream,
+                                             bytesWritten => this.BytesWritten = bytesWritten);
             }
             else
             {
+                this.WriteHeader(stream);
+
                 try
                 {
-                    this.Archive.Decompress(bytes, uncompressed);
+                    Archive.Decompress(BinaryReader.BaseStream,
+                                       this.Size,
+                                       stream,
+                                       bytesWritten => this.BytesWritten = bytesWritten);
                 }
                 catch (Exception ex)
                 {
                     throw new Exception($"Couldn't decompress zlib texture data. Size: {this.Size}, RealSize: {this.RealSize}", ex);
                 }
-
-                stream.Write(uncompressed, 0, uncompressed.Length);
             }
 
             this.WriteChunks(stream, decompress);
@@ -130,24 +114,45 @@ namespace SharpBSABA2.BA2Util
         {
             for (int i = 0; i < (numChunks - 1); i++)
             {
-                byte[] compressed = new byte[this.Chunks[i].packSz];
-                byte[] full = new byte[this.Chunks[i].fullSz];
-
                 this.BinaryReader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
-                this.BinaryReader.Read(compressed, 0, compressed.Length);
+
 
                 if (!decompress)
                 {
-                    stream.Write(compressed, 0, compressed.Length);
+                    ulong prev = this.BytesWritten;
+                    Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                                                 Math.Max(Chunks[i].packSz, Chunks[i].fullSz),  // Lazy hack, only one should be set when not compressed
+                                                 stream,
+                                                 bytesWritten => this.BytesWritten = prev + bytesWritten);
                 }
                 else
                 {
-                    // Uncompress
-                    this.Archive.Decompress(compressed, full);
-
-                    stream.Write(full, 0, full.Length);
+                    ulong prev = this.BytesWritten;
+                    Archive.Decompress(BinaryReader.BaseStream,
+                                       this.Chunks[i].packSz,
+                                       stream,
+                                       bytesWritten => this.BytesWritten = prev + bytesWritten);
                 }
             }
+        }
+
+        private void WriteHeader(Stream stream)
+        {
+            var writer = new BinaryWriter(stream);
+
+            writer.Write(GNF_HEADER_MAGIC); // 'GNF ' magic
+            writer.Write(GNF_HEADER_CONTENT_SIZE); // Content-size. Seems to be either 4 or 8 bytes
+
+            writer.Write((byte)0x2); // Version
+            writer.Write((byte)0x1); // Texture Count
+            writer.Write((byte)0x8); // Alignment
+            writer.Write((byte)0x0); // Unused
+
+            writer.Write(BitConverter.GetBytes(this.RealSize + 256).Reverse().ToArray()); // File size + header size
+            writer.Write(this.GNFHeader);
+
+            for (int i = 0; i < 208; i++)
+                writer.Write((byte)0x0); // Padding
         }
     }
 }

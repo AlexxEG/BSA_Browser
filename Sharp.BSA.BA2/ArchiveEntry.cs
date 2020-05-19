@@ -5,6 +5,8 @@ namespace SharpBSABA2
 {
     public abstract class ArchiveEntry
     {
+        public ulong BytesWritten { get; protected set; }
+
         public uint nameHash { get; protected set; }
         public uint dirHash { get; protected set; }
 

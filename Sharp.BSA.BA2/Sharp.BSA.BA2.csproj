@@ -69,6 +69,7 @@
     <Compile Include="BSAUtil\DAT2FileEntry.cs" />
     <Compile Include="Enums\ArchiveTypes.cs" />
     <Compile Include="Extensions\BinaryReaderExtensions.cs" />
+    <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

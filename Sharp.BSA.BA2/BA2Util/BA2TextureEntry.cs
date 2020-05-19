@@ -201,6 +201,8 @@ namespace SharpBSABA2.BA2Util
         {
             var bw = new BinaryWriter(stream);
 
+            this.BytesWritten = 0;
+
             if (decompress && GenerateTextureHeader)
             {
                 this.WriteHeader(bw);
@@ -208,25 +210,25 @@ namespace SharpBSABA2.BA2Util
 
             for (int i = 0; i < numChunks; i++)
             {
-                byte[] full = new byte[this.Chunks[i].fullSz];
                 bool isCompressed = this.Chunks[i].packSz != 0;
+                ulong prev = this.BytesWritten;
 
                 this.BinaryReader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
 
                 if (!decompress || !isCompressed)
                 {
-                    this.BinaryReader.Read(full, 0, full.Length);
+                    Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                                                 Chunks[i].fullSz,
+                                                 stream,
+                                                 bytesWritten => this.BytesWritten = prev + bytesWritten);
                 }
                 else
                 {
-                    byte[] compressed = new byte[this.Chunks[i].packSz];
-
-                    this.BinaryReader.Read(compressed, 0, compressed.Length);
-                    // Uncompress
-                    this.Archive.Decompress(compressed, full);
+                    Archive.Decompress(BinaryReader.BaseStream,
+                                       this.Chunks[i].packSz,
+                                       stream,
+                                       bytesWritten => this.BytesWritten = prev + bytesWritten);
                 }
-
-                bw.Write(full);
             }
         }
     }
