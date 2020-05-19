@@ -316,19 +316,19 @@
             // 
             // chbRetrieveRealSize
             // 
-            this.chbRetrieveRealSize.AutoSize = true;
             this.chbRetrieveRealSize.Location = new System.Drawing.Point(6, 42);
             this.chbRetrieveRealSize.Name = "chbRetrieveRealSize";
-            this.chbRetrieveRealSize.Size = new System.Drawing.Size(363, 17);
+            this.chbRetrieveRealSize.Size = new System.Drawing.Size(389, 34);
             this.chbRetrieveRealSize.TabIndex = 1;
-            this.chbRetrieveRealSize.Text = "Always use real file size, even if slower (Reopen archives to take effect)";
+            this.chbRetrieveRealSize.Text = "Always show uncompressed file size, even if the parsing will be slower (Reopen ar" +
+    "chives to take effect)";
             this.chbRetrieveRealSize.UseVisualStyleBackColor = true;
             // 
             // cbEncodings
             // 
             this.cbEncodings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbEncodings.FormattingEnabled = true;
-            this.cbEncodings.Location = new System.Drawing.Point(115, 68);
+            this.cbEncodings.Location = new System.Drawing.Point(115, 85);
             this.cbEncodings.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.cbEncodings.Name = "cbEncodings";
             this.cbEncodings.Size = new System.Drawing.Size(210, 21);
@@ -338,7 +338,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 71);
+            this.label3.Location = new System.Drawing.Point(6, 88);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(103, 13);
             this.label3.TabIndex = 2;
