@@ -138,8 +138,63 @@ namespace BSA_Browser
             MenuItem debugMenuItem = new MenuItem("DEBUG");
             mainMenu1.MenuItems.Add(debugMenuItem);
 
+            debugMenuItem.MenuItems.Add("Average opening speed of archive", OpeningSpeedAverage_Click);
             debugMenuItem.MenuItems.Add("Average extraction speed of selected item", ExtractionSpeedAverage_Click);
             debugMenuItem.MenuItems.Add("Check if all textures formats are supported", CheckTextureFormats_Click);
+        }
+
+        private void OpeningSpeedAverage_Click(object sender, EventArgs e)
+        {
+            if (OpenArchiveDialog.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            var skipped = 0;
+            var path = OpenArchiveDialog.FileNames[0];
+
+            var sw = new Stopwatch();
+            var count = 0;
+            var results = new List<long>();
+
+            while (count < 100)
+            {
+                Console.WriteLine(count);
+                sw.Restart();
+
+                try
+                {
+                    var extension = Path.GetExtension(path);
+                    var encoding = Encoding.GetEncoding(Settings.Default.EncodingCodePage);
+
+                    switch (extension.ToLower())
+                    {
+                        case ".bsa":
+                        case ".dat":
+                            if (SharpBSABA2.BSAUtil.BSA.IsSupportedVersion(path) == false)
+                            {
+                                goto default;
+                            }
+
+                            new SharpBSABA2.BSAUtil.BSA(path, encoding, Settings.Default.RetrieveRealSize);
+                            break;
+                        case ".ba2":
+                            new SharpBSABA2.BA2Util.BA2(path, encoding, Settings.Default.RetrieveRealSize);
+                            break;
+                        default:
+                            skipped++;
+                            break;
+                    }
+                }
+                catch
+                {
+                    skipped++;
+                }
+
+                sw.Stop();
+                results.Add(sw.ElapsedMilliseconds);
+                count++;
+            }
+
+            MessageBox.Show(this, $"Average: {results.Sum() / results.Count}ms. {skipped} skipped.");
         }
 
         private void ExtractionSpeedAverage_Click(object sender, EventArgs e)
