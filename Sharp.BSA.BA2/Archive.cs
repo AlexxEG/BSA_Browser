@@ -33,10 +33,12 @@ namespace SharpBSABA2
         }
 
         public Archive(string filePath) : this(filePath, Encoding.UTF7) { }
+        public Archive(string filePath, Encoding encoding) : this(filePath, encoding, false) { }
 
-        public Archive(string filePath, Encoding encoding)
+        public Archive(string filePath, Encoding encoding, bool retrieveRealSize)
         {
             this.FullPath = filePath;
+            this.RetrieveRealSize = retrieveRealSize;
             this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), encoding);
 
             this.Open(filePath);

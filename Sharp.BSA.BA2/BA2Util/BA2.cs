@@ -16,6 +16,7 @@ namespace SharpBSABA2.BA2Util
 
         public BA2(string filePath) : base(filePath) { }
         public BA2(string filePath, Encoding encoding) : base(filePath, encoding) { }
+        public BA2(string filePath, Encoding encoding, bool retrieveRealSize) : base(filePath, encoding, retrieveRealSize) { }
 
         protected override void Open(string filePath)
         {

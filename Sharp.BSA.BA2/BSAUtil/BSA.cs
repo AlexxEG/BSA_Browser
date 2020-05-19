@@ -103,6 +103,7 @@ namespace SharpBSABA2.BSAUtil
 
         public BSA(string filePath) : base(filePath) { }
         public BSA(string filePath, Encoding encoding) : base(filePath, encoding) { }
+        public BSA(string filePath, Encoding encoding, bool retrieveRealSize) : base(filePath, encoding, retrieveRealSize) { }
 
         protected override void Open(string filePath)
         {

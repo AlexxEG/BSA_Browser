@@ -931,16 +931,10 @@ namespace BSA_Browser
                                 return;
                         }
 
-                        archive = new SharpBSABA2.BSAUtil.BSA(path, encoding)
-                        {
-                            RetrieveRealSize = Settings.Default.RetrieveRealSize
-                        };
+                        archive = new SharpBSABA2.BSAUtil.BSA(path, encoding, Settings.Default.RetrieveRealSize);
                         break;
                     case ".ba2":
-                        archive = new BA2(path, encoding)
-                        {
-                            RetrieveRealSize = Settings.Default.RetrieveRealSize
-                        };
+                        archive = new SharpBSABA2.BA2Util.BA2(path, encoding, Settings.Default.RetrieveRealSize);
                         break;
                     default:
                         throw new Exception($"Unrecognized archive file type ({extension}).");
