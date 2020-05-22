@@ -1,3 +1,7 @@
+[1.12.1]
+
+- Fixed incorrect display file size on uncompressed files when enabling the "Always show uncompressed file size" option
+
 [1.12.0]
 
 - Added icons for file list and folder tree with options to disable them individually
