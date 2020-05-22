@@ -35,7 +35,7 @@ namespace SharpBSABA2.BSAUtil
             this.Size = size;
 
             // Seek to each entry's offset and read the uncompressed size
-            if (this.Archive.RetrieveRealSize)
+            if (this.Archive.RetrieveRealSize && this.Compressed)
             {
                 long startOffset = this.BinaryReader.BaseStream.Position;
 
