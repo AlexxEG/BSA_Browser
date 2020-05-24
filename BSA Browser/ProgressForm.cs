@@ -96,6 +96,9 @@ namespace BSA_Browser
         private void ProgressForm_Load(object sender, EventArgs e)
         {
             this.CenterToParent();
+
+            // Set it here otherwise DPI scaling will not work correctly, for some reason
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
         private void ProgressForm_FormClosing(object sender, CancelEventArgs e)

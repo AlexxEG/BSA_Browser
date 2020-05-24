@@ -79,6 +79,9 @@ namespace BSA_Browser
                     Owner.Location.X + Owner.Width / 2 - Width / 2,
                     Owner.Location.Y + Owner.Height / 2 - Height / 2);
             }
+
+            // Set it here otherwise DPI scaling will not work correctly, for some reason
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
         private void OptionsForm_FormClosing(object sender, FormClosingEventArgs e)

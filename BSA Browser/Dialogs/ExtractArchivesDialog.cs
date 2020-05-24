@@ -48,5 +48,11 @@ namespace BSA_Browser.Dialogs
             dialog.ShowDialog(owner);
             return dialog;
         }
+
+        private void ExtractArchivesDialog_Load(object sender, System.EventArgs e)
+        {
+            // Set it here otherwise DPI scaling will not work correctly, for some reason
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+        }
     }
 }

@@ -60,6 +60,8 @@ namespace BSA_Browser
         public BSABrowser()
         {
             InitializeComponent();
+            // Set it here otherwise DPI scaling will not work correctly, for some reason
+            this.Menu = mainMenu1;
 
             // Show application version in title
             this.Text += $" ({Program.GetVersion()})";

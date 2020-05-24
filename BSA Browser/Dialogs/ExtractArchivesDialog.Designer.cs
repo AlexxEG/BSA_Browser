@@ -74,13 +74,13 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnExtract);
             this.Controls.Add(this.lvArchives);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ExtractArchivesDialog";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Extract Archives";
+            this.Load += new System.EventHandler(this.ExtractArchivesDialog_Load);
             this.ResumeLayout(false);
 
         }

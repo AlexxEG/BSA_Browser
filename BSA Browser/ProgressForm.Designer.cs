@@ -109,11 +109,11 @@ namespace BSA_Browser
             // 
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(404, 166);
+            this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lHeader);
             this.Controls.Add(this.lDescription);
             this.Controls.Add(this.pbProgress);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;

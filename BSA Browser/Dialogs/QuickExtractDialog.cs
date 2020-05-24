@@ -42,6 +42,12 @@ namespace BSA_Browser.Dialogs
             return this.ShowDialog(owner);
         }
 
+        private void QuickExtractDialog_Load(object sender, EventArgs e)
+        {
+            // Set it here otherwise DPI scaling will not work correctly, for some reason
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+        }
+
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             using (var ofd = new OpenFolderDialog())

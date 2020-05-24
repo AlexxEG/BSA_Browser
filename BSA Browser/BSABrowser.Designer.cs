@@ -647,7 +647,6 @@
             this.Controls.Add(this.btnExtractAllFolders);
             this.Controls.Add(this.btnExtractAll);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Menu = this.mainMenu1;
             this.MinimumSize = new System.Drawing.Size(639, 180);
             this.Name = "BSABrowser";
             this.Text = "BSA Browser";

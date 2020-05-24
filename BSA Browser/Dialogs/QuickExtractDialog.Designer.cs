@@ -162,10 +162,10 @@
             this.Controls.Add(this.chbUseFolderPath);
             this.Controls.Add(this.txtPath);
             this.Controls.Add(this.txtName);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "QuickExtractDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Quick Extract Path";
+            this.Load += new System.EventHandler(this.QuickExtractDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

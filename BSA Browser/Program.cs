@@ -18,12 +18,18 @@ namespace BSA_Browser
 
         public static readonly string tmpPath = Path.Combine(Path.GetTempPath(), "bsa_browser");
 
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main(string[] args)
         {
+            if (Environment.OSVersion.Version.Major >= 6)
+                SetProcessDPIAware();
+
             Application.SetCompatibleTextRenderingDefault(false);
 
 #if (!DEBUG)
