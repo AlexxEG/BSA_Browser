@@ -1,3 +1,8 @@
+[1.12.2]
+
+- Improved DPI scaling
+- Fixed hangup when cancelling an extraction
+
 [1.12.1]
 
 - Fixed incorrect display file size on uncompressed files when enabling the "Always show uncompressed file size" option
