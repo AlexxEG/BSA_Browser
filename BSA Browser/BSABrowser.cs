@@ -1386,7 +1386,7 @@ namespace BSA_Browser
             this.Text = _untouchedTitle;
 
             // Save exceptions to _report.txt file in destination path
-            if (e.Exceptions.Count > 0)
+            if (e?.Exceptions.Count > 0)
             {
                 var sb = new StringBuilder();
                 sb.AppendLine($"{sender.Files[0].Archive.FileName} - RetrieveRealSize: {sender.Files[0].Archive.RetrieveRealSize}");

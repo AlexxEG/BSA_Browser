@@ -242,7 +242,9 @@ namespace BSA_Browser.Classes
                 }
             }
 
-            e.Result = new CompletedEventArgs(count - exceptions.Count, exceptions);
+            if (!e.Cancel)
+                e.Result = new CompletedEventArgs(count - exceptions.Count, exceptions);
+
             StopMonitorSpeed();
         }
 
@@ -264,7 +266,10 @@ namespace BSA_Browser.Classes
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Completed?.Invoke(this, (CompletedEventArgs)e.Result);
+            if (e.Cancelled)
+                Completed?.Invoke(this, null);
+            else
+                Completed?.Invoke(this, (CompletedEventArgs)e.Result);
         }
     }
 }
