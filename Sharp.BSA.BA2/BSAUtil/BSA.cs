@@ -175,6 +175,30 @@ namespace SharpBSABA2.BSAUtil
                         }
                     }
 
+                    // Grab the uncompressed file size before each data block
+                    if (this.RetrieveRealSize)
+                    {
+                        // Save the position so we can go back after to the name table
+                        long pos = this.BinaryReader.BaseStream.Position;
+
+                        for (int i = 0; i < header.FileCount; i++)
+                        {
+                            var entry = this.Files[i] as BSAFileEntry;
+
+                            if (!entry.Compressed)
+                                continue;
+
+                            this.BinaryReader.BaseStream.Position = (long)entry.Offset;
+
+                            if (this.ContainsFileNameBlobs)
+                                this.BinaryReader.BaseStream.Position += this.BinaryReader.ReadByte() + 1;
+
+                            entry.RealSize = this.BinaryReader.ReadUInt32();
+                        }
+
+                        this.BinaryReader.BaseStream.Position = pos;
+                    }
+
                     // Read name table
                     for (int i = 0; i < header.FileCount; i++)
                     {

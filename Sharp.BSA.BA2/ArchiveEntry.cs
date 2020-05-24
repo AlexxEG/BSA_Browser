@@ -54,7 +54,7 @@ namespace SharpBSABA2
         /// <summary>
         /// Gets the uncompressed file size.
         /// </summary>
-        public virtual uint RealSize { get; protected set; }
+        public virtual uint RealSize { get; protected internal set; }
         /// <summary>
         /// Gets the file size.
         /// </summary>

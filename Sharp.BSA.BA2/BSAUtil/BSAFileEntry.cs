@@ -33,20 +33,6 @@ namespace SharpBSABA2.BSAUtil
             this.FullPath = folder;
             this.Offset = offset;
             this.Size = size;
-
-            // Seek to each entry's offset and read the uncompressed size
-            if (this.Archive.RetrieveRealSize && this.Compressed)
-            {
-                long startOffset = this.BinaryReader.BaseStream.Position;
-
-                this.BinaryReader.BaseStream.Position = (long)this.Offset;
-
-                if (this.Archive.ContainsFileNameBlobs)
-                    this.BinaryReader.BaseStream.Position += this.BinaryReader.ReadByte() + 1;
-
-                this.RealSize = this.BinaryReader.ReadUInt32();
-                this.BinaryReader.BaseStream.Position = startOffset;
-            }
         }
 
         public BSAFileEntry(Archive archive, string path, uint offset, uint size)
