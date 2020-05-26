@@ -132,6 +132,7 @@ namespace SharpBSABA2.BSAUtil
                     for (int i = 0; i < header.FileCount; i++)
                     {
                         this.Files[i].FullPath = this.BinaryReader.ReadStringTo('\0');
+                        this.Files[i].FullPathOriginal = this.Files[i].FullPath;
                     }
                 }
                 else if (this.Magic == BSA_HEADER_MAGIC)
@@ -205,6 +206,7 @@ namespace SharpBSABA2.BSAUtil
                         this.Files[i].FullPath = Path.Combine(
                             this.Files[i].FullPath,
                             this.BinaryReader.ReadStringTo('\0'));
+                        this.Files[i].FullPathOriginal = this.Files[i].FullPath;
                     }
                 }
                 else

@@ -31,6 +31,7 @@ namespace SharpBSABA2.BSAUtil
 
             this.Compressed = compressed;
             this.FullPath = folder;
+            this.FullPathOriginal = this.FullPath;
             this.Offset = offset;
             this.Size = size;
         }
@@ -41,6 +42,7 @@ namespace SharpBSABA2.BSAUtil
             this.Version = BSAFileVersion.Morrowind;
 
             this.FullPath = path;
+            this.FullPathOriginal = this.FullPath;
             this.Offset = offset;
             this.Size = size;
         }
@@ -51,6 +53,7 @@ namespace SharpBSABA2.BSAUtil
             this.Version = BSAFileVersion.Fallout2;
 
             this.FullPath = entry.Filename;
+            this.FullPathOriginal = this.FullPath;
             this.Offset = entry.Offset;
             this.Size = entry.PackedSize;
             this.RealSize = entry.RealSize;

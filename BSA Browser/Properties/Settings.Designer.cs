@@ -223,5 +223,17 @@ namespace BSA_Browser.Properties {
                 this["BuiltInPreviewing"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ReplaceGNFExt {
+            get {
+                return ((bool)(this["ReplaceGNFExt"]));
+            }
+            set {
+                this["ReplaceGNFExt"] = value;
+            }
+        }
     }
 }

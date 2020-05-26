@@ -12,6 +12,8 @@ namespace BSA_Browser
 {
     public partial class OptionsForm : Form
     {
+        public const int QuickExtractIndex = 2;
+
         private Encoding[] _encodings = new Encoding[]
         {
             Encoding.UTF7,
@@ -36,6 +38,8 @@ namespace BSA_Browser
 
             chbIconsFileList.Checked = Settings.Default.Icons.HasFlag(Enums.Icons.FileList);
             chbIconsFolderTree.Checked = Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree);
+
+            chbReplaceGNFExt.Checked = Settings.Default.ReplaceGNFExt;
 
             foreach (var path in Settings.Default.QuickExtractPaths)
             {
@@ -179,6 +183,8 @@ namespace BSA_Browser
             if (chbIconsFileList.Checked) icons |= Enums.Icons.FileList;
             if (chbIconsFolderTree.Checked) icons |= Enums.Icons.FolderTree;
             Settings.Default.Icons = icons;
+
+            Settings.Default.ReplaceGNFExt = chbReplaceGNFExt.Checked;
 
             Settings.Default.QuickExtractPaths.Clear();
             Settings.Default.QuickExtractPaths.AddRange(lvQuickExtract.Items

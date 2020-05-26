@@ -44,6 +44,7 @@ namespace SharpBSABA2.BA2Util
                     try
                     {
                         this.Files[i].FullPath = BinaryReader.ReadString(BinaryReader.ReadInt16());
+                        this.Files[i].FullPathOriginal = this.Files[i].FullPath;
                     }
                     catch (Exception ex)
                     {

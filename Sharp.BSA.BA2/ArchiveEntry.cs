@@ -47,6 +47,11 @@ namespace SharpBSABA2
         }
 
         /// <summary>
+        /// Gets the original unchanged full path.
+        /// </summary>
+        public string FullPathOriginal { get; internal set; }
+
+        /// <summary>
         /// Gets if the file is compressed.
         /// </summary>
         public virtual bool Compressed { get; protected set; }

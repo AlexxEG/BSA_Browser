@@ -4,6 +4,7 @@ using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
 using SharpBSABA2;
 using SharpBSABA2.BA2Util;
+using SharpBSABA2.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -630,6 +631,8 @@ namespace BSA_Browser
 
         private void optionsMenuItem_Click(object sender, EventArgs e)
         {
+            bool replaceGNFExt = Settings.Default.ReplaceGNFExt;
+
             using (var of = new OptionsForm())
             {
                 if (of.ShowDialog(this) == DialogResult.OK)
@@ -646,6 +649,18 @@ namespace BSA_Browser
                     while (recentFilesMenuItem.MenuItems.Count > (Settings.Default.RecentFiles_MaxFiles + 2))
                     {
                         recentFilesMenuItem.MenuItems.RemoveAt(recentFilesMenuItem.MenuItems.Count - 1);
+                    }
+
+                    if (Settings.Default.ReplaceGNFExt != replaceGNFExt)
+                    {
+                        lvFiles.BeginUpdate();
+                        foreach (var archive in tvFolders.Nodes
+                                                .Cast<ArchiveNode>()
+                                                .Where(x => x.Archive.Type == ArchiveTypes.BA2_GNMF))
+                        {
+                            this.ReplaceGNFExtensions(archive.Files.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
+                        }
+                        lvFiles.EndUpdate();
                     }
                 }
             }
@@ -890,7 +905,7 @@ namespace BSA_Browser
                 return;
 
             // Open options with second tab selected
-            using (var of = new OptionsForm(1))
+            using (var of = new OptionsForm(OptionsForm.QuickExtractIndex))
             {
                 if (of.ShowDialog(this) == DialogResult.OK)
                 {
@@ -1022,6 +1037,12 @@ namespace BSA_Browser
                         break;
                     case ".ba2":
                         archive = new SharpBSABA2.BA2Util.BA2(path, encoding, Settings.Default.RetrieveRealSize);
+
+                        if (archive.Type == ArchiveTypes.BA2_GNMF)
+                        {
+                            // Check if extensions for GNF textures should be replaced
+                            this.ReplaceGNFExtensions(archive.Files.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
+                        }
                         break;
                     default:
                         throw new Exception($"Unrecognized archive file type ({extension}).");
@@ -1628,6 +1649,31 @@ namespace BSA_Browser
             if (Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree))
             {
                 tvFolders.ImageList = foldersImageList;
+            }
+        }
+
+        private void ReplaceGNFExtensions(IEnumerable<BA2GNFEntry> files, bool replaceWithGNF)
+        {
+            foreach (BA2GNFEntry entry in files)
+            {
+                if (replaceWithGNF)
+                {
+                    entry.FullPath = Path.Combine(
+                        Path.GetDirectoryName(entry.FullPath),
+                        Path.GetFileNameWithoutExtension(entry.FullPath));
+
+                    string orgExt = Path.GetExtension(entry.FullPathOriginal);
+                    string newExt = ".gnf";
+                    for (int i = 0; i < newExt.Length; i++)
+                    {
+                        // Match casing in all configurations, for example .DdS -> .GnF
+                        entry.FullPath += char.IsUpper(orgExt[i]) ? char.ToUpper(newExt[i]) : newExt[i];
+                    }
+                }
+                else
+                {
+                    entry.FullPath = entry.FullPathOriginal;
+                }
             }
         }
 
