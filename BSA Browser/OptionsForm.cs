@@ -39,6 +39,7 @@ namespace BSA_Browser
             chbIconsFileList.Checked = Settings.Default.Icons.HasFlag(Enums.Icons.FileList);
             chbIconsFolderTree.Checked = Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree);
 
+            chbMatchLastWriteTime.Checked = Settings.Default.MatchLastWriteTime;
             chbReplaceGNFExt.Checked = Settings.Default.ReplaceGNFExt;
 
             foreach (var path in Settings.Default.QuickExtractPaths)
@@ -184,6 +185,7 @@ namespace BSA_Browser
             if (chbIconsFolderTree.Checked) icons |= Enums.Icons.FolderTree;
             Settings.Default.Icons = icons;
 
+            Settings.Default.MatchLastWriteTime = chbMatchLastWriteTime.Checked;
             Settings.Default.ReplaceGNFExt = chbReplaceGNFExt.Checked;
 
             Settings.Default.QuickExtractPaths.Clear();

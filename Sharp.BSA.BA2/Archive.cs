@@ -16,10 +16,13 @@ namespace SharpBSABA2
         public const int BufferSize = 4096 * 10;
         public const int DefaultProgressInterval = 1000;
 
-        public bool RetrieveRealSize { get; set; }
+        public bool MatchLastWriteTime { get; set; }
+        public bool RetrieveRealSize { get; private set; }
 
         public string FullPath { get; private set; }
         public string FileName => Path.GetFileName(this.FullPath);
+
+        public DateTime LastWriteTime { get; private set; }
 
         public virtual int Chunks { get; set; }
         public virtual int FileCount { get; set; }
@@ -44,6 +47,7 @@ namespace SharpBSABA2
         public Archive(string filePath, Encoding encoding, bool retrieveRealSize)
         {
             this.FullPath = filePath;
+            this.LastWriteTime = File.GetLastWriteTime(this.FullPath);
             this.RetrieveRealSize = retrieveRealSize;
             this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), encoding);
 

@@ -235,5 +235,17 @@ namespace BSA_Browser.Properties {
                 this["ReplaceGNFExt"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MatchLastWriteTime {
+            get {
+                return ((bool)(this["MatchLastWriteTime"]));
+            }
+            set {
+                this["MatchLastWriteTime"] = value;
+            }
+        }
     }
 }

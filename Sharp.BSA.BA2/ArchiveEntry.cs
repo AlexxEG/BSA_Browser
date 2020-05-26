@@ -102,6 +102,9 @@ namespace SharpBSABA2
 
             using (var fs = File.Create(path))
                 this.WriteDataToStream(fs);
+
+            if (this.Archive.MatchLastWriteTime)
+                File.SetLastWriteTime(path, this.Archive.LastWriteTime);
         }
 
         /// <summary>

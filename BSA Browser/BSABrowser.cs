@@ -651,6 +651,10 @@ namespace BSA_Browser
                         recentFilesMenuItem.MenuItems.RemoveAt(recentFilesMenuItem.MenuItems.Count - 1);
                     }
 
+                    // Sync changes to archives already opened
+                    foreach (ArchiveNode archiveNode in tvFolders.Nodes)
+                        archiveNode.Archive.MatchLastWriteTime = Settings.Default.MatchLastWriteTime;
+
                     if (Settings.Default.ReplaceGNFExt != replaceGNFExt)
                     {
                         lvFiles.BeginUpdate();
@@ -1033,10 +1037,16 @@ namespace BSA_Browser
                                 return;
                         }
 
-                        archive = new SharpBSABA2.BSAUtil.BSA(path, encoding, Settings.Default.RetrieveRealSize);
+                        archive = new SharpBSABA2.BSAUtil.BSA(path, encoding, Settings.Default.RetrieveRealSize)
+                        {
+                            MatchLastWriteTime = Settings.Default.MatchLastWriteTime
+                        };
                         break;
                     case ".ba2":
-                        archive = new SharpBSABA2.BA2Util.BA2(path, encoding, Settings.Default.RetrieveRealSize);
+                        archive = new SharpBSABA2.BA2Util.BA2(path, encoding, Settings.Default.RetrieveRealSize)
+                        {
+                            MatchLastWriteTime = Settings.Default.MatchLastWriteTime
+                        };
 
                         if (archive.Type == ArchiveTypes.BA2_GNMF)
                         {
