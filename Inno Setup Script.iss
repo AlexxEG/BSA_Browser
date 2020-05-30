@@ -48,6 +48,7 @@ Source: "BSA Browser\bin\Release\BSA Browser.exe.config"; DestDir: "{app}"; Flag
 Source: "BSA Browser\bin\Release\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\ICSharpCode.TextEditor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\lz4.AnyCPU.loader.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "BSA Browser\bin\Release\Pfim.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\Sharp.BSA.BA2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BSA Browser\bin\Release\System.Management.Automation.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
