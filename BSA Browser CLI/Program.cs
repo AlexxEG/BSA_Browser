@@ -31,6 +31,7 @@ namespace BSA_Browser_CLI
         public bool List { get; private set; }
         public bool Overwrite { get; private set; }
         public bool IgnoreErrors { get; private set; }
+        public bool MatchTimeChanged { get; private set; }
         public bool NoHeaders { get; private set; }
 
         public Filtering Filtering { get; private set; } = Filtering.None;
@@ -94,6 +95,10 @@ namespace BSA_Browser_CLI
                         case "/encoding":
                         case "--encoding":
                             this.Encoding = this.ParseEncoding(args[++i]);
+                            break;
+                        case "/mtc":
+                        case "--mtc":
+                            this.MatchTimeChanged = true;
                             break;
                         case "/noheaders":
                         case "--noheaders":
@@ -361,6 +366,7 @@ namespace BSA_Browser_CLI
                     throw new Exception($"Unrecognized archive file type ({extension}).");
             }
 
+            archive.MatchLastWriteTime = _arguments.MatchTimeChanged;
             archive.Files.Sort((a, b) => string.CompareOrdinal(a.LowerPath, b.LowerPath));
             return archive;
         }
