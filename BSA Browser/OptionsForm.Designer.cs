@@ -404,13 +404,13 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.chbReplaceGNFExt);
-            this.groupBox4.Location = new System.Drawing.Point(13, 39);
+            this.groupBox4.Location = new System.Drawing.Point(13, 80);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(235, 100);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "PS3/PS4";
+            this.groupBox4.Text = "PS4";
             // 
             // chbReplaceGNFExt
             // 
