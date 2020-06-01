@@ -1,3 +1,10 @@
+[1.12.3]
+
+- Fixed DDS previewing. Forgot the Pfim DLL, whoops....
+- Improve parsing speed of the "Always show uncompressed file size" option slightly
+- Added option to match last changed date with archive
+- Added option to replace .dds extensions for PS4 textures with .gnf, so you can associate a different program for these
+
 [1.12.2]
 
 - Improved DPI scaling
