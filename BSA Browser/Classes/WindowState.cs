@@ -123,7 +123,7 @@ namespace BSA_Browser.Classes
                              bool saveColumns = true,
                              bool saveSplitContainers = true)
         {
-            if (!(form.WindowState == FormWindowState.Maximized))
+            if (form.WindowState == FormWindowState.Normal)
             {
                 this.Location = form.Location;
                 this.Size = form.Size;
