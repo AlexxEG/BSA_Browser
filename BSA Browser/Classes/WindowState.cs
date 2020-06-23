@@ -134,7 +134,9 @@ namespace BSA_Browser.Classes
                 this.Size = form.RestoreBounds.Size;
             }
 
-            this.FormWindowState = form.WindowState;
+            // Always save as either Normal or Maximized because starting as Minimized might be confusing for some users
+            // and it can cause issues with Size and Location properties.
+            this.FormWindowState = form.WindowState == FormWindowState.Minimized ? FormWindowState.Normal : form.WindowState;
 
             if (saveColumns)
                 this.SaveColumns(form);
