@@ -1,3 +1,7 @@
+[1.12.4]
+
+- Fixed startup crash after last closing the program while minimized
+
 [1.12.3]
 
 - Fixed DDS previewing. Forgot the Pfim DLL, whoops....
