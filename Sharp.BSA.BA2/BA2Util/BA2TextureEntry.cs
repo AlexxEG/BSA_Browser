@@ -40,7 +40,7 @@ namespace SharpBSABA2.BA2Util
         {
             get
             {
-                uint size = 0;
+                uint size = this.GetHeaderSize();
                 bool compressed = Chunks[0].packSz != 0;
 
                 foreach (var chunk in Chunks)
@@ -53,7 +53,8 @@ namespace SharpBSABA2.BA2Util
         {
             get
             {
-                uint size = 0;
+                // Start of with the size of the DDS Magic + DDS header + if applicable DDS DXT10 header
+                uint size = this.GetHeaderSize();
                 foreach (var chunk in Chunks)
                     size += Math.Max(chunk.fullSz, chunk.packSz);
                 return size;
@@ -63,7 +64,7 @@ namespace SharpBSABA2.BA2Util
         {
             get
             {
-                uint size = 0;
+                uint size = this.GetHeaderSize();
                 foreach (var chunk in this.Chunks)
                     size += chunk.fullSz;
                 return size;
@@ -113,16 +114,39 @@ namespace SharpBSABA2.BA2Util
             return Enum.IsDefined(typeof(DXGI_FORMAT), (int)format);
         }
 
+        private uint GetHeaderSize()
+        {
+            uint size = 0;
+
+            // DDS.DDS_MAGIC
+            size += 4;
+            size += DDS_HEADER.GetSize();
+
+            // If DXT10 add that size too
+            switch ((DXGI_FORMAT)format)
+            {
+                case DXGI_FORMAT.BC1_UNORM_SRGB:
+                case DXGI_FORMAT.BC3_UNORM_SRGB:
+                case DXGI_FORMAT.BC4_UNORM:
+                case DXGI_FORMAT.BC5_SNORM:
+                case DXGI_FORMAT.BC7_UNORM:
+                case DXGI_FORMAT.BC7_UNORM_SRGB:
+                    size += DDS_HEADER_DXT10.GetSize();
+                    break;
+            }
+            return size;
+        }
+
         private void WriteHeader(BinaryWriter bw)
         {
             var ddsHeader = new DDS_HEADER();
 
-            ddsHeader.dwSize = ddsHeader.GetSize();
+            ddsHeader.dwSize = DDS_HEADER.GetSize();
             ddsHeader.dwHeaderFlags = DDS.DDS_HEADER_FLAGS_TEXTURE | DDS.DDS_HEADER_FLAGS_LINEARSIZE | DDS.DDS_HEADER_FLAGS_MIPMAP;
             ddsHeader.dwHeight = height;
             ddsHeader.dwWidth = width;
             ddsHeader.dwMipMapCount = numMips;
-            ddsHeader.PixelFormat.dwSize = ddsHeader.PixelFormat.GetSize();
+            ddsHeader.PixelFormat.dwSize = DDS_PIXELFORMAT.GetSize();
             ddsHeader.dwSurfaceFlags = DDS.DDS_SURFACE_FLAGS_TEXTURE | DDS.DDS_SURFACE_FLAGS_MIPMAP;
 
             switch ((DXGI_FORMAT)format)

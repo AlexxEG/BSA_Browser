@@ -79,11 +79,11 @@ namespace SharpBSABA2.BA2Util
         public uint dwCubemapFlags;
         public uint dwReserved2; // [3]
 
-        public uint GetSize()
+        public static uint GetSize()
         {
-            // 9 uint + DDS_PIXELFORMAT uints + 2 uint arrays with 14 uints total
+            // 9 uint + DDS_PIXELFORMAT uints + 2 uint arrays (dwReserved1 and dwReserved2) with 14 uints total
             // each uint 4 bytes each
-            return (9 * 4) + PixelFormat.GetSize() + (14 * 4);
+            return (9 * 4) + DDS_PIXELFORMAT.GetSize() + (14 * 4);
         }
 
         public void Write(System.IO.BinaryWriter bw)
@@ -136,6 +136,12 @@ namespace SharpBSABA2.BA2Util
             bw.Write(arraySize);
             bw.Write(miscFlags2);
         }
+
+        public static uint GetSize()
+        {
+            // 5 uints, each 4 bytes each
+            return 5 * 4;
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -162,7 +168,7 @@ namespace SharpBSABA2.BA2Util
             dwABitMask = aBitMask;
         }
 
-        public uint GetSize()
+        public static uint GetSize()
         {
             // 8 uints, each 4 bytes each
             return 8 * 4;
