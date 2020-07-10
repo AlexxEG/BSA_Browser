@@ -42,8 +42,8 @@ namespace SharpBSABA2.BA2Util
         public BA2GNFEntry(Archive ba2) : base(ba2)
         {
             nameHash = ba2.BinaryReader.ReadUInt32();
-            FullPath = nameHash.ToString("X");
             Extension = new string(ba2.BinaryReader.ReadChars(4));
+            FullPath = $"{nameHash:X}.{Extension.TrimEnd('\0')}";
             dirHash = ba2.BinaryReader.ReadUInt32();
 
             ba2.BinaryReader.ReadByte(); // Unknown
