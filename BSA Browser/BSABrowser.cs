@@ -443,6 +443,11 @@ namespace BSA_Browser
 
             var file = _files[e.ItemIndex];
             var fullpath = Path.Combine(file.Folder, file.FileName);
+
+            // Prepend 1-based indexing if there is no name table
+            if (!file.Archive.HasNameTable)
+                fullpath = $"({(e.ItemIndex + 1)}) {fullpath}";
+
             var lvi = new ListViewItem(fullpath, GetFileIconIndex(fullpath));
 
             lvi.SubItems.Add(Common.FormatBytes(file.DisplaySize));
