@@ -82,8 +82,11 @@ namespace SharpBSABA2.BA2Util
         {
             nameHash = ba2.BinaryReader.ReadUInt32();
             Extension = new string(ba2.BinaryReader.ReadChars(4));
-            FullPath = $"{nameHash:X}.{Extension.TrimEnd('\0')}";
             dirHash = ba2.BinaryReader.ReadUInt32();
+
+            FullPath = dirHash > 0 ? $"{dirHash:X}_" : string.Empty;
+            FullPath += $"{nameHash:X}.{Extension.TrimEnd('\0')}";
+
             unk8 = ba2.BinaryReader.ReadByte();
             numChunks = ba2.BinaryReader.ReadByte();
             chunkHdrLen = ba2.BinaryReader.ReadUInt16();
