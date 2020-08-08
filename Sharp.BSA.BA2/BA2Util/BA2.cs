@@ -25,6 +25,7 @@ namespace SharpBSABA2.BA2Util
             this.Type = this.ConvertType(this.Header.Type);
 
             for (int i = 0; i < this.FileCount; i++)
+            {
                 switch (this.Header.Type)
                 {
                     case BA2HeaderType.GNRL: Files.Add(new BA2FileEntry(this)); break;
@@ -33,6 +34,8 @@ namespace SharpBSABA2.BA2Util
                     default:
                         throw new Exception($"Unknown {nameof(BA2HeaderType)} value: " + this.Header.Type);
                 }
+                this.Files[i].Index = i;
+            }
 
             if (this.HasNameTable)
             {

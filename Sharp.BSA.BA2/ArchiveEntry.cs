@@ -7,6 +7,11 @@ namespace SharpBSABA2
     {
         public ulong BytesWritten { get; protected set; }
 
+        /// <summary>
+        /// Gets the index of the entry in the <see cref="SharpBSABA2.Archive"/>.
+        /// </summary>
+        public int Index { get; internal set; } = -1;
+
         public uint nameHash { get; protected set; }
         public uint dirHash { get; protected set; }
 

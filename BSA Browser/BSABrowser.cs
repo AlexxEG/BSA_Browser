@@ -446,7 +446,7 @@ namespace BSA_Browser
 
             // Prepend 1-based indexing if there is no name table
             if (!file.Archive.HasNameTable)
-                fullpath = $"({(e.ItemIndex + 1)}) {fullpath}";
+                fullpath = $"({file.Index + 1}) {fullpath}";
 
             var lvi = new ListViewItem(fullpath, GetFileIconIndex(fullpath));
 
@@ -1782,26 +1782,30 @@ namespace BSA_Browser
             switch (order)
             {
                 case ArchiveFileSortOrder.FilePath:
-                    return (desc) ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
-                                    string.CompareOrdinal(b.LowerPath, a.LowerPath);
+                    if (a.Archive.HasNameTable)
+                        return desc ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
+                                      string.CompareOrdinal(b.LowerPath, a.LowerPath);
+                    else
+                        return desc ? a.Index.CompareTo(b.Index) :
+                                      b.Index.CompareTo(a.Index);
 
                 case ArchiveFileSortOrder.FileSize:
-                    return (desc) ? a.DisplaySize.CompareTo(b.DisplaySize) :
-                                    b.DisplaySize.CompareTo(a.DisplaySize);
+                    return desc ? a.DisplaySize.CompareTo(b.DisplaySize) :
+                                  b.DisplaySize.CompareTo(a.DisplaySize);
 
                 case ArchiveFileSortOrder.Extra:
                     if (a is BA2TextureEntry && b is BA2TextureEntry)
                     {
                         string af = Enum.GetName(typeof(DXGI_FORMAT), (a as BA2TextureEntry).format);
                         string bf = Enum.GetName(typeof(DXGI_FORMAT), (b as BA2TextureEntry).format);
-                        return (desc) ? string.CompareOrdinal(af, bf) :
-                                        string.CompareOrdinal(bf, af);
+                        return desc ? string.CompareOrdinal(af, bf) :
+                                      string.CompareOrdinal(bf, af);
                     }
                     else
                     {
                         // Sort by file path since Extra will be empty
-                        return (desc) ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
-                                        string.CompareOrdinal(b.LowerPath, a.LowerPath);
+                        return desc ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
+                                      string.CompareOrdinal(b.LowerPath, a.LowerPath);
                     }
 
                 default:

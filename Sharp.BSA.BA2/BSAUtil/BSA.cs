@@ -124,6 +124,7 @@ namespace SharpBSABA2.BSAUtil
                         uint offset = this.BinaryReader.ReadUInt32() + dataOffset;
 
                         this.Files.Add(new BSAFileEntry(this, offset.ToString(), offset, size));
+                        this.Files[i].Index = i;
                     }
 
                     // Seek to name table
@@ -173,6 +174,7 @@ namespace SharpBSABA2.BSAUtil
                             }
 
                             this.Files.Add(new BSAFileEntry(this, comp, folder, offset, size));
+                            this.Files[j].Index = j;
                         }
                     }
 
@@ -230,6 +232,7 @@ namespace SharpBSABA2.BSAUtil
                         var entry = new DAT2FileEntry(this.BinaryReader);
 
                         this.Files.Add(new BSAFileEntry(this, entry));
+                        this.Files[i].Index = i;
                     }
                 }
             }
