@@ -86,6 +86,7 @@ namespace SharpBSABA2.BA2Util
 
             FullPath = dirHash > 0 ? $"{dirHash:X}_" : string.Empty;
             FullPath += $"{nameHash:X}.{Extension.TrimEnd('\0')}";
+            FullPathOriginal = FullPath;
 
             unk8 = ba2.BinaryReader.ReadByte();
             numChunks = ba2.BinaryReader.ReadByte();

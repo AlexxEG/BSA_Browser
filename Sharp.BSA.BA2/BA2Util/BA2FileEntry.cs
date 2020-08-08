@@ -27,6 +27,7 @@ namespace SharpBSABA2.BA2Util
 
             FullPath = dirHash > 0 ? $"{dirHash:X}_" : string.Empty;
             FullPath += $"{nameHash:X}.{Extension.TrimEnd('\0')}";
+            FullPathOriginal = FullPath;
 
             flags = ba2.BinaryReader.ReadUInt32();
             Offset = ba2.BinaryReader.ReadUInt64();
