@@ -568,8 +568,11 @@ namespace BSA_Browser
                     }
                     else
                     {
-                        // Show all files under current node, including sub nodes
-                        if (lvi.FullPath.ToLower().Replace('/', '\\').StartsWith(lowerPath)) lvis.Add(lvi);
+                        string path = lvi.FullPath.ToLower().Replace('/', '\\');
+
+                        // Show all files under current node, including sub nodes.
+                        // Add \ to exclude folders with similar names on same level, for example 'folder' & 'folder2'
+                        if (path.StartsWith(lowerPath + '\\')) lvis.Add(lvi);
                     }
                 }
 
