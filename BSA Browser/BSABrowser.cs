@@ -559,10 +559,10 @@ namespace BSA_Browser
 
                 foreach (var lvi in rootNode.AllFiles)
                 {
-                    string selectedPath = Path.GetDirectoryName(lvi.FullPath.Replace('/', '\\'));
-
                     if (e.Node.Text == "<Files>")
                     {
+                        string selectedPath = Path.GetDirectoryName(lvi.FullPath.Replace('/', '\\'));
+
                         // Show files in current node, not including sub nodes
                         if (selectedPath.ToLower() == lowerPath) lvis.Add(lvi);
                     }
