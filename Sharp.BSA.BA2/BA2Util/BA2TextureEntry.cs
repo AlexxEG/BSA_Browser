@@ -113,6 +113,22 @@ namespace SharpBSABA2.BA2Util
             return ms;
         }
 
+        public override string GetToolTipText()
+        {
+            return $"{nameof(nameHash)}: {nameHash}\n" +
+                $"{nameof(FullPath)}: {FullPath}\n" +
+                $"{nameof(Extension)}: {Extension.TrimEnd('\0')}\n" +
+                $"{nameof(dirHash)}: {dirHash}\n" +
+                $"{nameof(unk8)}: {unk8}\n" +
+                $"{nameof(numChunks)}: {numChunks}\n" +
+                $"{nameof(chunkHdrLen)}: {chunkHdrLen}\n" +
+                $"{nameof(height)}: {height}\n" +
+                $"{nameof(width)}: {width}\n" +
+                $"{nameof(numMips)}: {numMips}\n" +
+                $"{nameof(format)}: {format}\n" +
+                $"{nameof(unk16)}: {unk16}";
+        }
+
         public bool IsFormatSupported()
         {
             return Enum.IsDefined(typeof(DXGI_FORMAT), (int)format);

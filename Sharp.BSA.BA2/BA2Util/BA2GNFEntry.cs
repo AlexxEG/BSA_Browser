@@ -76,6 +76,21 @@ namespace SharpBSABA2.BA2Util
             return ms;
         }
 
+        public override string GetToolTipText()
+        {
+            return $"{nameof(nameHash)}: {nameHash}\n" +
+                $"{nameof(FullPath)}: {FullPath}\n" +
+                $"{nameof(Extension)}: {Extension.TrimEnd('\0')}\n" +
+                $"{nameof(dirHash)}: {dirHash}\n" +
+                $"{nameof(numChunks)}: {numChunks}\n" +
+                $"{nameof(unk)}: {unk}\n" +
+                $"{nameof(Offset)}: {Offset}\n" +
+                $"{nameof(Size)}: {Size}\n" +
+                $"{nameof(RealSize)}: {RealSize}\n" +
+                $"{nameof(unk2)}: {unk2}\n" +
+                $"{nameof(align)}: {align}";
+        }
+
         protected override void WriteDataToStream(Stream stream)
         {
             this.WriteDateToStream(stream, true);
