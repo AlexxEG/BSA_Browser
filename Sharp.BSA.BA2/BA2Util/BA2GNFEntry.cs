@@ -15,7 +15,7 @@ namespace SharpBSABA2.BA2Util
         /// <summary>
         /// Unknown.
         /// </summary>
-        private uint unk { get; set; }
+        private ushort chunkHdrLen { get; set; }
         /// <summary>
         /// Unknown. 00 00 00 00.
         /// </summary>
@@ -51,7 +51,7 @@ namespace SharpBSABA2.BA2Util
 
             ba2.BinaryReader.ReadByte(); // Unknown
             numChunks = ba2.BinaryReader.ReadByte();
-            unk = ba2.BinaryReader.ReadUInt16();
+            chunkHdrLen = ba2.BinaryReader.ReadUInt16();
 
             GNFHeader = ba2.BinaryReader.ReadBytes(32);
             Offset = ba2.BinaryReader.ReadUInt64();
@@ -83,7 +83,7 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(Extension)}: {Extension.TrimEnd('\0')}\n" +
                 $"{nameof(dirHash)}: {dirHash}\n" +
                 $"{nameof(numChunks)}: {numChunks}\n" +
-                $"{nameof(unk)}: {unk}\n" +
+                $"{nameof(chunkHdrLen)}: {chunkHdrLen}\n" +
                 $"{nameof(Offset)}: {Offset}\n" +
                 $"{nameof(Size)}: {Size}\n" +
                 $"{nameof(RealSize)}: {RealSize}\n" +
