@@ -652,6 +652,7 @@
             this.Text = "BSA Browser";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BSABrowser_FormClosing);
             this.Load += new System.EventHandler(this.BSABrowser_Load);
+            this.Shown += new System.EventHandler(this.BSABrowser_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();

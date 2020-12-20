@@ -334,6 +334,16 @@ namespace BSA_Browser
             Settings.Default.Save();
         }
 
+        private void BSABrowser_Shown(object sender, EventArgs e)
+        {
+            // Show notification if Settings was reset this session
+            if (Program.SettingsReset)
+                MessageBox.Show(this,
+                    "Settings was reset to default.",
+                    "Settings Reset",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void File_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))

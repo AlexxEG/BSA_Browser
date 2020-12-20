@@ -1,8 +1,9 @@
-﻿using System;
+﻿using BSA_Browser.Properties;
+using Microsoft.VisualBasic.Devices;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 using MsVB = Microsoft.VisualBasic.ApplicationServices;
 
@@ -15,6 +16,8 @@ namespace BSA_Browser
         public const string GitHub = "https://github.com/AlexxEG/BSA_Browser";
         public const string Discord = "https://discord.gg/k97ACqK";
         public const string VersionUrl = "https://raw.githubusercontent.com/AlexxEG/BSA_Browser/master/VERSION";
+
+        public static bool SettingsReset = false;
 
         public static readonly string tmpPath = Path.Combine(Path.GetTempPath(), "bsa_browser");
 
@@ -36,6 +39,11 @@ namespace BSA_Browser
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 #endif
+            if (ShouldResetSettings())
+            {
+                Settings.Default.Reset();
+                SettingsReset = true;
+            }
 
             new App().Run(args);
         }
@@ -72,6 +80,12 @@ namespace BSA_Browser
             Version v = Assembly.GetExecutingAssembly().GetName().Version;
 
             return $"{v.Major}.{v.Minor}.{v.Build}";
+        }
+
+        private static bool ShouldResetSettings()
+        {
+            var kb = new Keyboard();
+            return kb.AltKeyDown && kb.CtrlKeyDown && kb.ShiftKeyDown;
         }
 
 #if (!DEBUG)
