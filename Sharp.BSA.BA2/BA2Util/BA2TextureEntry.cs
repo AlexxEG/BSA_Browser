@@ -19,7 +19,7 @@ namespace SharpBSABA2.BA2Util
         public bool GenerateTextureHeader { get; set; } = true;
         public List<BA2TextureChunk> Chunks { get; private set; } = new List<BA2TextureChunk>();
 
-        public readonly byte unk8;
+        public readonly byte unk1;
         public readonly byte numChunks;
         public readonly ushort chunkHdrLen;
         public readonly ushort height;
@@ -88,7 +88,7 @@ namespace SharpBSABA2.BA2Util
             FullPath += $"{nameHash:X}.{Extension.TrimEnd('\0')}";
             FullPathOriginal = FullPath;
 
-            unk8 = ba2.BinaryReader.ReadByte();
+            unk1 = ba2.BinaryReader.ReadByte();
             numChunks = ba2.BinaryReader.ReadByte();
             chunkHdrLen = ba2.BinaryReader.ReadUInt16();
             height = ba2.BinaryReader.ReadUInt16();
@@ -119,7 +119,7 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(FullPath)}: {FullPath}\n" +
                 $"{nameof(Extension)}: {Extension.TrimEnd('\0')}\n" +
                 $"{nameof(dirHash)}: {dirHash}\n" +
-                $"{nameof(unk8)}: {unk8}\n" +
+                $"{nameof(unk1)}: {unk1}\n" +
                 $"{nameof(numChunks)}: {numChunks}\n" +
                 $"{nameof(chunkHdrLen)}: {chunkHdrLen}\n" +
                 $"{nameof(height)}: {height}\n" +
