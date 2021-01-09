@@ -26,7 +26,8 @@ namespace SharpBSABA2.BA2Util
         public readonly ushort width;
         public readonly byte numMips;
         public readonly byte format;
-        public readonly ushort unk16;
+        public readonly byte isCubemap;
+        public readonly byte tileMode;
 
         public override bool Compressed
         {
@@ -95,7 +96,8 @@ namespace SharpBSABA2.BA2Util
             width = ba2.BinaryReader.ReadUInt16();
             numMips = ba2.BinaryReader.ReadByte();
             format = ba2.BinaryReader.ReadByte();
-            unk16 = ba2.BinaryReader.ReadUInt16();
+            isCubemap = ba2.BinaryReader.ReadByte();
+            tileMode = ba2.BinaryReader.ReadByte();
 
             for (int i = 0; i < numChunks; i++)
             {
@@ -126,7 +128,8 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(width)}: {width}\n" +
                 $"{nameof(numMips)}: {numMips}\n" +
                 $"{nameof(format)}: {format}\n" +
-                $"{nameof(unk16)}: {unk16}";
+                $"{nameof(isCubemap)}: {isCubemap}\n" +
+                $"{nameof(tileMode)}: {tileMode}";
         }
 
         public bool IsFormatSupported()
