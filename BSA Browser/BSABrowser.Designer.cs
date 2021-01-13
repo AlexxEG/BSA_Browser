@@ -99,6 +99,9 @@
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.columnArchive = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.menuItem7 = new System.Windows.Forms.MenuItem();
+            this.compareMenuItem = new System.Windows.Forms.MenuItem();
+            this.compareCancelMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -521,7 +524,10 @@
             this.quickExtractsMenuItem,
             this.menuItem5,
             this.copyMenuItem1,
-            this.selectAllMenuItem1});
+            this.selectAllMenuItem1,
+            this.menuItem7,
+            this.compareMenuItem,
+            this.compareCancelMenuItem});
             this.contextMenu1.Popup += new System.EventHandler(this.contextMenu1_Popup);
             // 
             // extractMenuItem
@@ -637,6 +643,22 @@
             // columnArchive
             // 
             this.columnArchive.Text = "Archive";
+            // menuItem7
+            // 
+            this.menuItem7.Index = 8;
+            this.menuItem7.Text = "-";
+            // 
+            // compareMenuItem
+            // 
+            this.compareMenuItem.Index = 9;
+            this.compareMenuItem.Text = "Compare...";
+            this.compareMenuItem.Click += new System.EventHandler(this.compareMenuItem_Click);
+            // 
+            // compareCancelMenuItem
+            // 
+            this.compareCancelMenuItem.Index = 10;
+            this.compareCancelMenuItem.Text = "Cancel";
+            this.compareCancelMenuItem.Click += new System.EventHandler(this.compareCancelMenuItem_Click);
             // 
             // BSABrowser
             // 
@@ -739,6 +761,9 @@
         private System.Windows.Forms.ImageList foldersImageList;
         private System.Windows.Forms.ImageList filesImageList;
         private System.Windows.Forms.ColumnHeader columnArchive;
+        private System.Windows.Forms.MenuItem menuItem7;
+        private System.Windows.Forms.MenuItem compareMenuItem;
+        private System.Windows.Forms.MenuItem compareCancelMenuItem;
     }
 }
 

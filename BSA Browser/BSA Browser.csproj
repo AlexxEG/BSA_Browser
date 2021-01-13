@@ -157,6 +157,12 @@
     <Compile Include="Sorting\NaturalFileInfoNameComparer.cs" />
     <Compile Include="Sorting\NaturalStringComparer.cs" />
     <Compile Include="Sorting\SafeNativeMethods.cs" />
+    <Compile Include="Tools\CompareEntryWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\CompareEntryWindow.Designer.cs">
+      <DependentUpon>CompareEntryWindow.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -194,6 +200,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Tools\CompareEntryWindow.resx">
+      <DependentUpon>CompareEntryWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

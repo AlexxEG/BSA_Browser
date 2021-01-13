@@ -917,6 +917,19 @@ namespace BSA_Browser
 
             quickExtractsMenuItem.Enabled = hasSelectedItems;
             copyMenuItem1.Enabled = hasSelectedItems;
+
+            compareMenuItem.Enabled = hasSelectedItems;
+
+            if (_compareSource != null)
+            {
+                compareMenuItem.Text = "Compare to " + _compareSource.FileName;
+                compareCancelMenuItem.Visible = true;
+            }
+            else
+            {
+                compareMenuItem.Text = "Compare...";
+                compareCancelMenuItem.Visible = false;
+            }
         }
 
         private void extractMenuItem_Click(object sender, EventArgs e)
@@ -1003,6 +1016,38 @@ namespace BSA_Browser
         private void selectAllMenuItem1_Click(object sender, EventArgs e)
         {
             lvFiles.SelectAllItems();
+        }
+
+        ArchiveEntry _compareSource;
+        Tools.CompareEntryWindow _compareEntryWindow;
+
+        private void compareMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_compareEntryWindow == null)
+                _compareEntryWindow = new Tools.CompareEntryWindow();
+
+            if (_compareSource == null)
+            {
+                _compareSource = _files[lvFiles.SelectedIndices[0]];
+                _compareEntryWindow.SetSource(_compareSource);
+            }
+            else
+            {
+                var entries = new List<ArchiveEntry>();
+                foreach (int i in lvFiles.SelectedIndices)
+                    entries.Add(_files[i]);
+                _compareEntryWindow.SetEntries(entries);
+            }
+
+            if (!_compareEntryWindow.Visible)
+                _compareEntryWindow.Show();
+        }
+
+        private void compareCancelMenuItem_Click(object sender, EventArgs e)
+        {
+            _compareSource = null;
+            _compareEntryWindow.Close();
+            _compareEntryWindow = null;
         }
 
         #endregion
