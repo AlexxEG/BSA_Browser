@@ -171,6 +171,11 @@ namespace SharpBSABA2.BA2Util
             ddsHeader.dwMipMapCount = numMips;
             ddsHeader.PixelFormat.dwSize = DDS_PIXELFORMAT.GetSize();
             ddsHeader.dwSurfaceFlags = DDS.DDS_SURFACE_FLAGS_TEXTURE | DDS.DDS_SURFACE_FLAGS_MIPMAP;
+            ddsHeader.dwCubemapFlags = isCubemap == 1 ? (uint)(DDSCAPS2.CUBEMAP
+                | DDSCAPS2.CUBEMAP_NEGATIVEX | DDSCAPS2.CUBEMAP_POSITIVEX
+                | DDSCAPS2.CUBEMAP_NEGATIVEY | DDSCAPS2.CUBEMAP_POSITIVEY
+                | DDSCAPS2.CUBEMAP_NEGATIVEZ | DDSCAPS2.CUBEMAP_POSITIVEZ
+                | DDSCAPS2.CUBEMAP_ALLFACES) : 0u;
 
             switch ((DXGI_FORMAT)format)
             {
@@ -253,7 +258,7 @@ namespace SharpBSABA2.BA2Util
                     {
                         dxgiFormat = format,
                         resourceDimension = (uint)DXT10_RESOURCE_DIMENSION.DIMENSION_TEXTURE2D,
-                        miscFlag = 0,
+                        miscFlag = isCubemap == 1 ? DDS.DDS_RESOURCE_MISC_TEXTURECUBE : 0u,
                         arraySize = 1,
                         miscFlags2 = DDS.DDS_ALPHA_MODE_UNKNOWN
                     };

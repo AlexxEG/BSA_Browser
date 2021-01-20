@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 /* 
  * Copied from dds.h. Includes (almost) only stuff I need in this project.
@@ -31,6 +32,8 @@ namespace SharpBSABA2.BA2Util
         public const int DDS_SURFACE_FLAGS_MIPMAP = 0x00400008; // DDSCAPS_COMPLEX | DDSCAPS_MIPMAP
 
         public const int DDS_ALPHA_MODE_UNKNOWN = 0x0;
+
+        public const uint DDS_RESOURCE_MISC_TEXTURECUBE = 0x4;
     }
 
     #region dxgiformat.h
@@ -55,6 +58,19 @@ namespace SharpBSABA2.BA2Util
     }
 
     #endregion
+
+    [Flags]
+    public enum DDSCAPS2 : uint
+    {
+        CUBEMAP = 0x200,
+        CUBEMAP_POSITIVEX = 0x400,
+        CUBEMAP_NEGATIVEX = 0x800,
+        CUBEMAP_POSITIVEY = 0x1000,
+        CUBEMAP_NEGATIVEY = 0x2000,
+        CUBEMAP_POSITIVEZ = 0x4000,
+        CUBEMAP_NEGATIVEZ = 0x8000,
+        CUBEMAP_ALLFACES = 0xFC00
+    }
 
     public enum DXT10_RESOURCE_DIMENSION
     {
