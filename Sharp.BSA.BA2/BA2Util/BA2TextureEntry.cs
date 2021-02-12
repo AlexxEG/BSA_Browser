@@ -13,6 +13,10 @@ namespace SharpBSABA2.BA2Util
 
     public class BA2TextureEntry : ArchiveEntry
     {
+        private const uint TILE_MODE_DEFAULT = 0x08;
+        private const uint XBOX_BASE_ALIGNMENT = 256;
+        private const uint XBOX_XDK_VERSION = 13202;
+
         /// <summary>
         /// Gets or sets whether to generate DDS header.
         /// </summary>
@@ -243,6 +247,26 @@ namespace SharpBSABA2.BA2Util
                     throw new UnsupportedDDSException("Unsupported DDS header format. File: " + this.FullPath);
             }
 
+            // If tileMode is NOT TILE_MODE_DEFAULT assume Xbox format
+            if (tileMode != TILE_MODE_DEFAULT)
+            {
+                switch ((DXGI_FORMAT)format)
+                {
+                    case DXGI_FORMAT.BC1_UNORM:
+                    case DXGI_FORMAT.BC1_UNORM_SRGB:
+                    case DXGI_FORMAT.BC2_UNORM:
+                    case DXGI_FORMAT.BC3_UNORM:
+                    case DXGI_FORMAT.BC3_UNORM_SRGB:
+                    case DXGI_FORMAT.BC4_UNORM:
+                    case DXGI_FORMAT.BC5_SNORM:
+                    case DXGI_FORMAT.BC5_UNORM:
+                    case DXGI_FORMAT.BC7_UNORM:
+                    case DXGI_FORMAT.BC7_UNORM_SRGB:
+                        ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('X', 'B', 'O', 'X');
+                        break;
+                }
+            }
+
             bw.Write((uint)DDS.DDS_MAGIC);
             ddsHeader.Write(bw);
 
@@ -254,16 +278,39 @@ namespace SharpBSABA2.BA2Util
                 case DXGI_FORMAT.BC5_SNORM:
                 case DXGI_FORMAT.BC7_UNORM:
                 case DXGI_FORMAT.BC7_UNORM_SRGB:
-                    var dxt10 = new DDS_HEADER_DXT10()
+                    new DDS_HEADER_DXT10()
                     {
                         dxgiFormat = format,
                         resourceDimension = (uint)DXT10_RESOURCE_DIMENSION.DIMENSION_TEXTURE2D,
                         miscFlag = isCubemap == 1 ? DDS.DDS_RESOURCE_MISC_TEXTURECUBE : 0u,
                         arraySize = 1,
                         miscFlags2 = DDS.DDS_ALPHA_MODE_UNKNOWN
-                    };
-                    dxt10.Write(bw);
+                    }.Write(bw);
                     break;
+                default:
+                    if (tileMode != TILE_MODE_DEFAULT)
+                    {
+                        new DDS_HEADER_DXT10()
+                        {
+                            dxgiFormat = format,
+                            resourceDimension = (uint)DXT10_RESOURCE_DIMENSION.DIMENSION_TEXTURE2D,
+                            miscFlag = isCubemap == 1 ? DDS.DDS_RESOURCE_MISC_TEXTURECUBE : 0u,
+                            arraySize = 1,
+                            miscFlags2 = DDS.DDS_ALPHA_MODE_UNKNOWN
+                        }.Write(bw);
+                    }
+                    break;
+            }
+
+            // If tileMode is NOT TILE_MODE_DEFAULT assume Xbox format
+            if (tileMode != TILE_MODE_DEFAULT)
+            {
+                uint dataSize = (uint)bw.BaseStream.Length + 16;
+
+                bw.Write((uint)tileMode);
+                bw.Write(XBOX_BASE_ALIGNMENT);
+                bw.Write(dataSize);
+                bw.Write(XBOX_XDK_VERSION);
             }
         }
 
