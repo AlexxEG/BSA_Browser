@@ -3,7 +3,7 @@ using System.Text;
 
 namespace SharpBSABA2.Extensions
 {
-    public static class BinaryReaderExtensions
+    public static class BinaryStreamExtensions
     {
         public static string ReadString(this BinaryReader reader, int charCount)
         {
@@ -31,6 +31,15 @@ namespace SharpBSABA2.Extensions
             uint value = reader.ReadUInt32();
             reader.BaseStream.Position = position;
             return value;
+        }
+
+        public static void WriteAt(this BinaryWriter writer, long position, uint value, bool returnPosition = true)
+        {
+            long startPosition = writer.BaseStream.Position;
+            writer.BaseStream.Position = position;
+            writer.Write(value);
+            if (returnPosition)
+                writer.BaseStream.Position = startPosition;
         }
     }
 }
