@@ -1560,6 +1560,7 @@ namespace BSA_Browser
             }
 
             var fe = _files[lvFiles.SelectedIndices[0]];
+            string fileName = fe.FileName;
             var extension = Path.GetExtension(fe.LowerPath);
 
             switch (extension)
@@ -1579,8 +1580,12 @@ namespace BSA_Browser
 
                     if (fe is BA2GNFEntry)
                     {
-                        MessageBox.Show(this, "Can't preview GNF .dds files.");
-                        return;
+                        if (Settings.Default.ReplaceGNFExt)
+                        {
+                            fileName = Path.GetFileNameWithoutExtension(fileName) + ".gnf";
+                        }
+
+                        goto default;
                     }
 
                     try
@@ -1606,8 +1611,8 @@ namespace BSA_Browser
                     break;
                 default:
                     string dest = Program.CreateTempDirectory();
-                    string file = Path.Combine(dest, fe.FileName);
-                    fe.Extract(dest, false);
+                    string file = Path.Combine(dest, fileName);
+                    fe.Extract(dest, false, fileName);
 
                     try
                     {
