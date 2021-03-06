@@ -1689,7 +1689,7 @@ namespace BSA_Browser
         {
             foreach (BA2GNFEntry entry in files)
             {
-                if (replaceWithGNF)
+                if (replaceWithGNF && Path.GetExtension(entry.FullPath).ToLower() == ".dds")
                 {
                     entry.FullPath = Path.Combine(
                         Path.GetDirectoryName(entry.FullPath),
