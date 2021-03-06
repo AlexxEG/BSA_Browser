@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpBSABA2.Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -22,6 +23,7 @@ namespace SharpBSABA2.BA2Util
         /// </summary>
         public bool GenerateTextureHeader { get; set; } = true;
         public List<BA2TextureChunk> Chunks { get; private set; } = new List<BA2TextureChunk>();
+        public long dataSizePosition = -1;
 
         public readonly byte unk1;
         public readonly byte numChunks;
@@ -305,11 +307,10 @@ namespace SharpBSABA2.BA2Util
             // If tileMode is NOT TILE_MODE_DEFAULT assume Xbox format
             if (tileMode != TILE_MODE_DEFAULT)
             {
-                uint dataSize = (uint)bw.BaseStream.Length + 16;
-
                 bw.Write((uint)tileMode);
                 bw.Write(XBOX_BASE_ALIGNMENT);
-                bw.Write(dataSize);
+                dataSizePosition = bw.BaseStream.Position;
+                bw.Write((uint)0);
                 bw.Write(XBOX_XDK_VERSION);
             }
         }
@@ -351,6 +352,11 @@ namespace SharpBSABA2.BA2Util
                                        stream,
                                        bytesWritten => this.BytesWritten = prev + bytesWritten);
                 }
+            }
+
+            if (dataSizePosition > -1)
+            {
+                bw.WriteAt(dataSizePosition, (uint)bw.BaseStream.Length - 164);
             }
         }
     }
