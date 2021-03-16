@@ -55,6 +55,7 @@ namespace SharpBSABA2.BSAUtil
         public uint Magic { get; private set; }
         public object Header { get; private set; }
 
+        private bool hasNameTableMW = true;
         public override bool HasNameTable
         {
             get
@@ -65,6 +66,7 @@ namespace SharpBSABA2.BSAUtil
                         BSAHeader header = Header as BSAHeader;
                         return (header.ArchiveFlags & 0x1) > 0 && (header.ArchiveFlags & 0x2) > 0; // Should always be true
                     case MW_HEADER_MAGIC:
+                        return hasNameTableMW;
                     default:
                         return true;
                 }
@@ -118,6 +120,7 @@ namespace SharpBSABA2.BSAUtil
                     this.FileCount = (int)header.FileCount;
                     uint dataOffset = 12 + header.HashOffset + header.FileCount * 8;
 
+                    // Store file sizes and offsets
                     for (int i = 0; i < header.FileCount; i++)
                     {
                         uint size = this.BinaryReader.ReadUInt32();
@@ -127,13 +130,29 @@ namespace SharpBSABA2.BSAUtil
                         this.Files[i].Index = i;
                     }
 
-                    // Seek to name table
-                    this.BinaryReader.BaseStream.Position = 12 + header.FileCount * 12;
+                    // Check if archive has name offset and name table, for example for Xbox
+                    this.BinaryReader.BaseStream.Position = 12 + header.FileCount * 8; // Skip header and entries
+
+                    // First name offset should be 0 if there is one, otherwise it doesn't have one
+                    hasNameTableMW = this.BinaryReader.ReadUInt32() == 0;
+
+                    if (hasNameTableMW)
+                        this.BinaryReader.BaseStream.Position = 12 + header.FileCount * 12; // Seek to name table
+                    else
+                        this.BinaryReader.BaseStream.Position -= 4; // Go Back
 
                     for (int i = 0; i < header.FileCount; i++)
                     {
-                        this.Files[i].FullPath = this.BinaryReader.ReadStringTo('\0');
-                        this.Files[i].FullPathOriginal = this.Files[i].FullPath;
+                        if (hasNameTableMW)
+                        {
+                            this.Files[i].FullPath = this.BinaryReader.ReadStringTo('\0');
+                            this.Files[i].FullPathOriginal = this.Files[i].FullPath;
+                        }
+                        else
+                        {
+                            this.Files[i].FullPath = string.Format("{0:X}", this.BinaryReader.ReadUInt64());
+                            this.Files[i].FullPathOriginal = this.Files[i].FullPath;
+                        }
                     }
                 }
                 else if (this.Magic == BSA_HEADER_MAGIC)
