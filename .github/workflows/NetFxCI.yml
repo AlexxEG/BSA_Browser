@@ -71,8 +71,8 @@ jobs:
       - name: create-7z-action
         uses: DuckSoft/create-7z-action@v1.0
         with:
-          pathSource: "\"BSA Browser Portable\\\""
-          pathTarget: "\"BSA Browser Portable.7z\""
+          pathSource: "BSA Browser Portable"
+          pathTarget: "BSA Browser Portable.7z"
 
       - name: Release
         uses: softprops/action-gh-release@v1
