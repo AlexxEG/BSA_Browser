@@ -35,11 +35,16 @@ jobs:
       - name: Build the Solution
         run: msbuild "BSA Browser.sln" /p:Configuration=Release
         
-      - run: |
-          mkdir build
-          mkdir build\Licenses
-          for %I in ("BSA Browser\bin\Release\BSA Browser.exe" "BSA Browser\bin\Release\BSA Browser.exe.config" "BSA Browser\bin\Release\ICSharpCode.SharpZipLib.dll" "BSA Browser\bin\Release\ICSharpCode.TextEditor.dll" "BSA Browser\bin\Release\lz4.AnyCPU.loader.dll" "BSA Browser\bin\Release\Pfim.dll" "BSA Browser\bin\Release\Sharp.BSA.BA2.dll" "BSA Browser\bin\Release\System.Management.Automation.dll" "BSA Browser CLI\bin\Release\bsab.exe") do copy %I build\
-          COPY "Licenses" build\Licenses\
+      - run: mkdir build
+        shell: cmd
+        
+      - run: mkdir build\Licenses
+        shell: cmd
+        
+      - run: for %I in ("BSA Browser\bin\Release\BSA Browser.exe" "BSA Browser\bin\Release\BSA Browser.exe.config" "BSA Browser\bin\Release\ICSharpCode.SharpZipLib.dll" "BSA Browser\bin\Release\ICSharpCode.TextEditor.dll" "BSA Browser\bin\Release\lz4.AnyCPU.loader.dll" "BSA Browser\bin\Release\Pfim.dll" "BSA Browser\bin\Release\Sharp.BSA.BA2.dll" "BSA Browser\bin\Release\System.Management.Automation.dll" "BSA Browser CLI\bin\Release\bsab.exe") do copy %I build\
+        shell: cmd
+        
+      - run: COPY "Licenses" build\Licenses\
         shell: cmd
         
       - uses: benjlevesque/short-sha@v1.2
