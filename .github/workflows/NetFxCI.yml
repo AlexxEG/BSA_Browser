@@ -33,4 +33,4 @@ jobs:
         run: nuget restore "BSA Browser.sln"
         
       - name: Build the Solution
-        run: msbuild "BSA Browser.sln"
+        run: msbuild "BSA Browser.sln" /p:Configuration=Release
