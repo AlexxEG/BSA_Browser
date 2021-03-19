@@ -34,3 +34,13 @@ jobs:
         
       - name: Build the Solution
         run: msbuild "BSA Browser.sln" /p:Configuration=Release
+        
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: "Testing auto release"
+          files: "BSA Browser\\bin\\Release\\BSA Browser.exe"
+          prerelease: True
+          tag_name: v0.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
