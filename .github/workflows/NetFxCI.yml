@@ -39,12 +39,15 @@ jobs:
         id: short-sha
         with:
           length: 7
+      - uses: edgarrc/action-7z@v1.0.4
+        with:
+          args: 7z a -t7z "BSA Browser Portable.7z" @.github\\7z_filelist.txt
         
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           body: "Automated build. Unstable"
-          files: "BSA Browser\\bin\\Release\\BSA Browser.exe"
+          files: "BSA Browser Portable.7z"
           prerelease: True
           tag_name: ${{ steps.short-sha.outputs.sha }}
         env:
