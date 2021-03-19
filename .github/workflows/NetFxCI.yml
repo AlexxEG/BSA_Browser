@@ -35,12 +35,17 @@ jobs:
       - name: Build the Solution
         run: msbuild "BSA Browser.sln" /p:Configuration=Release
         
+      - uses: benjlevesque/short-sha@v1.2
+        id: short-sha
+        with:
+          length: 7
+        
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          body: "Testing auto release"
+          body: "Automated build. Unstable"
           files: "BSA Browser\\bin\\Release\\BSA Browser.exe"
           prerelease: True
-          tag_name: v0.0.1
+          tag_name: ${{ steps.short-sha.outputs.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
