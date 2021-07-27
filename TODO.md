@@ -3,6 +3,8 @@
 - [ ] Detailed view for advanced mode or debug mode
 - [ ] Compare single files within any archive. Idea: Right click to mark first file, then right click second file to start comparing. Display the filename of first file when selecting the second (\{archive\} - \{filename\})
 - [ ] And/or: Same as above, but second file can be multiple files and they're all compared to the first
+- [ ] Search across all open archives (maybe a 'All' node)
+- [ ] Right click options in Explorer to extract
 
 ### Complete
 
