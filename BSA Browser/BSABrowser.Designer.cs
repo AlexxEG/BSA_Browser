@@ -98,6 +98,7 @@
             this.menuItem8 = new System.Windows.Forms.MenuItem();
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.columnArchive = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -110,7 +111,8 @@
             this.lvFiles.AutoArrange = false;
             this.lvFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnFilePath,
-            this.columnFileSize});
+            this.columnFileSize,
+            this.columnArchive});
             this.lvFiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvFiles.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lvFiles.FullRowSelect = true;
@@ -632,6 +634,10 @@
             this.closeMenuItem.Text = "Close";
             this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
             // 
+            // columnArchive
+            // 
+            this.columnArchive.Text = "Archive";
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -732,6 +738,7 @@
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.ImageList foldersImageList;
         private System.Windows.Forms.ImageList filesImageList;
+        private System.Windows.Forms.ColumnHeader columnArchive;
     }
 }
 
