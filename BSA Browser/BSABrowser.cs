@@ -74,7 +74,6 @@ namespace BSA_Browser
             };
             tvFolders.Nodes.Add(archiveNode);
 
-
             // Store title so it can be restored later,
             // for example when showing the extraction progress in title
             _untouchedTitle = this.Text;
