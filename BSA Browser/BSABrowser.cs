@@ -54,7 +54,7 @@ namespace BSA_Browser
                 if (tvFolders.SelectedNode == null)
                     return null;
 
-                return this.GetRootNode(tvFolders.SelectedNode);
+                return this.GetRootNode(tvFolders.SelectedNode) as ArchiveNode;
             }
         }
 
@@ -66,6 +66,14 @@ namespace BSA_Browser
 
             // Show application version in title
             this.Text += $" ({Program.GetVersion()})";
+
+            var archiveNode = new ArchiveNode("All", null)
+            {
+                Files = new ArchiveEntry[0],
+                AllFiles = new List<ArchiveEntry>()
+            };
+            tvFolders.Nodes.Add(archiveNode);
+
 
             // Store title so it can be restored later,
             // for example when showing the extraction progress in title
@@ -324,7 +332,7 @@ namespace BSA_Browser
 
         private void BSABrowser_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (tvFolders.GetNodeCount(false) > 0)
+            if (tvFolders.GetNodeCount(false) > 1)
                 this.CloseArchives();
 
             this.SaveRecentFiles();
@@ -372,7 +380,7 @@ namespace BSA_Browser
 
         private void btnExtractFiles_Click(object sender, EventArgs e)
         {
-            if (tvFolders.SelectedNode != null)
+            if (this.SelectedArchiveNode != null)
             {
                 this.ExtractFilesTo(false, true, () => _files);
             }
@@ -380,7 +388,7 @@ namespace BSA_Browser
 
         private void btnExtractFolders_Click(object sender, EventArgs e)
         {
-            if (tvFolders.SelectedNode != null)
+            if (this.SelectedArchiveNode != null)
             {
                 this.ExtractFilesTo(true, true, () => _files);
             }
@@ -487,7 +495,7 @@ namespace BSA_Browser
 
         private void tvFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            var rootNode = this.GetRootNode(e.Node);
+            var rootNode = this.GetRootNode(e.Node) as ArchiveNode;
 
             // Check if node structure has already been built
             if (rootNode.AllFiles != null)
@@ -551,14 +559,25 @@ namespace BSA_Browser
 
         private void tvFolders_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            var rootNode = this.GetRootNode(e.Node);
+            var rootNode = this.GetRootNode(e.Node) as ArchiveNode;
 
             // If AllFiles is null, trigger event which will populate it
             if (rootNode.AllFiles == null)
                 tvFolders_BeforeExpand(null, new TreeViewCancelEventArgs(e.Node, false, TreeViewAction.Unknown));
 
-            if (e.Node.Tag == null) // Root node is selected, so show all files
-                rootNode.Files = rootNode.AllFiles.ToArray();
+            if (rootNode.Index == 0) // 'All' node is selected, show all files in all archives
+            {
+                var lvis = new List<ArchiveEntry>();
+
+                for (int i = 1; i < tvFolders.Nodes.Count; i++)
+                {
+                    lvis.AddRange((tvFolders.Nodes[i] as ArchiveNode).AllFiles);
+                }
+
+                rootNode.Files = lvis.ToArray();
+            }
+            else if (e.Node.Tag == null) // Root node is selected, so show all files
+                rootNode.Files = rootNode.AllFiles?.ToArray();
             else
             {
                 // Ignore casing
@@ -604,7 +623,7 @@ namespace BSA_Browser
 
         private void fileMenuItem_Popup(object sender, EventArgs e)
         {
-            extractArchivesMenuItem.Enabled = tvFolders.Nodes.Count >= 1;
+            extractArchivesMenuItem.Enabled = tvFolders.Nodes.Count > 1;
         }
 
         private void openArchiveMenuItem_Click(object sender, EventArgs e)
@@ -628,7 +647,7 @@ namespace BSA_Browser
 
         private void extractArchivesMenuItem_Click(object sender, EventArgs e)
         {
-            var archives = new List<Archive>(tvFolders.Nodes.Cast<ArchiveNode>().Select(x => x.Archive));
+            var archives = new List<Archive>(tvFolders.Nodes.Cast<ArchiveNode>().Skip(1).Select(x => x.Archive));
             var dialog = ExtractArchivesDialog.ShowDialog(this, archives);
 
             if (dialog.DialogResult != DialogResult.OK)
@@ -670,14 +689,17 @@ namespace BSA_Browser
                     }
 
                     // Sync changes to archives already opened
-                    foreach (ArchiveNode archiveNode in tvFolders.Nodes)
+                    for (int i = 1; i < tvFolders.Nodes.Count; i++)
+                    {
+                        var archiveNode = (ArchiveNode)tvFolders.Nodes[i];
                         archiveNode.Archive.MatchLastWriteTime = Settings.Default.MatchLastWriteTime;
+                    }
 
                     if (Settings.Default.ReplaceGNFExt != replaceGNFExt)
                     {
                         lvFiles.BeginUpdate();
                         foreach (var archive in tvFolders.Nodes
-                                                .Cast<ArchiveNode>()
+                                                .Cast<ArchiveNode>().Skip(1)
                                                 .Where(x => x.Archive.Type == ArchiveTypes.BA2_GNMF))
                         {
                             this.ReplaceGNFExtensions(archive.Files.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
@@ -793,8 +815,8 @@ namespace BSA_Browser
         {
             var archives = new List<Archive>();
 
-            foreach (ArchiveNode node in tvFolders.Nodes)
-                archives.Add(node.Archive);
+            for (int i = 1; i < tvFolders.Nodes.Count; i++)
+                archives.Add((tvFolders.Nodes[i] as ArchiveNode).Archive);
 
             if (_compareForm == null || _compareForm.IsDisposed)
                 _compareForm = new CompareForm(archives);
@@ -992,7 +1014,14 @@ namespace BSA_Browser
 
         private void archiveContextMenu_Popup(object sender, EventArgs e)
         {
-            archiveContextMenu.Tag = tvFolders.GetNodeAt(tvFolders.PointToClient(Cursor.Position));
+            TreeNode selectedNode = tvFolders.GetNodeAt(tvFolders.PointToClient(Cursor.Position));
+
+            // Ignore if the 'All' node is selected
+            if (selectedNode?.Index == 0)
+                selectedNode = null;
+
+            extractAllFilesMenuItem.Enabled = extractAllFoldersMenuItem.Enabled = closeMenuItem.Enabled = selectedNode != null;
+            archiveContextMenu.Tag = selectedNode;
         }
 
         private void extractAllFilesMenuItem_Click(object sender, EventArgs e)
@@ -1009,7 +1038,7 @@ namespace BSA_Browser
         {
             this.CloseArchive((ArchiveNode)archiveContextMenu.Tag);
 
-            if (tvFolders.Nodes.Count == 0)
+            if (tvFolders.Nodes.Count == 1)
                 this.ClearList();
             else
                 this.DoSearch();
@@ -1025,8 +1054,9 @@ namespace BSA_Browser
         public void OpenArchive(string path, bool addToRecentFiles = false)
         {
             // Check if archive is already opened
-            foreach (ArchiveNode node in tvFolders.Nodes)
+            for (int i = 1; i < tvFolders.Nodes.Count; i++)
             {
+                ArchiveNode node = (ArchiveNode)tvFolders.Nodes[i];
                 if (node.Archive.FullPath.ToLower() == path.ToLower())
                 {
                     tvFolders.SelectedNode = node;
@@ -1187,7 +1217,7 @@ namespace BSA_Browser
 
             GC.Collect();
 
-            if (tvFolders.GetNodeCount(false) == 0)
+            if (tvFolders.GetNodeCount(false) == 1)
             {
                 btnPreview.Enabled = false;
                 btnExtractAllFolders.Enabled = false;
@@ -1202,13 +1232,13 @@ namespace BSA_Browser
         {
             this.ClearList();
 
-            foreach (ArchiveNode node in tvFolders.Nodes)
+            for (int i = tvFolders.Nodes.Count - 1; i > 0; i--)
             {
+                ArchiveNode node = (ArchiveNode)tvFolders.Nodes[i];
                 node.Archive.Close();
                 _compareForm?.RemoveArchive(node.Archive);
+                tvFolders.Nodes.RemoveAt(i);
             }
-
-            tvFolders.Nodes.Clear();
 
             GC.Collect();
 
@@ -1244,7 +1274,7 @@ namespace BSA_Browser
         {
             LimitedAction.Stop(1);
 
-            if (tvFolders.GetNodeCount(false) < 1 || tvFolders.SelectedNode == null)
+            if (tvFolders.SelectedNode == null)
                 return;
 
             string str = txtSearch.Text;
@@ -1480,7 +1510,7 @@ namespace BSA_Browser
         /// Returns the root node of the given <see cref="TreeNode"/>.
         /// </summary>
         /// <param name="node">The <see cref="TreeNode"/> to get root node from.</param>
-        private ArchiveNode GetRootNode(TreeNode node)
+        private TreeNode GetRootNode(TreeNode node)
         {
             if (node == null)
                 return null;
@@ -1488,7 +1518,7 @@ namespace BSA_Browser
             var rootNode = node;
             while (rootNode.Parent != null)
                 rootNode = rootNode.Parent;
-            return rootNode as ArchiveNode;
+            return rootNode;
         }
 
         /// <summary>
