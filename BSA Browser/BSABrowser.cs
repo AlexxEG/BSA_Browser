@@ -244,6 +244,9 @@ namespace BSA_Browser
             if (tvFolders.SelectedNode == null)
                 return;
 
+            if (tvFolders.SelectedNode.Index == 0)
+                return;
+
             Stopwatch sw = new Stopwatch();
             int count = 0;
             List<long> results = new List<long>();
@@ -913,7 +916,6 @@ namespace BSA_Browser
         private void contextMenu1_Popup(object sender, EventArgs e)
         {
             bool hasSelectedItems = lvFiles.SelectedIndices.Count > 0;
-            bool listIsEmpty = SelectedArchiveNode == null || SelectedArchiveNode.Archive.Files.Count == 0;
 
             extractMenuItem.Enabled = hasSelectedItems;
             extractFoldersMenuItem.Enabled = hasSelectedItems;
@@ -1426,7 +1428,7 @@ namespace BSA_Browser
         /// <param name="selector">The files in the selected archive to extract.</param>
         private void ExtractFilesTo(bool useFolderPath, bool gui, Func<IEnumerable<ArchiveEntry>> selector)
         {
-            var archive = this.SelectedArchiveNode.Archive.FullPath;
+            var archive = this.SelectedArchiveNode.Archive?.FullPath;
 
             _openFolderDialog.DefaultFolder = Path.GetDirectoryName(archive);
 
