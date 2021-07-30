@@ -40,6 +40,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 Name: "bsaassociation"; Description: "Associate "".bsa"" extension"; GroupDescription: File extensions:
 Name: "ba2aassociation"; Description: "Associate "".ba2"" extension"; GroupDescription: File extensions:
+Name: "quickextractassociation"; Description: "Add ""Extract with BSA Browser"" to context menu"; GroupDescription: File extensions:
 
 [Files]
 Source: "Licenses\*"; DestDir: "{app}\Licenses"; Flags: ignoreversion
@@ -65,6 +66,8 @@ Root: HKCR; Subkey: ".ba2"; ValueType: string; ValueName: ""; ValueData: "BSABro
 Root: HKCR; Subkey: "BSABrowser"; ValueType: string; ValueName: ""; ValueData: "Bethesda File Archive"; Flags: uninsdeletekey; Tasks: bsaassociation or ba2aassociation
 Root: HKCR; Subkey: "BSABrowser\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"",0"; Tasks: bsaassociation or ba2aassociation
 Root: HKCR; Subkey: "BSABrowser\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: bsaassociation or ba2aassociation
+Root: HKCR; Subkey: "BSABrowser\shell\Extract"; ValueType: string; ValueName: ""; ValueData: "Extract with BSA Browser"; Tasks: quickextractassociation
+Root: HKCR; Subkey: "BSABrowser\shell\Extract\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" /extract ""%1"""; Tasks: quickextractassociation
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
