@@ -1,10 +1,38 @@
-﻿using System;
+﻿using BSA_Browser.Properties;
+using SharpBSABA2;
+using SharpBSABA2.BA2Util;
+using SharpBSABA2.BSAUtil;
+using SharpBSABA2.Enums;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
 namespace BSA_Browser.Classes
 {
     public class Common
     {
+        /// <summary>
+        /// Returns true if there are any unsupported textures.
+        /// </summary>
+        public static bool CheckForUnsupportedTextures(IList<ArchiveEntry> entries)
+        {
+            return entries.Any(x => (x as BA2TextureEntry)?.IsFormatSupported() == false);
+        }
+
+        public static ProgressForm CreateProgressForm(int fileCount)
+        {
+            return new ProgressForm("Unpacking archive")
+            {
+                Header = "Extracting...",
+                Footer = $"(0/{fileCount})",
+                Cancelable = true,
+                Maximum = 100
+            };
+        }
+
         /// <summary>
         /// Formats file size into a human readable <see cref="string"/>.
         /// </summary>
@@ -49,6 +77,87 @@ namespace BSA_Browser.Classes
                     return $"About {ss[0]}, {ss[1]} and {ss[2]} remaining";
                 default:
                     throw new Exception();
+            }
+        }
+
+        public static Archive OpenArchive(string file, IWin32Window owner = null)
+        {
+            Archive archive;
+
+            try
+            {
+                string extension = Path.GetExtension(file);
+                Encoding encoding = Encoding.GetEncoding(Settings.Default.EncodingCodePage);
+
+                // ToDo: Read file header to find archive type, not just extension
+                switch (extension.ToLower())
+                {
+                    case ".bsa":
+                    case ".dat":
+                        if (BSA.IsSupportedVersion(file) == false)
+                        {
+                            if (MessageBox.Show(owner,
+                                    "Archive has an unknown version number.\n" + "Attempt to open anyway?",
+                                    "Warning",
+                                    MessageBoxButtons.YesNo) != DialogResult.Yes)
+                                return null;
+                        }
+
+                        archive = new BSA(file, encoding, Settings.Default.RetrieveRealSize)
+                        {
+                            MatchLastWriteTime = Settings.Default.MatchLastWriteTime
+                        };
+                        break;
+                    case ".ba2":
+                        archive = new BA2(file, encoding, Settings.Default.RetrieveRealSize)
+                        {
+                            MatchLastWriteTime = Settings.Default.MatchLastWriteTime
+                        };
+
+                        if (archive.Type == ArchiveTypes.BA2_GNMF)
+                        {
+                            // Check if extensions for GNF textures should be replaced
+                            Common.ReplaceGNFExtensions(archive.Files.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
+                        }
+                        break;
+                    default:
+                        throw new Exception($"Unrecognized archive file type ({extension}).");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+
+            return archive;
+        }
+
+        /// <summary>
+        /// Replaces GNF texture extensions with '.dds' or '.gnf' depending on <paramref name="replaceWithGNF"/>.
+        /// </summary>
+        public static void ReplaceGNFExtensions(IEnumerable<BA2GNFEntry> files, bool replaceWithGNF)
+        {
+            foreach (BA2GNFEntry entry in files)
+            {
+                if (replaceWithGNF && Path.GetExtension(entry.FullPath).ToLower() == ".dds")
+                {
+                    entry.FullPath = Path.Combine(
+                        Path.GetDirectoryName(entry.FullPath),
+                        Path.GetFileNameWithoutExtension(entry.FullPath));
+
+                    string orgExt = Path.GetExtension(entry.FullPathOriginal);
+                    string newExt = ".gnf";
+                    for (int i = 0; i < newExt.Length; i++)
+                    {
+                        // Match casing in all configurations, for example .DdS -> .GnF
+                        entry.FullPath += char.IsUpper(orgExt[i]) ? char.ToUpper(newExt[i]) : newExt[i];
+                    }
+                }
+                else
+                {
+                    entry.FullPath = entry.FullPathOriginal;
+                }
             }
         }
     }

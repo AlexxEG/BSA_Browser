@@ -1,5 +1,7 @@
-﻿using BSA_Browser.Properties;
+﻿using BSA_Browser.Classes;
+using BSA_Browser.Properties;
 using Microsoft.VisualBasic.Devices;
+using SharpBSABA2;
 using System;
 using System.IO;
 using System.Linq;
@@ -137,6 +139,8 @@ namespace BSA_Browser
     /// </summary>
     class App : MsVB.WindowsFormsApplicationBase
     {
+        ProgressForm _progressForm;
+
         public App()
         {
             this.IsSingleInstance = true; // makes this a single-instance app
@@ -149,10 +153,19 @@ namespace BSA_Browser
         /// </summary>
         protected override void OnCreateMainForm()
         {
-            if (this.CommandLineArgs.Count > 0)
-                this.MainForm = new BSABrowser(this.CommandLineArgs.ToArray());
-            else
+            if (this.CommandLineArgs.Count == 0)
                 this.MainForm = new BSABrowser();
+            else
+            {
+                if (this.CommandLineArgs[0].ToLower() == "/extract")
+                {
+                    this.Extract();
+                }
+                else
+                {
+                    this.MainForm = new BSABrowser(this.CommandLineArgs.ToArray());
+                }
+            }
         }
 
         /// <summary>
@@ -166,6 +179,25 @@ namespace BSA_Browser
             eventArgs.BringToForeground = true;
             if (eventArgs.CommandLine.Count > 0)
                 (this.MainForm as BSABrowser).OpenArchive(eventArgs.CommandLine[0], true);
+        }
+
+        private void Extract()
+        {
+            string path = this.CommandLineArgs[1];
+            Archive archive = Common.OpenArchive(path, null);
+
+            _progressForm = Common.CreateProgressForm(archive.Files.Count);
+            _progressForm.StartPosition = FormStartPosition.CenterScreen;
+            _progressForm.FormClosed += (sender, e) => { Application.Exit(); };
+
+            BSABrowser.ExtractFiles(null,
+                Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path)),
+                true,
+                true,
+                archive.Files,
+                _progressForm);
+
+            this.MainForm = _progressForm;
         }
     }
 }

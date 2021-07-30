@@ -38,7 +38,6 @@ namespace BSA_Browser
     {
         private const string UpdateMarker = "(!) ";
 
-        string _untouchedTitle;
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
         List<ArchiveEntry> _files = new List<ArchiveEntry>();
         ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
@@ -73,10 +72,6 @@ namespace BSA_Browser
                 AllFiles = new List<ArchiveEntry>()
             };
             tvFolders.Nodes.Add(archiveNode);
-
-            // Store title so it can be restored later,
-            // for example when showing the extraction progress in title
-            _untouchedTitle = this.Text;
 
             lvFiles.ContextMenu = contextMenu1;
 
@@ -139,7 +134,7 @@ namespace BSA_Browser
 #if DEBUG
         #region Debug Tools
 
-        private Stopwatch _debugStopwatch = new Stopwatch();
+        private static Stopwatch _debugStopwatch = new Stopwatch();
 
         private void SetupDebugTools()
         {
@@ -705,7 +700,7 @@ namespace BSA_Browser
                                                 .Cast<ArchiveNode>().Skip(1)
                                                 .Where(x => x.Archive.Type == ArchiveTypes.BA2_GNMF))
                         {
-                            this.ReplaceGNFExtensions(archive.Files.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
+                            Common.ReplaceGNFExtensions(archive.Files.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
                         }
                         lvFiles.EndUpdate();
                     }
@@ -987,7 +982,7 @@ namespace BSA_Browser
             foreach (int index in lvFiles.SelectedIndices)
                 files.Add(_files[index]);
 
-            ExtractFiles(path.Path, path.UseFolderPath, true, files);
+            ExtractFiles(this, path.Path, path.UseFolderPath, true, files, titleProgress: true);
         }
 
         private void copyPathMenuItem1_Click(object sender, EventArgs e)
@@ -1066,53 +1061,7 @@ namespace BSA_Browser
                 }
             }
 
-            Archive archive = null;
-
-            try
-            {
-                string extension = Path.GetExtension(path);
-                Encoding encoding = Encoding.GetEncoding(Settings.Default.EncodingCodePage);
-
-                // ToDo: Read file header to find archive type, not just extension
-                switch (extension.ToLower())
-                {
-                    case ".bsa":
-                    case ".dat":
-                        if (SharpBSABA2.BSAUtil.BSA.IsSupportedVersion(path) == false)
-                        {
-                            if (MessageBox.Show(this,
-                                    "Archive has an unknown version number.\n" + "Attempt to open anyway?",
-                                    "Warning",
-                                    MessageBoxButtons.YesNo) != DialogResult.Yes)
-                                return;
-                        }
-
-                        archive = new SharpBSABA2.BSAUtil.BSA(path, encoding, Settings.Default.RetrieveRealSize)
-                        {
-                            MatchLastWriteTime = Settings.Default.MatchLastWriteTime
-                        };
-                        break;
-                    case ".ba2":
-                        archive = new SharpBSABA2.BA2Util.BA2(path, encoding, Settings.Default.RetrieveRealSize)
-                        {
-                            MatchLastWriteTime = Settings.Default.MatchLastWriteTime
-                        };
-
-                        if (archive.Type == ArchiveTypes.BA2_GNMF)
-                        {
-                            // Check if extensions for GNF textures should be replaced
-                            this.ReplaceGNFExtensions(archive.Files.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
-                        }
-                        break;
-                    default:
-                        throw new Exception($"Unrecognized archive file type ({extension}).");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return;
-            }
+            Archive archive = Common.OpenArchive(path, this);
 
             var newNode = new ArchiveNode(
                 Path.GetFileNameWithoutExtension(path) + this.DetectGame(path),
@@ -1182,14 +1131,6 @@ namespace BSA_Browser
             {
                 recentFilesMenuItem.MenuItems.RemoveAt(recentFilesMenuItem.MenuItems.Count - 1);
             }
-        }
-
-        /// <summary>
-        /// Returns true if there are any unsupported textures.
-        /// </summary>
-        private bool CheckForUnsupportedTextures(IList<ArchiveEntry> entries)
-        {
-            return entries.Any(x => (x as BA2TextureEntry)?.IsFormatSupported() == false);
         }
 
         /// <summary>
@@ -1351,12 +1292,12 @@ namespace BSA_Browser
         /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
         /// <param name="gui">True to show a <see cref="ProgressForm"/>.</param>
         /// <param name="files">The files in the selected archive to extract.</param>
-        private void ExtractFiles(string folder, bool useFolderPath, bool gui, IList<ArchiveEntry> files)
+        public static void ExtractFiles(Form owner, string folder, bool useFolderPath, bool gui, IList<ArchiveEntry> files, ProgressForm progressForm = null, bool titleProgress = false)
         {
             // Check for unsupported textures and prompt the user what to do if there is
-            if (this.CheckForUnsupportedTextures(files))
+            if (Common.CheckForUnsupportedTextures(files))
             {
-                DialogResult result = MessageBox.Show(this,
+                DialogResult result = MessageBox.Show(owner,
                     "There are unsupported textures about to be extracted. These are missing DDS headers that can't (currently) be generated.\n\n" +
                     "Do you want to extract the raw data without DDS header? Selecting 'No' will skip these textures.",
                     "Unsupported Textures", MessageBoxButtons.YesNoCancel);
@@ -1384,18 +1325,19 @@ namespace BSA_Browser
 
             if (gui)
             {
-                var operation = new ExtractOperation(folder, files, useFolderPath);
+                var operation = new ExtractOperation(folder, files, useFolderPath)
+                {
+                    TitleProgress = titleProgress
+                };
                 operation.StateChange += ExtractOperation_StateChange;
                 operation.ProgressPercentageUpdate += ExtractOperation_ProgressPercentageUpdate;
                 operation.Completed += ExtractOperation_Completed;
 
-                _progressForm = new ProgressForm("Unpacking archive")
+                _progressForm = progressForm;
+                if (_progressForm == null)
                 {
-                    Header = "Extracting...",
-                    Footer = $"(0/{files.Count})",
-                    Cancelable = true,
-                    Maximum = 100
-                };
+                    _progressForm = Common.CreateProgressForm(files.Count);
+                }
                 _progressForm.Canceled += delegate { operation.Cancel(); };
 
 #if DEBUG
@@ -1403,8 +1345,11 @@ namespace BSA_Browser
                 _debugStopwatch.Restart();
 #endif
 
+                _owner = owner;
+                _originalTitle = owner?.Text;
+
                 operation.Start();
-                _progressForm.ShowDialog(this);
+                _progressForm.ShowDialog(owner);
             }
             else
             {
@@ -1415,7 +1360,7 @@ namespace BSA_Browser
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, ex.Message, "Error");
+                    MessageBox.Show(owner, ex.Message, "Error");
                 }
             }
         }
@@ -1434,39 +1379,48 @@ namespace BSA_Browser
 
             if (_openFolderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                this.ExtractFiles(_openFolderDialog.Folder, useFolderPath, gui, selector.Invoke().ToList());
+                BSABrowser.ExtractFiles(this,
+                    _openFolderDialog.Folder,
+                    useFolderPath,
+                    gui,
+                    selector.Invoke().ToList(),
+                    titleProgress: true);
             }
         }
 
         #region ExtractFiles variables
 
-        ProgressForm _progressForm;
+        static ProgressForm _progressForm;
+        static Form _owner;
+        static string _originalTitle;
 
-        private void ExtractOperation_StateChange(ExtractOperation sender, StateChangeEventArgs e)
+        private static void ExtractOperation_StateChange(ExtractOperation sender, StateChangeEventArgs e)
         {
             _progressForm.Description = e.FileName + '\n' + Common.FormatTimeRemaining(sender.EstimateTimeRemaining);
             _progressForm.Footer = $"({e.Count}/{e.FilesTotal}) {Common.FormatBytes(sender.SpeedBytes)}/s";
         }
 
-        private void ExtractOperation_ProgressPercentageUpdate(ExtractOperation sender, ProgressPercentageUpdateEventArgs e)
+        private static void ExtractOperation_ProgressPercentageUpdate(ExtractOperation sender, ProgressPercentageUpdateEventArgs e)
         {
-            this.Text = $"{e.ProgressPercentage}% - {_untouchedTitle}";
+            if (_owner != null && sender.TitleProgress)
+                _owner.Text = $"{e.ProgressPercentage}% - {_originalTitle}";
+
             _progressForm.Progress = e.ProgressPercentage;
             _progressForm.Description = _progressForm.Description.Split('\n')[0] + "\n" + Common.FormatTimeRemaining(e.RemainingEstimate);
         }
 
-        private void ExtractOperation_Completed(ExtractOperation sender, CompletedEventArgs e)
+        private static void ExtractOperation_Completed(ExtractOperation sender, CompletedEventArgs e)
         {
 #if DEBUG
             _debugStopwatch.Stop();
             Console.WriteLine($"Extraction complete. {_debugStopwatch.ElapsedMilliseconds}ms elapsed");
 #endif
+
             _progressForm.BlockClose = false;
             _progressForm.Close();
-            _progressForm.Dispose();
-            _progressForm = null;
 
-            this.Text = _untouchedTitle;
+            if (_owner != null && sender.TitleProgress)
+                _owner.Text = _originalTitle;
 
             // Save exceptions to _report.txt file in destination path
             if (e?.Exceptions.Count > 0)
@@ -1479,7 +1433,7 @@ namespace BSA_Browser
                     sb.AppendLine($"{ex.ArchiveEntry.FullPath}{Environment.NewLine}{ex.Exception}{Environment.NewLine}");
 
                 File.WriteAllText(Path.Combine(sender.Folder, "_report.txt"), sb.ToString());
-                MessageBox.Show(this, $"{e.Exceptions.Count} file(s) failed to extract. See report file in destination for details.", "Error");
+                MessageBox.Show(_owner, $"{e.Exceptions.Count} file(s) failed to extract. See report file in destination for details.", "Error");
             }
         }
 
@@ -1714,31 +1668,6 @@ namespace BSA_Browser
             if (Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree))
             {
                 tvFolders.ImageList = foldersImageList;
-            }
-        }
-
-        private void ReplaceGNFExtensions(IEnumerable<BA2GNFEntry> files, bool replaceWithGNF)
-        {
-            foreach (BA2GNFEntry entry in files)
-            {
-                if (replaceWithGNF && Path.GetExtension(entry.FullPath).ToLower() == ".dds")
-                {
-                    entry.FullPath = Path.Combine(
-                        Path.GetDirectoryName(entry.FullPath),
-                        Path.GetFileNameWithoutExtension(entry.FullPath));
-
-                    string orgExt = Path.GetExtension(entry.FullPathOriginal);
-                    string newExt = ".gnf";
-                    for (int i = 0; i < newExt.Length; i++)
-                    {
-                        // Match casing in all configurations, for example .DdS -> .GnF
-                        entry.FullPath += char.IsUpper(orgExt[i]) ? char.ToUpper(newExt[i]) : newExt[i];
-                    }
-                }
-                else
-                {
-                    entry.FullPath = entry.FullPathOriginal;
-                }
             }
         }
 

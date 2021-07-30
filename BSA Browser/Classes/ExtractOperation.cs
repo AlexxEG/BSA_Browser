@@ -95,6 +95,7 @@ namespace BSA_Browser.Classes
         };
         private Thread _monitorSpeedThread;
 
+        public bool TitleProgress { get; set; }
         public bool UseFolderPath { get; private set; }
         public long SpeedBytes { get => _speedBytes; }
         public string Folder { get; private set; }
