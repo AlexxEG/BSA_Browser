@@ -272,11 +272,11 @@ namespace BSA_Browser
 
             sw.Start();
 
-            foreach (var fe in _files.Where(x => x is BA2TextureEntry))
+            foreach (var fe in _files.OfType<BA2TextureEntry>())
             {
                 checkedTextures++;
 
-                if (!(fe as BA2TextureEntry).IsFormatSupported())
+                if (!fe.IsFormatSupported())
                     unsupported++;
             }
 
@@ -1316,9 +1316,9 @@ namespace BSA_Browser
                 }
                 else if (result == DialogResult.Yes)
                 {
-                    foreach (var fe in files.Where(x => (x as BA2TextureEntry)?.IsFormatSupported() == false))
+                    foreach (var fe in files.OfType<BA2TextureEntry>().Where(x => x.IsFormatSupported() == false))
                     {
-                        (fe as BA2TextureEntry).GenerateTextureHeader = false;
+                        fe.GenerateTextureHeader = false;
                     }
                 }
             }
