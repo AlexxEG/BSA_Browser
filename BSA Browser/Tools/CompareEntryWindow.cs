@@ -62,15 +62,12 @@ namespace BSA_Browser.Tools
 
         private void CompareEntryWindow_Load(object sender, EventArgs e)
         {
-            if (!Settings.Default.WindowStates.Contains(this.Name))
-                Settings.Default.WindowStates.Add(this.Name);
-
-            Settings.Default.WindowStates[this.Name].RestoreForm(this);
+            Settings.Default.WindowStates.Restore(this, false);
         }
 
         private void CompareEntryWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.Default.WindowStates[this.Name].SaveForm(this);
+            Settings.Default.WindowStates.Save(this);
         }
 
         private void lvEntries_SelectedIndexChanged(object sender, EventArgs e)
