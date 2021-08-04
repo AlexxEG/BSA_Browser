@@ -36,5 +36,3 @@ All rights on source code and libraries belong to their respective owners.
 - [BA2Lib](https://github.com/digitalutopia1/BA2Lib)
 - [F4SE's ba2extract tool](http://f4se.silverlock.org/)
 - [B.A.E. - Bethesda Archive Extractor](http://www.nexusmods.com/fallout4/mods/78)
-
-Test triggering action
