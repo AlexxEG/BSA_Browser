@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("General", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("General", System.Windows.Forms.HorizontalAlignment.Left);
             this.lvEntries = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -133,10 +133,10 @@
             this.lvCompare.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvCompare.FullRowSelect = true;
             this.lvCompare.GridLines = true;
-            listViewGroup3.Header = "General";
-            listViewGroup3.Name = "GeneralGroup";
+            listViewGroup1.Header = "General";
+            listViewGroup1.Name = "GeneralGroup";
             this.lvCompare.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup3});
+            listViewGroup1});
             this.lvCompare.HideSelection = false;
             this.lvCompare.Location = new System.Drawing.Point(0, 0);
             this.lvCompare.Name = "lvCompare";
