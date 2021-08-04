@@ -635,7 +635,7 @@ namespace BSA_Browser
 
         private void closeSelectedArchiveMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.SelectedArchiveNode == null)
+            if (this.SelectedArchiveNode == null || this.SelectedArchiveNode.Index == 0)
                 return;
 
             this.CloseArchive(SelectedArchiveNode);
