@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("General", System.Windows.Forms.HorizontalAlignment.Left);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompareEntryWindow));
             this.lvEntries = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -59,7 +60,7 @@
             this.lvEntries.HideSelection = false;
             this.lvEntries.Location = new System.Drawing.Point(0, 0);
             this.lvEntries.Name = "lvEntries";
-            this.lvEntries.Size = new System.Drawing.Size(180, 245);
+            this.lvEntries.Size = new System.Drawing.Size(350, 353);
             this.lvEntries.TabIndex = 0;
             this.lvEntries.UseCompatibleStateImageBehavior = false;
             this.lvEntries.View = System.Windows.Forms.View.Details;
@@ -82,7 +83,7 @@
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(3);
-            this.label1.Size = new System.Drawing.Size(180, 177);
+            this.label1.Size = new System.Drawing.Size(350, 80);
             this.label1.TabIndex = 1;
             this.label1.Text = "label1";
             // 
@@ -101,8 +102,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.lvEntries);
-            this.splitContainer1.Size = new System.Drawing.Size(180, 426);
-            this.splitContainer1.SplitterDistance = 177;
+            this.splitContainer1.Size = new System.Drawing.Size(350, 437);
+            this.splitContainer1.SplitterDistance = 80;
             this.splitContainer1.TabIndex = 2;
             // 
             // splitContainer2
@@ -120,8 +121,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.lvCompare);
-            this.splitContainer2.Size = new System.Drawing.Size(360, 426);
-            this.splitContainer2.SplitterDistance = 180;
+            this.splitContainer2.Size = new System.Drawing.Size(760, 437);
+            this.splitContainer2.SplitterDistance = 350;
             this.splitContainer2.TabIndex = 3;
             // 
             // lvCompare
@@ -140,7 +141,7 @@
             this.lvCompare.HideSelection = false;
             this.lvCompare.Location = new System.Drawing.Point(0, 0);
             this.lvCompare.Name = "lvCompare";
-            this.lvCompare.Size = new System.Drawing.Size(176, 426);
+            this.lvCompare.Size = new System.Drawing.Size(406, 437);
             this.lvCompare.TabIndex = 0;
             this.lvCompare.UseCompatibleStateImageBehavior = false;
             this.lvCompare.View = System.Windows.Forms.View.Details;
@@ -148,23 +149,27 @@
             // PropertyColumnHeader
             // 
             this.PropertyColumnHeader.Text = "Property";
+            this.PropertyColumnHeader.Width = 120;
             // 
             // Item1ColumnHeader
             // 
             this.Item1ColumnHeader.Text = "Value";
+            this.Item1ColumnHeader.Width = 130;
             // 
             // Item2ColumnHeader
             // 
             this.Item2ColumnHeader.Text = "Value";
+            this.Item2ColumnHeader.Width = 130;
             // 
             // CompareEntryWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 450);
+            this.ClientSize = new System.Drawing.Size(784, 461);
             this.Controls.Add(this.splitContainer2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CompareEntryWindow";
-            this.Text = "CompareEntryWindow";
+            this.Text = "Compare";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
