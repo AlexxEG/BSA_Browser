@@ -74,11 +74,24 @@ namespace BSA_Browser.Tools
             if (properties == null || properties.Count == 0)
                 return;
 
+            for (int i = lvCompare.Groups.Count - 1; i > 0; i--)
+                lvCompare.Groups.RemoveAt(i);
+
+            foreach (var group in properties.Select(x => x.CustomGroup).Distinct())
+            {
+                if (string.IsNullOrEmpty(group))
+                    continue;
+
+                lvCompare.Groups.Add(group, group);
+            }
+
             foreach (var prop in properties)
             {
                 var newItem = new ListViewItem(prop.Name);
                 if (string.IsNullOrEmpty(prop.CustomGroup))
                     newItem.Group = lvCompare.Groups[0];
+                else
+                    newItem.Group = lvCompare.Groups[prop.CustomGroup];
                 newItem.SubItems.Add(prop.Left);
                 newItem.SubItems.Add(prop.Right);
                 lvCompare.Items.Add(newItem);
