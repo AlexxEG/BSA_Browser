@@ -1024,7 +1024,13 @@ namespace BSA_Browser
         private void compareMenuItem_Click(object sender, EventArgs e)
         {
             if (_compareEntryWindow == null)
+            {
                 _compareEntryWindow = new Tools.CompareEntryWindow();
+                _compareEntryWindow.Disposed += delegate
+                {
+                    compareCancelMenuItem.PerformClick();
+                };
+            }
 
             if (_compareSource == null)
             {
