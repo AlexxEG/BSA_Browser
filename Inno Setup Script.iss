@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BSA Browser"
-#define MyAppVersion "1.12.4"
+#define MyAppVersion "1.13.0"
 #define MyAppPublisher "Alexander Ellingsen"
 #define MyAppURL "https://github.com/AlexxEG/BSA_Browser/"
 #define MyAppExeName "BSA Browser.exe"

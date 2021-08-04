@@ -1,3 +1,21 @@
+[1.13.0]
+
+- Added "All" node in archive list that will show all files in all archives at once
+- Added "Archive" column to identify which archive the file is contained in, useful when using the "All" node above
+- Added Compare tool. Right click an entry and select Compare, then select one or more entries to compare against. Does a byte to byte comparison and compares some texture property currently, can add more by request if anyone have ideas
+- Added support for XboxDDS. After extract you will need to convert the file with xtexconv yourself
+- Added hotkey combination to reset settings during startup. Hold [Ctrl] + [Alt] + [Shift] before and during startup. Message will be shown if successful
+- Added support for Morrowind archives without name tables (for example for Xbox)
+- Added /extract flag to immediately extract archive to new folder with same name as archive
+- Added option to installer to add a "Extract with BSA Browser" to Explorer context menu to immediately extract
+- Prepend filenames with index in Archives without string table, mostly for sorting purposes
+- Include extension in filenames in Archives without string table (when available)
+- Include directory hash in filenames in Archives without string table (when available)
+- Replace DDS extension with GNF during previewing if enabled
+- Fixed showing files from multiple folders when folders have similar names, like 'folder' & 'folder2'
+- Fixed slightly incorrect filesizes in BA2 texture Archives
+- Fixed cubemap extraction
+
 [1.12.4]
 
 - Fixed startup crash after last closing the program while minimized
