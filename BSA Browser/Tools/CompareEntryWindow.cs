@@ -222,6 +222,16 @@ namespace BSA_Browser.Tools
                                     ba2Tex.numChunks.ToString(),
                                     (entry as BA2TextureEntry).numChunks.ToString(),
                                     "Texture"));
+
+                                compareProperties.Add(new CompareProperty("Mipmap Levels",
+                                    ba2Tex.numMips.ToString(),
+                                    (entry as BA2TextureEntry).numMips.ToString(),
+                                    "Texture"));
+
+                                compareProperties.Add(new CompareProperty("Cubemap",
+                                    ba2Tex.isCubemap == 1 ? bool.TrueString : bool.FalseString,
+                                    (entry as BA2TextureEntry).isCubemap == 1 ? bool.TrueString : bool.FalseString,
+                                    "Texture"));
                                 break;
                             case BA2GNFEntry gnfTex:
 
