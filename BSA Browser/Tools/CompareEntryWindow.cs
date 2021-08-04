@@ -92,6 +92,7 @@ namespace BSA_Browser.Tools
                     newItem.Group = lvCompare.Groups[0];
                 else
                     newItem.Group = lvCompare.Groups[prop.CustomGroup];
+                newItem.BackColor = lvCompare.Items.Count % 2 == 0 ? Color.White : Color.Gainsboro;
                 newItem.SubItems.Add(prop.Left);
                 newItem.SubItems.Add(prop.Right);
                 lvCompare.Items.Add(newItem);
