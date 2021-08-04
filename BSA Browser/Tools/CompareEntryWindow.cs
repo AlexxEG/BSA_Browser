@@ -184,7 +184,9 @@ namespace BSA_Browser.Tools
                     byte[] compareBuffer;
                     int chunk = 0;
 
-                    compareProperties.Add(new CompareProperty("File Size", this.Entry.Size + " bytes", compareMS.Length + " bytes"));
+                    compareProperties.Add(new CompareProperty("File Size",
+                        string.Format("{0:n0} bytes", this.Entry.Size),
+                        string.Format("{0:n0} bytes", compareMS.Length)));
 
                     while ((compareBuffer = compareMS.ReadBytes(BufferSize)).Length > 0)
                     {
