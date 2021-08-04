@@ -1,13 +1,11 @@
-﻿using SharpBSABA2;
+﻿using BSA_Browser.Properties;
+using SharpBSABA2;
 using SharpBSABA2.BA2Util;
 using SharpBSABA2.Extensions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -60,6 +58,19 @@ namespace BSA_Browser.Tools
         public CompareEntryWindow()
         {
             InitializeComponent();
+        }
+
+        private void CompareEntryWindow_Load(object sender, EventArgs e)
+        {
+            if (!Settings.Default.WindowStates.Contains(this.Name))
+                Settings.Default.WindowStates.Add(this.Name);
+
+            Settings.Default.WindowStates[this.Name].RestoreForm(this);
+        }
+
+        private void CompareEntryWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Settings.Default.WindowStates[this.Name].SaveForm(this);
         }
 
         private void lvEntries_SelectedIndexChanged(object sender, EventArgs e)

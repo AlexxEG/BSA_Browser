@@ -170,6 +170,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CompareEntryWindow";
             this.Text = "Compare";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CompareEntryWindow_FormClosing);
+            this.Load += new System.EventHandler(this.CompareEntryWindow_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
