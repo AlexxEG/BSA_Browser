@@ -1,4 +1,5 @@
 ﻿using SharpBSABA2;
+using SharpBSABA2.BA2Util;
 using SharpBSABA2.Extensions;
 using System;
 using System.Collections.Generic;
@@ -187,6 +188,38 @@ namespace BSA_Browser.Tools
                     compareProperties.Add(new CompareProperty("File Size",
                         string.Format("{0:n0} bytes", this.Entry.Size),
                         string.Format("{0:n0} bytes", compareMS.Length)));
+
+                    // These properties only gets compared if they're same type, since some properties only appear on those types
+                    if (this.Entry.GetType() == entry.GetType())
+                    {
+                        switch (this.Entry)
+                        {
+                            case BA2TextureEntry ba2Tex:
+                                compareProperties.Add(new CompareProperty("DXGI_FORMAT",
+                                    Enum.GetName(typeof(DXGI_FORMAT), ba2Tex.format),
+                                    Enum.GetName(typeof(DXGI_FORMAT), (entry as BA2TextureEntry).format),
+                                    "Texture"));
+
+                                compareProperties.Add(new CompareProperty("Width",
+                                    ba2Tex.width.ToString(),
+                                    (entry as BA2TextureEntry).width.ToString(),
+                                    "Texture"));
+
+                                compareProperties.Add(new CompareProperty("Height",
+                                    ba2Tex.height.ToString(),
+                                    (entry as BA2TextureEntry).height.ToString(),
+                                    "Texture"));
+
+                                compareProperties.Add(new CompareProperty("Chunks",
+                                    ba2Tex.numChunks.ToString(),
+                                    (entry as BA2TextureEntry).numChunks.ToString(),
+                                    "Texture"));
+                                break;
+                            case BA2GNFEntry gnfTex:
+
+                                break;
+                        }
+                    }
 
                     while ((compareBuffer = compareMS.ReadBytes(BufferSize)).Length > 0)
                     {
