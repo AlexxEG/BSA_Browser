@@ -67,6 +67,7 @@ Root: HKCR; Subkey: "BSABrowser"; ValueType: string; ValueName: ""; ValueData: "
 Root: HKCR; Subkey: "BSABrowser\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"",0"; Tasks: bsaassociation or ba2aassociation
 Root: HKCR; Subkey: "BSABrowser\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: bsaassociation or ba2aassociation
 Root: HKCR; Subkey: "BSABrowser\shell\Extract"; ValueType: string; ValueName: ""; ValueData: "Extract with BSA Browser"; Tasks: quickextractassociation
+Root: HKCR; Subkey: "BSABrowser\shell\Extract"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"",0"; Tasks: quickextractassociation
 Root: HKCR; Subkey: "BSABrowser\shell\Extract\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" /extract ""%1"""; Tasks: quickextractassociation
 
 [Icons]
