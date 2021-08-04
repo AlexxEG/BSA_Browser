@@ -99,19 +99,19 @@ namespace BSA_Browser.Classes
         /// <param name="restoreSplitContainers">True to restore all <see cref="SplitContainer"/> found in <paramref name="form"/>.</param>
         public void Restore(Form form, bool throwErrorIfNotFound, bool location = true, bool size = true, bool restoreColumns = true, bool restoreSplitContainers = true)
         {
-            if (this.Contains(form.Name))
-            {
-                this[form.Name].RestoreForm(form,
-                    location: location,
-                    size: size,
-                    restoreColumns: restoreColumns,
-                    restoreSplitContainers: restoreSplitContainers);
-            }
-            else
+            if (!this.Contains(form.Name))
             {
                 if (throwErrorIfNotFound)
                     throw new KeyNotFoundException($"WindowState for Form '{form.Name}' not found.");
+                else
+                    this.Add(form.Name);
             }
+
+            this[form.Name].RestoreForm(form,
+                location: location,
+                size: size,
+                restoreColumns: restoreColumns,
+                restoreSplitContainers: restoreSplitContainers);
         }
 
         /// <summary>
