@@ -63,12 +63,22 @@ Type: files; Name: {app}\lz4.x86.dll
 [Registry]
 Root: HKCR; Subkey: ".bsa"; ValueType: string; ValueName: ""; ValueData: "BSABrowser"; Flags: uninsdeletevalue; Tasks: bsaassociation
 Root: HKCR; Subkey: ".ba2"; ValueType: string; ValueName: ""; ValueData: "BSABrowser"; Flags: uninsdeletevalue; Tasks: ba2aassociation
-Root: HKCR; Subkey: "BSABrowser"; ValueType: string; ValueName: ""; ValueData: "Bethesda File Archive"; Flags: uninsdeletekey; Tasks: bsaassociation or ba2aassociation
+Root: HKCR; Subkey: "BSABrowser"; ValueType: string; ValueName: ""; ValueData: "Bethesda File Archive"; Flags: deletekey uninsdeletekey; Tasks: bsaassociation or ba2aassociation
 Root: HKCR; Subkey: "BSABrowser\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"",0"; Tasks: bsaassociation or ba2aassociation
 Root: HKCR; Subkey: "BSABrowser\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: bsaassociation or ba2aassociation
-Root: HKCR; Subkey: "BSABrowser\shell\Extract"; ValueType: string; ValueName: ""; ValueData: "Extract with BSA Browser"; Tasks: quickextractassociation
+; Extract
+Root: HKCR; Subkey: "BSABrowser\shell\Extract"; ValueType: string; ValueName: ""; ValueData: ""; Tasks: quickextractassociation
+Root: HKCR; Subkey: "BSABrowser\shell\Extract"; ValueType: string; ValueName: "MUIVerb"; ValueData: "BSA Browser"; Tasks: quickextractassociation
 Root: HKCR; Subkey: "BSABrowser\shell\Extract"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"",0"; Tasks: quickextractassociation
-Root: HKCR; Subkey: "BSABrowser\shell\Extract\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" /extract ""%1"""; Tasks: quickextractassociation
+Root: HKCR; Subkey: "BSABrowser\shell\Extract"; ValueType: string; ValueName: "subcommands"; ValueData: ""; Tasks: quickextractassociation
+; Extract here
+Root: HKCR; Subkey: "BSABrowser\shell\Extract\shell\1here"; ValueType: string; ValueName: ""; ValueData: "Extract here"; Tasks: quickextractassociation
+Root: HKCR; Subkey: "BSABrowser\shell\Extract\shell\1here"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"",0"; Tasks: quickextractassociation
+Root: HKCR; Subkey: "BSABrowser\shell\Extract\shell\1here\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" /h /extract ""%1"""; Tasks: quickextractassociation
+; Extract to directory
+Root: HKCR; Subkey: "BSABrowser\shell\Extract\shell\2directory"; ValueType: string; ValueName: ""; ValueData: "Extract to directory"; Tasks: quickextractassociation
+Root: HKCR; Subkey: "BSABrowser\shell\Extract\shell\2directory"; ValueType: string; ValueName: "Icon"; ValueData: """{app}\{#MyAppExeName}"",0"; Tasks: quickextractassociation
+Root: HKCR; Subkey: "BSABrowser\shell\Extract\shell\2directory\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" /d /extract ""%1"""; Tasks: quickextractassociation
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
