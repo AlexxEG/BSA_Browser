@@ -80,6 +80,11 @@ namespace BSA_Browser.Classes
             }
         }
 
+        /// <summary>
+        /// Opens and return <see cref="Archive"/> of <paramref name="file"/>.
+        /// </summary>
+        /// <param name="file">Archive file to open.</param>
+        /// <param name="owner">Used with <see cref="MessageBox.Show(IWin32Window, string)"/>.</param>
         public static Archive OpenArchive(string file, IWin32Window owner = null)
         {
             Archive archive;
