@@ -133,10 +133,6 @@ namespace BSA_Browser
 #endif
     }
 
-    /// <summary>
-    ///  We inherit from WindowsFormApplicationBase which contains the logic for the application model, including
-    ///  the single-instance functionality.
-    /// </summary>
     class App : MsVB.WindowsFormsApplicationBase
     {
         ProgressForm _progressForm;
@@ -148,9 +144,6 @@ namespace BSA_Browser
             this.ShutdownStyle = MsVB.ShutdownMode.AfterMainFormCloses; // the vb app model supports two different shutdown styles.  We'll use this one for the sample.
         }
 
-        /// <summary>
-        /// This is how the application model learns what the main form is
-        /// </summary>
         protected override void OnCreateMainForm()
         {
             if (this.CommandLineArgs.Count == 0)
@@ -168,11 +161,6 @@ namespace BSA_Browser
             }
         }
 
-        /// <summary>
-        /// Gets called when subsequent application launches occur.  The subsequent app launch will result in this function getting called
-        /// and then the subsequent instances will just exit.  You might use this method to open the requested doc, or whatever 
-        /// </summary>
-        /// <param name="eventArgs"></param>
         protected override void OnStartupNextInstance(MsVB.StartupNextInstanceEventArgs eventArgs)
         {
             base.OnStartupNextInstance(eventArgs);
