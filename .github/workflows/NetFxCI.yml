@@ -34,6 +34,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
@@ -86,12 +88,17 @@ jobs:
           pathSource: "BSA Browser Portable"
           pathTarget: "BSA Browser Portable.7z"
 
+      - name: Set describe env
+        run: echo "describe_var=$(git describe)" >> $env:GITHUB_ENV
+      - name: Print describe env
+        run: echo "${{ env.describe_var }}"
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           body: "Automated build. Unstable"
           files: "BSA Browser Portable.7z"
           prerelease: True
-          tag_name: ${{ steps.short-sha.outputs.sha }}
+          tag_name: ${{ env.describe_var }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
