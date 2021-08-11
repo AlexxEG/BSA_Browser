@@ -1408,7 +1408,11 @@ namespace BSA_Browser
                 _originalTitle = owner?.Text;
 
                 operation.Start();
-                _progressForm.ShowDialog(owner);
+
+                if (owner != null)
+                    _progressForm.ShowDialog(owner);
+                else
+                    _progressForm.Show();
             }
             else
             {

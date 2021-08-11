@@ -3,6 +3,8 @@ using BSA_Browser.Properties;
 using Microsoft.VisualBasic.Devices;
 using SharpBSABA2;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -133,10 +135,14 @@ namespace BSA_Browser
 #endif
     }
 
+    enum ExtractDestinations
+    {
+        Directory,
+        Here
+    }
+
     class App : MsVB.WindowsFormsApplicationBase
     {
-        ProgressForm _progressForm;
-
         public App()
         {
             this.IsSingleInstance = true;
@@ -150,13 +156,15 @@ namespace BSA_Browser
                 this.MainForm = new BSABrowser();
             else
             {
-                if (this.CommandLineArgs[0].ToLower() == "/extract")
+                var parsed = new ParsedArguments(this.CommandLineArgs);
+
+                if (parsed.Extract)
                 {
-                    this.Extract();
+                    this.Extract(parsed.ExtractFile, parsed.ExtractDestination, true);
                 }
                 else
                 {
-                    this.MainForm = new BSABrowser(this.CommandLineArgs.ToArray());
+                    this.MainForm = new BSABrowser(parsed.Files.ToArray());
                 }
             }
         }
@@ -164,28 +172,82 @@ namespace BSA_Browser
         protected override void OnStartupNextInstance(MsVB.StartupNextInstanceEventArgs eventArgs)
         {
             base.OnStartupNextInstance(eventArgs);
-            eventArgs.BringToForeground = true;
-            if (eventArgs.CommandLine.Count > 0)
-                (this.MainForm as BSABrowser).OpenArchive(eventArgs.CommandLine[0], true);
+
+            var parsed = new ParsedArguments(eventArgs.CommandLine);
+
+            if (parsed.Extract)
+            {
+                this.Extract(parsed.ExtractFile, parsed.ExtractDestination, false);
+            }
+            else
+            {
+                eventArgs.BringToForeground = true;
+                if (eventArgs.CommandLine.Count > 0)
+                    (this.MainForm as BSABrowser).OpenArchive(eventArgs.CommandLine[0], true);
+            }
         }
 
-        private void Extract()
+        private void Extract(string file, ExtractDestinations destination, bool exitOnComplete)
         {
-            string path = this.CommandLineArgs[1];
-            Archive archive = Common.OpenArchive(path, null);
+            Archive archive = Common.OpenArchive(file, null);
 
-            _progressForm = Common.CreateProgressForm(archive.Files.Count);
-            _progressForm.StartPosition = FormStartPosition.CenterScreen;
-            _progressForm.FormClosed += (sender, e) => { Application.Exit(); };
+            ProgressForm progressForm = Common.CreateProgressForm(archive.Files.Count);
+            progressForm.StartPosition = FormStartPosition.CenterScreen;
 
-            BSABrowser.ExtractFiles(null,
-                Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path)),
-                true,
-                true,
-                archive.Files,
-                _progressForm);
+            if (exitOnComplete)
+                progressForm.FormClosed += (sender, e) => { Application.Exit(); };
 
-            this.MainForm = _progressForm;
+            string folder = Path.GetDirectoryName(file);
+            if (destination == ExtractDestinations.Directory)
+                folder = Path.Combine(folder, Path.GetFileNameWithoutExtension(file));
+
+            BSABrowser.ExtractFiles(null, folder, true, true, archive.Files, progressForm);
+
+            if (exitOnComplete)
+                this.MainForm = progressForm;
+        }
+    }
+
+    class ParsedArguments
+    {
+        public bool Extract { get; private set; } = false;
+        public string ExtractFile { get; private set; }
+        public ExtractDestinations ExtractDestination { get; private set; } = ExtractDestinations.Here;
+        public ReadOnlyCollection<string> Files { get; private set; }
+
+        public ParsedArguments(IList<string> arguments)
+        {
+            var files = new List<string>();
+
+            for (int i = 0; i < arguments.Count; i++)
+            {
+                switch (arguments[i].ToLower())
+                {
+                    case "/extract":
+                        this.Extract = true;
+                        this.ExtractFile = arguments[++i];
+                        break;
+                    case "/d":
+                        this.ExtractDestination = ExtractDestinations.Directory;
+                        break;
+                    case "/h":
+                        this.ExtractDestination = ExtractDestinations.Here;
+                        break;
+                    default: // Assume rest are files
+                        files.Add(arguments[i]);
+                        break;
+                }
+            }
+
+            this.Files = files.AsReadOnly();
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(Extract)}: {Extract}\n" +
+                $"{nameof(ExtractFile)}: {ExtractFile}\n" +
+                $"{nameof(ExtractDestination)}: {ExtractDestination}\n" +
+                $"{nameof(Files)}: {string.Join("\n", Files)}";
         }
     }
 }

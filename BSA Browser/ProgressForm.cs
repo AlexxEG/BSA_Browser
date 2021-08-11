@@ -70,7 +70,6 @@ namespace BSA_Browser
             set
             {
                 pbProgress.Value = Math.Min(value, pbProgress.Maximum);
-                if (!Focused) Focus();
             }
         }
 
@@ -88,7 +87,7 @@ namespace BSA_Browser
         public ProgressForm(string title)
         {
             InitializeComponent();
-            Application.UseWaitCursor = true;
+            this.UseWaitCursor = true;
             this.Text = title;
             this.Closing += new CancelEventHandler(ProgressForm_FormClosing);
         }
@@ -112,7 +111,7 @@ namespace BSA_Browser
             }
             else
             {
-                Application.UseWaitCursor = false;
+                this.UseWaitCursor = true;
             }
         }
 
