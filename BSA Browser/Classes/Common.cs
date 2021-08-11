@@ -22,6 +22,10 @@ namespace BSA_Browser.Classes
             return entries.Any(x => (x as BA2TextureEntry)?.IsFormatSupported() == false);
         }
 
+        /// <summary>
+        /// Creates <see cref="ProgressForm"/> with default settings.
+        /// </summary>
+        /// <param name="fileCount">File count in footer.</param>
         public static ProgressForm CreateProgressForm(int fileCount)
         {
             return new ProgressForm("Unpacking archive")
