@@ -139,9 +139,9 @@ namespace BSA_Browser
 
         public App()
         {
-            this.IsSingleInstance = true; // makes this a single-instance app
-            this.EnableVisualStyles = true; // C# windowsForms apps typically turn this on.  We'll do the same thing here.
-            this.ShutdownStyle = MsVB.ShutdownMode.AfterMainFormCloses; // the vb app model supports two different shutdown styles.  We'll use this one for the sample.
+            this.IsSingleInstance = true;
+            this.EnableVisualStyles = true;
+            this.ShutdownStyle = MsVB.ShutdownMode.AfterMainFormCloses;
         }
 
         protected override void OnCreateMainForm()
