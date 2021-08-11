@@ -81,7 +81,7 @@ namespace BSA_Browser
             this.lHeader.Padding = new System.Windows.Forms.Padding(10);
             this.lHeader.Size = new System.Drawing.Size(404, 40);
             this.lHeader.TabIndex = 6;
-            this.lHeader.Text = "Header";
+            this.lHeader.Text = "Extracting...";
             this.lHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lFooter
@@ -120,6 +120,7 @@ namespace BSA_Browser
             this.Name = "ProgressForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Unpacking archive";
             this.Load += new System.EventHandler(this.ProgressForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

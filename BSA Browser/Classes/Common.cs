@@ -23,21 +23,6 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
-        /// Creates <see cref="ProgressForm"/> with default settings.
-        /// </summary>
-        /// <param name="fileCount">File count in footer.</param>
-        public static ProgressForm CreateProgressForm(int fileCount)
-        {
-            return new ProgressForm("Unpacking archive")
-            {
-                Header = "Extracting...",
-                Footer = $"(0/{fileCount})",
-                Cancelable = true,
-                Maximum = 100
-            };
-        }
-
-        /// <summary>
         /// Formats file size into a human readable <see cref="string"/>.
         /// </summary>
         /// <param name="bytes">The file size to format.</param>

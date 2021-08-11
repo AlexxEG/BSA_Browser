@@ -99,6 +99,7 @@ namespace BSA_Browser.Classes
         public bool UseFolderPath { get; private set; }
         public long SpeedBytes { get => _speedBytes; }
         public string Folder { get; private set; }
+        public string OriginalTitle { get; set; }
         public TimeSpan EstimateTimeRemaining { get; private set; }
         public IReadOnlyList<ArchiveEntry> Files
         {
@@ -107,6 +108,7 @@ namespace BSA_Browser.Classes
                 return _files.AsReadOnly();
             }
         }
+        public ProgressForm ProgressForm { get; set; }
 
         public delegate void StateChangeEventHandler(ExtractOperation sender, StateChangeEventArgs e);
         public delegate void ProgressPercentageUpdateEventHandler(ExtractOperation sender, ProgressPercentageUpdateEventArgs e);

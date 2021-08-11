@@ -84,11 +84,11 @@ namespace BSA_Browser
             }
         }
 
-        public ProgressForm(string title)
+        public ProgressForm(int fileCount)
         {
             InitializeComponent();
+            this.Footer = $"(0/{fileCount})";
             this.UseWaitCursor = true;
-            this.Text = title;
             this.Closing += new CancelEventHandler(ProgressForm_FormClosing);
         }
 

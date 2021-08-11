@@ -1384,35 +1384,33 @@ namespace BSA_Browser
 
             if (gui)
             {
+                if (progressForm == null)
+                    progressForm = new ProgressForm(files.Count);
+
                 var operation = new ExtractOperation(folder, files, useFolderPath)
                 {
-                    TitleProgress = titleProgress
+                    ProgressForm = progressForm,
+                    TitleProgress = titleProgress,
+                    OriginalTitle = owner?.Text
                 };
                 operation.StateChange += ExtractOperation_StateChange;
                 operation.ProgressPercentageUpdate += ExtractOperation_ProgressPercentageUpdate;
                 operation.Completed += ExtractOperation_Completed;
 
-                _progressForm = progressForm;
-                if (_progressForm == null)
-                {
-                    _progressForm = Common.CreateProgressForm(files.Count);
-                }
-                _progressForm.Canceled += delegate { operation.Cancel(); };
+                progressForm.Owner = owner;
+                progressForm.Canceled += delegate { operation.Cancel(); };
 
 #if DEBUG
                 // Track extraction speed
                 _debugStopwatch.Restart();
 #endif
 
-                _owner = owner;
-                _originalTitle = owner?.Text;
-
                 operation.Start();
 
                 if (owner != null)
-                    _progressForm.ShowDialog(owner);
+                    progressForm.ShowDialog(owner);
                 else
-                    _progressForm.Show();
+                    progressForm.Show();
             }
             else
             {
@@ -1453,23 +1451,19 @@ namespace BSA_Browser
 
         #region ExtractFiles variables
 
-        static ProgressForm _progressForm;
-        static Form _owner;
-        static string _originalTitle;
-
         private static void ExtractOperation_StateChange(ExtractOperation sender, StateChangeEventArgs e)
         {
-            _progressForm.Description = e.FileName + '\n' + Common.FormatTimeRemaining(sender.EstimateTimeRemaining);
-            _progressForm.Footer = $"({e.Count}/{e.FilesTotal}) {Common.FormatBytes(sender.SpeedBytes)}/s";
+            sender.ProgressForm.Description = e.FileName + '\n' + Common.FormatTimeRemaining(sender.EstimateTimeRemaining);
+            sender.ProgressForm.Footer = $"({e.Count}/{e.FilesTotal}) {Common.FormatBytes(sender.SpeedBytes)}/s";
         }
 
         private static void ExtractOperation_ProgressPercentageUpdate(ExtractOperation sender, ProgressPercentageUpdateEventArgs e)
         {
-            if (_owner != null && sender.TitleProgress)
-                _owner.Text = $"{e.ProgressPercentage}% - {_originalTitle}";
+            if (sender.ProgressForm.Owner != null && sender.TitleProgress)
+                sender.ProgressForm.Owner.Text = $"{e.ProgressPercentage}% - {sender.OriginalTitle}";
 
-            _progressForm.Progress = e.ProgressPercentage;
-            _progressForm.Description = _progressForm.Description.Split('\n')[0] + "\n" + Common.FormatTimeRemaining(e.RemainingEstimate);
+            sender.ProgressForm.Progress = e.ProgressPercentage;
+            sender.ProgressForm.Description = sender.ProgressForm.Description.Split('\n')[0] + "\n" + Common.FormatTimeRemaining(e.RemainingEstimate);
         }
 
         private static void ExtractOperation_Completed(ExtractOperation sender, CompletedEventArgs e)
@@ -1479,11 +1473,11 @@ namespace BSA_Browser
             Console.WriteLine($"Extraction complete. {_debugStopwatch.ElapsedMilliseconds}ms elapsed");
 #endif
 
-            _progressForm.BlockClose = false;
-            _progressForm.Close();
+            sender.ProgressForm.BlockClose = false;
+            sender.ProgressForm.Close();
 
-            if (_owner != null && sender.TitleProgress)
-                _owner.Text = _originalTitle;
+            if (sender.ProgressForm.Owner != null && sender.TitleProgress)
+                sender.ProgressForm.Owner.Text = sender.OriginalTitle;
 
             // Save exceptions to _report.txt file in destination path
             if (e?.Exceptions.Count > 0)
@@ -1496,7 +1490,7 @@ namespace BSA_Browser
                     sb.AppendLine($"{ex.ArchiveEntry.FullPath}{Environment.NewLine}{ex.Exception}{Environment.NewLine}");
 
                 File.WriteAllText(Path.Combine(sender.Folder, "_report.txt"), sb.ToString());
-                MessageBox.Show(_owner, $"{e.Exceptions.Count} file(s) failed to extract. See report file in destination for details.", "Error");
+                MessageBox.Show(sender.ProgressForm.Owner, $"{e.Exceptions.Count} file(s) failed to extract. See report file in destination for details.", "Error");
             }
         }
 

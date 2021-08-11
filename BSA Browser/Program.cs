@@ -189,10 +189,11 @@ namespace BSA_Browser
 
         private void Extract(string file, ExtractDestinations destination, bool exitOnComplete)
         {
-            Archive archive = Common.OpenArchive(file, null);
-
-            ProgressForm progressForm = Common.CreateProgressForm(archive.Files.Count);
-            progressForm.StartPosition = FormStartPosition.CenterScreen;
+            var archive = Common.OpenArchive(file, null);
+            var progressForm = new ProgressForm(archive.Files.Count)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
 
             if (exitOnComplete)
                 progressForm.FormClosed += (sender, e) => { Application.Exit(); };
