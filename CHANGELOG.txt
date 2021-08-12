@@ -1,6 +1,7 @@
 [1.13.1]
 
 - Added options to "Extract here" and "Extract to directory" for right click context menu in Explorer
+- Fixed issues with trying to use Extract right click context menu in Explorer when BSA Browser is already open
 
 [1.13.0]
 
