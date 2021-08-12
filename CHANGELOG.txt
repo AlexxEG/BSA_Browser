@@ -1,3 +1,7 @@
+[1.13.1]
+
+- Added options to "Extract here" and "Extract to directory" for right click context menu in Explorer
+
 [1.13.0]
 
 - Added "All" node in archive list that will show all files in all archives at once
