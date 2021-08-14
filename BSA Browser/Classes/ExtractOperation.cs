@@ -109,6 +109,7 @@ namespace BSA_Browser.Classes
             }
         }
         public ProgressForm ProgressForm { get; set; }
+        public IEnumerable<string> Archives { get; set; }
 
         public delegate void StateChangeEventHandler(ExtractOperation sender, StateChangeEventArgs e);
         public delegate void ProgressPercentageUpdateEventHandler(ExtractOperation sender, ProgressPercentageUpdateEventArgs e);
