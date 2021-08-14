@@ -1,7 +1,9 @@
 [1.13.1]
 
 - Added options to "Extract here" and "Extract to directory" for right click context menu in Explorer
+- Added check to prevent extracting same archive multiple times at the same time
 - Fixed issues with trying to use Extract right click context menu in Explorer when BSA Browser is already open
+- Fixed not closing properly when using right click context menu in Explorer in some scenarios
 
 [1.13.0]
 
