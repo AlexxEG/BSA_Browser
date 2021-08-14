@@ -1372,7 +1372,10 @@ namespace BSA_Browser
                     "Unsupported Textures", MessageBoxButtons.YesNoCancel);
 
                 if (result == DialogResult.Cancel)
+                {
+                    progressForm?.Close(); // Trigger Disposed event
                     return;
+                }
 
                 if (result == DialogResult.No)
                 {

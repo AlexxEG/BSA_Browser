@@ -196,7 +196,7 @@ namespace BSA_Browser
             };
 
             if (exitOnComplete)
-                progressForm.FormClosed += (sender, e) => { Application.Exit(); };
+                progressForm.Disposed += delegate { Application.Exit(); };
 
             string folder = Path.GetDirectoryName(file);
             if (destination == ExtractDestinations.Directory)
