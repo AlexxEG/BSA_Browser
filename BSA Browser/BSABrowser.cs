@@ -1353,6 +1353,16 @@ namespace BSA_Browser
         /// <param name="files">The files in the selected archive to extract.</param>
         public static void ExtractFiles(Form owner, string folder, bool useFolderPath, bool gui, IList<ArchiveEntry> files, ProgressForm progressForm = null, bool titleProgress = false)
         {
+            // Store all unique archives to prevent extracting same archive across multiple operations at the same time
+            var archives = files.Select(x => x.Archive.FullPath.ToLower()).Distinct();
+
+            if (ExtractingArchives.Any(x => archives.Contains(x)))
+            {
+                MessageBox.Show(owner, "One or more archives are already being extracted from, try again later.", "BSA Browser", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                progressForm?.Close(); // Trigger Disposed event
+                return;
+            }
+
             // Check for unsupported textures and prompt the user what to do if there is
             if (Common.CheckForUnsupportedTextures(files))
             {
@@ -1389,6 +1399,7 @@ namespace BSA_Browser
 
                 var operation = new ExtractOperation(folder, files, useFolderPath)
                 {
+                    Archives = archives,
                     ProgressForm = progressForm,
                     TitleProgress = titleProgress,
                     OriginalTitle = owner?.Text
@@ -1411,6 +1422,8 @@ namespace BSA_Browser
                     progressForm.ShowDialog(owner);
                 else
                     progressForm.Show();
+
+                ExtractingArchives.AddRange(archives);
             }
             else
             {
@@ -1418,6 +1431,8 @@ namespace BSA_Browser
                 {
                     foreach (var fe in files)
                         fe.Extract(folder, useFolderPath);
+
+                    ExtractingArchives.AddRange(archives);
                 }
                 catch (Exception ex)
                 {
@@ -1451,6 +1466,8 @@ namespace BSA_Browser
 
         #region ExtractFiles variables
 
+        private static List<string> ExtractingArchives = new List<string>();
+
         private static void ExtractOperation_StateChange(ExtractOperation sender, StateChangeEventArgs e)
         {
             sender.ProgressForm.Description = e.FileName + '\n' + Common.FormatTimeRemaining(sender.EstimateTimeRemaining);
@@ -1472,6 +1489,8 @@ namespace BSA_Browser
             _debugStopwatch.Stop();
             Console.WriteLine($"Extraction complete. {_debugStopwatch.ElapsedMilliseconds}ms elapsed");
 #endif
+
+            ExtractingArchives.RemoveAll(x => sender.Archives.Contains(x));
 
             sender.ProgressForm.BlockClose = false;
             sender.ProgressForm.Close();
