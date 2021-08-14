@@ -50,7 +50,18 @@ namespace BSA_Browser
                 SettingsReset = true;
             }
 
-            new App().Run(args);
+            try
+            {
+                new App().Run(args);
+            }
+            catch (MsVB.NoStartupFormException)
+            {
+                // Do nothing
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 #if (!DEBUG)
@@ -190,6 +201,10 @@ namespace BSA_Browser
         private void Extract(string file, ExtractDestinations destination, bool exitOnComplete)
         {
             var archive = Common.OpenArchive(file, null);
+
+            if (archive == null)
+                return;
+
             var progressForm = new ProgressForm(archive.Files.Count)
             {
                 StartPosition = FormStartPosition.CenterScreen

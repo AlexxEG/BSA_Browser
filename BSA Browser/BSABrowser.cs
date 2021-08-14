@@ -1122,6 +1122,9 @@ namespace BSA_Browser
 
             Archive archive = Common.OpenArchive(path, this);
 
+            if (archive == null)
+                return;
+
             var newNode = new ArchiveNode(
                 Path.GetFileNameWithoutExtension(path) + this.DetectGame(path),
                 archive);
