@@ -1367,7 +1367,7 @@ namespace BSA_Browser
             if (Common.CheckForUnsupportedTextures(files))
             {
                 DialogResult result = MessageBox.Show(owner,
-                    "There are unsupported textures about to be extracted. These are missing DDS headers that can't (currently) be generated.\n\n" +
+                    "There are unsupported textures about to be extracted. These are missing DDS headers that can't be generated.\n\n" +
                     "Do you want to extract the raw data without DDS header? Selecting 'No' will skip these textures.",
                     "Unsupported Textures", MessageBoxButtons.YesNoCancel);
 
