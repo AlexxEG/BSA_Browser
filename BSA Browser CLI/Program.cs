@@ -81,8 +81,8 @@ namespace BSA_Browser_CLI
                             char[] options = arg.Split(':', '=').Last().ToLower().ToCharArray();
 
                             if (options.Contains('a')) this.ListOptions = ListOptions.Archive;
-                            if (options.Contains('f')) this.ListOptions = (this.ListOptions | ListOptions.FullPath);
-                            if (options.Contains('s')) this.ListOptions = (this.ListOptions | ListOptions.FileSize);
+                            if (options.Contains('f')) this.ListOptions |= ListOptions.FullPath;
+                            if (options.Contains('s')) this.ListOptions |= ListOptions.FileSize;
 
                             break;
                         case "/regex":
