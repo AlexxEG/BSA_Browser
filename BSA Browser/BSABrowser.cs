@@ -60,6 +60,11 @@ namespace BSA_Browser
         public BSABrowser()
         {
             InitializeComponent();
+
+            // Fix SSL issue with checking for updates, on Windows 7 at least
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             // Set it here otherwise DPI scaling will not work correctly, for some reason
             this.Menu = mainMenu1;
 
