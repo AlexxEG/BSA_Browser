@@ -295,7 +295,8 @@ namespace BSA_Browser
         public BSABrowser(string[] args)
             : this()
         {
-            this.OpenArchives(true, args);
+            if (args?.Length > 0)
+                this.OpenArchives(true, args);
         }
 
         private void BSABrowser_Load(object sender, EventArgs e)
