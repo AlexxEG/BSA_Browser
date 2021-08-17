@@ -5,6 +5,7 @@
 - Fixed issues with trying to use Extract right click context menu in Explorer when BSA Browser is already open
 - Fixed not closing properly when using right click context menu in Explorer in some scenarios
 - Fixed program crashing when opening archive causes an error. Will now just show error message
+- Fixed SSL issue when checking for update
 
 [1.13.0]
 
