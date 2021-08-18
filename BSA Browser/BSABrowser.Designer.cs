@@ -33,6 +33,7 @@
             this.lvFiles = new System.Windows.Forms.ListView();
             this.columnFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnFileSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnArchive = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.filesImageList = new System.Windows.Forms.ImageList(this.components);
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnExtractAll = new System.Windows.Forms.Button();
@@ -91,6 +92,9 @@
             this.copyFolderPathMenuItem1 = new System.Windows.Forms.MenuItem();
             this.copyFileNameMenuItem1 = new System.Windows.Forms.MenuItem();
             this.selectAllMenuItem1 = new System.Windows.Forms.MenuItem();
+            this.menuItem7 = new System.Windows.Forms.MenuItem();
+            this.compareMenuItem = new System.Windows.Forms.MenuItem();
+            this.compareCancelMenuItem = new System.Windows.Forms.MenuItem();
             this.lFileCount = new System.Windows.Forms.Label();
             this.archiveContextMenu = new System.Windows.Forms.ContextMenu();
             this.extractAllFilesMenuItem = new System.Windows.Forms.MenuItem();
@@ -98,10 +102,6 @@
             this.menuItem8 = new System.Windows.Forms.MenuItem();
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.columnArchive = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.menuItem7 = new System.Windows.Forms.MenuItem();
-            this.compareMenuItem = new System.Windows.Forms.MenuItem();
-            this.compareCancelMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -147,6 +147,10 @@
             this.columnFileSize.Text = "File Size";
             this.columnFileSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnFileSize.Width = 80;
+            // 
+            // columnArchive
+            // 
+            this.columnArchive.Text = "Archive";
             // 
             // filesImageList
             // 
@@ -597,6 +601,23 @@
             this.selectAllMenuItem1.Text = "Select All";
             this.selectAllMenuItem1.Click += new System.EventHandler(this.selectAllMenuItem1_Click);
             // 
+            // menuItem7
+            // 
+            this.menuItem7.Index = 8;
+            this.menuItem7.Text = "-";
+            // 
+            // compareMenuItem
+            // 
+            this.compareMenuItem.Index = 9;
+            this.compareMenuItem.Text = "Compare...";
+            this.compareMenuItem.Click += new System.EventHandler(this.compareMenuItem_Click);
+            // 
+            // compareCancelMenuItem
+            // 
+            this.compareCancelMenuItem.Index = 10;
+            this.compareCancelMenuItem.Text = "Cancel";
+            this.compareCancelMenuItem.Click += new System.EventHandler(this.compareCancelMenuItem_Click);
+            // 
             // lFileCount
             // 
             this.lFileCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -639,26 +660,6 @@
             this.closeMenuItem.Index = 3;
             this.closeMenuItem.Text = "Close";
             this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
-            // 
-            // columnArchive
-            // 
-            this.columnArchive.Text = "Archive";
-            // menuItem7
-            // 
-            this.menuItem7.Index = 8;
-            this.menuItem7.Text = "-";
-            // 
-            // compareMenuItem
-            // 
-            this.compareMenuItem.Index = 9;
-            this.compareMenuItem.Text = "Compare...";
-            this.compareMenuItem.Click += new System.EventHandler(this.compareMenuItem_Click);
-            // 
-            // compareCancelMenuItem
-            // 
-            this.compareCancelMenuItem.Index = 10;
-            this.compareCancelMenuItem.Text = "Cancel";
-            this.compareCancelMenuItem.Click += new System.EventHandler(this.compareCancelMenuItem_Click);
             // 
             // BSABrowser
             // 
