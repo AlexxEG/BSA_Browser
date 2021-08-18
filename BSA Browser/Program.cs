@@ -1,14 +1,12 @@
 ﻿using BSA_Browser.Classes;
 using BSA_Browser.Properties;
 using Microsoft.VisualBasic.Devices;
-using SharpBSABA2;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 using MsVB = Microsoft.VisualBasic.ApplicationServices;
 
@@ -158,25 +156,20 @@ namespace BSA_Browser
         {
             this.IsSingleInstance = true;
             this.EnableVisualStyles = true;
-            this.ShutdownStyle = MsVB.ShutdownMode.AfterMainFormCloses;
+            this.ShutdownStyle = MsVB.ShutdownMode.AfterAllFormsClose;
         }
 
         protected override void OnCreateMainForm()
         {
-            if (this.CommandLineArgs.Count == 0)
-                this.MainForm = new BSABrowser();
+            var parsed = new ParsedArguments(this.CommandLineArgs);
+
+            if (parsed.Extract)
+            {
+                this.Extract(parsed.ExtractFile, parsed.ExtractDestination);
+            }
             else
             {
-                var parsed = new ParsedArguments(this.CommandLineArgs);
-
-                if (parsed.Extract)
-                {
-                    this.Extract(parsed.ExtractFile, parsed.ExtractDestination, true);
-                }
-                else
-                {
-                    this.MainForm = new BSABrowser(parsed.Files.ToArray());
-                }
+                this.MainForm = new BSABrowser(parsed.Files.ToArray());
             }
         }
 
@@ -188,19 +181,23 @@ namespace BSA_Browser
 
             if (parsed.Extract)
             {
-                this.Extract(parsed.ExtractFile, parsed.ExtractDestination, false);
+                this.Extract(parsed.ExtractFile, parsed.ExtractDestination);
             }
             else
             {
-                eventArgs.BringToForeground = true;
-                if (eventArgs.CommandLine.Count > 0)
-                    (this.MainForm as BSABrowser).OpenArchive(eventArgs.CommandLine[0], true);
+                if (this.MainForm == null)
+                    this.MainForm = new BSABrowser(parsed.Files.ToArray());
+                else
+                {
+                    this.MainForm.Activate();
+                    (this.MainForm as BSABrowser).OpenArchives(true, parsed.Files.ToArray());
+                }
             }
         }
 
-        private void Extract(string file, ExtractDestinations destination, bool exitOnComplete)
+        private void Extract(string file, ExtractDestinations destination)
         {
-            var archive = Common.OpenArchive(file, null);
+            var archive = Common.OpenArchive(file, this.MainForm);
 
             if (archive == null)
                 return;
@@ -210,17 +207,11 @@ namespace BSA_Browser
                 StartPosition = FormStartPosition.CenterScreen
             };
 
-            if (exitOnComplete)
-                progressForm.Disposed += delegate { Application.Exit(); };
-
             string folder = Path.GetDirectoryName(file);
             if (destination == ExtractDestinations.Directory)
                 folder = Path.Combine(folder, Path.GetFileNameWithoutExtension(file));
 
-            BSABrowser.ExtractFiles(null, folder, true, true, archive.Files, progressForm);
-
-            if (exitOnComplete)
-                this.MainForm = progressForm;
+            BSABrowser.ExtractFiles(this.MainForm, folder, true, true, archive.Files, progressForm);
         }
     }
 

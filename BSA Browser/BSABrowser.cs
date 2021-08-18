@@ -333,6 +333,12 @@ namespace BSA_Browser
             }
         }
 
+        private void BSABrowser_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Signal to close all Forms when MainForm closes
+            Application.Exit();
+        }
+
         private void BSABrowser_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (tvFolders.GetNodeCount(false) > 1)

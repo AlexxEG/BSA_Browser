@@ -679,6 +679,7 @@
             this.Name = "BSABrowser";
             this.Text = "BSA Browser";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BSABrowser_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.BSABrowser_FormClosed);
             this.Load += new System.EventHandler(this.BSABrowser_Load);
             this.Shown += new System.EventHandler(this.BSABrowser_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
