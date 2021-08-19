@@ -68,7 +68,7 @@ namespace BSA_Browser
             Program.SaveException(e.ExceptionObject as Exception);
         }
 
-        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             Program.SaveException(e.Exception);
         }
