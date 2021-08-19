@@ -152,6 +152,7 @@ namespace BSA_Browser
             debugMenuItem.MenuItems.Add("Average extraction speed of selected item", ExtractionSpeedAverage_Click);
             debugMenuItem.MenuItems.Add("Average extraction speed of selected archive", ExtractionSpeedAverageArchive_Click);
             debugMenuItem.MenuItems.Add("Check if all textures formats are supported", CheckTextureFormats_Click);
+            debugMenuItem.MenuItems.Add("Show ProgressForm", ShowProgressForm_Click);
         }
 
         private void OpeningSpeedAverage_Click(object sender, EventArgs e)
@@ -287,6 +288,34 @@ namespace BSA_Browser
 
             sw.Stop();
             MessageBox.Show($"Checked {checkedTextures} textures in {sw.ElapsedMilliseconds}ms, {unsupported} unsupported textures.");
+        }
+
+        private void ShowProgressForm_Click(object sender, EventArgs e)
+        {
+            ProgressForm pf = new ProgressForm(10);
+            pf.Show(this);
+
+            BackgroundWorker bw = new BackgroundWorker();
+            bw.WorkerReportsProgress = true;
+            bw.DoWork += delegate
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    decimal percentage = (decimal)i / 10 * 100;
+                    bw.ReportProgress((int)percentage);
+                    System.Threading.Thread.Sleep(1000);
+                }
+            };
+            bw.ProgressChanged += (_, eventArgs) =>
+            {
+                pf.Progress = eventArgs.ProgressPercentage;
+            };
+            bw.RunWorkerCompleted += delegate
+            {
+                pf.BlockClose = false;
+                pf.Close();
+            };
+            bw.RunWorkerAsync();
         }
 
         #endregion
