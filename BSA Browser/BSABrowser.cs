@@ -1432,12 +1432,7 @@ namespace BSA_Browser
 #endif
 
                 operation.Start();
-
-                if (owner != null)
-                    progressForm.ShowDialog(owner);
-                else
-                    progressForm.Show();
-
+                progressForm.Show(owner);
                 ExtractingArchives.AddRange(archives);
             }
             else
