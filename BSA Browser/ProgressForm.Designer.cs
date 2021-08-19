@@ -109,7 +109,6 @@ namespace BSA_Browser
             // 
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(404, 166);
-            this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lHeader);
             this.Controls.Add(this.lDescription);
@@ -118,7 +117,6 @@ namespace BSA_Browser
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProgressForm";
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Unpacking archive";
             this.Load += new System.EventHandler(this.ProgressForm_Load);
