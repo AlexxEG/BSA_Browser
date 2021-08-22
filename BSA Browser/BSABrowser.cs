@@ -1419,7 +1419,6 @@ namespace BSA_Browser
             if (ExtractingArchives.Any(x => archives.Contains(x)))
             {
                 MessageBox.Show(owner, "One or more archives are already being extracted from, try again later.", "BSA Browser", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                progressForm?.Close(); // Trigger Disposed event
                 return;
             }
 
