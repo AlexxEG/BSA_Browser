@@ -297,10 +297,13 @@ namespace BSA_Browser
 
             BackgroundWorker bw = new BackgroundWorker();
             bw.WorkerReportsProgress = true;
-            bw.DoWork += delegate
+            bw.DoWork += delegate (object _, DoWorkEventArgs eventArgs)
             {
                 for (int i = 0; i < 10; i++)
                 {
+                    if (eventArgs.Cancel)
+                        break;
+
                     decimal percentage = (decimal)i / 10 * 100;
                     bw.ReportProgress((int)percentage);
                     System.Threading.Thread.Sleep(1000);
@@ -315,6 +318,12 @@ namespace BSA_Browser
                 pf.BlockClose = false;
                 pf.Close();
             };
+
+            pf.Canceled += delegate
+            {
+                bw.CancelAsync();
+            };
+
             bw.RunWorkerAsync();
         }
 
@@ -365,7 +374,14 @@ namespace BSA_Browser
         private void BSABrowser_FormClosed(object sender, FormClosedEventArgs e)
         {
             // Signal to close all Forms when MainForm closes
-            Application.Exit();
+            for (int i = Application.OpenForms.Count; i-- > 0;)
+            {
+                Form form = Application.OpenForms[i];
+                if (form is ProgressForm)
+                    (form as ProgressForm).ForceCancel();
+                else
+                    form.Close();
+            }
         }
 
         private void BSABrowser_FormClosing(object sender, FormClosingEventArgs e)

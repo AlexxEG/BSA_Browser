@@ -124,5 +124,15 @@ namespace BSA_Browser
         {
             Canceled?.Invoke(this, e);
         }
+
+        /// <summary>
+        /// Cancels and closes <see cref="ProgressForm"/>.
+        /// </summary>
+        public void ForceCancel()
+        {
+            OnCanceled(EventArgs.Empty);
+            this.BlockClose = false;
+            this.Close();
+        }
     }
 }
