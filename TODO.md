@@ -3,7 +3,6 @@
 - [ ] Detailed view for advanced mode or debug mode
 - [ ] Include xtexconv for converting XboxDDS to DDS
 - [ ] Look at BSABrowser.ExtractFiles and allow multiple extraction operations at same time (maybe limit to one per archive or actually check indiviual files)
-- [ ] Properly handle shutdown when extract operations are active
 
 ### Complete
 
@@ -16,3 +15,4 @@
 - [X] ~~Right click options in Explorer to extract~~
 - [X] ~~Compare single files within any archive. Idea: Right click to mark first file, then right click second file to start comparing. Display the filename of first file when selecting the second (\{archive\} - \{filename\})~~
 - [X] ~~And/or: Same as above, but second file can be multiple files and they're all compared to the first~~
+- [X] ~~Properly handle shutdown when extract operations are active~~
