@@ -41,11 +41,11 @@
             this.findNextMenuItem = new System.Windows.Forms.MenuItem();
             this.findPreviousMenuItem = new System.Windows.Forms.MenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lReachedEOD = new System.Windows.Forms.Label();
             this.chbCaseSensitive = new System.Windows.Forms.CheckBox();
             this.btnPrevious = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
             this.txtFind = new System.Windows.Forms.TextBox();
-            this.lReachedEOD = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -155,6 +155,18 @@
             this.splitContainer1.SplitterDistance = 380;
             this.splitContainer1.TabIndex = 1;
             // 
+            // lReachedEOD
+            // 
+            this.lReachedEOD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lReachedEOD.AutoSize = true;
+            this.lReachedEOD.ForeColor = System.Drawing.Color.Red;
+            this.lReachedEOD.Location = new System.Drawing.Point(629, 41);
+            this.lReachedEOD.Name = "lReachedEOD";
+            this.lReachedEOD.Size = new System.Drawing.Size(132, 13);
+            this.lReachedEOD.TabIndex = 4;
+            this.lReachedEOD.Text = "Reached end or not found";
+            this.lReachedEOD.Visible = false;
+            // 
             // chbCaseSensitive
             // 
             this.chbCaseSensitive.AutoSize = true;
@@ -197,18 +209,6 @@
             this.txtFind.TabIndex = 0;
             this.txtFind.TextChanged += new System.EventHandler(this.txtFind_TextChanged);
             this.txtFind.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFind_KeyDown);
-            // 
-            // lReachedEOD
-            // 
-            this.lReachedEOD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lReachedEOD.AutoSize = true;
-            this.lReachedEOD.ForeColor = System.Drawing.Color.Red;
-            this.lReachedEOD.Location = new System.Drawing.Point(629, 41);
-            this.lReachedEOD.Name = "lReachedEOD";
-            this.lReachedEOD.Size = new System.Drawing.Size(132, 13);
-            this.lReachedEOD.TabIndex = 4;
-            this.lReachedEOD.Text = "Reached end or not found";
-            this.lReachedEOD.Visible = false;
             // 
             // TextViewer
             // 
