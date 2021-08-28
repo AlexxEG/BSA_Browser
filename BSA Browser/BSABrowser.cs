@@ -50,9 +50,6 @@ namespace BSA_Browser
         {
             get
             {
-                if (tvFolders.SelectedNode == null)
-                    return null;
-
                 return this.GetRootNode(tvFolders.SelectedNode) as ArchiveNode;
             }
         }
@@ -99,8 +96,7 @@ namespace BSA_Browser
             }
 
             // Load Quick Extract Paths
-            if (Settings.Default.QuickExtractPaths == null)
-                Settings.Default.QuickExtractPaths = new QuickExtractPaths();
+            Settings.Default.QuickExtractPaths = Settings.Default.QuickExtractPaths ?? new QuickExtractPaths();
 
             this.LoadQuickExtractPaths();
 
@@ -340,10 +336,7 @@ namespace BSA_Browser
         private void BSABrowser_Load(object sender, EventArgs e)
         {
             // Initialize WindowStates if null
-            if (Settings.Default.WindowStates == null)
-            {
-                Settings.Default.WindowStates = new WindowStates();
-            }
+            Settings.Default.WindowStates = Settings.Default.WindowStates ?? new WindowStates();
 
             // Add this form if it doesn't exists
             if (!Settings.Default.WindowStates.Contains(this.Name))
@@ -1453,8 +1446,7 @@ namespace BSA_Browser
 
             if (gui)
             {
-                if (progressForm == null)
-                    progressForm = new ProgressForm(files.Count);
+                progressForm = progressForm ?? new ProgressForm(files.Count);
 
                 var operation = new ExtractOperation(folder, files, useFolderPath)
                 {
