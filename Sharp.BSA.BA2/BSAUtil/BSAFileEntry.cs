@@ -89,6 +89,8 @@ namespace SharpBSABA2.BSAUtil
         {
             decompress = decompress && this.Compressed;
             this.BinaryReader.BaseStream.Position = (long)Offset;
+            // Reset at start since value might still be in used for a bit after
+            this.BytesWritten = 0;
 
             if (this.Archive.Type == ArchiveTypes.BSA_SE)
             {

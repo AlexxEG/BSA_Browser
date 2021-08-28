@@ -98,8 +98,9 @@ namespace SharpBSABA2.BA2Util
 
         protected void WriteDateToStream(Stream stream, bool decompress)
         {
-            this.BytesWritten = 0;
             BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
+            // Reset at start since value might still be in used for a bit after
+            this.BytesWritten = 0;
 
             if (!decompress)
             {

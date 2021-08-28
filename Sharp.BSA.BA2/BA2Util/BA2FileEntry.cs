@@ -68,6 +68,8 @@ namespace SharpBSABA2.BA2Util
         {
             uint len = this.Compressed ? this.Size : this.RealSize;
             BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
+            // Reset at start since value might still be in used for a bit after
+            this.BytesWritten = 0;
 
             if (!decompress || !this.Compressed)
             {

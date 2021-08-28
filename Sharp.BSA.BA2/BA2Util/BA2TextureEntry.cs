@@ -324,6 +324,7 @@ namespace SharpBSABA2.BA2Util
         {
             var bw = new BinaryWriter(stream);
 
+            // Reset at start since value might still be in used for a bit after
             this.BytesWritten = 0;
 
             if (decompress && GenerateTextureHeader)
