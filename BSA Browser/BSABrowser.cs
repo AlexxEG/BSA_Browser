@@ -46,13 +46,7 @@ namespace BSA_Browser
         /// <summary>
         /// Gets the selected <see cref="ArchiveNode"/>.
         /// </summary>
-        private ArchiveNode SelectedArchiveNode
-        {
-            get
-            {
-                return this.GetRootNode(tvFolders.SelectedNode) as ArchiveNode;
-            }
-        }
+        private ArchiveNode SelectedArchiveNode => this.GetRootNode(tvFolders.SelectedNode) as ArchiveNode;
 
         public BSABrowser()
         {
