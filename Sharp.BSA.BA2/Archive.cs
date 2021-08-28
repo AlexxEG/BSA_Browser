@@ -159,7 +159,7 @@ namespace SharpBSABA2
                                          ulong length,
                                          Stream output,
                                          Action<ulong> progressReport,
-                                         long progressInterval = 1000)
+                                         long progressInterval = DefaultProgressInterval)
         {
             ulong written = 0;
             Stopwatch sw = new Stopwatch();
