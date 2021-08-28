@@ -60,6 +60,8 @@ namespace SharpBSABA2
         /// <param name="input">The <see cref="Stream"/> with the data to decompress.</param>
         /// <param name="length">The length of the data in the <paramref name="input"/>.</param>
         /// <param name="output">The <see cref="Stream"/> to decompress to.</param>
+        /// <param name="progressReport">Invokes at interval, based on <paramref name="progressInterval"/>, the amount of bytes written.</param>
+        /// <param name="progressInterval">The interval at which to invoke <paramref name="progressReport"/>.</param>
         public void Decompress(Stream input,
                                uint length,
                                Stream output,
@@ -98,6 +100,8 @@ namespace SharpBSABA2
         /// <param name="input">The <see cref="Stream"/> with the data to decompress.</param>
         /// <param name="length">The length of the data in the <paramref name="input"/>.</param>
         /// <param name="output">The <see cref="Stream"/> to decompress to.</param>
+        /// <param name="progressReport">Invokes at interval, based on <paramref name="progressInterval"/>, the amount of bytes written.</param>
+        /// <param name="progressInterval">The interval at which to invoke <paramref name="progressReport"/>.</param>
         public void DecompressLZ4(Stream input,
                                   uint length,
                                   Stream output,
@@ -140,6 +144,8 @@ namespace SharpBSABA2
         /// <param name="input">The <see cref="Stream"/> with the data to read from.</param>
         /// <param name="length">The length of the data in the <paramref name="input"/>.</param>
         /// <param name="output">The <see cref="Stream"/> to write to.</param>
+        /// <param name="progressReport">Invokes at interval, based on <paramref name="progressInterval"/>, the amount of bytes written.</param>
+        /// <param name="progressInterval">The interval at which to invoke <paramref name="progressReport"/>.</param>
         public void WriteSectionToStream(Stream input,
                                          uint length,
                                          Stream output,
@@ -155,6 +161,8 @@ namespace SharpBSABA2
         /// <param name="input">The <see cref="Stream"/> with the data to read from.</param>
         /// <param name="length">The length of the data in the <paramref name="input"/>.</param>
         /// <param name="output">The <see cref="Stream"/> to write to.</param>
+        /// <param name="progressReport">Invokes at interval, based on <paramref name="progressInterval"/>, the amount of bytes written.</param>
+        /// <param name="progressInterval">The interval at which to invoke <paramref name="progressReport"/>.</param>
         public void WriteSectionToStream(Stream input,
                                          ulong length,
                                          Stream output,
