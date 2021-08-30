@@ -144,15 +144,11 @@ namespace SharpBSABA2.BSAUtil
                     for (int i = 0; i < header.FileCount; i++)
                     {
                         if (hasNameTableMW)
-                        {
                             this.Files[i].FullPath = this.BinaryReader.ReadStringTo('\0');
-                            this.Files[i].FullPathOriginal = this.Files[i].FullPath;
-                        }
                         else
-                        {
                             this.Files[i].FullPath = string.Format("{0:X}", this.BinaryReader.ReadUInt64());
-                            this.Files[i].FullPathOriginal = this.Files[i].FullPath;
-                        }
+
+                        this.Files[i].FullPathOriginal = this.Files[i].FullPath;
                     }
                 }
                 else if (this.Magic == BSA_HEADER_MAGIC)
