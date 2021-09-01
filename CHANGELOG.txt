@@ -2,7 +2,7 @@
 
 - Added options to "Extract here" and "Extract to directory" for right click context menu in Explorer
 - Added check to prevent extracting same archive multiple times at the same time
-- Changed behaviour to now be able to do multiple extractions at the same time, but currently limit to one per archive
+- Changed behaviour to now be able to do multiple extractions at the same time, but limited to one per archive
 - Main window will no longer be locked when extracting
 - Fixed issues with trying to use Extract right click context menu in Explorer when BSA Browser is already open
 - Fixed issues with opening main window when a extracting operation is in progress
