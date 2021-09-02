@@ -248,7 +248,7 @@ namespace BSA_Browser
                 {
                     foreach (var file in SelectedArchiveNode.Archive.Files)
                     {
-                        file.GetDataStream().CopyTo(ms);
+                        file.GetDataStream();
                     }
                 }
                 sw.Stop();
