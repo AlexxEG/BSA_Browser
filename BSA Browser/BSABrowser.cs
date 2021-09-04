@@ -135,8 +135,7 @@ namespace BSA_Browser
         {
             lvFiles.Columns.Add("Extra", 200);
 
-            MenuItem debugMenuItem = new MenuItem("DEBUG");
-            mainMenu1.MenuItems.Add(debugMenuItem);
+            var debugMenuItem = mainMenu1.MenuItems.Add("DEBUG");
 
             debugMenuItem.MenuItems.Add("Average opening speed of archive", OpeningSpeedAverage_Click);
             debugMenuItem.MenuItems.Add("Average extraction speed of selected item", ExtractionSpeedAverage_Click);
@@ -237,9 +236,9 @@ namespace BSA_Browser
             if (tvFolders.SelectedNode.Index == 0)
                 return;
 
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             int count = 0;
-            List<long> results = new List<long>();
+            var results = new List<long>();
 
             while (count < 50)
             {
