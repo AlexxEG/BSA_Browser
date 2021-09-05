@@ -1,5 +1,4 @@
 ﻿using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using lz4;
 using SharpBSABA2.Enums;
 using SharpBSABA2.Extensions;
