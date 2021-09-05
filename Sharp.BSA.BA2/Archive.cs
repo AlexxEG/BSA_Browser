@@ -41,10 +41,10 @@ namespace SharpBSABA2
             lz4.AnyCPU.loader.LZ4Loader.DisableVCRuntimeDetection = true;
         }
 
-        public Archive(string filePath) : this(filePath, Encoding.UTF7) { }
-        public Archive(string filePath, Encoding encoding) : this(filePath, encoding, false) { }
+        protected Archive(string filePath) : this(filePath, Encoding.UTF7) { }
+        protected Archive(string filePath, Encoding encoding) : this(filePath, encoding, false) { }
 
-        public Archive(string filePath, Encoding encoding, bool retrieveRealSize)
+        protected Archive(string filePath, Encoding encoding, bool retrieveRealSize)
         {
             this.FullPath = filePath;
             this.LastWriteTime = File.GetLastWriteTime(this.FullPath);
