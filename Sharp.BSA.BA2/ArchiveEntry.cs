@@ -5,6 +5,8 @@ namespace SharpBSABA2
 {
     public abstract class ArchiveEntry
     {
+        #region Properties
+
         public ulong BytesWritten { get; protected set; }
 
         /// <summary>
@@ -73,6 +75,8 @@ namespace SharpBSABA2
         public Archive Archive { get; private set; }
 
         public BinaryReader BinaryReader => this.Archive.BinaryReader;
+
+        #endregion
 
         protected ArchiveEntry(Archive archive)
         {
