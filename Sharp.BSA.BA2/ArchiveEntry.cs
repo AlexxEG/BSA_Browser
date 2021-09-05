@@ -84,9 +84,8 @@ namespace SharpBSABA2
 
         public void Extract(bool preserveFolder) { Extract(string.Empty, preserveFolder); }
         public void Extract(string destination, bool preserveFolder) { Extract(destination, preserveFolder, FileName); }
-        public void Extract(string destination, bool preserveFolder, string newName) { Extract(destination, preserveFolder, newName, Archive.BinaryReader); }
-        public void Extract(string destination, bool preserveFolder, string newName, BinaryReader reader) { Extract(destination, preserveFolder, newName, reader, Archive.Inflater); }
-        public void Extract(string destination, bool preserveFolder, string newName, BinaryReader reader, Inflater inflater)
+        public void Extract(string destination, bool preserveFolder, string newName) { Extract(destination, preserveFolder, newName, new SharedExtractParams(Archive, false, false)); }
+        public void Extract(string destination, bool preserveFolder, string newName, SharedExtractParams extractParams)
         {
             string path = preserveFolder ? this.Folder : string.Empty;
 
@@ -99,7 +98,7 @@ namespace SharpBSABA2
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
 
             using (var fs = File.Create(path))
-                this.WriteDataToStream(fs, reader, inflater);
+                this.WriteDataToStream(fs, extractParams);
 
             if (this.Archive.MatchLastWriteTime)
                 File.SetLastWriteTime(path, this.Archive.LastWriteTime);
@@ -108,19 +107,15 @@ namespace SharpBSABA2
         /// <summary>
         /// Extracts and uncompresses data and then returns the stream.
         /// </summary>
-        public virtual MemoryStream GetDataStream() => GetDataStream(Archive.BinaryReader, Archive.Inflater);
+        public virtual MemoryStream GetDataStream() => GetDataStream(new SharedExtractParams(Archive, false, false));
         /// <summary>
         /// Extracts and uncompresses data and then returns the stream.
         /// </summary>
-        public virtual MemoryStream GetDataStream(BinaryReader reader) => GetDataStream(reader, Archive.Inflater);
-        /// <summary>
-        /// Extracts and uncompresses data and then returns the stream.
-        /// </summary>
-        public virtual MemoryStream GetDataStream(BinaryReader reader, Inflater inflater)
+        public virtual MemoryStream GetDataStream(SharedExtractParams extractParams)
         {
             var ms = new MemoryStream();
 
-            this.WriteDataToStream(ms, reader, inflater);
+            this.WriteDataToStream(ms, extractParams);
 
             ms.Seek(0, SeekOrigin.Begin);
             return ms;
@@ -129,19 +124,15 @@ namespace SharpBSABA2
         /// <summary>
         /// Returns a <see cref="MemoryStream"/> of the raw data.
         /// </summary>
-        public MemoryStream GetRawDataStream() => GetRawDataStream(Archive.BinaryReader);
+        public MemoryStream GetRawDataStream() => GetRawDataStream(new SharedExtractParams(Archive, false, false));
         /// <summary>
         /// Returns a <see cref="MemoryStream"/> of the raw data.
         /// </summary>
-        public MemoryStream GetRawDataStream(BinaryReader reader) => GetRawDataStream(reader, Archive.Inflater);
-        /// <summary>
-        /// Returns a <see cref="MemoryStream"/> of the raw data.
-        /// </summary>
-        public MemoryStream GetRawDataStream(BinaryReader reader, Inflater inflater)
+        public MemoryStream GetRawDataStream(SharedExtractParams extractParams)
         {
             var ms = new MemoryStream();
 
-            this.WriteDataToStream(ms, reader, inflater, false);
+            this.WriteDataToStream(ms, extractParams, false);
 
             ms.Seek(0, SeekOrigin.Begin);
             return ms;
@@ -152,6 +143,6 @@ namespace SharpBSABA2
             return "Undefined";
         }
 
-        protected abstract void WriteDataToStream(Stream stream, BinaryReader reader, Inflater inflater, bool decompress = true);
+        protected abstract void WriteDataToStream(Stream stream, SharedExtractParams extractParams, bool decompress = true);
     }
 }

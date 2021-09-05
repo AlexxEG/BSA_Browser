@@ -65,20 +65,20 @@ namespace SharpBSABA2
                                uint length,
                                Stream output,
                                Action<ulong> progressReport,
-                               Inflater inflater,
+                               SharedExtractParams extractParams,
                                long progressInterval = DefaultProgressInterval)
         {
             var raw = input.ReadBytes((int)length);
             var sw = new Stopwatch();
 
-            inflater.Reset();
-            inflater.SetInput(raw, 0, raw.Length);
+            extractParams.Inflater.Reset();
+            extractParams.Inflater.SetInput(raw, 0, raw.Length);
             sw.Start();
 
             int count;
             ulong written = 0;
             byte[] buffer = new byte[BufferSize];
-            while ((count = inflater.Inflate(buffer)) > 0)
+            while ((count = extractParams.Inflater.Inflate(buffer)) > 0)
             {
                 output.Write(buffer, 0, count);
                 written += (ulong)count;
@@ -205,6 +205,13 @@ namespace SharpBSABA2
         /// Returns a new <see cref="BinaryReader"/> for <see cref="Archive"/> with default settings.
         /// </summary>
         public BinaryReader CloneReader() => new BinaryReader(new FileStream(FullPath, FileMode.Open, FileAccess.Read), Encoding);
+
+        /// <summary>
+        /// Returns a <see cref="SharedExtractParams"/> with <see cref="BinaryReader"/> and <see cref="Inflater"/> originally used for multi threading.
+        /// </summary>
+        /// <param name="reader">True if a new <see cref="BinaryReader"/> should be created.</param>
+        /// <param name="inflater">True if a new <see cref="Inflater"/> should be created.</param>
+        public SharedExtractParams CreateSharedParams(bool reader, bool inflater) => new SharedExtractParams(this, reader, inflater);
 
         protected abstract void Open(string filePath);
     }

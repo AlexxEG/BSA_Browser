@@ -1,5 +1,4 @@
-﻿using ICSharpCode.SharpZipLib.Zip.Compression;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -82,8 +81,9 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(align)}: {align}";
         }
 
-        protected override void WriteDataToStream(Stream stream, BinaryReader reader, Inflater inflater, bool decompress)
+        protected override void WriteDataToStream(Stream stream, SharedExtractParams extractParams, bool decompress)
         {
+            var reader = extractParams.Reader;
             reader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
             // Reset at start since value might still be in used for a bit after
             this.BytesWritten = 0;
@@ -105,7 +105,7 @@ namespace SharpBSABA2.BA2Util
                                        this.Size,
                                        stream,
                                        bytesWritten => this.BytesWritten = bytesWritten,
-                                       inflater);
+                                       extractParams);
                 }
                 catch (Exception ex)
                 {
@@ -113,11 +113,13 @@ namespace SharpBSABA2.BA2Util
                 }
             }
 
-            this.WriteChunks(stream, reader, inflater, decompress);
+            this.WriteChunks(stream, extractParams, decompress);
         }
 
-        private void WriteChunks(Stream stream, BinaryReader reader, Inflater inflater, bool decompress)
+        private void WriteChunks(Stream stream, SharedExtractParams extractParams, bool decompress)
         {
+            var reader = extractParams.Reader;
+
             for (int i = 0; i < (numChunks - 1); i++)
             {
                 reader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
@@ -138,7 +140,7 @@ namespace SharpBSABA2.BA2Util
                                        this.Chunks[i].packSz,
                                        stream,
                                        bytesWritten => this.BytesWritten = prev + bytesWritten,
-                                       inflater);
+                                       extractParams);
                 }
             }
         }

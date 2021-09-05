@@ -1,5 +1,4 @@
-﻿using ICSharpCode.SharpZipLib.Zip.Compression;
-using SharpBSABA2.Extensions;
+﻿using SharpBSABA2.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -277,9 +276,10 @@ namespace SharpBSABA2.BA2Util
             }
         }
 
-        protected override void WriteDataToStream(Stream stream, BinaryReader reader, Inflater inflater, bool decompress)
+        protected override void WriteDataToStream(Stream stream, SharedExtractParams extractParams, bool decompress)
         {
             var bw = new BinaryWriter(stream);
+            var reader = extractParams.Reader;
 
             // Reset at start since value might still be in used for a bit after
             this.BytesWritten = 0;
@@ -309,7 +309,7 @@ namespace SharpBSABA2.BA2Util
                                        this.Chunks[i].packSz,
                                        stream,
                                        bytesWritten => this.BytesWritten = prev + bytesWritten,
-                                       inflater);
+                                       extractParams);
                 }
             }
 

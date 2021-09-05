@@ -70,6 +70,7 @@
     <Compile Include="Enums\ArchiveTypes.cs" />
     <Compile Include="Extensions\BinaryStreamExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
+    <Compile Include="SharedExtractParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
