@@ -31,6 +31,7 @@ namespace SharpBSABA2
 
         public virtual ArchiveTypes Type { get; protected set; }
 
+        public Encoding Encoding { get; protected set; }
         public Inflater Inflater { get; protected set; } = new Inflater();
         public List<ArchiveEntry> Files { get; protected set; } = new List<ArchiveEntry>();
         public BinaryReader BinaryReader { get; protected set; }
@@ -45,6 +46,7 @@ namespace SharpBSABA2
         protected Archive(string filePath, Encoding encoding, bool retrieveRealSize)
         {
             this.FullPath = filePath;
+            this.Encoding = encoding;
             this.LastWriteTime = File.GetLastWriteTime(this.FullPath);
             this.RetrieveRealSize = retrieveRealSize;
             this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), encoding);
