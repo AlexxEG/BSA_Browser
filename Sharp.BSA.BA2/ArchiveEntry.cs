@@ -19,37 +19,23 @@ namespace SharpBSABA2
         /// Gets the file extension.
         /// </summary>
         public string Extension { get; protected set; }
+
         /// <summary>
         /// Gets the file name only including extension.
         /// </summary>
-        public string FileName
-        {
-            get
-            {
-                return Path.GetFileName(this.FullPath);
-            }
-        }
+        public string FileName => Path.GetFileName(this.FullPath);
+
         /// <summary>
         /// Gets the folder.
         /// </summary>
-        public string Folder
-        {
-            get
-            {
-                return Path.GetDirectoryName(this.FullPath);
-            }
-        }
+        public string Folder => Path.GetDirectoryName(this.FullPath);
+
         /// <summary>
         /// Gets or sets the full file path.
         /// </summary>
         public string FullPath { get; set; }
-        public string LowerPath
-        {
-            get
-            {
-                return this.FullPath.ToLower();
-            }
-        }
+
+        public string LowerPath => this.FullPath.ToLower();
 
         /// <summary>
         /// Gets the original unchanged full path.
@@ -60,15 +46,19 @@ namespace SharpBSABA2
         /// Gets if the file is compressed.
         /// </summary>
         public virtual bool Compressed { get; protected set; }
+
         public virtual ulong Offset { get; protected set; }
+
         /// <summary>
         /// Gets the uncompressed file size.
         /// </summary>
         public virtual uint RealSize { get; protected internal set; }
+
         /// <summary>
         /// Gets the file size.
         /// </summary>
         public virtual uint Size { get; protected set; }
+
         /// <summary>
         /// Gets a file size more suited for display in GUIs.
         /// </summary>
@@ -76,7 +66,7 @@ namespace SharpBSABA2
 
         public Archive Archive { get; private set; }
 
-        public BinaryReader BinaryReader { get { return this.Archive.BinaryReader; } }
+        public BinaryReader BinaryReader => this.Archive.BinaryReader;
 
         protected ArchiveEntry(Archive archive)
         {
