@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ICSharpCode.SharpZipLib.Zip.Compression;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -81,7 +82,7 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(align)}: {align}";
         }
 
-        protected override void WriteDataToStream(Stream stream, BinaryReader reader, bool decompress)
+        protected override void WriteDataToStream(Stream stream, BinaryReader reader, Inflater inflater, bool decompress)
         {
             reader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
             // Reset at start since value might still be in used for a bit after
@@ -103,7 +104,8 @@ namespace SharpBSABA2.BA2Util
                     Archive.Decompress(reader.BaseStream,
                                        this.Size,
                                        stream,
-                                       bytesWritten => this.BytesWritten = bytesWritten);
+                                       bytesWritten => this.BytesWritten = bytesWritten,
+                                       inflater);
                 }
                 catch (Exception ex)
                 {
@@ -111,10 +113,10 @@ namespace SharpBSABA2.BA2Util
                 }
             }
 
-            this.WriteChunks(stream, reader, decompress);
+            this.WriteChunks(stream, reader, inflater, decompress);
         }
 
-        private void WriteChunks(Stream stream, BinaryReader reader, bool decompress)
+        private void WriteChunks(Stream stream, BinaryReader reader, Inflater inflater, bool decompress)
         {
             for (int i = 0; i < (numChunks - 1); i++)
             {
@@ -135,7 +137,8 @@ namespace SharpBSABA2.BA2Util
                     Archive.Decompress(reader.BaseStream,
                                        this.Chunks[i].packSz,
                                        stream,
-                                       bytesWritten => this.BytesWritten = prev + bytesWritten);
+                                       bytesWritten => this.BytesWritten = prev + bytesWritten,
+                                       inflater);
                 }
             }
         }

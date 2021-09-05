@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using ICSharpCode.SharpZipLib.Zip.Compression;
+using System.IO;
 
 namespace SharpBSABA2.BA2Util
 {
@@ -49,7 +50,7 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(align)}: {align}";
         }
 
-        protected override void WriteDataToStream(Stream stream, BinaryReader reader, bool decompress)
+        protected override void WriteDataToStream(Stream stream, BinaryReader reader, Inflater inflater, bool decompress)
         {
             uint len = this.Compressed ? this.Size : this.RealSize;
             reader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
@@ -68,7 +69,8 @@ namespace SharpBSABA2.BA2Util
                 Archive.Decompress(reader.BaseStream,
                                    len,
                                    stream,
-                                   bytesWritten => this.BytesWritten = bytesWritten);
+                                   bytesWritten => this.BytesWritten = bytesWritten,
+                                   inflater);
             }
         }
     }

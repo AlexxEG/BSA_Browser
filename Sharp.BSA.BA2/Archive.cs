@@ -65,19 +65,20 @@ namespace SharpBSABA2
                                uint length,
                                Stream output,
                                Action<ulong> progressReport,
+                               Inflater inflater,
                                long progressInterval = DefaultProgressInterval)
         {
             var raw = input.ReadBytes((int)length);
             var sw = new Stopwatch();
 
-            Inflater.Reset();
-            Inflater.SetInput(raw, 0, raw.Length);
+            inflater.Reset();
+            inflater.SetInput(raw, 0, raw.Length);
             sw.Start();
 
             int count;
             ulong written = 0;
             byte[] buffer = new byte[BufferSize];
-            while ((count = Inflater.Inflate(buffer)) > 0)
+            while ((count = inflater.Inflate(buffer)) > 0)
             {
                 output.Write(buffer, 0, count);
                 written += (ulong)count;

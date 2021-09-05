@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ICSharpCode.SharpZipLib.Zip.Compression;
+using System;
 using System.IO;
 
 namespace SharpBSABA2
@@ -84,7 +85,8 @@ namespace SharpBSABA2
         public void Extract(bool preserveFolder) { Extract(string.Empty, preserveFolder); }
         public void Extract(string destination, bool preserveFolder) { Extract(destination, preserveFolder, FileName); }
         public void Extract(string destination, bool preserveFolder, string newName) { Extract(destination, preserveFolder, newName, Archive.BinaryReader); }
-        public void Extract(string destination, bool preserveFolder, string newName, BinaryReader reader)
+        public void Extract(string destination, bool preserveFolder, string newName, BinaryReader reader) { Extract(destination, preserveFolder, newName, reader, Archive.Inflater); }
+        public void Extract(string destination, bool preserveFolder, string newName, BinaryReader reader, Inflater inflater)
         {
             string path = preserveFolder ? this.Folder : string.Empty;
 
@@ -97,7 +99,7 @@ namespace SharpBSABA2
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
 
             using (var fs = File.Create(path))
-                this.WriteDataToStream(fs, reader);
+                this.WriteDataToStream(fs, reader, inflater);
 
             if (this.Archive.MatchLastWriteTime)
                 File.SetLastWriteTime(path, this.Archive.LastWriteTime);
@@ -106,19 +108,19 @@ namespace SharpBSABA2
         /// <summary>
         /// Extracts and uncompresses data and then returns the stream.
         /// </summary>
-        public virtual MemoryStream GetDataStream()
-        {
-            return this.GetDataStream(this.Archive.BinaryReader);
-        }
-
+        public virtual MemoryStream GetDataStream() => GetDataStream(Archive.BinaryReader, Archive.Inflater);
         /// <summary>
         /// Extracts and uncompresses data and then returns the stream.
         /// </summary>
-        public virtual MemoryStream GetDataStream(BinaryReader reader)
+        public virtual MemoryStream GetDataStream(BinaryReader reader) => GetDataStream(reader, Archive.Inflater);
+        /// <summary>
+        /// Extracts and uncompresses data and then returns the stream.
+        /// </summary>
+        public virtual MemoryStream GetDataStream(BinaryReader reader, Inflater inflater)
         {
             var ms = new MemoryStream();
 
-            this.WriteDataToStream(ms, reader);
+            this.WriteDataToStream(ms, reader, inflater);
 
             ms.Seek(0, SeekOrigin.Begin);
             return ms;
@@ -127,19 +129,19 @@ namespace SharpBSABA2
         /// <summary>
         /// Returns a <see cref="MemoryStream"/> of the raw data.
         /// </summary>
-        public MemoryStream GetRawDataStream()
-        {
-            return this.GetRawDataStream(this.Archive.BinaryReader);
-        }
-
+        public MemoryStream GetRawDataStream() => GetRawDataStream(Archive.BinaryReader);
         /// <summary>
         /// Returns a <see cref="MemoryStream"/> of the raw data.
         /// </summary>
-        public virtual MemoryStream GetRawDataStream(BinaryReader reader)
+        public MemoryStream GetRawDataStream(BinaryReader reader) => GetRawDataStream(reader, Archive.Inflater);
+        /// <summary>
+        /// Returns a <see cref="MemoryStream"/> of the raw data.
+        /// </summary>
+        public MemoryStream GetRawDataStream(BinaryReader reader, Inflater inflater)
         {
             var ms = new MemoryStream();
 
-            this.WriteDataToStream(ms, reader, false);
+            this.WriteDataToStream(ms, reader, inflater, false);
 
             ms.Seek(0, SeekOrigin.Begin);
             return ms;
@@ -150,6 +152,6 @@ namespace SharpBSABA2
             return "Undefined";
         }
 
-        protected abstract void WriteDataToStream(Stream stream, BinaryReader reader, bool decompress = true);
+        protected abstract void WriteDataToStream(Stream stream, BinaryReader reader, Inflater inflater, bool decompress = true);
     }
 }

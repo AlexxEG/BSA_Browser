@@ -1,5 +1,5 @@
-﻿using SharpBSABA2.Enums;
-using SharpBSABA2.Extensions;
+﻿using ICSharpCode.SharpZipLib.Zip.Compression;
+using SharpBSABA2.Enums;
 using System.IO;
 
 namespace SharpBSABA2.BSAUtil
@@ -70,7 +70,7 @@ namespace SharpBSABA2.BSAUtil
                 $"{nameof(Compressed)}: {Compressed}";
         }
 
-        protected override void WriteDataToStream(Stream stream, BinaryReader reader, bool decompress)
+        protected override void WriteDataToStream(Stream stream, BinaryReader reader, Inflater inflater, bool decompress)
         {
             decompress = decompress && this.Compressed;
             reader.BaseStream.Position = (long)Offset;
@@ -131,7 +131,8 @@ namespace SharpBSABA2.BSAUtil
                     Archive.Decompress(reader.BaseStream,
                                        this.Size - 4,
                                        stream,
-                                       bytesWriten => this.BytesWritten = bytesWriten);
+                                       bytesWriten => this.BytesWritten = bytesWriten,
+                                       inflater);
                 }
             }
         }
