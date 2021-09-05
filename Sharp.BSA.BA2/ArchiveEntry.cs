@@ -35,6 +35,9 @@ namespace SharpBSABA2
         /// </summary>
         public string FullPath { get; set; }
 
+        /// <summary>
+        /// Gets the full path in lower case.
+        /// </summary>
         public string LowerPath => this.FullPath.ToLower();
 
         /// <summary>
@@ -64,6 +67,9 @@ namespace SharpBSABA2
         /// </summary>
         public abstract uint DisplaySize { get; }
 
+        /// <summary>
+        /// Gets the <see cref="SharpBSABA2.Archive"/> containing this <see cref="ArchiveEntry"/>.
+        /// </summary>
         public Archive Archive { get; private set; }
 
         public BinaryReader BinaryReader => this.Archive.BinaryReader;
