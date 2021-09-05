@@ -197,6 +197,15 @@ namespace SharpBSABA2
             this.BinaryReader?.Close();
         }
 
+        /// <summary>
+        /// Returns a new <see cref="Inflater"/> with default settings.
+        /// </summary>
+        public Inflater CloneInflater() => new Inflater();
+        /// <summary>
+        /// Returns a new <see cref="BinaryReader"/> for <see cref="Archive"/> with default settings.
+        /// </summary>
+        public BinaryReader CloneReader() => new BinaryReader(new FileStream(FullPath, FileMode.Open, FileAccess.Read), Encoding);
+
         protected abstract void Open(string filePath);
     }
 }
