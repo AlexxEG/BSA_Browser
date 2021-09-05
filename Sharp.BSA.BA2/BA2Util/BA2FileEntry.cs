@@ -36,16 +36,6 @@ namespace SharpBSABA2.BA2Util
             align = ba2.BinaryReader.ReadUInt32();
         }
 
-        public override MemoryStream GetRawDataStream()
-        {
-            var ms = new MemoryStream();
-
-            this.WriteDataToStream(ms, false);
-
-            ms.Seek(0, SeekOrigin.Begin);
-            return ms;
-        }
-
         public override string GetToolTipText()
         {
             return $"{nameof(nameHash)}: {nameHash}\n" +
@@ -59,28 +49,23 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(align)}: {align}";
         }
 
-        protected override void WriteDataToStream(Stream stream)
-        {
-            this.WriteDataToStream(stream, true);
-        }
-
-        protected void WriteDataToStream(Stream stream, bool decompress)
+        protected override void WriteDataToStream(Stream stream, BinaryReader reader, bool decompress)
         {
             uint len = this.Compressed ? this.Size : this.RealSize;
-            BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
+            reader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
             // Reset at start since value might still be in used for a bit after
             this.BytesWritten = 0;
 
             if (!decompress || !this.Compressed)
             {
-                Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                Archive.WriteSectionToStream(reader.BaseStream,
                                              len,
                                              stream,
                                              bytesWritten => this.BytesWritten = bytesWritten);
             }
             else
             {
-                Archive.Decompress(BinaryReader.BaseStream,
+                Archive.Decompress(reader.BaseStream,
                                    len,
                                    stream,
                                    bytesWritten => this.BytesWritten = bytesWritten);

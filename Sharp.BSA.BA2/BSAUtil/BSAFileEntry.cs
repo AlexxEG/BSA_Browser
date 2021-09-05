@@ -60,16 +60,6 @@ namespace SharpBSABA2.BSAUtil
             this.Compressed = entry.Compressed;
         }
 
-        public override MemoryStream GetRawDataStream()
-        {
-            var ms = new MemoryStream();
-
-            this.WriteDataToStream(ms, false);
-
-            ms.Seek(0, SeekOrigin.Begin);
-            return ms;
-        }
-
         public override string GetToolTipText()
         {
             return $"{nameof(Version)}: {Version}\n" +
@@ -80,15 +70,10 @@ namespace SharpBSABA2.BSAUtil
                 $"{nameof(Compressed)}: {Compressed}";
         }
 
-        protected override void WriteDataToStream(Stream stream)
-        {
-            this.WriteDataToStream(stream, true);
-        }
-
-        protected void WriteDataToStream(Stream stream, bool decompress)
+        protected override void WriteDataToStream(Stream stream, BinaryReader reader, bool decompress)
         {
             decompress = decompress && this.Compressed;
-            this.BinaryReader.BaseStream.Position = (long)Offset;
+            reader.BaseStream.Position = (long)Offset;
             // Reset at start since value might still be in used for a bit after
             this.BytesWritten = 0;
 
@@ -98,28 +83,28 @@ namespace SharpBSABA2.BSAUtil
                 ulong filesz = this.Size & 0x3fffffff;
                 if (this.Archive.ContainsFileNameBlobs)
                 {
-                    int len = this.BinaryReader.ReadByte();
+                    int len = reader.ReadByte();
                     filesz -= (ulong)len + 1;
-                    this.BinaryReader.BaseStream.Seek((long)this.Offset + 1 + len, SeekOrigin.Begin);
+                    reader.BaseStream.Seek((long)this.Offset + 1 + len, SeekOrigin.Begin);
                 }
 
                 uint filesize = (uint)filesz;
                 if (this.Size > 0 && this.Compressed)
                 {
-                    filesize = this.BinaryReader.ReadUInt32();
+                    filesize = reader.ReadUInt32();
                     filesz -= 4;
                 }
 
                 if (!decompress)
                 {
-                    Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                    Archive.WriteSectionToStream(reader.BaseStream,
                                                  filesz,
                                                  stream,
                                                  bytesWritten => this.BytesWritten = bytesWritten);
                 }
                 else
                 {
-                    this.Archive.DecompressLZ4(BinaryReader.BaseStream,
+                    this.Archive.DecompressLZ4(reader.BaseStream,
                                                (uint)filesz,
                                                stream,
                                                bytesWritten => this.BytesWritten = bytesWritten);
@@ -129,11 +114,11 @@ namespace SharpBSABA2.BSAUtil
             {
                 // Skip ahead
                 if (this.Archive.ContainsFileNameBlobs)
-                    this.BinaryReader.BaseStream.Position += this.BinaryReader.ReadByte() + 1;
+                    reader.BaseStream.Position += reader.ReadByte() + 1;
 
                 if (!decompress)
                 {
-                    Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                    Archive.WriteSectionToStream(reader.BaseStream,
                                                  this.Size,
                                                  stream,
                                                  bytesWritten => this.BytesWritten = bytesWritten);
@@ -141,9 +126,9 @@ namespace SharpBSABA2.BSAUtil
                 else
                 {
                     if (this.Compressed)
-                        BinaryReader.ReadUInt32(); // Skip
+                        reader.ReadUInt32(); // Skip
 
-                    Archive.Decompress(BinaryReader.BaseStream,
+                    Archive.Decompress(reader.BaseStream,
                                        this.Size - 4,
                                        stream,
                                        bytesWriten => this.BytesWritten = bytesWriten);

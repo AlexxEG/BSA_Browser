@@ -66,16 +66,6 @@ namespace SharpBSABA2.BA2Util
             }
         }
 
-        public override MemoryStream GetRawDataStream()
-        {
-            var ms = new MemoryStream();
-
-            this.WriteDateToStream(ms, false);
-
-            ms.Seek(0, SeekOrigin.Begin);
-            return ms;
-        }
-
         public override string GetToolTipText()
         {
             return $"{nameof(nameHash)}: {nameHash}\n" +
@@ -91,20 +81,15 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(align)}: {align}";
         }
 
-        protected override void WriteDataToStream(Stream stream)
+        protected override void WriteDataToStream(Stream stream, BinaryReader reader, bool decompress)
         {
-            this.WriteDateToStream(stream, true);
-        }
-
-        protected void WriteDateToStream(Stream stream, bool decompress)
-        {
-            BinaryReader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
+            reader.BaseStream.Seek((long)this.Offset, SeekOrigin.Begin);
             // Reset at start since value might still be in used for a bit after
             this.BytesWritten = 0;
 
             if (!decompress)
             {
-                Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                Archive.WriteSectionToStream(reader.BaseStream,
                                              Math.Max(this.Size, this.RealSize), // Lazy hack, only one should be set when not compressed
                                              stream,
                                              bytesWritten => this.BytesWritten = bytesWritten);
@@ -115,7 +100,7 @@ namespace SharpBSABA2.BA2Util
 
                 try
                 {
-                    Archive.Decompress(BinaryReader.BaseStream,
+                    Archive.Decompress(reader.BaseStream,
                                        this.Size,
                                        stream,
                                        bytesWritten => this.BytesWritten = bytesWritten);
@@ -126,20 +111,20 @@ namespace SharpBSABA2.BA2Util
                 }
             }
 
-            this.WriteChunks(stream, decompress);
+            this.WriteChunks(stream, reader, decompress);
         }
 
-        private void WriteChunks(Stream stream, bool decompress)
+        private void WriteChunks(Stream stream, BinaryReader reader, bool decompress)
         {
             for (int i = 0; i < (numChunks - 1); i++)
             {
-                this.BinaryReader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
+                reader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
 
 
                 if (!decompress)
                 {
                     ulong prev = this.BytesWritten;
-                    Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                    Archive.WriteSectionToStream(reader.BaseStream,
                                                  Math.Max(Chunks[i].packSz, Chunks[i].fullSz),  // Lazy hack, only one should be set when not compressed
                                                  stream,
                                                  bytesWritten => this.BytesWritten = prev + bytesWritten);
@@ -147,7 +132,7 @@ namespace SharpBSABA2.BA2Util
                 else
                 {
                     ulong prev = this.BytesWritten;
-                    Archive.Decompress(BinaryReader.BaseStream,
+                    Archive.Decompress(reader.BaseStream,
                                        this.Chunks[i].packSz,
                                        stream,
                                        bytesWritten => this.BytesWritten = prev + bytesWritten);

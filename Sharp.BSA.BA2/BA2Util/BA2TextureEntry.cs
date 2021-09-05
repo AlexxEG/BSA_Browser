@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SharpBSABA2.BA2Util
 {
@@ -35,14 +36,8 @@ namespace SharpBSABA2.BA2Util
         public readonly byte isCubemap;
         public readonly byte tileMode;
 
-        public override bool Compressed
-        {
-            get
-            {
-                // After testing it seems like ALL textures are compressed.
-                return this.Chunks[0].packSz != 0;
-            }
-        }
+        // After testing it seems like ALL textures are compressed.
+        public override bool Compressed => this.Chunks[0].packSz != 0;
         public override uint Size
         {
             get
@@ -56,34 +51,10 @@ namespace SharpBSABA2.BA2Util
                 return size;
             }
         }
-        public override uint RealSize
-        {
-            get
-            {
-                // Start of with the size of the DDS Magic + DDS header + if applicable DDS DXT10 header
-                uint size = this.GetHeaderSize();
-                foreach (var chunk in Chunks)
-                    size += Math.Max(chunk.fullSz, chunk.packSz);
-                return size;
-            }
-        }
-        public override uint DisplaySize
-        {
-            get
-            {
-                uint size = this.GetHeaderSize();
-                foreach (var chunk in this.Chunks)
-                    size += chunk.fullSz;
-                return size;
-            }
-        }
-        public override ulong Offset
-        {
-            get
-            {
-                return this.Chunks[0].offset;
-            }
-        }
+        // Start of with the size of the DDS Magic + DDS header + if applicable DDS DXT10 header
+        public override uint RealSize => this.GetHeaderSize() + (uint)this.Chunks.Sum(x => Math.Max(x.fullSz, x.packSz));
+        public override uint DisplaySize => this.GetHeaderSize() + (uint)this.Chunks.Sum(x => x.fullSz);
+        public override ulong Offset => this.Chunks[0].offset;
 
         public BA2TextureEntry(Archive ba2) : base(ba2)
         {
@@ -109,16 +80,6 @@ namespace SharpBSABA2.BA2Util
             {
                 this.Chunks.Add(new BA2TextureChunk(ba2.BinaryReader));
             }
-        }
-
-        public override MemoryStream GetRawDataStream()
-        {
-            var ms = new MemoryStream();
-
-            this.WriteDataToStream(ms, false);
-
-            ms.Seek(0, SeekOrigin.Begin);
-            return ms;
         }
 
         public override string GetToolTipText()
@@ -315,12 +276,7 @@ namespace SharpBSABA2.BA2Util
             }
         }
 
-        protected override void WriteDataToStream(Stream stream)
-        {
-            this.WriteDataToStream(stream, true);
-        }
-
-        protected void WriteDataToStream(Stream stream, bool decompress)
+        protected override void WriteDataToStream(Stream stream, BinaryReader reader, bool decompress)
         {
             var bw = new BinaryWriter(stream);
 
@@ -337,18 +293,18 @@ namespace SharpBSABA2.BA2Util
                 bool isCompressed = this.Chunks[i].packSz != 0;
                 ulong prev = this.BytesWritten;
 
-                this.BinaryReader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
+                reader.BaseStream.Seek((long)this.Chunks[i].offset, SeekOrigin.Begin);
 
                 if (!decompress || !isCompressed)
                 {
-                    Archive.WriteSectionToStream(BinaryReader.BaseStream,
+                    Archive.WriteSectionToStream(reader.BaseStream,
                                                  Chunks[i].fullSz,
                                                  stream,
                                                  bytesWritten => this.BytesWritten = prev + bytesWritten);
                 }
                 else
                 {
-                    Archive.Decompress(BinaryReader.BaseStream,
+                    Archive.Decompress(reader.BaseStream,
                                        this.Chunks[i].packSz,
                                        stream,
                                        bytesWritten => this.BytesWritten = prev + bytesWritten);

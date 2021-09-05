@@ -74,8 +74,6 @@ namespace SharpBSABA2
         /// </summary>
         public Archive Archive { get; private set; }
 
-        public BinaryReader BinaryReader => this.Archive.BinaryReader;
-
         #endregion
 
         protected ArchiveEntry(Archive archive)
@@ -95,6 +93,11 @@ namespace SharpBSABA2
 
         public virtual void Extract(string destination, bool preserveFolder, string newName)
         {
+            this.Extract(destination, preserveFolder, newName, this.Archive.BinaryReader);
+        }
+
+        public virtual void Extract(string destination, bool preserveFolder, string newName, BinaryReader reader)
+        {
             string path = preserveFolder ? this.Folder : string.Empty;
 
             path = Path.Combine(path, newName);
@@ -106,28 +109,43 @@ namespace SharpBSABA2
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
 
             using (var fs = File.Create(path))
-                this.WriteDataToStream(fs);
+                this.WriteDataToStream(fs, reader);
 
             if (this.Archive.MatchLastWriteTime)
                 File.SetLastWriteTime(path, this.Archive.LastWriteTime);
         }
 
+        public virtual MemoryStream GetDataStream()
+        {
+            return this.GetDataStream(this.Archive.BinaryReader);
+        }
+
         /// <summary>
         /// Extracts and uncompresses data and then returns the stream.
         /// </summary>
-        public virtual MemoryStream GetDataStream()
+        public virtual MemoryStream GetDataStream(BinaryReader reader)
         {
             var ms = new MemoryStream();
 
-            this.WriteDataToStream(ms);
+            this.WriteDataToStream(ms, reader);
 
             ms.Seek(0, SeekOrigin.Begin);
             return ms;
         }
 
-        public virtual MemoryStream GetRawDataStream()
+        public MemoryStream GetRawDataStream()
         {
-            throw new NotImplementedException();
+            return this.GetRawDataStream(this.Archive.BinaryReader);
+        }
+
+        public virtual MemoryStream GetRawDataStream(BinaryReader reader)
+        {
+            var ms = new MemoryStream();
+
+            this.WriteDataToStream(ms, reader, false);
+
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
         }
 
         public virtual string GetToolTipText()
@@ -135,6 +153,6 @@ namespace SharpBSABA2
             return "Undefined";
         }
 
-        protected abstract void WriteDataToStream(Stream stream);
+        protected abstract void WriteDataToStream(Stream stream, BinaryReader reader, bool decompress = true);
     }
 }
