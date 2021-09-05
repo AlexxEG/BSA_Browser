@@ -243,13 +243,8 @@ namespace BSA_Browser
             while (count < 50)
             {
                 sw.Restart();
-                using (var ms = new MemoryStream())
-                {
-                    foreach (var file in SelectedArchiveNode.Archive.Files)
-                    {
-                        file.GetDataStream();
-                    }
-                }
+                foreach (var file in SelectedArchiveNode.Archive.Files)
+                    file.GetDataStream();
                 sw.Stop();
                 results.Add(sw.ElapsedMilliseconds);
                 count++;
