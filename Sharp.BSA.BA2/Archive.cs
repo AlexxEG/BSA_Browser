@@ -17,12 +17,12 @@ namespace SharpBSABA2
         public const int DefaultProgressInterval = 1000;
 
         public bool MatchLastWriteTime { get; set; }
-        public bool RetrieveRealSize { get; private set; }
+        public bool RetrieveRealSize { get; protected set; }
 
-        public string FullPath { get; private set; }
+        public string FullPath { get; protected set; }
         public string FileName => Path.GetFileName(this.FullPath);
 
-        public DateTime LastWriteTime { get; private set; }
+        public DateTime LastWriteTime { get; protected set; }
 
         public virtual int Chunks { get; set; }
         public virtual int FileCount { get; set; }
@@ -31,10 +31,9 @@ namespace SharpBSABA2
 
         public virtual ArchiveTypes Type { get; protected set; }
 
-        public Inflater Inflater { get; private set; } = new Inflater();
-        public List<ArchiveEntry> Files { get; private set; } = new List<ArchiveEntry>();
-
-        public BinaryReader BinaryReader { get; private set; }
+        public Inflater Inflater { get; protected set; } = new Inflater();
+        public List<ArchiveEntry> Files { get; protected set; } = new List<ArchiveEntry>();
+        public BinaryReader BinaryReader { get; protected set; }
 
         static Archive()
         {
@@ -43,7 +42,6 @@ namespace SharpBSABA2
 
         protected Archive(string filePath) : this(filePath, Encoding.UTF7) { }
         protected Archive(string filePath, Encoding encoding) : this(filePath, encoding, false) { }
-
         protected Archive(string filePath, Encoding encoding, bool retrieveRealSize)
         {
             this.FullPath = filePath;
