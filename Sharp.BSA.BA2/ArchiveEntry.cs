@@ -103,6 +103,9 @@ namespace SharpBSABA2
                 File.SetLastWriteTime(path, this.Archive.LastWriteTime);
         }
 
+        /// <summary>
+        /// Extracts and uncompresses data and then returns the stream.
+        /// </summary>
         public virtual MemoryStream GetDataStream()
         {
             return this.GetDataStream(this.Archive.BinaryReader);
@@ -121,11 +124,17 @@ namespace SharpBSABA2
             return ms;
         }
 
+        /// <summary>
+        /// Returns a <see cref="MemoryStream"/> of the raw data.
+        /// </summary>
         public MemoryStream GetRawDataStream()
         {
             return this.GetRawDataStream(this.Archive.BinaryReader);
         }
 
+        /// <summary>
+        /// Returns a <see cref="MemoryStream"/> of the raw data.
+        /// </summary>
         public virtual MemoryStream GetRawDataStream(BinaryReader reader)
         {
             var ms = new MemoryStream();
