@@ -270,7 +270,7 @@ namespace BSA_Browser
             var tasks = new List<Task>();
 
             var archive = SelectedArchiveNode.Archive;
-            var chunks = this.SplitFileListIntoChunks(archive, 8);
+            var chunks = archive.Files.Split(8);
 
             while (count < 50)
             {
@@ -398,26 +398,6 @@ namespace BSA_Browser
             };
 
             bw.RunWorkerAsync();
-        }
-
-        private List<List<ArchiveEntry>> SplitFileListIntoChunks(Archive archive, int chunkCount = 6)
-        {
-            var chunks = new List<List<ArchiveEntry>>();
-            decimal chunkSize = Math.Floor((decimal)archive.Files.Count / chunkCount);
-
-            for (int i = 0; i < chunkCount; i++)
-            {
-                // Skip amount of files already processed then take amount of files based on chunkSize
-                chunks.Add(archive.Files
-                    .Skip(chunks.Select(x => x.Count).Sum())
-                    .Take((int)chunkSize)
-                    .ToList());
-            }
-
-            // Add the rest, if any
-            chunks[chunks.Count() - 1].AddRange(archive.Files.Skip(chunks.Select(x => x.Count).Sum()));
-
-            return chunks;
         }
 
         #endregion

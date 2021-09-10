@@ -155,4 +155,27 @@ namespace BSA_Browser.Classes
             }
         }
     }
+
+    public static class CommonExtensions
+    {
+        public static List<List<T>> Split<T>(this List<T> list, int chunkCount)
+        {
+            var chunks = new List<List<T>>();
+            decimal chunkSize = Math.Floor((decimal)list.Count / chunkCount);
+
+            for (int i = 0; i < chunkCount; i++)
+            {
+                // Skip amount of files already processed then take amount of files based on chunkSize
+                chunks.Add(list
+                    .Skip(chunks.Select(x => x.Count).Sum())
+                    .Take((int)chunkSize)
+                    .ToList());
+            }
+
+            // Add the rest, if any
+            chunks[chunks.Count() - 1].AddRange(list.Skip(chunks.Select(x => x.Count).Sum()));
+
+            return chunks;
+        }
+    }
 }
