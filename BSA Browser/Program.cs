@@ -56,10 +56,6 @@ namespace BSA_Browser
             {
                 // Do nothing
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
 #if (!DEBUG)

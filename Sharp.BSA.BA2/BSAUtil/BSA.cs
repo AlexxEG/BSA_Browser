@@ -254,8 +254,7 @@ namespace SharpBSABA2.BSAUtil
             catch (Exception ex)
             {
                 this.BinaryReader?.Close();
-
-                throw new Exception("An error occured trying to open the archive.", ex);
+                throw ex;
             }
         }
 
