@@ -72,26 +72,6 @@ namespace BSA_Browser.Classes
         }
 
         /// <summary>
-        /// Returns <see cref="Exception.ToString"/> with <see cref="CultureInfo.InvariantCulture"/>.
-        /// </summary>
-        public static string GetInvariantExceptionMessage(Exception exception)
-        {
-            var culture = Thread.CurrentThread.CurrentCulture;
-            var cultureUI = Thread.CurrentThread.CurrentUICulture;
-
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-
-            // Get it here so we can switch back Culture as fast as possible, just in case
-            string exceptionMsg = exception.ToString();
-
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = cultureUI;
-
-            return exceptionMsg;
-        }
-
-        /// <summary>
         /// Opens and return <see cref="Archive"/> of <paramref name="file"/>.
         /// </summary>
         /// <param name="file">Archive file to open.</param>
@@ -143,7 +123,7 @@ namespace BSA_Browser.Classes
             catch (Exception ex)
             {
                 MessageBox.Show(owner,
-                    "An error occured trying to open the archive. Changing the Encoding in Options can help, please try before reporting.\n\n" + GetInvariantExceptionMessage(ex),
+                    "An error occured trying to open the archive. Changing the Encoding in Options can help, please try before reporting.\n\n" + ex.ToStringInvariant(),
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -202,6 +182,26 @@ namespace BSA_Browser.Classes
             chunks[chunks.Count() - 1].AddRange(list.Skip(chunks.Select(x => x.Count).Sum()));
 
             return chunks;
+        }
+
+        /// <summary>
+        /// Returns <see cref="Exception.ToString"/> with <see cref="CultureInfo.InvariantCulture"/>.
+        /// </summary>
+        public static string ToStringInvariant(this Exception exception)
+        {
+            var culture = Thread.CurrentThread.CurrentCulture;
+            var cultureUI = Thread.CurrentThread.CurrentUICulture;
+
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+            // Get it here so we can switch back Culture as fast as possible, just in case
+            string exceptionMsg = exception.ToString();
+
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = cultureUI;
+
+            return exceptionMsg;
         }
     }
 }
