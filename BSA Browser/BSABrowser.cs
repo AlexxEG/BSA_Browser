@@ -139,8 +139,8 @@ namespace BSA_Browser
 
             debugMenuItem.MenuItems.Add("Average opening speed of archive", OpeningSpeedAverage_Click);
             debugMenuItem.MenuItems.Add("Average extraction speed of selected file", ExtractionSpeedAverage_Click);
-            debugMenuItem.MenuItems.Add("Average extraction speed of selected archive", ExtractionSpeedAverageArchive_Click);
-            debugMenuItem.MenuItems.Add("Average extraction speed of selected archive multi-threaded", ExtractionSpeedAverageMultiThreaded_Click);
+            debugMenuItem.MenuItems.Add("Average extraction speed of files", ExtractionSpeedAverageFiles_Click);
+            debugMenuItem.MenuItems.Add("Average extraction speed of files (multi-threaded)", ExtractionSpeedAverageFilesMultiThreaded_Click);
             debugMenuItem.MenuItems.Add("Check if all textures formats are supported", CheckTextureFormats_Click);
             debugMenuItem.MenuItems.Add("Show ProgressForm", ShowProgressForm_Click);
         }
@@ -229,7 +229,7 @@ namespace BSA_Browser
             Console.WriteLine($"Average: {results.Sum() / results.Count}ms");
         }
 
-        private void ExtractionSpeedAverageArchive_Click(object sender, EventArgs e)
+        private void ExtractionSpeedAverageFiles_Click(object sender, EventArgs e)
         {
             if (tvFolders.SelectedNode == null)
                 return;
@@ -255,7 +255,7 @@ namespace BSA_Browser
             MessageBox.Show($"Average: {results.Sum() / results.Count}ms");
         }
 
-        private async void ExtractionSpeedAverageMultiThreaded_Click(object sender, EventArgs e)
+        private async void ExtractionSpeedAverageFilesMultiThreaded_Click(object sender, EventArgs e)
         {
             if (_files.Count == 0)
                 return;
