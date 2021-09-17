@@ -234,9 +234,6 @@ namespace BSA_Browser
             if (tvFolders.SelectedNode == null)
                 return;
 
-            if (tvFolders.SelectedNode.Index == 0)
-                return;
-
             var sw = new Stopwatch();
             int count = 0;
             var results = new List<long>();
@@ -244,7 +241,7 @@ namespace BSA_Browser
             while (count < 50)
             {
                 sw.Restart();
-                foreach (var file in SelectedArchiveNode.Archive.Files)
+                foreach (var file in SelectedArchiveNode.Files)
                     file.GetDataStream();
                 sw.Stop();
                 results.Add(sw.ElapsedMilliseconds);
