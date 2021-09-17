@@ -258,10 +258,7 @@ namespace BSA_Browser
 
         private async void ExtractionSpeedAverageMultiThreaded_Click(object sender, EventArgs e)
         {
-            if (tvFolders.SelectedNode == null)
-                return;
-
-            if (tvFolders.SelectedNode.Index == 0)
+            if (_files.Count == 0)
                 return;
 
             var sw = new Stopwatch();
@@ -269,8 +266,7 @@ namespace BSA_Browser
             var results = new List<long>();
             var tasks = new List<Task>();
 
-            var archive = SelectedArchiveNode.Archive;
-            var chunks = archive.Files.Split(8);
+            var chunks = _files.Split(4);
 
             while (count < 50)
             {
@@ -280,10 +276,16 @@ namespace BSA_Browser
                 {
                     Task task = new Task(files =>
                     {
-                        var ep = archive.CreateSharedParams(true, true);
+                        var sharedParams = new Dictionary<string, SharedExtractParams>();
+                        foreach (var arc in (files as List<ArchiveEntry>).Select(x => x.Archive.FullPath.ToLower()).Distinct())
+                            sharedParams.Add(arc, FindArchive(arc).CreateSharedParams(true, true));
+
                         foreach (ArchiveEntry file in (List<ArchiveEntry>)files)
-                            file.GetDataStream(ep);
-                        ep.Reader.Close();
+                            // file.Extract(@"D:\Testing\test1", true, file.FileName, sharedParams[file.Archive.FullPath.ToLower()]);
+                            file.GetDataStream(sharedParams[file.Archive.FullPath.ToLower()]);
+
+                        foreach (var sp in sharedParams)
+                            sp.Value.Reader.Close();
                     }, list);
 
                     tasks.Add(task);
@@ -1637,6 +1639,14 @@ namespace BSA_Browser
         }
 
         #endregion
+
+        /// <summary>
+        /// Returns <see cref="Archive"/> with the given file path from <see cref="tvFolders"/>.
+        /// </summary>
+        private Archive FindArchive(string fullPath)
+        {
+            return tvFolders.Nodes.OfType<ArchiveNode>().Skip(1).First(x => x.Archive.FullPath.ToLower() == fullPath.ToLower()).Archive;
+        }
 
         /// <summary>
         /// Returns index for file icon in <see cref="filesImageList"/>.
