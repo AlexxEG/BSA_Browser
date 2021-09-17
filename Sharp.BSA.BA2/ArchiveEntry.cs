@@ -82,9 +82,18 @@ namespace SharpBSABA2
             this.Archive = archive;
         }
 
-        public void Extract(bool preserveFolder) { Extract(string.Empty, preserveFolder); }
-        public void Extract(string destination, bool preserveFolder) { Extract(destination, preserveFolder, FileName); }
-        public void Extract(string destination, bool preserveFolder, string newName) { Extract(destination, preserveFolder, newName, new SharedExtractParams(Archive, false, false)); }
+        public void Extract(bool preserveFolder)
+        {
+            Extract(string.Empty, preserveFolder);
+        }
+        public void Extract(string destination, bool preserveFolder)
+        {
+            Extract(destination, preserveFolder, FileName);
+        }
+        public void Extract(string destination, bool preserveFolder, string newName)
+        {
+            Extract(destination, preserveFolder, newName, new SharedExtractParams(Archive, false, false));
+        }
         public void Extract(string destination, bool preserveFolder, string newName, SharedExtractParams extractParams)
         {
             string path = preserveFolder ? this.Folder : string.Empty;
