@@ -138,7 +138,7 @@ namespace BSA_Browser
             var debugMenuItem = mainMenu1.MenuItems.Add("DEBUG");
 
             debugMenuItem.MenuItems.Add("Average opening speed of archive", OpeningSpeedAverage_Click);
-            debugMenuItem.MenuItems.Add("Average extraction speed of selected item", ExtractionSpeedAverage_Click);
+            debugMenuItem.MenuItems.Add("Average extraction speed of selected file", ExtractionSpeedAverage_Click);
             debugMenuItem.MenuItems.Add("Average extraction speed of selected archive", ExtractionSpeedAverageArchive_Click);
             debugMenuItem.MenuItems.Add("Average extraction speed of selected archive multi-threaded", ExtractionSpeedAverageMultiThreaded_Click);
             debugMenuItem.MenuItems.Add("Check if all textures formats are supported", CheckTextureFormats_Click);
