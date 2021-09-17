@@ -463,18 +463,18 @@ namespace BSA_Browser
 
         private void btnExtractFiles_Click(object sender, EventArgs e)
         {
-            if (this.SelectedArchiveNode != null)
-            {
-                this.ExtractFilesTo(false, true, () => _files);
-            }
+            if (this.SelectedArchiveNode == null)
+                return;
+
+            this.ExtractFilesTo(false, true, () => _files);
         }
 
         private void btnExtractFolders_Click(object sender, EventArgs e)
         {
-            if (this.SelectedArchiveNode != null)
-            {
-                this.ExtractFilesTo(true, true, () => _files);
-            }
+            if (this.SelectedArchiveNode == null)
+                return;
+
+            this.ExtractFilesTo(true, true, () => _files);
         }
 
         private void btnPreview_Click(object sender, EventArgs e)
