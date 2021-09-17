@@ -141,7 +141,6 @@ namespace BSA_Browser
             debugMenuItem.MenuItems.Add("Average extraction speed of selected item", ExtractionSpeedAverage_Click);
             debugMenuItem.MenuItems.Add("Average extraction speed of selected archive", ExtractionSpeedAverageArchive_Click);
             debugMenuItem.MenuItems.Add("Average extraction speed of selected archive multi-threaded", ExtractionSpeedAverageMultiThreaded_Click);
-            debugMenuItem.MenuItems.Add("Average extraction speed of selected archive multi-threaded (Task per file)", ExtractionSpeedAverageMultiThreadedTaskPerFile_Click);
             debugMenuItem.MenuItems.Add("Check if all textures formats are supported", CheckTextureFormats_Click);
             debugMenuItem.MenuItems.Add("Show ProgressForm", ShowProgressForm_Click);
         }
@@ -287,48 +286,6 @@ namespace BSA_Browser
                         foreach (var sp in sharedParams)
                             sp.Value.Reader.Close();
                     }, list);
-
-                    tasks.Add(task);
-                    task.Start();
-                }
-
-                await Task.WhenAll(tasks);
-                sw.Stop();
-                results.Add(sw.ElapsedMilliseconds);
-                count++;
-                Console.WriteLine($"{count} - Average: {results.Sum() / results.Count}ms");
-                tasks.Clear();
-            }
-
-            MessageBox.Show($"Average: {results.Sum() / results.Count}ms");
-        }
-
-        private async void ExtractionSpeedAverageMultiThreadedTaskPerFile_Click(object sender, EventArgs e)
-        {
-            if (tvFolders.SelectedNode == null)
-                return;
-
-            if (tvFolders.SelectedNode.Index == 0)
-                return;
-
-            var sw = new Stopwatch();
-            int count = 0;
-            var results = new List<long>();
-            var tasks = new List<Task>();
-            var archive = SelectedArchiveNode.Archive;
-
-            while (count < 50)
-            {
-                sw.Restart();
-
-                foreach (var file in archive.Files)
-                {
-                    var task = new Task(f =>
-                    {
-                        var ep = archive.CreateSharedParams(true, true);
-                        (f as ArchiveEntry).GetDataStream(ep);
-                        ep.Reader.Close();
-                    }, file);
 
                     tasks.Add(task);
                     task.Start();
