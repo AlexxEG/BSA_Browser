@@ -55,11 +55,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbArchiveA = new System.Windows.Forms.ComboBox();
             this.cbArchiveB = new System.Windows.Forms.ComboBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lFilterUnique = new System.Windows.Forms.CheckBox();
+            this.lFilterDifferent = new System.Windows.Forms.CheckBox();
+            this.lFilterIdentical = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lComparison = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,11 +77,12 @@
             this.lvArchive.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvArchive.FullRowSelect = true;
             this.lvArchive.GridLines = true;
+            this.lvArchive.HideSelection = false;
             this.lvArchive.LabelWrap = false;
             this.lvArchive.Location = new System.Drawing.Point(3, 139);
             this.lvArchive.Name = "lvArchive";
             this.lvArchive.ShowItemToolTips = true;
-            this.lvArchive.Size = new System.Drawing.Size(770, 179);
+            this.lvArchive.Size = new System.Drawing.Size(770, 157);
             this.lvArchive.TabIndex = 0;
             this.lvArchive.UseCompatibleStateImageBehavior = false;
             this.lvArchive.View = System.Windows.Forms.View.Details;
@@ -106,12 +112,14 @@
             this.tableLayoutPanel1.Controls.Add(this.lvArchive, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.cbArchiveA, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbArchiveB, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 3);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(776, 321);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
@@ -367,6 +375,58 @@
             this.cbArchiveB.TabIndex = 3;
             this.cbArchiveB.SelectedIndexChanged += new System.EventHandler(this.cbArchives_SelectedIndexChanged);
             // 
+            // flowLayoutPanel1
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel1, 2);
+            this.flowLayoutPanel1.Controls.Add(this.lFilterUnique);
+            this.flowLayoutPanel1.Controls.Add(this.lFilterDifferent);
+            this.flowLayoutPanel1.Controls.Add(this.lFilterIdentical);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 299);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(776, 22);
+            this.flowLayoutPanel1.TabIndex = 8;
+            // 
+            // lFilterUnique
+            // 
+            this.lFilterUnique.AutoSize = true;
+            this.lFilterUnique.Checked = true;
+            this.lFilterUnique.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.lFilterUnique.Location = new System.Drawing.Point(3, 3);
+            this.lFilterUnique.Name = "lFilterUnique";
+            this.lFilterUnique.Size = new System.Drawing.Size(60, 17);
+            this.lFilterUnique.TabIndex = 0;
+            this.lFilterUnique.Text = "Unique";
+            this.lFilterUnique.UseVisualStyleBackColor = true;
+            this.lFilterUnique.CheckedChanged += new System.EventHandler(this.lFilters_CheckedChanged);
+            // 
+            // lFilterDifferent
+            // 
+            this.lFilterDifferent.AutoSize = true;
+            this.lFilterDifferent.Checked = true;
+            this.lFilterDifferent.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.lFilterDifferent.Location = new System.Drawing.Point(69, 3);
+            this.lFilterDifferent.Name = "lFilterDifferent";
+            this.lFilterDifferent.Size = new System.Drawing.Size(66, 17);
+            this.lFilterDifferent.TabIndex = 1;
+            this.lFilterDifferent.Text = "Different";
+            this.lFilterDifferent.UseVisualStyleBackColor = true;
+            this.lFilterDifferent.CheckedChanged += new System.EventHandler(this.lFilters_CheckedChanged);
+            // 
+            // lFilterIdentical
+            // 
+            this.lFilterIdentical.AutoSize = true;
+            this.lFilterIdentical.Checked = true;
+            this.lFilterIdentical.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.lFilterIdentical.Location = new System.Drawing.Point(141, 3);
+            this.lFilterIdentical.Name = "lFilterIdentical";
+            this.lFilterIdentical.Size = new System.Drawing.Size(66, 17);
+            this.lFilterIdentical.TabIndex = 2;
+            this.lFilterIdentical.Text = "Identical";
+            this.lFilterIdentical.UseVisualStyleBackColor = true;
+            this.lFilterIdentical.CheckedChanged += new System.EventHandler(this.lFilters_CheckedChanged);
+            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -405,6 +465,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -441,5 +503,9 @@
         private System.Windows.Forms.Label lChunksA;
         private System.Windows.Forms.Label lFileCountA;
         private System.Windows.Forms.Label lVersionA;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.CheckBox lFilterUnique;
+        private System.Windows.Forms.CheckBox lFilterDifferent;
+        private System.Windows.Forms.CheckBox lFilterIdentical;
     }
 }

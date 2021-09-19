@@ -34,6 +34,7 @@ namespace BSA_Browser
 
         public List<Archive> Archives { get; private set; } = new List<Archive>();
         public List<CompareItem> Files { get; private set; } = new List<CompareItem>();
+        public List<CompareItem> FilteredFiles { get; private set; } = new List<CompareItem>();
 
         public CompareForm()
         {
@@ -92,10 +93,11 @@ namespace BSA_Browser
 
         private void lvArchive_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
-            if (this.Files.Count <= e.ItemIndex)
+            if (this.FilteredFiles.Count <= e.ItemIndex)
                 return;
 
-            var file = this.Files[e.ItemIndex];
+            var file = this.FilteredFiles[e.ItemIndex];
+
             ListViewItem newItem;
 
             switch (file.Type)
@@ -138,6 +140,42 @@ namespace BSA_Browser
             newItem.ToolTipText = file.FullPath;
 
             e.Item = newItem;
+        }
+
+        private void lFilters_CheckedChanged(object sender, EventArgs e)
+        {
+            lvArchive.BeginUpdate();
+            this.Filter();
+            lvArchive.VirtualListSize = this.FilteredFiles.Count;
+            lvArchive.Invalidate();
+            lvArchive.EndUpdate();
+        }
+
+        private void Filter()
+        {
+            this.FilteredFiles.Clear();
+
+            var types = GetFilteredTypes();
+
+            foreach (var file in Files)
+                if (types.Contains(file.Type))
+                    this.FilteredFiles.Add(file);
+        }
+
+        private CompareType[] GetFilteredTypes()
+        {
+            var types = new List<CompareType>();
+            if (lFilterUnique.Checked)
+            {
+                types.Add(CompareType.Added);
+                types.Add(CompareType.Removed);
+            }
+            if (lFilterDifferent.Checked)
+                types.Add(CompareType.Changed);
+            if (lFilterIdentical.Checked)
+                types.Add(CompareType.Identical);
+
+            return types.ToArray();
         }
 
         private void Compare()
@@ -200,7 +238,8 @@ namespace BSA_Browser
 
             this.Files.Sort((x, y) => ((int)x.Type).CompareTo((int)y.Type));
 
-            lvArchive.VirtualListSize = this.Files.Count;
+            this.Filter();
+            lvArchive.VirtualListSize = this.FilteredFiles.Count;
             lvArchive.Invalidate();
             lvArchive.EndUpdate();
 
