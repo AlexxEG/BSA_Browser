@@ -3,7 +3,6 @@
 - [ ] Detailed view for advanced mode or debug mode
 - [ ] Include xtexconv for converting XboxDDS to DDS
 - [ ] Look at BSABrowser.ExtractFiles and allow multiple extraction operations at same time (maybe limit to one per archive or actually check indiviual files)
-- [ ] Compare tool: Toggle overlapping files (only show different files) OR check boxes for each type
 - [ ] Compare tool: Add ability to extract files https://ibb.co/n7Xrscb
 - [ ] Compare tool: Improve sorting
 - [ ] Compare tool: Async comparing, progress bar
@@ -20,3 +19,4 @@
 - [X] ~~Compare single files within any archive. Idea: Right click to mark first file, then right click second file to start comparing. Display the filename of first file when selecting the second (\{archive\} - \{filename\})~~
 - [X] ~~And/or: Same as above, but second file can be multiple files and they're all compared to the first~~
 - [X] ~~Properly handle shutdown when extract operations are active~~
+- [X] ~~Compare tool: Toggle overlapping files (only show different files) OR check boxes for each type~~
