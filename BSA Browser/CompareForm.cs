@@ -197,7 +197,11 @@ namespace BSA_Browser
                 return;
 
             if (cbArchiveA.SelectedIndex == cbArchiveB.SelectedIndex)
+            {
+                // Same archive, don't compare anything but still show info and files
+                this.CompareSameArchive();
                 return;
+            }
 
             var archA = this.Archives[cbArchiveA.SelectedIndex];
             var archB = this.Archives[cbArchiveB.SelectedIndex];
@@ -275,6 +279,41 @@ namespace BSA_Browser
                 this.Files.Count(x => x.Type == CompareType.Changed),
                 archAFileList.Count,
                 archBFileList.Count);
+        }
+
+        public void CompareSameArchive()
+        {
+            SetCompareColor(lTypeA, lTypeB, false);
+            SetCompareColor(lVersionA, lVersionB, false);
+            SetCompareColor(lFileCountA, lFileCountB, false);
+            SetCompareColor(lChunksA, lChunksB, false);
+
+            lvArchive.BeginUpdate();
+            this.Files.Clear();
+
+            var archive = this.Archives[cbArchiveA.SelectedIndex];
+            foreach (var file in archive.Files)
+            {
+                // Files are identical
+                this.Files.Add(new CompareItem(file.FullPath, CompareType.Identical));
+            }
+
+            this.Files.Sort((x, y) =>
+            {
+                return NaturalStringComparer.Compare(x.FullPath, y.FullPath);
+            });
+
+            this.Filter();
+            lvArchive.VirtualListSize = this.FilteredFiles.Count;
+            lvArchive.Invalidate();
+            lvArchive.EndUpdate();
+
+            this.lComparison.Text = string.Format(CompareTextTemplate,
+                this.Files.Count(x => x.Type == CompareType.Added),
+                this.Files.Count(x => x.Type == CompareType.Removed),
+                this.Files.Count(x => x.Type == CompareType.Changed),
+                archive.Files.Count,
+                archive.Files.Count);
         }
 
         public void Compare(Archive archA, Archive archB)
