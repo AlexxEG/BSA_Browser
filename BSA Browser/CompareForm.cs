@@ -175,22 +175,6 @@ namespace BSA_Browser
                     this.FilteredFiles.Add(file);
         }
 
-        private CompareType[] GetFilteredTypes()
-        {
-            var types = new List<CompareType>();
-            if (chbFilterUnique.Checked)
-            {
-                types.Add(CompareType.Added);
-                types.Add(CompareType.Removed);
-            }
-            if (chbFilterDifferent.Checked)
-                types.Add(CompareType.Changed);
-            if (chbFilterIdentical.Checked)
-                types.Add(CompareType.Identical);
-
-            return types.ToArray();
-        }
-
         private void Compare()
         {
             if (cbArchiveA.SelectedIndex < 0 || cbArchiveB.SelectedIndex < 0)
@@ -316,43 +300,6 @@ namespace BSA_Browser
                 archive.Files.Count);
         }
 
-        public void AddArchive(Archive archive)
-        {
-            this.Archives.Add(archive);
-
-            cbArchiveA.Items.Add(archive.FileName);
-            cbArchiveB.Items.Add(archive.FileName);
-        }
-
-        public void RemoveArchive(Archive archive)
-        {
-            this.Archives.Remove(archive);
-
-            cbArchiveA.Items.Remove(archive.FileName);
-            cbArchiveB.Items.Remove(archive.FileName);
-        }
-
-        private void SetCompareColor(Control a, Control b, bool comparison)
-        {
-            a.ForeColor = comparison ? Color.Red : SystemColors.ControlText;
-            b.ForeColor = comparison ? Color.Green : SystemColors.ControlText;
-        }
-
-        private string FormatType(ArchiveTypes type)
-        {
-            switch (type)
-            {
-                case ArchiveTypes.BA2_DX10: return "BA2 Texture";
-                case ArchiveTypes.BA2_GNMF: return "BA2 Texture (GNF)";
-                case ArchiveTypes.BA2_GNRL: return "BA2 General";
-                case ArchiveTypes.BSA: return "BSA";
-                case ArchiveTypes.BSA_MW: return "BSA Morrowind";
-                case ArchiveTypes.BSA_SE: return "BSA Special Edition";
-                case ArchiveTypes.DAT_F2: return "DAT Fallout 2";
-                default: return string.Empty;
-            }
-        }
-
         private bool CompareStreams(Stream a, Stream b, ulong length)
         {
             int Buffer = 1024 * 10;
@@ -385,6 +332,59 @@ namespace BSA_Browser
                 if (read == length) break; // Max length reached
             }
             return true;
+        }
+
+        private void SetCompareColor(Control a, Control b, bool comparison)
+        {
+            a.ForeColor = comparison ? Color.Red : SystemColors.ControlText;
+            b.ForeColor = comparison ? Color.Green : SystemColors.ControlText;
+        }
+
+        private string FormatType(ArchiveTypes type)
+        {
+            switch (type)
+            {
+                case ArchiveTypes.BA2_DX10: return "BA2 Texture";
+                case ArchiveTypes.BA2_GNMF: return "BA2 Texture (GNF)";
+                case ArchiveTypes.BA2_GNRL: return "BA2 General";
+                case ArchiveTypes.BSA: return "BSA";
+                case ArchiveTypes.BSA_MW: return "BSA Morrowind";
+                case ArchiveTypes.BSA_SE: return "BSA Special Edition";
+                case ArchiveTypes.DAT_F2: return "DAT Fallout 2";
+                default: return string.Empty;
+            }
+        }
+
+        private CompareType[] GetFilteredTypes()
+        {
+            var types = new List<CompareType>();
+            if (chbFilterUnique.Checked)
+            {
+                types.Add(CompareType.Added);
+                types.Add(CompareType.Removed);
+            }
+            if (chbFilterDifferent.Checked)
+                types.Add(CompareType.Changed);
+            if (chbFilterIdentical.Checked)
+                types.Add(CompareType.Identical);
+
+            return types.ToArray();
+        }
+
+        public void AddArchive(Archive archive)
+        {
+            this.Archives.Add(archive);
+
+            cbArchiveA.Items.Add(archive.FileName);
+            cbArchiveB.Items.Add(archive.FileName);
+        }
+
+        public void RemoveArchive(Archive archive)
+        {
+            this.Archives.Remove(archive);
+
+            cbArchiveA.Items.Remove(archive.FileName);
+            cbArchiveB.Items.Remove(archive.FileName);
         }
     }
 }
