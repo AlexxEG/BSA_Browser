@@ -316,16 +316,6 @@ namespace BSA_Browser
                 archive.Files.Count);
         }
 
-        public void Compare(Archive archA, Archive archB)
-        {
-            cbArchiveA.SelectedIndexChanged -= cbArchives_SelectedIndexChanged;
-
-            cbArchiveA.SelectedIndex = this.Archives.IndexOf(archA);
-            cbArchiveB.SelectedIndex = this.Archives.IndexOf(archB);
-
-            cbArchiveA.SelectedIndexChanged += cbArchives_SelectedIndexChanged;
-        }
-
         public void AddArchive(Archive archive)
         {
             this.Archives.Add(archive);
