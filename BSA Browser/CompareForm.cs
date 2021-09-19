@@ -1,4 +1,5 @@
-﻿using SharpBSABA2;
+﻿using BSA_Browser.Properties;
+using SharpBSABA2;
 using SharpBSABA2.Enums;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,10 @@ namespace BSA_Browser
             InitializeComponent();
 
             CompareTextTemplate = this.lComparison.Text;
+
+            lFilterUnique.Checked = Settings.Default.CompareFilterUnique;
+            lFilterDifferent.Checked = Settings.Default.CompareFilterDifferent;
+            lFilterIdentical.Checked = Settings.Default.CompareFilterIdentical;
         }
 
         public CompareForm(ICollection<Archive> archives)
@@ -149,6 +154,10 @@ namespace BSA_Browser
             lvArchive.VirtualListSize = this.FilteredFiles.Count;
             lvArchive.Invalidate();
             lvArchive.EndUpdate();
+
+            Settings.Default.CompareFilterUnique = lFilterUnique.Checked;
+            Settings.Default.CompareFilterDifferent = lFilterDifferent.Checked;
+            Settings.Default.CompareFilterIdentical = lFilterIdentical.Checked;
         }
 
         private void Filter()
