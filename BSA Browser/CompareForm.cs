@@ -43,9 +43,9 @@ namespace BSA_Browser
 
             CompareTextTemplate = this.lComparison.Text;
 
-            lFilterUnique.Checked = Settings.Default.CompareFilterUnique;
-            lFilterDifferent.Checked = Settings.Default.CompareFilterDifferent;
-            lFilterIdentical.Checked = Settings.Default.CompareFilterIdentical;
+            chbFilterUnique.Checked = Settings.Default.CompareFilterUnique;
+            chbFilterDifferent.Checked = Settings.Default.CompareFilterDifferent;
+            chbFilterIdentical.Checked = Settings.Default.CompareFilterIdentical;
         }
 
         public CompareForm(ICollection<Archive> archives)
@@ -155,9 +155,9 @@ namespace BSA_Browser
             lvArchive.Invalidate();
             lvArchive.EndUpdate();
 
-            Settings.Default.CompareFilterUnique = lFilterUnique.Checked;
-            Settings.Default.CompareFilterDifferent = lFilterDifferent.Checked;
-            Settings.Default.CompareFilterIdentical = lFilterIdentical.Checked;
+            Settings.Default.CompareFilterUnique = chbFilterUnique.Checked;
+            Settings.Default.CompareFilterDifferent = chbFilterDifferent.Checked;
+            Settings.Default.CompareFilterIdentical = chbFilterIdentical.Checked;
         }
 
         private void Filter()
@@ -174,14 +174,14 @@ namespace BSA_Browser
         private CompareType[] GetFilteredTypes()
         {
             var types = new List<CompareType>();
-            if (lFilterUnique.Checked)
+            if (chbFilterUnique.Checked)
             {
                 types.Add(CompareType.Added);
                 types.Add(CompareType.Removed);
             }
-            if (lFilterDifferent.Checked)
+            if (chbFilterDifferent.Checked)
                 types.Add(CompareType.Changed);
-            if (lFilterIdentical.Checked)
+            if (chbFilterIdentical.Checked)
                 types.Add(CompareType.Identical);
 
             return types.ToArray();
