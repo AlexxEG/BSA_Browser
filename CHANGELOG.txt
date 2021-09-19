@@ -1,3 +1,7 @@
+[1.13.2]
+- Added filters to Compare tool
+- Added better error message for when opening Archives fails
+
 [1.13.1]
 
 - Added options to "Extract here" and "Extract to directory" for right click context menu in Explorer
