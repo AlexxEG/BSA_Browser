@@ -281,7 +281,7 @@ namespace BSA_Browser
                 archBFileList.Count);
         }
 
-        public void CompareSameArchive()
+        private void CompareSameArchive()
         {
             SetCompareColor(lTypeA, lTypeB, false);
             SetCompareColor(lVersionA, lVersionB, false);
