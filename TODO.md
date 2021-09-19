@@ -19,4 +19,4 @@
 - [X] ~~And/or: Same as above, but second file can be multiple files and they're all compared to the first~~
 - [X] ~~Properly handle shutdown when extract operations are active~~
 - [X] ~~Compare tool: Toggle overlapping files (only show different files) OR check boxes for each type~~
-- [x] Compare tool: Improve sorting
+- [x] ~~Compare tool: Improve sorting~~
