@@ -1,4 +1,5 @@
 ﻿using BSA_Browser.Properties;
+using BSA_Browser.Sorting;
 using SharpBSABA2;
 using SharpBSABA2.Enums;
 using System;
@@ -36,6 +37,8 @@ namespace BSA_Browser
         public List<Archive> Archives { get; private set; } = new List<Archive>();
         public List<CompareItem> Files { get; private set; } = new List<CompareItem>();
         public List<CompareItem> FilteredFiles { get; private set; } = new List<CompareItem>();
+
+        private NaturalStringComparer NaturalStringComparer = new NaturalStringComparer();
 
         public CompareForm()
         {
@@ -245,7 +248,14 @@ namespace BSA_Browser
                 }
             }
 
-            this.Files.Sort((x, y) => ((int)x.Type).CompareTo((int)y.Type));
+            this.Files.Sort((x, y) =>
+            {
+                int comparison = ((int)x.Type).CompareTo((int)y.Type);
+                if (comparison != 0)
+                    return comparison;
+
+                return NaturalStringComparer.Compare(x.FullPath, y.FullPath);
+            });
 
             this.Filter();
             lvArchive.VirtualListSize = this.FilteredFiles.Count;
