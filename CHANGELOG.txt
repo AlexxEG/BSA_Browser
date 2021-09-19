@@ -1,6 +1,7 @@
 [1.13.2]
 - Added filters to Compare tool
 - Added better error message for when opening Archives fails
+- Files are now sorted by file path too in Compare tool
 
 [1.13.1]
 
