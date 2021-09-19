@@ -118,6 +118,7 @@ namespace SharpBSABA2.BSAUtil
                     var header = new BSAHeaderMW(this.BinaryReader, this.Magic);
                     this.Header = header;
                     this.FileCount = (int)header.FileCount;
+                    this.Files.Capacity = this.FileCount;
                     uint dataOffset = 12 + header.HashOffset + header.FileCount * 8;
 
                     // Store file sizes and offsets
@@ -157,6 +158,7 @@ namespace SharpBSABA2.BSAUtil
 
                     this.Header = header;
                     this.FileCount = (int)header.FileCount;
+                    this.Files.Capacity = this.FileCount;
 
                     int[] numfiles = new int[header.FolderCount];
                     for (int i = 0; i < header.FolderCount; i++)
@@ -241,6 +243,7 @@ namespace SharpBSABA2.BSAUtil
 
                     this.BinaryReader.BaseStream.Position = dataSize - treeSize - 8;
                     this.FileCount = this.BinaryReader.ReadInt32();
+                    this.Files.Capacity = this.FileCount;
 
                     for (int i = 0; i < this.FileCount; i++)
                     {

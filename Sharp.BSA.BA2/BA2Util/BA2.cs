@@ -24,6 +24,8 @@ namespace SharpBSABA2.BA2Util
             // Set more detailed archive type, used for comparing
             this.Type = this.ConvertType(this.Header.Type);
 
+            this.Files.Capacity = this.FileCount;
+
             for (int i = 0; i < this.FileCount; i++)
             {
                 switch (this.Header.Type)
