@@ -147,6 +147,11 @@ namespace SharpBSABA2
             return ms;
         }
 
+        /// <summary>
+        /// Returns exact size off entry in <see cref="Archive"/>, which can used to read into <see cref="Stream"/> with <see cref="Offset"/> for example.
+        /// </summary>
+        public abstract ulong GetSizeInArchive(SharedExtractParams extractParams);
+
         public virtual string GetToolTipText()
         {
             return "Undefined";

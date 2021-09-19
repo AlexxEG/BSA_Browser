@@ -19,6 +19,8 @@ namespace SharpBSABA2.BA2Util
             }
         }
 
+        public override ulong GetSizeInArchive(SharedExtractParams extractParams) => this.Compressed ? this.Size : this.RealSize;
+
         public BA2FileEntry(Archive ba2) : base(ba2)
         {
             nameHash = ba2.BinaryReader.ReadUInt32();

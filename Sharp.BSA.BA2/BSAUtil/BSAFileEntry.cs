@@ -23,6 +23,33 @@ namespace SharpBSABA2.BSAUtil
 
         public BSAFileVersion Version { get; private set; }
 
+        public override ulong GetSizeInArchive(SharedExtractParams extractParams)
+        {
+            if (this.Archive.Type == ArchiveTypes.BSA_SE)
+            {
+                var reader = extractParams.Reader;
+                ulong filesz = this.Size & 0x3fffffff;
+                reader.BaseStream.Position = (long)Offset;
+
+                if (this.Archive.ContainsFileNameBlobs)
+                {
+                    int len = reader.ReadByte();
+                    filesz -= (ulong)len + 1;
+                }
+
+                if (this.Size > 0 && this.Compressed)
+                {
+                    filesz -= 4;
+                }
+
+                return filesz;
+            }
+            else
+            {
+                return this.Size;
+            }
+        }
+
         public BSAFileEntry(Archive archive, bool compressed, string folder, uint offset, uint size)
             : base(archive)
         {

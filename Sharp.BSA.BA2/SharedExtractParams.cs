@@ -1,9 +1,10 @@
 ﻿using ICSharpCode.SharpZipLib.Zip.Compression;
+using System;
 using System.IO;
 
 namespace SharpBSABA2
 {
-    public class SharedExtractParams
+    public class SharedExtractParams : IDisposable
     {
         public Inflater Inflater { get; private set; }
         public BinaryReader Reader { get; private set; }
@@ -17,6 +18,11 @@ namespace SharpBSABA2
                 : archive.BinaryReader;
 
             this.Inflater = inflater ? new Inflater() : archive.Inflater;
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)Reader).Dispose();
         }
     }
 }

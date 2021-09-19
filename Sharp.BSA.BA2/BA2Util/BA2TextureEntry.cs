@@ -56,6 +56,8 @@ namespace SharpBSABA2.BA2Util
         public override uint DisplaySize => this.GetHeaderSize() + (uint)this.Chunks.Sum(x => x.fullSz);
         public override ulong Offset => this.Chunks[0].offset;
 
+        public override ulong GetSizeInArchive(SharedExtractParams extractParams) => (ulong)Chunks.Sum(x => Compressed ? x.packSz : x.fullSz);
+
         public BA2TextureEntry(Archive ba2) : base(ba2)
         {
             nameHash = ba2.BinaryReader.ReadUInt32();
