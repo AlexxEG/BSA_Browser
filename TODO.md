@@ -4,6 +4,7 @@
 - [ ] Include xtexconv for converting XboxDDS to DDS
 - [ ] Look at BSABrowser.ExtractFiles and allow multiple extraction operations at same time (maybe limit to one per archive or actually check indiviual files)
 - [ ] Compare tool: Add ability to extract files https://ibb.co/n7Xrscb
+- [ ] Compare tool: Add ability to preview files
 - [ ] Compare tool: Async comparing, progress bar
 
 ### Complete
