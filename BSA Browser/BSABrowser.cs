@@ -1708,74 +1708,7 @@ namespace BSA_Browser
                 return;
             }
 
-            var fe = _files[lvFiles.SelectedIndices[0]];
-            string fileName = fe.FileName;
-            var extension = Path.GetExtension(fe.LowerPath);
-
-            switch (extension)
-            {
-                case ".dds":
-                case ".bmp":
-                case ".png":
-                case ".jpg":
-                    if ((fe as BA2TextureEntry)?.IsFormatSupported() == false)
-                    {
-                        MessageBox.Show(this, "Unsupported DDS texture.");
-                        return;
-                    }
-
-                    if (!Settings.Default.BuiltInPreviewing.Contains(extension))
-                        goto default;
-
-                    if (fe is BA2GNFEntry)
-                    {
-                        if (Settings.Default.ReplaceGNFExt)
-                        {
-                            fileName = Path.GetFileNameWithoutExtension(fileName) + ".gnf";
-                        }
-
-                        goto default;
-                    }
-
-                    try
-                    {
-                        DDSViewer.ShowDialog(this, fe.FileName, fe.GetDataStream());
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex);
-                        goto default;
-                    }
-                    break;
-                case ".txt":
-                case ".bat":
-                case ".xml":
-                case ".lst":
-                case ".psc":
-                case ".json":
-                    if (!Settings.Default.BuiltInPreviewing.Contains(extension))
-                        goto default;
-
-                    new TextViewer(fe).Show(this);
-                    break;
-                default:
-                    string dest = Program.CreateTempDirectory();
-                    string file = Path.Combine(dest, fileName);
-                    fe.Extract(dest, false, fileName);
-
-                    try
-                    {
-                        Process.Start(new ProcessStartInfo(file));
-                    }
-                    catch (Win32Exception ex)
-                    {
-                        if (ex.NativeErrorCode == (int)SystemErrorCodes.ERROR_NO_ASSOCIATION)
-                            ShellExecute.OpenWith(file);
-                        else if (ex.NativeErrorCode != (int)SystemErrorCodes.ERROR_CANCELLED)
-                            MessageBox.Show(this, ex.Message, "Preview Error");
-                    }
-                    break;
-            }
+            Common.PreviewTexture(this, VisibleFiles[lvFiles.SelectedIndices[0]]);
         }
 
         /// <summary>

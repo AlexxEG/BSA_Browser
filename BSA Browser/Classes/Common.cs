@@ -1,10 +1,13 @@
-﻿using BSA_Browser.Properties;
+﻿using BSA_Browser.Dialogs;
+using BSA_Browser.Properties;
 using SharpBSABA2;
 using SharpBSABA2.BA2Util;
 using SharpBSABA2.BSAUtil;
 using SharpBSABA2.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -131,6 +134,80 @@ namespace BSA_Browser.Classes
             }
 
             return archive;
+        }
+
+        public static void PreviewTexture(IWin32Window owner, ArchiveEntry entry)
+        {
+            if (entry == null)
+                throw new ArgumentException("Parameter 'entry' can't be null.", nameof(entry));
+
+            string fileName = entry.FileName;
+            var extension = Path.GetExtension(entry.LowerPath);
+
+            switch (extension)
+            {
+                case ".dds":
+                case ".bmp":
+                case ".png":
+                case ".jpg":
+                    if ((entry as BA2TextureEntry)?.IsFormatSupported() == false)
+                    {
+                        MessageBox.Show(owner, "Unsupported DDS texture.");
+                        return;
+                    }
+
+                    if (!Settings.Default.BuiltInPreviewing.Contains(extension))
+                        goto default;
+
+                    if (entry is BA2GNFEntry)
+                    {
+                        if (Settings.Default.ReplaceGNFExt)
+                        {
+                            fileName = Path.GetFileNameWithoutExtension(fileName) + ".gnf";
+                        }
+
+                        goto default;
+                    }
+
+                    try
+                    {
+                        DDSViewer.ShowDialog(owner, entry.FileName, entry.GetDataStream());
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                        goto default;
+                    }
+                    break;
+                case ".txt":
+                case ".bat":
+                case ".xml":
+                case ".lst":
+                case ".psc":
+                case ".json":
+                    if (!Settings.Default.BuiltInPreviewing.Contains(extension))
+                        goto default;
+
+                    new TextViewer(entry).Show(owner);
+                    break;
+                default:
+                    string dest = Program.CreateTempDirectory();
+                    string file = Path.Combine(dest, fileName);
+                    entry.Extract(dest, false, fileName);
+
+                    try
+                    {
+                        Process.Start(new ProcessStartInfo(file));
+                    }
+                    catch (Win32Exception ex)
+                    {
+                        if (ex.NativeErrorCode == (int)SystemErrorCodes.ERROR_NO_ASSOCIATION)
+                            ShellExecute.OpenWith(file);
+                        else if (ex.NativeErrorCode != (int)SystemErrorCodes.ERROR_CANCELLED)
+                            MessageBox.Show(owner, ex.Message, "Preview Error");
+                    }
+                    break;
+            }
         }
 
         /// <summary>
