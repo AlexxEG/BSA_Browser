@@ -1,4 +1,5 @@
-﻿using BSA_Browser.Properties;
+﻿using BSA_Browser.Classes;
+using BSA_Browser.Properties;
 using BSA_Browser.Sorting;
 using SharpBSABA2;
 using SharpBSABA2.Enums;
@@ -44,6 +45,8 @@ namespace BSA_Browser
         public CompareForm()
         {
             InitializeComponent();
+
+            lvArchive.ContextMenu = contextMenu1;
 
             CompareTextTemplate = this.lComparison.Text;
 
@@ -163,6 +166,65 @@ namespace BSA_Browser
             Settings.Default.CompareFilterDifferent = chbFilterDifferent.Checked;
             Settings.Default.CompareFilterIdentical = chbFilterIdentical.Checked;
         }
+
+        #region contextMenu1
+
+        private void contextMenu1_Popup(object sender, EventArgs e)
+        {
+            if (lvArchive.SelectedIndices.Count == 0)
+            {
+                extractLeftMenuItem.Enabled =
+                    extractRightMenuItem.Enabled =
+                    previewLeftMenuItem.Enabled =
+                    previewRightMenuItem.Enabled = false;
+                return;
+            }
+
+            var compareItem = this.FilteredFiles[lvArchive.SelectedIndices[0]];
+            var selectedItems = this.FilteredFiles.Where((x, index) => lvArchive.SelectedIndices.Contains(index));
+            bool added = false, removed = false, uniqueOrIdentical = false;
+
+            foreach (var item in selectedItems)
+            {
+                if (item.Type == CompareType.Added)
+                    added = true;
+                else if (item.Type == CompareType.Removed)
+                    removed = true;
+                else if (item.Type == CompareType.Changed || item.Type == CompareType.Identical)
+                    uniqueOrIdentical = true;
+
+                if ((added && removed) || uniqueOrIdentical)
+                    break;
+            }
+
+            extractLeftMenuItem.Enabled = removed || uniqueOrIdentical;
+            previewLeftMenuItem.Enabled = lvArchive.SelectedIndices.Count == 1 && (removed || uniqueOrIdentical);
+
+            extractRightMenuItem.Enabled = added || uniqueOrIdentical;
+            previewRightMenuItem.Enabled = lvArchive.SelectedIndices.Count == 1 && (added || uniqueOrIdentical);
+        }
+
+        private void extractLeftMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(this, "Not implemented");
+        }
+
+        private void extractRightMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(this, "Not implemented");
+        }
+
+        private void previewLeftMenuItem_Click(object sender, EventArgs e)
+        {
+            this.PreviewSelected(true);
+        }
+
+        private void previewRightMenuItem_Click(object sender, EventArgs e)
+        {
+            this.PreviewSelected(false);
+        }
+
+        #endregion
 
         private void Filter()
         {
@@ -332,6 +394,21 @@ namespace BSA_Browser
                 if (read == length) break; // Max length reached
             }
             return true;
+        }
+
+        private void PreviewSelected(bool left)
+        {
+            var compareItem = this.FilteredFiles[lvArchive.SelectedIndices[0]];
+            var archive = left ? this.Archives[cbArchiveA.SelectedIndex] : this.Archives[cbArchiveB.SelectedIndex];
+            var entry = archive.Files.Find(x => x.FullPath.ToLower() == compareItem.FullPath.ToLower());
+
+            if (entry == null)
+            {
+                MessageBox.Show(this, $"File '{compareItem.FullPath}' couldn't be found.");
+                return;
+            }
+
+            Common.PreviewTexture(this, entry);
         }
 
         private void SetCompareColor(Control a, Control b, bool comparison)

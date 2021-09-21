@@ -61,6 +61,12 @@
             this.chbFilterIdentical = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lComparison = new System.Windows.Forms.Label();
+            this.contextMenu1 = new System.Windows.Forms.ContextMenu();
+            this.extractLeftMenuItem = new System.Windows.Forms.MenuItem();
+            this.extractRightMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.previewLeftMenuItem = new System.Windows.Forms.MenuItem();
+            this.previewRightMenuItem = new System.Windows.Forms.MenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -449,6 +455,45 @@
             this.lComparison.TabIndex = 5;
             this.lComparison.Text = "{0} added\r\n{1} removed\r\n{2} changed\r\n\r\n{3} files left, {4} files right";
             // 
+            // contextMenu1
+            // 
+            this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.extractLeftMenuItem,
+            this.extractRightMenuItem,
+            this.menuItem3,
+            this.previewLeftMenuItem,
+            this.previewRightMenuItem});
+            this.contextMenu1.Popup += new System.EventHandler(this.contextMenu1_Popup);
+            // 
+            // extractLeftMenuItem
+            // 
+            this.extractLeftMenuItem.Index = 0;
+            this.extractLeftMenuItem.Text = "Extract Left";
+            this.extractLeftMenuItem.Click += new System.EventHandler(this.extractLeftMenuItem_Click);
+            // 
+            // extractRightMenuItem
+            // 
+            this.extractRightMenuItem.Index = 1;
+            this.extractRightMenuItem.Text = "Extract Right";
+            this.extractRightMenuItem.Click += new System.EventHandler(this.extractRightMenuItem_Click);
+            // 
+            // menuItem3
+            // 
+            this.menuItem3.Index = 2;
+            this.menuItem3.Text = "-";
+            // 
+            // previewLeftMenuItem
+            // 
+            this.previewLeftMenuItem.Index = 3;
+            this.previewLeftMenuItem.Text = "Preview Left";
+            this.previewLeftMenuItem.Click += new System.EventHandler(this.previewLeftMenuItem_Click);
+            // 
+            // previewRightMenuItem
+            // 
+            this.previewRightMenuItem.Index = 4;
+            this.previewRightMenuItem.Text = "Preview Right";
+            this.previewRightMenuItem.Click += new System.EventHandler(this.previewRightMenuItem_Click);
+            // 
             // CompareForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -507,5 +552,11 @@
         private System.Windows.Forms.CheckBox chbFilterUnique;
         private System.Windows.Forms.CheckBox chbFilterDifferent;
         private System.Windows.Forms.CheckBox chbFilterIdentical;
+        private System.Windows.Forms.ContextMenu contextMenu1;
+        private System.Windows.Forms.MenuItem extractLeftMenuItem;
+        private System.Windows.Forms.MenuItem extractRightMenuItem;
+        private System.Windows.Forms.MenuItem menuItem3;
+        private System.Windows.Forms.MenuItem previewLeftMenuItem;
+        private System.Windows.Forms.MenuItem previewRightMenuItem;
     }
 }
