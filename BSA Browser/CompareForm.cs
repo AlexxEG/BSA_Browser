@@ -83,7 +83,7 @@ namespace BSA_Browser
             var fileCount = sender == cbArchiveA ? lFileCountA : lFileCountB;
             var chunks = sender == cbArchiveA ? lChunksA : lChunksB;
             var chunksLabel = sender == cbArchiveA ? lChunksAA : lChunksBB;
-            var missingNameTable = sender == cbArchiveA ? lMissingNameTableA : lMissingNameTableB;
+            var missingNameTable = sender == cbArchiveA ? lNoNameTableA : lNoNameTableB;
 
             if (comboBox.SelectedIndex < 0)
             {

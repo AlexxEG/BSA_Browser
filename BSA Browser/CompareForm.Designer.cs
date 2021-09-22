@@ -42,13 +42,13 @@
             this.lTypeB = new System.Windows.Forms.Label();
             this.lChunksBB = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.lMissingNameTableB = new System.Windows.Forms.Label();
+            this.lNoNameTableB = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lChunksA = new System.Windows.Forms.Label();
             this.lFileCountA = new System.Windows.Forms.Label();
             this.lVersionA = new System.Windows.Forms.Label();
             this.lChunksAA = new System.Windows.Forms.Label();
-            this.lMissingNameTableA = new System.Windows.Forms.Label();
+            this.lNoNameTableA = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lTypeA = new System.Windows.Forms.Label();
@@ -139,7 +139,7 @@
             this.groupBox3.Controls.Add(this.lTypeB);
             this.groupBox3.Controls.Add(this.lChunksBB);
             this.groupBox3.Controls.Add(this.label13);
-            this.groupBox3.Controls.Add(this.lMissingNameTableB);
+            this.groupBox3.Controls.Add(this.lNoNameTableB);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(391, 33);
             this.groupBox3.Name = "groupBox3";
@@ -231,17 +231,17 @@
             this.label13.TabIndex = 14;
             this.label13.Text = "File Count:";
             // 
-            // lMissingNameTableB
+            // lNoNameTableB
             // 
-            this.lMissingNameTableB.AutoSize = true;
-            this.lMissingNameTableB.ForeColor = System.Drawing.Color.Red;
-            this.lMissingNameTableB.Location = new System.Drawing.Point(6, 81);
-            this.lMissingNameTableB.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.lMissingNameTableB.Name = "lMissingNameTableB";
-            this.lMissingNameTableB.Size = new System.Drawing.Size(103, 13);
-            this.lMissingNameTableB.TabIndex = 15;
-            this.lMissingNameTableB.Text = "Missing Name Table";
-            this.lMissingNameTableB.Visible = false;
+            this.lNoNameTableB.AutoSize = true;
+            this.lNoNameTableB.ForeColor = System.Drawing.Color.Purple;
+            this.lNoNameTableB.Location = new System.Drawing.Point(6, 81);
+            this.lNoNameTableB.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.lNoNameTableB.Name = "lNoNameTableB";
+            this.lNoNameTableB.Size = new System.Drawing.Size(76, 13);
+            this.lNoNameTableB.TabIndex = 15;
+            this.lNoNameTableB.Text = "No name table";
+            this.lNoNameTableB.Visible = false;
             // 
             // groupBox2
             // 
@@ -249,7 +249,7 @@
             this.groupBox2.Controls.Add(this.lFileCountA);
             this.groupBox2.Controls.Add(this.lVersionA);
             this.groupBox2.Controls.Add(this.lChunksAA);
-            this.groupBox2.Controls.Add(this.lMissingNameTableA);
+            this.groupBox2.Controls.Add(this.lNoNameTableA);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.lTypeA);
@@ -305,17 +305,17 @@
             this.lChunksAA.Text = "Chunks:";
             this.lChunksAA.Visible = false;
             // 
-            // lMissingNameTableA
+            // lNoNameTableA
             // 
-            this.lMissingNameTableA.AutoSize = true;
-            this.lMissingNameTableA.ForeColor = System.Drawing.Color.Red;
-            this.lMissingNameTableA.Location = new System.Drawing.Point(6, 81);
-            this.lMissingNameTableA.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.lMissingNameTableA.Name = "lMissingNameTableA";
-            this.lMissingNameTableA.Size = new System.Drawing.Size(103, 13);
-            this.lMissingNameTableA.TabIndex = 6;
-            this.lMissingNameTableA.Text = "Missing Name Table";
-            this.lMissingNameTableA.Visible = false;
+            this.lNoNameTableA.AutoSize = true;
+            this.lNoNameTableA.ForeColor = System.Drawing.Color.Purple;
+            this.lNoNameTableA.Location = new System.Drawing.Point(6, 81);
+            this.lNoNameTableA.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.lNoNameTableA.Name = "lNoNameTableA";
+            this.lNoNameTableA.Size = new System.Drawing.Size(76, 13);
+            this.lNoNameTableA.TabIndex = 6;
+            this.lNoNameTableA.Text = "No name table";
+            this.lNoNameTableA.Visible = false;
             // 
             // label3
             // 
@@ -533,7 +533,7 @@
         private System.Windows.Forms.Label lTypeA;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lChunksAA;
-        private System.Windows.Forms.Label lMissingNameTableA;
+        private System.Windows.Forms.Label lNoNameTableA;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lChunksB;
@@ -544,7 +544,7 @@
         private System.Windows.Forms.Label lTypeB;
         private System.Windows.Forms.Label lChunksBB;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label lMissingNameTableB;
+        private System.Windows.Forms.Label lNoNameTableB;
         private System.Windows.Forms.Label lChunksA;
         private System.Windows.Forms.Label lFileCountA;
         private System.Windows.Forms.Label lVersionA;
