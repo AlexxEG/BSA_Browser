@@ -208,12 +208,12 @@ namespace BSA_Browser
 
         private void extractLeftMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(this, "Not implemented");
+            this.ExtractFiles(true);
         }
 
         private void extractRightMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(this, "Not implemented");
+            this.ExtractFiles(false);
         }
 
         private void previewLeftMenuItem_Click(object sender, EventArgs e)
@@ -396,6 +396,31 @@ namespace BSA_Browser
                 if (read == length) break; // Max length reached
             }
             return true;
+        }
+
+        private void ExtractFiles(bool left)
+        {
+            var files = FilteredFiles
+                .Where((x, index) => lvArchive.SelectedIndices.Contains(index) && x.Type != (left ? CompareType.Added : CompareType.Removed))
+                .ToList();
+            var archive = this.Archives[(left ? cbArchiveA : cbArchiveB).SelectedIndex];
+            var fes = new List<ArchiveEntry>(files.Count);
+
+            for (int i = 0; i < files.Count; i++)
+                fes.Add(archive.Files.Find(x => x.FullPath.ToLower() == files[i].FullPath.ToLower()));
+
+            using (var ofd = new OpenFolderDialog())
+            {
+                if (ofd.ShowDialog(this) == DialogResult.OK)
+                {
+                    BSABrowser.ExtractFiles(this,
+                        ofd.Folder,
+                        true,
+                        true,
+                        fes,
+                        titleProgress: true);
+                }
+            }
         }
 
         private void PreviewSelected(bool left)
