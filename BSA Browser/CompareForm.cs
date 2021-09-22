@@ -53,7 +53,7 @@ namespace BSA_Browser
             CompareTextTemplate = this.lComparison.Text;
 
             chbFilterUnique.Checked = Settings.Default.CompareFilterUnique;
-            chbFilterDifferent.Checked = Settings.Default.CompareFilterDifferent;
+            chbFilterChanged.Checked = Settings.Default.CompareFilterDifferent;
             chbFilterIdentical.Checked = Settings.Default.CompareFilterIdentical;
         }
 
@@ -165,7 +165,7 @@ namespace BSA_Browser
             lvArchive.EndUpdate();
 
             Settings.Default.CompareFilterUnique = chbFilterUnique.Checked;
-            Settings.Default.CompareFilterDifferent = chbFilterDifferent.Checked;
+            Settings.Default.CompareFilterDifferent = chbFilterChanged.Checked;
             Settings.Default.CompareFilterIdentical = chbFilterIdentical.Checked;
         }
 
@@ -467,7 +467,7 @@ namespace BSA_Browser
                 types.Add(CompareType.Added);
                 types.Add(CompareType.Removed);
             }
-            if (chbFilterDifferent.Checked)
+            if (chbFilterChanged.Checked)
                 types.Add(CompareType.Changed);
             if (chbFilterIdentical.Checked)
                 types.Add(CompareType.Identical);

@@ -57,7 +57,7 @@
             this.cbArchiveB = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.chbFilterUnique = new System.Windows.Forms.CheckBox();
-            this.chbFilterDifferent = new System.Windows.Forms.CheckBox();
+            this.chbFilterChanged = new System.Windows.Forms.CheckBox();
             this.chbFilterIdentical = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lComparison = new System.Windows.Forms.Label();
@@ -385,7 +385,7 @@
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel1, 2);
             this.flowLayoutPanel1.Controls.Add(this.chbFilterUnique);
-            this.flowLayoutPanel1.Controls.Add(this.chbFilterDifferent);
+            this.flowLayoutPanel1.Controls.Add(this.chbFilterChanged);
             this.flowLayoutPanel1.Controls.Add(this.chbFilterIdentical);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 299);
@@ -407,25 +407,25 @@
             this.chbFilterUnique.UseVisualStyleBackColor = true;
             this.chbFilterUnique.CheckedChanged += new System.EventHandler(this.lFilters_CheckedChanged);
             // 
-            // chbFilterDifferent
+            // chbFilterChanged
             // 
-            this.chbFilterDifferent.AutoSize = true;
-            this.chbFilterDifferent.Checked = true;
-            this.chbFilterDifferent.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbFilterDifferent.Location = new System.Drawing.Point(69, 3);
-            this.chbFilterDifferent.Name = "chbFilterDifferent";
-            this.chbFilterDifferent.Size = new System.Drawing.Size(66, 17);
-            this.chbFilterDifferent.TabIndex = 1;
-            this.chbFilterDifferent.Text = "Different";
-            this.chbFilterDifferent.UseVisualStyleBackColor = true;
-            this.chbFilterDifferent.CheckedChanged += new System.EventHandler(this.lFilters_CheckedChanged);
+            this.chbFilterChanged.AutoSize = true;
+            this.chbFilterChanged.Checked = true;
+            this.chbFilterChanged.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbFilterChanged.Location = new System.Drawing.Point(69, 3);
+            this.chbFilterChanged.Name = "chbFilterChanged";
+            this.chbFilterChanged.Size = new System.Drawing.Size(69, 17);
+            this.chbFilterChanged.TabIndex = 1;
+            this.chbFilterChanged.Text = "Changed";
+            this.chbFilterChanged.UseVisualStyleBackColor = true;
+            this.chbFilterChanged.CheckedChanged += new System.EventHandler(this.lFilters_CheckedChanged);
             // 
             // chbFilterIdentical
             // 
             this.chbFilterIdentical.AutoSize = true;
             this.chbFilterIdentical.Checked = true;
             this.chbFilterIdentical.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbFilterIdentical.Location = new System.Drawing.Point(141, 3);
+            this.chbFilterIdentical.Location = new System.Drawing.Point(144, 3);
             this.chbFilterIdentical.Name = "chbFilterIdentical";
             this.chbFilterIdentical.Size = new System.Drawing.Size(66, 17);
             this.chbFilterIdentical.TabIndex = 2;
@@ -550,7 +550,7 @@
         private System.Windows.Forms.Label lVersionA;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.CheckBox chbFilterUnique;
-        private System.Windows.Forms.CheckBox chbFilterDifferent;
+        private System.Windows.Forms.CheckBox chbFilterChanged;
         private System.Windows.Forms.CheckBox chbFilterIdentical;
         private System.Windows.Forms.ContextMenu contextMenu1;
         private System.Windows.Forms.MenuItem extractLeftMenuItem;
