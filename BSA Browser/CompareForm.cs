@@ -1,4 +1,5 @@
 ﻿using BSA_Browser.Classes;
+using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
 using BSA_Browser.Sorting;
 using SharpBSABA2;
@@ -47,6 +48,7 @@ namespace BSA_Browser
             InitializeComponent();
 
             lvArchive.ContextMenu = contextMenu1;
+            lvArchive.EnableVisualStyles();
 
             CompareTextTemplate = this.lComparison.Text;
 
