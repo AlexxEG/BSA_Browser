@@ -148,7 +148,7 @@ namespace BSA_Browser
                     newItem.SubItems.Add(new ListViewItem.ListViewSubItem(newItem, file.FullPath));
                     break;
                 default:
-                    throw new Exception("Unknown CompareType");
+                    throw new Exception($"Unknown {nameof(CompareType)} value: {(int)file.Type}.");
             }
 
             newItem.ToolTipText = file.FullPath;
