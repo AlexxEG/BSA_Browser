@@ -1,20 +1,22 @@
 ﻿using SharpBSABA2;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace BSA_Browser.Classes
 {
     public class ArchiveNode : TreeNode
     {
+        /// <summary>
+        /// Gets or sets whether sub directories has been built.
+        /// </summary>
+        public bool Built { get; set; }
+        /// <summary>
+        /// Gets associated <see cref="SharpBSABA2.Archive"/>.
+        /// </summary>
         public Archive Archive { get; private set; }
         /// <summary>
-        /// Gets all files in the archive.
+        /// Gets or sets all the files in the selected sub directory.
         /// </summary>
-        public List<ArchiveEntry> AllFiles { get; set; }
-        /// <summary>
-        /// Gets all the files to be shown currently.
-        /// </summary>
-        public ArchiveEntry[] Files { get; set; }
+        public ArchiveEntry[] SubFiles { get; set; }
 
         public ArchiveNode(string text, Archive archive)
         {

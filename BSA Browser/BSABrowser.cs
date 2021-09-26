@@ -68,8 +68,7 @@ namespace BSA_Browser
 
             var archiveNode = new ArchiveNode("All", null)
             {
-                Files = new ArchiveEntry[0],
-                AllFiles = new List<ArchiveEntry>()
+                SubFiles = new ArchiveEntry[0]
             };
             tvFolders.Nodes.Add(archiveNode);
 
@@ -245,7 +244,7 @@ namespace BSA_Browser
             while (count < 50)
             {
                 sw.Restart();
-                foreach (var file in SelectedArchiveNode.Files)
+                foreach (var file in VisibleFiles)
                     file.GetDataStream();
                 sw.Stop();
                 results.Add(sw.ElapsedMilliseconds);
@@ -585,20 +584,22 @@ namespace BSA_Browser
         {
             var rootNode = this.GetRootNode(e.Node) as ArchiveNode;
 
+            if (rootNode.Index == 0)
+                return;
+
             // Check if node structure has already been built
-            if (rootNode.AllFiles != null)
+            if (rootNode.Built)
                 return;
 
             e.Node.Nodes.Clear();
             var nodes = new Dictionary<string, TreeNode>();
-            rootNode.AllFiles = new List<ArchiveEntry>(rootNode.Files);
-            rootNode.AllFiles.Sort(_filesSorter);
+            rootNode.Archive.Files.Sort(_filesSorter);
 
             // Keep track of directories with files directly under them
             var directoriesWithFiles = new List<string>();
 
             // Build the whole node structure
-            foreach (var lvi in rootNode.AllFiles)
+            foreach (var lvi in rootNode.Archive.Files)
             {
                 string path = Path.GetDirectoryName(lvi.FullPath);
 
@@ -643,6 +644,8 @@ namespace BSA_Browser
             {
                 this.SortNodes(e.Node);
             }
+
+            rootNode.Built = true;
         }
 
         private void tvFolders_AfterSelect(object sender, TreeViewEventArgs e)
@@ -650,31 +653,37 @@ namespace BSA_Browser
             var rootNode = this.GetRootNode(e.Node) as ArchiveNode;
 
             // If AllFiles is null, trigger event which will populate it
-            if (rootNode.AllFiles == null)
+            if (!rootNode.Built)
                 tvFolders_BeforeExpand(null, new TreeViewCancelEventArgs(e.Node, false, TreeViewAction.Unknown));
+
+            List<ArchiveEntry> lvis;
 
             if (rootNode.Index == 0) // 'All' node is selected, show all files in all archives
             {
-                var lvis = new List<ArchiveEntry>();
+                lvis = new List<ArchiveEntry>(tvFolders.Nodes
+                    .OfType<ArchiveNode>()
+                    .Skip(1) // Skip 'All' node
+                    .Select(x => x.Archive.Files.Count)
+                    .Sum());
 
                 for (int i = 1; i < tvFolders.Nodes.Count; i++)
                 {
-                    lvis.AddRange((tvFolders.Nodes[i] as ArchiveNode).AllFiles);
+                    lvis.AddRange((tvFolders.Nodes[i] as ArchiveNode).Archive.Files);
                 }
-
-                rootNode.Files = lvis.ToArray();
             }
             else if (e.Node.Tag == null) // Root node is selected, so show all files
-                rootNode.Files = rootNode.AllFiles?.ToArray();
+            {
+                lvis = new List<ArchiveEntry>(rootNode.Archive.Files);
+            }
             else
             {
                 // Ignore casing
                 string lowerPath = ((string)e.Node.Tag).ToLower();
 
                 // Only show files under selected node
-                var lvis = new List<ArchiveEntry>(rootNode.AllFiles.Count);
+                lvis = new List<ArchiveEntry>(rootNode.Archive.Files.Count);
 
-                foreach (var lvi in rootNode.AllFiles)
+                foreach (var lvi in rootNode.Archive.Files)
                 {
                     if (e.Node.Text == "<Files>")
                     {
@@ -694,8 +703,10 @@ namespace BSA_Browser
                 }
 
                 lvis.TrimExcess();
-                rootNode.Files = lvis.ToArray();
             }
+
+            lvis.Sort(_filesSorter);
+            rootNode.SubFiles = lvis.ToArray();
 
             lvFiles.ScrollToTop();
             this.DoSearch();
@@ -790,7 +801,7 @@ namespace BSA_Browser
                                                 .Cast<ArchiveNode>().Skip(1)
                                                 .Where(x => x.Archive.Type == ArchiveTypes.BA2_GNMF))
                         {
-                            Common.ReplaceGNFExtensions(archive.Files.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
+                            Common.ReplaceGNFExtensions(archive.SubFiles.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
                         }
                         lvFiles.EndUpdate();
                     }
@@ -1218,7 +1229,7 @@ namespace BSA_Browser
 
             newNode.ImageIndex = newNode.SelectedImageIndex = 3;
             newNode.ContextMenu = archiveContextMenu;
-            newNode.Files = archive.Files.ToArray();
+            newNode.SubFiles = archive.Files.ToArray();
             newNode.Nodes.Add("empty");
             tvFolders.Nodes.Add(newNode);
 
@@ -1377,7 +1388,7 @@ namespace BSA_Browser
             VisibleFiles.Clear();
 
             if (str.Length == 0)
-                VisibleFiles.AddRange(this.SelectedArchiveNode.Files);
+                VisibleFiles.AddRange(this.SelectedArchiveNode.SubFiles);
             else if (cbRegex.Checked)
             {
                 Regex regex;
@@ -1393,9 +1404,9 @@ namespace BSA_Browser
                     return;
                 }
 
-                for (int i = 0; i < this.SelectedArchiveNode.Files.Length; i++)
+                for (int i = 0; i < this.SelectedArchiveNode.SubFiles.Length; i++)
                 {
-                    var file = this.SelectedArchiveNode.Files[i];
+                    var file = this.SelectedArchiveNode.SubFiles[i];
 
                     if (regex.IsMatch(file.FullPath))
                         VisibleFiles.Add(file);
@@ -1409,9 +1420,9 @@ namespace BSA_Browser
 
                 try
                 {
-                    for (int i = 0; i < this.SelectedArchiveNode.Files.Length; i++)
+                    for (int i = 0; i < this.SelectedArchiveNode.SubFiles.Length; i++)
                     {
-                        var file = this.SelectedArchiveNode.Files[i];
+                        var file = this.SelectedArchiveNode.SubFiles[i];
 
                         if (pattern.IsMatch(file.FullPath))
                             VisibleFiles.Add(file);
@@ -1814,7 +1825,7 @@ namespace BSA_Browser
             lvFiles.BeginUpdate();
 
             // Sort the archive so it only needs to be done once
-            this.SelectedArchiveNode?.AllFiles.Sort(_filesSorter);
+            this.SelectedArchiveNode?.Archive?.Files.Sort(_filesSorter);
 
             // Repopulate 'SelectedArchiveNode.Files' with sorted list by triggering this event
             if (this.SelectedArchiveNode != null)
