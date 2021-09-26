@@ -93,7 +93,7 @@ namespace BSA_Browser.Classes
                 {
                     case ".bsa":
                     case ".dat":
-                        if (BSA.IsSupportedVersion(file) == false)
+                        if (BSA.IsSupportedVersion(file, encoding) == false)
                         {
                             if (MessageBox.Show(owner,
                                     "Archive has an unknown version number.\n" + "Attempt to open anyway?",
