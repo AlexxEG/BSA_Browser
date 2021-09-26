@@ -105,6 +105,18 @@ namespace BSA_Browser
             this.Compare();
         }
 
+        private void lvArchive_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
+        {
+            e.Cancel = true;
+            e.NewWidth = lvArchive.Columns[e.ColumnIndex].Width;
+        }
+
+        private void lvArchive_Resize(object sender, EventArgs e)
+        {
+            lvArchive.Columns[0].Width = lvArchive.Size.Width / 2 - 12;
+            lvArchive.Columns[1].Width = lvArchive.Size.Width / 2 - 12;
+        }
+
         private void lvArchive_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
             if (this.FilteredFiles.Count <= e.ItemIndex)

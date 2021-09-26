@@ -93,7 +93,9 @@
             this.lvArchive.UseCompatibleStateImageBehavior = false;
             this.lvArchive.View = System.Windows.Forms.View.Details;
             this.lvArchive.VirtualMode = true;
+            this.lvArchive.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.lvArchive_ColumnWidthChanging);
             this.lvArchive.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.lvArchive_RetrieveVirtualItem);
+            this.lvArchive.Resize += new System.EventHandler(this.lvArchive_Resize);
             // 
             // columnHeader1
             // 
