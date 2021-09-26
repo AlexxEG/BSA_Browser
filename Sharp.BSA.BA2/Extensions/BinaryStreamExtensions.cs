@@ -5,11 +5,19 @@ namespace SharpBSABA2.Extensions
 {
     public static class BinaryStreamExtensions
     {
+        /// <summary>
+        /// Reads given amounts of <see cref="char"/> at current position and returns it as a <see cref="string"/>.
+        /// </summary>
+        /// <param name="charCount">Amount of <see cref="char"/> to read.</param>
         public static string ReadString(this BinaryReader reader, int charCount)
         {
             return new string(reader.ReadChars(charCount));
         }
 
+        /// <summary>
+        /// Reads <see cref="char"/> until hitting <paramref name="endChar"/> then returns them as a <see cref="string"/>.
+        /// </summary>
+        /// <param name="endChar">The <see cref="char"/> to read to.</param>
         public static string ReadStringTo(this BinaryReader reader, char endChar)
         {
             var sb = new StringBuilder();
@@ -33,6 +41,12 @@ namespace SharpBSABA2.Extensions
             return value;
         }
 
+        /// <summary>
+        /// Writes <paramref name="value"/> at <paramref name="position"/> then optionally seeks back.
+        /// </summary>
+        /// <param name="position">The position to write <paramref name="value"/>.</param>
+        /// <param name="value">The <see cref="uint"/> to write.</param>
+        /// <param name="returnPosition"><see cref="bool">True</see> will return position back to before operation.</param>
         public static void WriteAt(this BinaryWriter writer, long position, uint value, bool returnPosition = true)
         {
             long startPosition = writer.BaseStream.Position;
