@@ -909,7 +909,7 @@ namespace BSA_Browser
             if (_compareForm == null || _compareForm.IsDisposed)
                 _compareForm = new CompareForm(archives);
 
-            _compareForm.Show();
+            _compareForm.Show(this);
         }
 
         private void openFolderMenuItem_Click(object sender, EventArgs e)
