@@ -161,9 +161,8 @@ namespace BSA_Browser
             var count = 0;
             var results = new List<long>();
 
-            while (count < 100)
+            while (count < 40)
             {
-                Console.WriteLine(count);
                 sw.Restart();
 
                 try
@@ -197,10 +196,11 @@ namespace BSA_Browser
 
                 sw.Stop();
                 results.Add(sw.ElapsedMilliseconds);
+                Console.WriteLine(count + " - " + sw.ElapsedMilliseconds + "ms");
                 count++;
             }
 
-            MessageBox.Show(this, $"Average: {results.Sum() / results.Count}ms. {skipped} skipped.");
+            Console.WriteLine($"Average: {results.Sum() / results.Count}ms. {skipped} skipped.");
         }
 
         private void ExtractionSpeedAverage_Click(object sender, EventArgs e)
