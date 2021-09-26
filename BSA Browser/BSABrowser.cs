@@ -39,7 +39,6 @@ namespace BSA_Browser
         private const string UpdateMarker = "(!) ";
 
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
-        List<ArchiveEntry> _files = new List<ArchiveEntry>();
         ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
         CompareForm _compareForm;
 
@@ -47,6 +46,11 @@ namespace BSA_Browser
         /// Gets the selected <see cref="ArchiveNode"/>.
         /// </summary>
         private ArchiveNode SelectedArchiveNode => this.GetRootNode(tvFolders.SelectedNode) as ArchiveNode;
+
+        /// <summary>
+        /// Gets list of <see cref="ArchiveEntry"/> currently visible.
+        /// </summary>
+        private List<ArchiveEntry> VisibleFiles { get; set; } = new List<ArchiveEntry>();
 
         public BSABrowser()
         {
@@ -210,7 +214,7 @@ namespace BSA_Browser
                 return;
             }
 
-            var fe = _files[lvFiles.SelectedIndices[0]];
+            var fe = VisibleFiles[lvFiles.SelectedIndices[0]];
             Stopwatch sw = new Stopwatch();
             int count = 0;
             List<long> results = new List<long>();
@@ -254,7 +258,7 @@ namespace BSA_Browser
 
         private async void ExtractionSpeedAverageFilesMultiThreaded_Click(object sender, EventArgs e)
         {
-            if (_files.Count == 0)
+            if (VisibleFiles.Count == 0)
                 return;
 
             var sw = new Stopwatch();
@@ -262,7 +266,7 @@ namespace BSA_Browser
             var results = new List<long>();
             var tasks = new List<Task>();
 
-            var chunks = _files.Split(4);
+            var chunks = VisibleFiles.Split(4);
 
             while (count < 50)
             {
@@ -307,7 +311,7 @@ namespace BSA_Browser
 
             sw.Start();
 
-            foreach (var fe in _files.OfType<BA2TextureEntry>())
+            foreach (var fe in VisibleFiles.OfType<BA2TextureEntry>())
             {
                 checkedTextures++;
 
@@ -463,7 +467,7 @@ namespace BSA_Browser
             if (this.SelectedArchiveNode == null)
                 return;
 
-            this.ExtractFilesTo(false, true, () => _files);
+            this.ExtractFilesTo(false, true, () => VisibleFiles);
         }
 
         private void btnExtractFolders_Click(object sender, EventArgs e)
@@ -471,7 +475,7 @@ namespace BSA_Browser
             if (this.SelectedArchiveNode == null)
                 return;
 
-            this.ExtractFilesTo(true, true, () => _files);
+            this.ExtractFilesTo(true, true, () => VisibleFiles);
         }
 
         private void btnPreview_Click(object sender, EventArgs e)
@@ -515,7 +519,7 @@ namespace BSA_Browser
 
             foreach (int index in lvFiles.SelectedIndices)
             {
-                var fe = _files[index];
+                var fe = VisibleFiles[index];
                 string dest = Program.CreateTempDirectory();
 
                 fe.Extract(dest, false);
@@ -536,10 +540,10 @@ namespace BSA_Browser
 
         private void lvFiles_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
-            if (_files.Count <= e.ItemIndex)
+            if (VisibleFiles.Count <= e.ItemIndex)
                 return;
 
-            var file = _files[e.ItemIndex];
+            var file = VisibleFiles[e.ItemIndex];
             var fullpath = Path.Combine(file.Folder, file.FileName);
 
             // Prepend 1-based indexing if there is no name table
@@ -854,7 +858,7 @@ namespace BSA_Browser
                 if (!string.IsNullOrEmpty(builder.ToString()))
                     builder.AppendLine();
 
-                builder.Append(_files[index].FullPath);
+                builder.Append(VisibleFiles[index].FullPath);
             }
 
             Clipboard.SetText(builder.ToString());
@@ -869,7 +873,7 @@ namespace BSA_Browser
                 if (!string.IsNullOrEmpty(builder.ToString()))
                     builder.AppendLine();
 
-                builder.Append(Path.GetDirectoryName(_files[index].FullPath));
+                builder.Append(Path.GetDirectoryName(VisibleFiles[index].FullPath));
             }
 
             Clipboard.SetText(builder.ToString());
@@ -884,7 +888,7 @@ namespace BSA_Browser
                 if (!string.IsNullOrEmpty(builder.ToString()))
                     builder.AppendLine();
 
-                builder.Append(Path.GetFileName(_files[index].FullPath));
+                builder.Append(Path.GetFileName(VisibleFiles[index].FullPath));
             }
 
             Clipboard.SetText(builder.ToString());
@@ -1022,7 +1026,7 @@ namespace BSA_Browser
         {
             if (lvFiles.SelectedIndices.Count > 0)
             {
-                this.ExtractFilesTo(false, true, () => lvFiles.SelectedIndices.Cast<int>().Select(index => _files[index]));
+                this.ExtractFilesTo(false, true, () => lvFiles.SelectedIndices.Cast<int>().Select(index => VisibleFiles[index]));
             }
         }
 
@@ -1030,7 +1034,7 @@ namespace BSA_Browser
         {
             if (lvFiles.SelectedIndices.Count > 0)
             {
-                this.ExtractFilesTo(true, true, () => lvFiles.SelectedIndices.Cast<int>().Select(index => _files[index]));
+                this.ExtractFilesTo(true, true, () => lvFiles.SelectedIndices.Cast<int>().Select(index => VisibleFiles[index]));
             }
         }
 
@@ -1079,7 +1083,7 @@ namespace BSA_Browser
             var files = new List<ArchiveEntry>();
 
             foreach (int index in lvFiles.SelectedIndices)
-                files.Add(_files[index]);
+                files.Add(VisibleFiles[index]);
 
             ExtractFiles(this, path.Path, path.UseFolderPath, true, files, titleProgress: true);
         }
@@ -1121,7 +1125,7 @@ namespace BSA_Browser
 
             if (_compareSource == null)
             {
-                _compareSource = _files[lvFiles.SelectedIndices[0]];
+                _compareSource = VisibleFiles[lvFiles.SelectedIndices[0]];
                 _compareSourceIndex = lvFiles.SelectedIndices[0];
                 _compareEntryWindow.SetSource(_compareSource);
             }
@@ -1129,7 +1133,7 @@ namespace BSA_Browser
             {
                 var entries = new List<ArchiveEntry>();
                 foreach (int i in lvFiles.SelectedIndices)
-                    entries.Add(_files[i]);
+                    entries.Add(VisibleFiles[i]);
                 _compareEntryWindow.SetEntries(entries);
             }
 
@@ -1284,7 +1288,7 @@ namespace BSA_Browser
         private void ClearList()
         {
             lvFiles.BeginUpdate();
-            _files.Clear();
+            VisibleFiles.Clear();
             lvFiles.VirtualListSize = 0;
             lvFiles.EndUpdate();
         }
@@ -1370,10 +1374,10 @@ namespace BSA_Browser
             // Reset text color
             txtSearch.ForeColor = System.Drawing.SystemColors.WindowText;
 
-            _files.Clear();
+            VisibleFiles.Clear();
 
             if (str.Length == 0)
-                _files.AddRange(this.SelectedArchiveNode.Files);
+                VisibleFiles.AddRange(this.SelectedArchiveNode.Files);
             else if (cbRegex.Checked)
             {
                 Regex regex;
@@ -1394,7 +1398,7 @@ namespace BSA_Browser
                     var file = this.SelectedArchiveNode.Files[i];
 
                     if (regex.IsMatch(file.FullPath))
-                        _files.Add(file);
+                        VisibleFiles.Add(file);
                 }
             }
             else
@@ -1410,7 +1414,7 @@ namespace BSA_Browser
                         var file = this.SelectedArchiveNode.Files[i];
 
                         if (pattern.IsMatch(file.FullPath))
-                            _files.Add(file);
+                            VisibleFiles.Add(file);
                     }
                 }
                 catch
@@ -1423,11 +1427,11 @@ namespace BSA_Browser
 
             // Refresh list items
             lvFiles.BeginUpdate();
-            lvFiles.VirtualListSize = _files.Count;
+            lvFiles.VirtualListSize = VisibleFiles.Count;
             lvFiles.Invalidate();
             lvFiles.EndUpdate();
 
-            lFileCount.Text = string.Format("{0:n0} files", _files.Count);
+            lFileCount.Text = string.Format("{0:n0} files", VisibleFiles.Count);
         }
 
         /// <summary>
