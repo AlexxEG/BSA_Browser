@@ -41,6 +41,7 @@ namespace BSA_Browser
     public partial class CompareForm : Form
     {
         string CompareTextTemplate = string.Empty;
+        string FormTextOriginal;
 
         public List<Archive> Archives { get; private set; } = new List<Archive>();
         public List<CompareItem> Files { get; private set; } = new List<CompareItem>();
@@ -56,6 +57,7 @@ namespace BSA_Browser
             lvArchive.EnableVisualStyles();
 
             CompareTextTemplate = this.lComparison.Text;
+            FormTextOriginal = this.Text;
 
             chbFilterUnique.Checked = Settings.Default.CompareFilterUnique;
             chbFilterChanged.Checked = Settings.Default.CompareFilterDifferent;
@@ -92,7 +94,7 @@ namespace BSA_Browser
             this.lComparison.Text = string.Format(CompareTextTemplate, 0, 0, 0, 0, 0);
         }
 
-        private void cbArchives_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cbArchives_SelectedIndexChanged(object sender, EventArgs e)
         {
             var comboBox = sender as ComboBox;
             var type = sender == cbArchiveA ? lTypeA : lTypeB;
@@ -119,7 +121,58 @@ namespace BSA_Browser
                 missingNameTable.Visible = !archive.HasNameTable;
             }
 
-            this.Compare();
+            // Checks
+            if (cbArchiveA.SelectedIndex < 0 || cbArchiveB.SelectedIndex < 0)
+                return;
+
+            if (cbArchiveA.SelectedIndex == cbArchiveB.SelectedIndex)
+            {
+                // Same archive, don't compare anything but still show info and files
+                this.CompareSameArchive();
+                return;
+            }
+
+            var archA = this.Archives[cbArchiveA.SelectedIndex];
+            var archB = this.Archives[cbArchiveB.SelectedIndex];
+
+            // Set colors
+            this.SetCompareColor(lTypeA, lTypeB, archA.Type != archB.Type);
+            this.SetCompareColor(lVersionA, lVersionB, archA.VersionString != archB.VersionString);
+            this.SetCompareColor(lFileCountA, lFileCountB, archA.FileCount != archB.FileCount);
+            this.SetCompareColor(lChunksA, lChunksB, archA.Chunks != archB.Chunks);
+
+            cbArchiveA.Enabled = cbArchiveB.Enabled = lvArchive.Enabled = false;
+            lvArchive.BeginUpdate();
+
+            await this.CompareAsync(archA, archB, new Progress<int>(progress =>
+            {
+                this.Text = $"{FormTextOriginal} - {progress}%";
+            }));
+
+            this.Text = FormTextOriginal;
+
+            lvArchive.VirtualListSize = this.FilteredFiles.Count;
+            lvArchive.Invalidate();
+            lvArchive.EndUpdate();
+
+            int added = 0, removed = 0, changed = 0;
+
+            foreach (var ct in this.Files)
+                if (ct.Type == CompareType.Added)
+                    added++;
+                else if (ct.Type == CompareType.Removed)
+                    removed++;
+                else if (ct.Type == CompareType.Changed)
+                    changed++;
+
+            this.lComparison.Text = string.Format(CompareTextTemplate,
+                added,
+                removed,
+                changed,
+                archA.Files.Count,
+                archB.Files.Count);
+
+            cbArchiveA.Enabled = cbArchiveB.Enabled = lvArchive.Enabled = true;
         }
 
         private void lvArchive_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -283,26 +336,8 @@ namespace BSA_Browser
                     this.FilteredFiles.Add(file);
         }
 
-        private void Compare()
+        private async Task CompareAsync(Archive archA, Archive archB, IProgress<int> progress)
         {
-            if (cbArchiveA.SelectedIndex < 0 || cbArchiveB.SelectedIndex < 0)
-                return;
-
-            if (cbArchiveA.SelectedIndex == cbArchiveB.SelectedIndex)
-            {
-                // Same archive, don't compare anything but still show info and files
-                this.CompareSameArchive();
-                return;
-            }
-
-            var archA = this.Archives[cbArchiveA.SelectedIndex];
-            var archB = this.Archives[cbArchiveB.SelectedIndex];
-
-            this.SetCompareColor(lTypeA, lTypeB, archA.Type != archB.Type);
-            this.SetCompareColor(lVersionA, lVersionB, archA.VersionString != archB.VersionString);
-            this.SetCompareColor(lFileCountA, lFileCountB, archA.FileCount != archB.FileCount);
-            this.SetCompareColor(lChunksA, lChunksB, archA.Chunks != archB.Chunks);
-
             var archAFileList = archA.Files.ToDictionary(x => x.FullPath.ToLower());
             var archBFileList = archB.Files.ToDictionary(x => x.FullPath.ToLower());
 
@@ -311,74 +346,66 @@ namespace BSA_Browser
             foreach (var file in archBFileList.Keys) dict[file] = file;
             var filelist = dict.Values.ToList();
 
-            lvArchive.BeginUpdate();
-            this.Files.Clear();
-
-            using (var epA = archA.CreateSharedParams(true, false))
-            using (var epB = archB.CreateSharedParams(true, false))
+            await Task.Run(delegate
             {
-                foreach (var file in filelist)
+                using (var epA = archA.CreateSharedParams(true, false))
+                using (var epB = archB.CreateSharedParams(true, false))
                 {
-                    if (archAFileList.ContainsKey(file) && !archBFileList.ContainsKey(file))
-                    {
-                        // File appears in left archive only
-                        this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Removed));
-                    }
-                    else if (!archAFileList.ContainsKey(file) && archBFileList.ContainsKey(file))
-                    {
-                        // File appears in right archive only
-                        this.Files.Add(new CompareItem(archBFileList[file].FullPath, CompareType.Added));
-                    }
-                    else
-                    {
-                        epA.Reader.BaseStream.Position = (long)archAFileList[file].Offset;
-                        epB.Reader.BaseStream.Position = (long)archBFileList[file].Offset;
+                    int count = 0;
+                    int prevPercentage = 0;
 
-                        if (archAFileList[file].GetSizeInArchive(epA) == archBFileList[file].GetSizeInArchive(epB)
-                            && CompareStreams(epA.Reader.BaseStream, epB.Reader.BaseStream, archAFileList[file].GetSizeInArchive(epA)))
+                    this.Files.Clear();
+
+                    foreach (var file in filelist)
+                    {
+                        if (archAFileList.ContainsKey(file) && !archBFileList.ContainsKey(file))
                         {
-                            // Files are identical
-                            this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Identical));
+                            // File appears in left archive only
+                            this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Removed));
+                        }
+                        else if (!archAFileList.ContainsKey(file) && archBFileList.ContainsKey(file))
+                        {
+                            // File appears in right archive only
+                            this.Files.Add(new CompareItem(archBFileList[file].FullPath, CompareType.Added));
                         }
                         else
                         {
-                            // Files are different
-                            this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Changed));
+                            epA.Reader.BaseStream.Position = (long)archAFileList[file].Offset;
+                            epB.Reader.BaseStream.Position = (long)archBFileList[file].Offset;
+
+                            if (archAFileList[file].GetSizeInArchive(epA) == archBFileList[file].GetSizeInArchive(epB)
+                                && CompareStreams(epA.Reader.BaseStream, epB.Reader.BaseStream, archAFileList[file].GetSizeInArchive(epA)))
+                            {
+                                // Files are identical
+                                this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Identical));
+                            }
+                            else
+                            {
+                                // Files are different
+                                this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Changed));
+                            }
+                        }
+
+                        count++;
+                        int newPercentage = (int)Math.Round((double)count / (double)filelist.Count * 100);
+                        if (newPercentage != prevPercentage)
+                        {
+                            progress.Report(prevPercentage = newPercentage);
                         }
                     }
                 }
-            }
 
-            this.Files.Sort((x, y) =>
-            {
-                int comparison = ((int)x.Type).CompareTo((int)y.Type);
-                if (comparison != 0)
-                    return comparison;
+                this.Files.Sort((x, y) =>
+                {
+                    int comparison = ((int)x.Type).CompareTo((int)y.Type);
+                    if (comparison != 0)
+                        return comparison;
 
-                return NaturalStringComparer.Compare(x.FullPath, y.FullPath);
+                    return NaturalStringComparer.Compare(x.FullPath, y.FullPath);
+                });
+
+                this.Filter();
             });
-
-            this.Filter();
-            lvArchive.VirtualListSize = this.FilteredFiles.Count;
-            lvArchive.Invalidate();
-            lvArchive.EndUpdate();
-
-            int added = 0, removed = 0, changed = 0;
-
-            foreach (var ct in this.Files)
-                if (ct.Type == CompareType.Added)
-                    added++;
-                else if (ct.Type == CompareType.Removed)
-                    removed++;
-                else if (ct.Type == CompareType.Changed)
-                    changed++;
-
-            this.lComparison.Text = string.Format(CompareTextTemplate,
-                added,
-                removed,
-                changed,
-                archAFileList.Count,
-                archBFileList.Count);
         }
 
         private void CompareSameArchive()
