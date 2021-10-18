@@ -40,7 +40,9 @@ namespace BSA_Browser
 
     public partial class CompareForm : Form
     {
-        string CompareTextTemplate = string.Empty;
+        string LabelAddedTextTemplate = string.Empty;
+        string LabelRemovedTextTemplate = string.Empty;
+        string LabelChangedTextTemplate = string.Empty;
         string FormTextOriginal;
 
         public List<Archive> Archives { get; private set; } = new List<Archive>();
@@ -56,7 +58,9 @@ namespace BSA_Browser
             lvArchive.ContextMenu = contextMenu1;
             lvArchive.EnableVisualStyles();
 
-            CompareTextTemplate = this.lComparison.Text;
+            LabelAddedTextTemplate = lAdded.Text;
+            LabelRemovedTextTemplate = lRemoved.Text;
+            LabelChangedTextTemplate = lChanged.Text;
             FormTextOriginal = this.Text;
 
             chbFilterUnique.Checked = Settings.Default.CompareFilterUnique;
@@ -79,7 +83,9 @@ namespace BSA_Browser
                 cbArchiveB.Items.Add(archive.FileName);
             }
 
-            this.lComparison.Text = string.Format(CompareTextTemplate, 0, 0, 0, 0, 0);
+            lAdded.Text = string.Format(LabelAddedTextTemplate, 0);
+            lRemoved.Text = string.Format(LabelRemovedTextTemplate, 0);
+            lChanged.Text = string.Format(LabelChangedTextTemplate, 0);
         }
 
         private async void cbArchives_SelectedIndexChanged(object sender, EventArgs e)
@@ -153,12 +159,9 @@ namespace BSA_Browser
                 else if (ct.Type == CompareType.Changed)
                     changed++;
 
-            this.lComparison.Text = string.Format(CompareTextTemplate,
-                added,
-                removed,
-                changed,
-                archA.Files.Count,
-                archB.Files.Count);
+            lAdded.Text = string.Format(LabelAddedTextTemplate, added);
+            lRemoved.Text = string.Format(LabelRemovedTextTemplate, removed);
+            lChanged.Text = string.Format(LabelChangedTextTemplate, changed);
 
             cbArchiveA.Enabled = cbArchiveB.Enabled = lvArchive.Enabled = true;
         }
@@ -423,12 +426,9 @@ namespace BSA_Browser
             lvArchive.Invalidate();
             lvArchive.EndUpdate();
 
-            this.lComparison.Text = string.Format(CompareTextTemplate,
-                this.Files.Count(x => x.Type == CompareType.Added),
-                this.Files.Count(x => x.Type == CompareType.Removed),
-                this.Files.Count(x => x.Type == CompareType.Changed),
-                archive.Files.Count,
-                archive.Files.Count);
+            lAdded.Text = string.Format(LabelAddedTextTemplate, this.Files.Count(x => x.Type == CompareType.Added));
+            lRemoved.Text = string.Format(LabelRemovedTextTemplate, this.Files.Count(x => x.Type == CompareType.Removed));
+            lChanged.Text = string.Format(LabelChangedTextTemplate, this.Files.Count(x => x.Type == CompareType.Changed));
         }
 
         private bool CompareStreams(Stream a, Stream b, ulong length)
