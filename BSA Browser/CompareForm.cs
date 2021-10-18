@@ -314,42 +314,40 @@ namespace BSA_Browser
             lvArchive.BeginUpdate();
             this.Files.Clear();
 
-            var epA = archA.CreateSharedParams(true, false);
-            var epB = archB.CreateSharedParams(true, false);
-
-            foreach (var file in filelist)
+            using (var epA = archA.CreateSharedParams(true, false))
+            using (var epB = archB.CreateSharedParams(true, false))
             {
-                if (archAFileList.ContainsKey(file) && !archBFileList.ContainsKey(file))
+                foreach (var file in filelist)
                 {
-                    // File appears in left archive only
-                    this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Removed));
-                }
-                else if (!archAFileList.ContainsKey(file) && archBFileList.ContainsKey(file))
-                {
-                    // File appears in right archive only
-                    this.Files.Add(new CompareItem(archBFileList[file].FullPath, CompareType.Added));
-                }
-                else
-                {
-                    epA.Reader.BaseStream.Position = (long)archAFileList[file].Offset;
-                    epB.Reader.BaseStream.Position = (long)archBFileList[file].Offset;
-
-                    if (archAFileList[file].GetSizeInArchive(epA) == archBFileList[file].GetSizeInArchive(epB)
-                        && CompareStreams(epA.Reader.BaseStream, epB.Reader.BaseStream, archAFileList[file].GetSizeInArchive(epA)))
+                    if (archAFileList.ContainsKey(file) && !archBFileList.ContainsKey(file))
                     {
-                        // Files are identical
-                        this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Identical));
+                        // File appears in left archive only
+                        this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Removed));
+                    }
+                    else if (!archAFileList.ContainsKey(file) && archBFileList.ContainsKey(file))
+                    {
+                        // File appears in right archive only
+                        this.Files.Add(new CompareItem(archBFileList[file].FullPath, CompareType.Added));
                     }
                     else
                     {
-                        // Files are different
-                        this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Changed));
+                        epA.Reader.BaseStream.Position = (long)archAFileList[file].Offset;
+                        epB.Reader.BaseStream.Position = (long)archBFileList[file].Offset;
+
+                        if (archAFileList[file].GetSizeInArchive(epA) == archBFileList[file].GetSizeInArchive(epB)
+                            && CompareStreams(epA.Reader.BaseStream, epB.Reader.BaseStream, archAFileList[file].GetSizeInArchive(epA)))
+                        {
+                            // Files are identical
+                            this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Identical));
+                        }
+                        else
+                        {
+                            // Files are different
+                            this.Files.Add(new CompareItem(archAFileList[file].FullPath, CompareType.Changed));
+                        }
                     }
                 }
             }
-
-            epA.Dispose();
-            epB.Dispose();
 
             this.Files.Sort((x, y) =>
             {
@@ -365,10 +363,20 @@ namespace BSA_Browser
             lvArchive.Invalidate();
             lvArchive.EndUpdate();
 
+            int added = 0, removed = 0, changed = 0;
+
+            foreach (var ct in this.Files)
+                if (ct.Type == CompareType.Added)
+                    added++;
+                else if (ct.Type == CompareType.Removed)
+                    removed++;
+                else if (ct.Type == CompareType.Changed)
+                    changed++;
+
             this.lComparison.Text = string.Format(CompareTextTemplate,
-                this.Files.Count(x => x.Type == CompareType.Added),
-                this.Files.Count(x => x.Type == CompareType.Removed),
-                this.Files.Count(x => x.Type == CompareType.Changed),
+                added,
+                removed,
+                changed,
                 archAFileList.Count,
                 archBFileList.Count);
         }
