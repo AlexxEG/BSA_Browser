@@ -67,6 +67,9 @@
             this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.previewLeftMenuItem = new System.Windows.Forms.MenuItem();
             this.previewRightMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.extractSelectedLeftMenuItem = new System.Windows.Forms.MenuItem();
+            this.extractSelectedRightMenuItem = new System.Windows.Forms.MenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -463,6 +466,9 @@
             this.extractLeftMenuItem,
             this.extractRightMenuItem,
             this.menuItem3,
+            this.extractSelectedLeftMenuItem,
+            this.extractSelectedRightMenuItem,
+            this.menuItem1,
             this.previewLeftMenuItem,
             this.previewRightMenuItem});
             this.contextMenu1.Popup += new System.EventHandler(this.contextMenu1_Popup);
@@ -486,15 +492,32 @@
             // 
             // previewLeftMenuItem
             // 
-            this.previewLeftMenuItem.Index = 3;
+            this.previewLeftMenuItem.Index = 6;
             this.previewLeftMenuItem.Text = "Preview Left";
             this.previewLeftMenuItem.Click += new System.EventHandler(this.previewLeftMenuItem_Click);
             // 
             // previewRightMenuItem
             // 
-            this.previewRightMenuItem.Index = 4;
+            this.previewRightMenuItem.Index = 7;
             this.previewRightMenuItem.Text = "Preview Right";
             this.previewRightMenuItem.Click += new System.EventHandler(this.previewRightMenuItem_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 5;
+            this.menuItem1.Text = "-";
+            // 
+            // extractSelectedLeftMenuItem
+            // 
+            this.extractSelectedLeftMenuItem.Index = 3;
+            this.extractSelectedLeftMenuItem.Text = "Extract Selected Left";
+            this.extractSelectedLeftMenuItem.Click += new System.EventHandler(this.extractSelectedLeftMenuItem_Click);
+            // 
+            // extractSelectedRightMenuItem
+            // 
+            this.extractSelectedRightMenuItem.Index = 4;
+            this.extractSelectedRightMenuItem.Text = "Extract Selected Right";
+            this.extractSelectedRightMenuItem.Click += new System.EventHandler(this.extractSelectedRightMenuItem_Click);
             // 
             // CompareForm
             // 
@@ -560,5 +583,8 @@
         private System.Windows.Forms.MenuItem menuItem3;
         private System.Windows.Forms.MenuItem previewLeftMenuItem;
         private System.Windows.Forms.MenuItem previewRightMenuItem;
+        private System.Windows.Forms.MenuItem extractSelectedLeftMenuItem;
+        private System.Windows.Forms.MenuItem extractSelectedRightMenuItem;
+        private System.Windows.Forms.MenuItem menuItem1;
     }
 }

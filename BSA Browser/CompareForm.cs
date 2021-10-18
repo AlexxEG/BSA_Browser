@@ -202,10 +202,13 @@ namespace BSA_Browser
 
         private void contextMenu1_Popup(object sender, EventArgs e)
         {
+            extractLeftMenuItem.Enabled = cbArchiveA.SelectedIndex != -1;
+            extractRightMenuItem.Enabled = cbArchiveB.SelectedIndex != -1;
+
             if (lvArchive.SelectedIndices.Count == 0)
             {
-                extractLeftMenuItem.Enabled =
-                    extractRightMenuItem.Enabled =
+                extractSelectedLeftMenuItem.Enabled =
+                    extractSelectedRightMenuItem.Enabled =
                     previewLeftMenuItem.Enabled =
                     previewRightMenuItem.Enabled = false;
                 return;
@@ -228,21 +231,33 @@ namespace BSA_Browser
                     break;
             }
 
-            extractLeftMenuItem.Enabled = removed || uniqueOrIdentical;
+            extractSelectedLeftMenuItem.Enabled = removed || uniqueOrIdentical;
             previewLeftMenuItem.Enabled = lvArchive.SelectedIndices.Count == 1 && (removed || uniqueOrIdentical);
 
-            extractRightMenuItem.Enabled = added || uniqueOrIdentical;
+            extractSelectedRightMenuItem.Enabled = added || uniqueOrIdentical;
             previewRightMenuItem.Enabled = lvArchive.SelectedIndices.Count == 1 && (added || uniqueOrIdentical);
         }
 
         private void extractLeftMenuItem_Click(object sender, EventArgs e)
         {
-            this.ExtractFiles(true);
+            this.ExtractFiles(true, FilteredFiles.Where(x => x.Type != CompareType.Added));
         }
 
         private void extractRightMenuItem_Click(object sender, EventArgs e)
         {
-            this.ExtractFiles(false);
+            this.ExtractFiles(false, FilteredFiles.Where(x => x.Type != CompareType.Removed));
+        }
+
+        private void extractSelectedLeftMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ExtractFiles(true,
+                FilteredFiles.Where((x, index) => lvArchive.SelectedIndices.Contains(index) && x.Type != CompareType.Added));
+        }
+
+        private void extractSelectedRightMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ExtractFiles(false,
+                FilteredFiles.Where((x, index) => lvArchive.SelectedIndices.Contains(index) && x.Type != CompareType.Removed));
         }
 
         private void previewLeftMenuItem_Click(object sender, EventArgs e)
@@ -427,16 +442,13 @@ namespace BSA_Browser
             return true;
         }
 
-        private void ExtractFiles(bool left)
+        private void ExtractFiles(bool left, IEnumerable<CompareItem> items)
         {
-            var files = FilteredFiles
-                .Where((x, index) => lvArchive.SelectedIndices.Contains(index) && x.Type != (left ? CompareType.Added : CompareType.Removed))
-                .ToList();
             var archive = this.Archives[(left ? cbArchiveA : cbArchiveB).SelectedIndex];
-            var fes = new List<ArchiveEntry>(files.Count);
+            var fes = new List<ArchiveEntry>();
 
-            for (int i = 0; i < files.Count; i++)
-                fes.Add(archive.Files.Find(x => x.FullPath.ToLower() == files[i].FullPath.ToLower()));
+            foreach (var item in items)
+                fes.Add(archive.Files.Find(x => x.FullPath.ToLower() == item.FullPath.ToLower()));
 
             using (var ofd = new OpenFolderDialog())
             {
