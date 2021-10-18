@@ -5,7 +5,6 @@
 - [ ] Look at BSABrowser.ExtractFiles and allow multiple extraction operations at same time (maybe limit to one per archive or actually check indiviual files)
 - [ ] Compare tool: Async comparing, progress bar
 - [ ] Compare tool: Compare only files under specified nodes
-- [ ] Compare tool: Change existing Extract to specify it's selected files only
 
 ### Complete
 
@@ -24,3 +23,4 @@
 - [X] ~~Compare tool: Add ability to preview files~~
 - [X] ~~Compare tool: Add ability to extract files https://ibb.co/n7Xrscb~~
 - [X] ~~Compare tool: Add option to extract entire side regardless of selection~~
+- [X] ~~Compare tool: Change existing Extract to specify it's selected files only~~
