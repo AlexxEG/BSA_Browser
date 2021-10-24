@@ -4,6 +4,7 @@
 - Optimized Compare tool, it's now a lot faster, more memory efficient and more accurate (one file went from 1000ms to 90ms compare time)
 - More compact Compare tool UI, more space for list
 - Added filters to Compare tool
+- Added directory tree filtering to Compare tool
 - Added previewing to Compare tool
 - Added extracting to Compare tool
 - Files are now sorted by file path too in Compare tool
