@@ -57,6 +57,7 @@ namespace BSA_Browser
 
             lvArchive.ContextMenu = contextMenu1;
             lvArchive.EnableVisualStyles();
+            tvDirectories.EnableVisualStyles();
 
             LabelAddedTextTemplate = lAdded.Text;
             LabelRemovedTextTemplate = lRemoved.Text;
@@ -163,7 +164,18 @@ namespace BSA_Browser
             lRemoved.Text = string.Format(LabelRemovedTextTemplate, removed);
             lChanged.Text = string.Format(LabelChangedTextTemplate, changed);
 
+            this.BuildFolderTreeView(archA.Files.Select(x => x.Folder).Union(archB.Files.Select(x => x.Folder)));
+
             cbArchiveA.Enabled = cbArchiveB.Enabled = lvArchive.Enabled = true;
+        }
+
+        private void tvDirectories_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            lvArchive.BeginUpdate();
+            this.Filter(e.Node.FullPath);
+            lvArchive.VirtualListSize = this.FilteredFiles.Count;
+            lvArchive.Invalidate();
+            lvArchive.EndUpdate();
         }
 
         private void lvArchive_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -232,7 +244,7 @@ namespace BSA_Browser
         private void lFilters_CheckedChanged(object sender, EventArgs e)
         {
             lvArchive.BeginUpdate();
-            this.Filter();
+            this.Filter(tvDirectories.SelectedNode != null ? tvDirectories.SelectedNode.FullPath : string.Empty);
             lvArchive.VirtualListSize = this.FilteredFiles.Count;
             lvArchive.Invalidate();
             lvArchive.EndUpdate();
@@ -316,15 +328,44 @@ namespace BSA_Browser
 
         #endregion
 
-        private void Filter()
+        private void Filter(string subFolder = "")
         {
             this.FilteredFiles.Clear();
 
             var types = GetFilteredTypes();
 
             foreach (var file in Files)
+            {
+                if (!string.IsNullOrEmpty(subFolder))
+                {
+                    if (!file.FullPath.StartsWith(subFolder, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                }
                 if (types.Contains(file.Type))
                     this.FilteredFiles.Add(file);
+            }
+        }
+
+        private void BuildFolderTreeView(IEnumerable<string> folders)
+        {
+            tvDirectories.Nodes.Clear();
+            foreach (var path in folders)
+            {
+                string subPathAgg = string.Empty;
+                TreeNode lastNode = null;
+                foreach (string subPath in path.Split('\\'))
+                {
+                    subPathAgg += subPath + '\\';
+                    var nodes = tvDirectories.Nodes.Find(subPathAgg, true);
+                    if (nodes.Length == 0)
+                        if (lastNode == null)
+                            lastNode = tvDirectories.Nodes.Add(subPathAgg, subPath);
+                        else
+                            lastNode = lastNode.Nodes.Add(subPathAgg, subPath);
+                    else
+                        lastNode = nodes[0];
+                }
+            }
         }
 
         private async Task CompareAsync(Archive archA, Archive archB, IProgress<int> progress)
@@ -429,6 +470,8 @@ namespace BSA_Browser
             lAdded.Text = string.Format(LabelAddedTextTemplate, this.Files.Count(x => x.Type == CompareType.Added));
             lRemoved.Text = string.Format(LabelRemovedTextTemplate, this.Files.Count(x => x.Type == CompareType.Removed));
             lChanged.Text = string.Format(LabelChangedTextTemplate, this.Files.Count(x => x.Type == CompareType.Changed));
+
+            this.BuildFolderTreeView(archive.Files.Select(x => x.Folder));
         }
 
         private bool CompareStreams(Stream a, Stream b, ulong length)
