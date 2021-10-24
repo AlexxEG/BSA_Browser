@@ -285,5 +285,17 @@ namespace BSA_Browser.Properties {
                 this["CompareFilterIdentical"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CompareDirectoryTree {
+            get {
+                return ((bool)(this["CompareDirectoryTree"]));
+            }
+            set {
+                this["CompareDirectoryTree"] = value;
+            }
+        }
     }
 }

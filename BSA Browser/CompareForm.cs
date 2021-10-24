@@ -55,6 +55,10 @@ namespace BSA_Browser
         {
             InitializeComponent();
 
+            this.Menu = mainMenu1;
+            directoryTreeMenuItem.Checked = Settings.Default.CompareDirectoryTree;
+            splitContainer1.Panel1Collapsed = !Settings.Default.CompareDirectoryTree;
+
             lvArchive.ContextMenu = contextMenu1;
             lvArchive.EnableVisualStyles();
             tvDirectories.EnableVisualStyles();
@@ -164,7 +168,8 @@ namespace BSA_Browser
             lRemoved.Text = string.Format(LabelRemovedTextTemplate, removed);
             lChanged.Text = string.Format(LabelChangedTextTemplate, changed);
 
-            this.BuildFolderTreeView(archA.Files.Select(x => x.Folder).Union(archB.Files.Select(x => x.Folder)));
+            if (Settings.Default.CompareDirectoryTree)
+                this.BuildFolderTreeView(archA.Files.Select(x => x.Folder).Union(archB.Files.Select(x => x.Folder)));
 
             cbArchiveA.Enabled = cbArchiveB.Enabled = lvArchive.Enabled = true;
         }
@@ -253,6 +258,27 @@ namespace BSA_Browser
             Settings.Default.CompareFilterDifferent = chbFilterChanged.Checked;
             Settings.Default.CompareFilterIdentical = chbFilterIdentical.Checked;
         }
+
+        #region mainMenu1
+
+        private void directoryTreeMenuItem_Click(object sender, EventArgs e)
+        {
+            directoryTreeMenuItem.Checked = !directoryTreeMenuItem.Checked;
+            splitContainer1.Panel1Collapsed = !directoryTreeMenuItem.Checked;
+            Settings.Default.CompareDirectoryTree = directoryTreeMenuItem.Checked;
+
+            if (Settings.Default.CompareDirectoryTree && tvDirectories.Nodes.Count == 0)
+            {
+                this.BuildFolderTreeView(Files.Select(x => Path.GetDirectoryName(x.FullPath)).Distinct());
+            }
+            else
+            {
+                // Need to clear so that if archives are changed while setting is disabled a rebuild will be triggered
+                tvDirectories.Nodes.Clear();
+            }
+        }
+
+        #endregion
 
         #region contextMenu1
 
@@ -471,7 +497,8 @@ namespace BSA_Browser
             lRemoved.Text = string.Format(LabelRemovedTextTemplate, this.Files.Count(x => x.Type == CompareType.Removed));
             lChanged.Text = string.Format(LabelChangedTextTemplate, this.Files.Count(x => x.Type == CompareType.Changed));
 
-            this.BuildFolderTreeView(archive.Files.Select(x => x.Folder));
+            if (Settings.Default.CompareDirectoryTree)
+                this.BuildFolderTreeView(archive.Files.Select(x => x.Folder).Distinct()); // Distinct helps performance
         }
 
         private bool CompareStreams(Stream a, Stream b, ulong length)

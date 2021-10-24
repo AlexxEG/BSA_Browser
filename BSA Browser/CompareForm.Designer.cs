@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompareForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -75,6 +76,9 @@
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.previewLeftMenuItem = new System.Windows.Forms.MenuItem();
             this.previewRightMenuItem = new System.Windows.Forms.MenuItem();
+            this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.directoryTreeMenuItem = new System.Windows.Forms.MenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -159,12 +163,12 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Files A";
-            this.columnHeader1.Width = 370;
+            this.columnHeader1.Width = 250;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Files B";
-            this.columnHeader2.Width = 370;
+            this.columnHeader2.Width = 250;
             // 
             // groupBox3
             // 
@@ -612,6 +616,25 @@
             this.previewRightMenuItem.Text = "Preview Right";
             this.previewRightMenuItem.Click += new System.EventHandler(this.previewRightMenuItem_Click);
             // 
+            // mainMenu1
+            // 
+            this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem2});
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 0;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.directoryTreeMenuItem});
+            this.menuItem2.Text = "&View";
+            // 
+            // directoryTreeMenuItem
+            // 
+            this.directoryTreeMenuItem.Checked = true;
+            this.directoryTreeMenuItem.Index = 0;
+            this.directoryTreeMenuItem.Text = "&Directory Tree";
+            this.directoryTreeMenuItem.Click += new System.EventHandler(this.directoryTreeMenuItem_Click);
+            // 
             // CompareForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -619,6 +642,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Menu = this.mainMenu1;
             this.Name = "CompareForm";
             this.Text = "Compare";
             this.Load += new System.EventHandler(this.CompareForm_Load);
@@ -684,5 +708,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.TreeView tvDirectories;
+        private System.Windows.Forms.MainMenu mainMenu1;
+        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem directoryTreeMenuItem;
     }
 }
