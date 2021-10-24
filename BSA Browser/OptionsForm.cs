@@ -69,13 +69,8 @@ namespace BSA_Browser
 
         private void OptionsForm_Load(object sender, EventArgs e)
         {
-            if (!Settings.Default.WindowStates.Contains(this.Name))
-            {
-                Settings.Default.WindowStates.Add(this.Name);
-            }
-
-            // Restore only columns.
-            Settings.Default.WindowStates[this.Name].RestoreForm(this, true, false);
+            // Restore only columns and location
+            Settings.Default.WindowStates.Restore(this, false, true, false, true, false);
 
             // Center form to Owner
             if (this.Owner != null)
@@ -91,7 +86,7 @@ namespace BSA_Browser
 
         private void OptionsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.Default.WindowStates[this.Name].SaveForm(this);
+            Settings.Default.WindowStates.Save(this);
         }
 
         private void btnOK_Click(object sender, EventArgs e)

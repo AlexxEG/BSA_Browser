@@ -35,14 +35,8 @@ namespace BSA_Browser.Dialogs
 
         private void TextViewer_Load(object sender, EventArgs e)
         {
-            // Add this form if it doesn't exists
-            if (!Settings.Default.WindowStates.Contains(this.Name))
-            {
-                Settings.Default.WindowStates.Add(this.Name);
-            }
-
             // Restore window state
-            Settings.Default.WindowStates[this.Name].RestoreForm(this, restoreSplitContainers: false);
+            Settings.Default.WindowStates.Restore(this, false, restoreSplitContainers: false);
 
             if (Application.OpenForms.Cast<Form>().Any(x => x != this && x.Name == this.Name))
             {
@@ -53,8 +47,7 @@ namespace BSA_Browser.Dialogs
         private void TextViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Save window state
-            Settings.Default.WindowStates[this.Name].SaveForm(this, saveSplitContainers: false);
-            Settings.Default.Save();
+            Settings.Default.WindowStates.Save(this, saveSplitContainers: false);
         }
 
         private void SplitContainer1_Panel2_Paint(object sender, PaintEventArgs e)

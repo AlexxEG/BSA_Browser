@@ -374,14 +374,8 @@ namespace BSA_Browser
             // Initialize WindowStates if null
             Settings.Default.WindowStates = Settings.Default.WindowStates ?? new WindowStates();
 
-            // Add this form if it doesn't exists
-            if (!Settings.Default.WindowStates.Contains(this.Name))
-            {
-                Settings.Default.WindowStates.Add(this.Name);
-            }
-
             // Restore window state
-            Settings.Default.WindowStates[this.Name].RestoreForm(this);
+            Settings.Default.WindowStates.Restore(this, false);
 
             // Restore sorting preferences
             lvFiles.SetSortIcon(
@@ -420,7 +414,7 @@ namespace BSA_Browser
 
             this.SaveRecentFiles();
 
-            Settings.Default.WindowStates[this.Name].SaveForm(this);
+            Settings.Default.WindowStates.Save(this);
             Settings.Default.LastUnpackPath = _openFolderDialog.Folder;
             Settings.Default.Save();
         }
