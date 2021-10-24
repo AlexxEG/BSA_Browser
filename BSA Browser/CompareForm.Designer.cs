@@ -645,6 +645,7 @@
             this.Menu = this.mainMenu1;
             this.Name = "CompareForm";
             this.Text = "Compare";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CompareForm_FormClosing);
             this.Load += new System.EventHandler(this.CompareForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);

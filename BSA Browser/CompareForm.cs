@@ -82,6 +82,8 @@ namespace BSA_Browser
 
         private void CompareForm_Load(object sender, EventArgs e)
         {
+            Settings.Default.WindowStates.Restore(this, false, restoreColumns: false);
+
             foreach (var archive in this.Archives)
             {
                 cbArchiveA.Items.Add(archive.FileName);
@@ -91,6 +93,11 @@ namespace BSA_Browser
             lAdded.Text = string.Format(LabelAddedTextTemplate, 0);
             lRemoved.Text = string.Format(LabelRemovedTextTemplate, 0);
             lChanged.Text = string.Format(LabelChangedTextTemplate, 0);
+        }
+
+        private void CompareForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Settings.Default.WindowStates.Save(this, saveColumns: false);
         }
 
         private async void cbArchives_SelectedIndexChanged(object sender, EventArgs e)
