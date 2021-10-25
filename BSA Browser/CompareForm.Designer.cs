@@ -185,7 +185,6 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(391, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.groupBox3.Size = new System.Drawing.Size(382, 100);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
@@ -296,13 +295,14 @@
             // 
             // cbArchiveB
             // 
-            this.cbArchiveB.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbArchiveB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbArchiveB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbArchiveB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbArchiveB.FormattingEnabled = true;
-            this.cbArchiveB.Location = new System.Drawing.Point(3, 19);
+            this.cbArchiveB.Location = new System.Drawing.Point(6, 19);
             this.cbArchiveB.Name = "cbArchiveB";
-            this.cbArchiveB.Size = new System.Drawing.Size(376, 24);
+            this.cbArchiveB.Size = new System.Drawing.Size(370, 24);
             this.cbArchiveB.TabIndex = 20;
             this.cbArchiveB.SelectedIndexChanged += new System.EventHandler(this.cbArchives_SelectedIndexChanged);
             // 
@@ -321,7 +321,6 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.groupBox2.Size = new System.Drawing.Size(382, 100);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
@@ -432,13 +431,14 @@
             // 
             // cbArchiveA
             // 
-            this.cbArchiveA.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbArchiveA.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbArchiveA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbArchiveA.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbArchiveA.FormattingEnabled = true;
-            this.cbArchiveA.Location = new System.Drawing.Point(3, 19);
+            this.cbArchiveA.Location = new System.Drawing.Point(6, 19);
             this.cbArchiveA.Name = "cbArchiveA";
-            this.cbArchiveA.Size = new System.Drawing.Size(376, 24);
+            this.cbArchiveA.Size = new System.Drawing.Size(370, 24);
             this.cbArchiveA.TabIndex = 11;
             this.cbArchiveA.SelectedIndexChanged += new System.EventHandler(this.cbArchives_SelectedIndexChanged);
             // 
