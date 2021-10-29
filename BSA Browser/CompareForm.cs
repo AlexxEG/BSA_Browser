@@ -150,7 +150,7 @@ namespace BSA_Browser
             this.SetCompareColor(lFileCountA, lFileCountB, archA.FileCount != archB.FileCount);
             this.SetCompareColor(lChunksA, lChunksB, archA.Chunks != archB.Chunks);
 
-            cbArchiveA.Enabled = cbArchiveB.Enabled = lvArchive.Enabled = false;
+            cbArchiveA.Enabled = cbArchiveB.Enabled = tvDirectories.Enabled = lvArchive.Enabled = false;
             lvArchive.BeginUpdate();
 
             try
@@ -191,7 +191,7 @@ namespace BSA_Browser
             if (Settings.Default.CompareDirectoryTree)
                 this.BuildFolderTreeView(archA.Files.Select(x => x.Folder).Union(archB.Files.Select(x => x.Folder)));
 
-            cbArchiveA.Enabled = cbArchiveB.Enabled = lvArchive.Enabled = true;
+            cbArchiveA.Enabled = cbArchiveB.Enabled = tvDirectories.Enabled = lvArchive.Enabled = true;
         }
 
         private void tvDirectories_AfterSelect(object sender, TreeViewEventArgs e)
