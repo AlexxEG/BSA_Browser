@@ -51,6 +51,8 @@ namespace BSA_Browser
 
         private NaturalStringComparer NaturalStringComparer = new NaturalStringComparer();
 
+        private CancellationTokenSource cancellationTokenSource;
+
         public CompareForm()
         {
             InitializeComponent();
@@ -97,6 +99,7 @@ namespace BSA_Browser
 
         private void CompareForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            cancellationTokenSource?.Cancel();
             Settings.Default.WindowStates.Save(this, saveColumns: false);
         }
 
@@ -150,10 +153,20 @@ namespace BSA_Browser
             cbArchiveA.Enabled = cbArchiveB.Enabled = lvArchive.Enabled = false;
             lvArchive.BeginUpdate();
 
-            await this.CompareAsync(archA, archB, new Progress<int>(progress =>
+            try
             {
-                this.Text = $"{FormTextOriginal} - {progress}%";
-            }));
+                cancellationTokenSource = new CancellationTokenSource();
+
+                await this.CompareAsync(archA, archB, new Progress<int>(progress =>
+                {
+                    this.Text = $"{FormTextOriginal} - {progress}%";
+                }), cancellationTokenSource.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Should only be canceled during Form closing event, everything underneath will already be disposed
+                return;
+            }
 
             this.Text = FormTextOriginal;
 
@@ -401,7 +414,7 @@ namespace BSA_Browser
             }
         }
 
-        private async Task CompareAsync(Archive archA, Archive archB, IProgress<int> progress)
+        private async Task CompareAsync(Archive archA, Archive archB, IProgress<int> progress, CancellationToken token)
         {
             var archAFileList = archA.Files.ToDictionary(x => x.FullPath.ToLower());
             var archBFileList = archB.Files.ToDictionary(x => x.FullPath.ToLower());
@@ -411,7 +424,7 @@ namespace BSA_Browser
             foreach (var file in archBFileList.Keys) dict[file] = file;
             var filelist = dict.Values.ToList();
 
-            await Task.Run(delegate
+            await Task.Run(() =>
             {
                 using (var epA = archA.CreateSharedParams(true, false))
                 using (var epB = archB.CreateSharedParams(true, false))
@@ -423,6 +436,8 @@ namespace BSA_Browser
 
                     foreach (var file in filelist)
                     {
+                        token.ThrowIfCancellationRequested();
+
                         if (archAFileList.ContainsKey(file) && !archBFileList.ContainsKey(file))
                         {
                             // File appears in left archive only
@@ -470,7 +485,7 @@ namespace BSA_Browser
                 });
 
                 this.Filter();
-            });
+            }, token);
         }
 
         private void CompareSameArchive()
