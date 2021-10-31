@@ -1182,6 +1182,18 @@ namespace BSA_Browser
             this.ExtractFilesTo(true, true, () => (archiveContextMenu.Tag as ArchiveNode).Archive.Files);
         }
 
+        private void openContainingFolderMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start("explorer.exe", "/select, \"" + (archiveContextMenu.Tag as ArchiveNode).Archive.FullPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Error opening containing folder:\n\n" + ex.ToString());
+            }
+        }
+
         private void closeMenuItem_Click(object sender, EventArgs e)
         {
             this.CloseArchive((ArchiveNode)archiveContextMenu.Tag);
