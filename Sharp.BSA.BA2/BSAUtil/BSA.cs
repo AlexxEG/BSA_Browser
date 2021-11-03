@@ -119,7 +119,7 @@ namespace SharpBSABA2.BSAUtil
                     this.Header = header;
                     this.FileCount = (int)header.FileCount;
                     this.Files.Capacity = this.FileCount;
-                    uint dataOffset = 12 + header.HashOffset + header.FileCount * 8;
+                    uint dataOffset = BSAHeaderMW.Size + header.HashOffset + header.FileCount * 8; // 8 = filename hash size
 
                     // Store file sizes and offsets
                     for (int i = 0; i < header.FileCount; i++)
@@ -132,13 +132,13 @@ namespace SharpBSABA2.BSAUtil
                     }
 
                     // Check if archive has name offset and name table, for example for Xbox
-                    this.BinaryReader.BaseStream.Position = 12 + header.FileCount * 8; // Skip header and entries
+                    this.BinaryReader.BaseStream.Position = BSAHeaderMW.Size + header.FileCount * 8; // Skip header and entries, 8 = file entry size
 
                     // First name offset should be 0 if there is one, otherwise it doesn't have one
                     hasNameTableMW = this.BinaryReader.ReadUInt32() == 0;
 
                     if (hasNameTableMW)
-                        this.BinaryReader.BaseStream.Position = 12 + header.FileCount * 12; // Seek to name table
+                        this.BinaryReader.BaseStream.Position = BSAHeaderMW.Size + header.FileCount * 12; // Seek to name table
                     else
                         this.BinaryReader.BaseStream.Position -= 4; // Go Back
 
