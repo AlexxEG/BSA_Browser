@@ -316,9 +316,9 @@
             this.chbSortBSADirectories.AutoSize = true;
             this.chbSortBSADirectories.Location = new System.Drawing.Point(6, 19);
             this.chbSortBSADirectories.Name = "chbSortBSADirectories";
-            this.chbSortBSADirectories.Size = new System.Drawing.Size(306, 17);
+            this.chbSortBSADirectories.Size = new System.Drawing.Size(302, 17);
             this.chbSortBSADirectories.TabIndex = 0;
-            this.chbSortBSADirectories.Text = "Sort directories in archives (Reopen archives to take effect)";
+            this.chbSortBSADirectories.Text = "Sort directories in archives (Reload archives to take effect)";
             this.chbSortBSADirectories.UseVisualStyleBackColor = true;
             // 
             // chbRetrieveRealSize
@@ -327,7 +327,7 @@
             this.chbRetrieveRealSize.Name = "chbRetrieveRealSize";
             this.chbRetrieveRealSize.Size = new System.Drawing.Size(389, 34);
             this.chbRetrieveRealSize.TabIndex = 1;
-            this.chbRetrieveRealSize.Text = "Always show uncompressed file size, even if the parsing will be slower (Reopen ar" +
+            this.chbRetrieveRealSize.Text = "Always show uncompressed file size, even if the parsing will be slower (Reload ar" +
     "chives to take effect)";
             this.chbRetrieveRealSize.UseVisualStyleBackColor = true;
             // 
