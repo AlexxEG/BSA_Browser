@@ -9,7 +9,7 @@
 - Added previewing to Compare tool
 - Added extracting to Compare tool
 - Files are now sorted by file path too in Compare tool
-- Fixed first level of nodes not being sorted corretly
+- Fixed first level of folders not being sorted corretly in archive tree
 
 [1.13.1]
 
