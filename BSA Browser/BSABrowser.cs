@@ -40,6 +40,7 @@ namespace BSA_Browser
 
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
         ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
+        TreeNodeSorter _nodeSorter = new TreeNodeSorter();
         CompareForm _compareForm;
 
         /// <summary>
@@ -587,6 +588,7 @@ namespace BSA_Browser
 
             e.Node.Nodes.Clear();
             var nodes = new Dictionary<string, TreeNode>();
+            // Initial sorting
             rootNode.Archive.Files.Sort(_filesSorter);
 
             // Keep track of directories with files directly under them
@@ -636,7 +638,7 @@ namespace BSA_Browser
 
             if (Settings.Default.SortArchiveDirectories)
             {
-                this.SortNodes(e.Node);
+                this.SortNodes(rootNode, true);
             }
 
             rootNode.Built = true;
@@ -1844,20 +1846,29 @@ namespace BSA_Browser
         /// Sorts all nodes in given <see cref="TreeNode"/>.
         /// </summary>
         /// <param name="rootNode">The <see cref="TreeNode"/> whose children is to be sorted.</param>
-        private void SortNodes(TreeNode rootNode)
+        private void SortNodes(TreeNode rootNode, bool sortRoot)
         {
+            if (sortRoot)
+            {
+                var nodes = new TreeNode[rootNode.Nodes.Count];
+                rootNode.Nodes.CopyTo(nodes, 0);
+                Array.Sort(nodes, _nodeSorter);
+                rootNode.Nodes.Clear();
+                rootNode.Nodes.AddRange(nodes);
+            }
+
             foreach (TreeNode node in rootNode.Nodes)
             {
                 var nodes = new TreeNode[node.Nodes.Count];
 
                 node.Nodes.CopyTo(nodes, 0);
 
-                Array.Sort(nodes, new TreeNodeSorter());
+                Array.Sort(nodes, _nodeSorter);
 
                 node.Nodes.Clear();
                 node.Nodes.AddRange(nodes);
 
-                this.SortNodes(node);
+                this.SortNodes(node, false);
             }
         }
     }
