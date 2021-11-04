@@ -1248,7 +1248,7 @@ namespace BSA_Browser
             // Check if archive is already opened
             for (int i = 1; i < tvFolders.Nodes.Count; i++)
             {
-                ArchiveNode node = (ArchiveNode)tvFolders.Nodes[i];
+                var node = (ArchiveNode)tvFolders.Nodes[i];
                 if (node.Archive.FullPath.ToLower() == path.ToLower())
                 {
                     tvFolders.SelectedNode = node;
@@ -1256,8 +1256,9 @@ namespace BSA_Browser
                 }
             }
 
-            Archive archive = Common.OpenArchive(path, this);
+            var archive = Common.OpenArchive(path, this);
 
+            // Return null if above returns null, errors are handled in the method
             if (archive == null)
                 return null;
 
