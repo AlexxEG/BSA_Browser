@@ -335,7 +335,7 @@
             // 
             this.cbEncodings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbEncodings.FormattingEnabled = true;
-            this.cbEncodings.Location = new System.Drawing.Point(115, 85);
+            this.cbEncodings.Location = new System.Drawing.Point(67, 85);
             this.cbEncodings.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.cbEncodings.Name = "cbEncodings";
             this.cbEncodings.Size = new System.Drawing.Size(210, 21);
@@ -347,9 +347,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 88);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(103, 13);
+            this.label3.Size = new System.Drawing.Size(55, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "(Caution!) Encoding:";
+            this.label3.Text = "Encoding:";
             // 
             // chbCheckForUpdates
             // 
