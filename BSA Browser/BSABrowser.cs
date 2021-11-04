@@ -1197,8 +1197,18 @@ namespace BSA_Browser
             var index = archiveNode.Index;
             var path = archiveNode.Archive.FullPath;
 
+            // Save expanded nodes
+            tvFolders.BeginUpdate();
+            var expansionState = archiveNode.Nodes.GetExpansionState();
+            var isExpanded = archiveNode.IsExpanded;
+
             this.CloseArchive(archiveNode);
-            this.OpenArchive(path, false, index);
+            var newNode = this.OpenArchive(path, false, index);
+
+            // Restore expanded nodes
+            newNode.Nodes.SetExpansionState(expansionState);
+            if (isExpanded) newNode.Expand();
+            tvFolders.EndUpdate();
 
             this.DoSearch();
         }
@@ -1228,11 +1238,12 @@ namespace BSA_Browser
         #endregion
 
         /// <summary>
-        /// Opens the given archive, adding it to the <see cref="TreeView"/> and making it browsable.
+        /// Opens the given archive, adding it to the <see cref="tvFolders"/> and making it browsable, then returns containing <see cref="ArchiveNode"/>.
         /// </summary>
         /// <param name="path">The archive file path.</param>
         /// <param name="addToRecentFiles">True if archive should be added to recent files list.</param>
-        public void OpenArchive(string path, bool addToRecentFiles = false, int index = -1)
+        /// <param name="index">Where to insert new node. Must be equal or more than 1, any other value defaults to last index.</param>
+        public ArchiveNode OpenArchive(string path, bool addToRecentFiles = false, int index = -1)
         {
             // Check if archive is already opened
             for (int i = 1; i < tvFolders.Nodes.Count; i++)
@@ -1241,14 +1252,14 @@ namespace BSA_Browser
                 if (node.Archive.FullPath.ToLower() == path.ToLower())
                 {
                     tvFolders.SelectedNode = node;
-                    return;
+                    return null;
                 }
             }
 
             Archive archive = Common.OpenArchive(path, this);
 
             if (archive == null)
-                return;
+                return null;
 
             var newNode = new ArchiveNode(
                 Path.GetFileNameWithoutExtension(path) + this.DetectGame(path),
@@ -1277,17 +1288,26 @@ namespace BSA_Browser
             tvFolders.SelectedNode = newNode;
 
             _compareForm?.AddArchive(archive);
+
+            return newNode;
         }
 
         /// <summary>
-        /// Opens all given archives.
+        /// Opens given archives and returns containing list of <see cref="ArchiveNode"/>.
         /// </summary>
         /// <param name="addToRecentFiles">True if archives should be added to recent files list.</param>
         /// <param name="paths">Array of archive file paths.</param>
-        public void OpenArchives(bool addToRecentFiles, params string[] paths)
+        public List<ArchiveNode> OpenArchives(bool addToRecentFiles, params string[] paths)
         {
+            var nodes = new List<ArchiveNode>(paths.Length);
+
             foreach (string path in paths)
-                this.OpenArchive(path, addToRecentFiles);
+            {
+                // Open and add new node to nodes list
+                nodes.Add(this.OpenArchive(path, addToRecentFiles));
+            }
+
+            return nodes;
         }
 
         /// <summary>
