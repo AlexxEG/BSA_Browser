@@ -100,10 +100,11 @@
             this.extractAllFilesMenuItem = new System.Windows.Forms.MenuItem();
             this.extractAllFoldersMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem8 = new System.Windows.Forms.MenuItem();
-            this.closeMenuItem = new System.Windows.Forms.MenuItem();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openContainingFolderMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem14 = new System.Windows.Forms.MenuItem();
+            this.closeMenuItem = new System.Windows.Forms.MenuItem();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.reloadMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -637,6 +638,7 @@
             this.extractAllFilesMenuItem,
             this.extractAllFoldersMenuItem,
             this.menuItem8,
+            this.reloadMenuItem,
             this.openContainingFolderMenuItem,
             this.menuItem14,
             this.closeMenuItem});
@@ -659,22 +661,28 @@
             this.menuItem8.Index = 2;
             this.menuItem8.Text = "-";
             // 
-            // closeMenuItem
-            // 
-            this.closeMenuItem.Index = 5;
-            this.closeMenuItem.Text = "Close";
-            this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
-            // 
             // openContainingFolderMenuItem
             // 
-            this.openContainingFolderMenuItem.Index = 3;
+            this.openContainingFolderMenuItem.Index = 4;
             this.openContainingFolderMenuItem.Text = "Open Containing Folder";
             this.openContainingFolderMenuItem.Click += new System.EventHandler(this.openContainingFolderMenuItem_Click);
             // 
             // menuItem14
             // 
-            this.menuItem14.Index = 4;
+            this.menuItem14.Index = 5;
             this.menuItem14.Text = "-";
+            // 
+            // closeMenuItem
+            // 
+            this.closeMenuItem.Index = 6;
+            this.closeMenuItem.Text = "Close";
+            this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
+            // 
+            // reloadMenuItem
+            // 
+            this.reloadMenuItem.Index = 3;
+            this.reloadMenuItem.Text = "Reload";
+            this.reloadMenuItem.Click += new System.EventHandler(this.reloadMenuItem_Click);
             // 
             // BSABrowser
             // 
@@ -783,6 +791,7 @@
         private System.Windows.Forms.MenuItem compareCancelMenuItem;
         private System.Windows.Forms.MenuItem openContainingFolderMenuItem;
         private System.Windows.Forms.MenuItem menuItem14;
+        private System.Windows.Forms.MenuItem reloadMenuItem;
     }
 }
 

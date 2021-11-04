@@ -1170,7 +1170,14 @@ namespace BSA_Browser
             if (selectedNode?.Index == 0)
                 selectedNode = null;
 
-            extractAllFilesMenuItem.Enabled = extractAllFoldersMenuItem.Enabled = closeMenuItem.Enabled = selectedNode != null;
+            // Disable these when there are no selected node
+            extractAllFilesMenuItem.Enabled
+                = extractAllFoldersMenuItem.Enabled
+                = reloadMenuItem.Enabled
+                = openArchiveMnuItem.Enabled
+                = closeMenuItem.Enabled
+                = selectedNode != null;
+
             archiveContextMenu.Tag = selectedNode;
         }
 
@@ -1182,6 +1189,18 @@ namespace BSA_Browser
         private void extractAllFoldersMenuItem_Click(object sender, EventArgs e)
         {
             this.ExtractFilesTo(true, true, () => (archiveContextMenu.Tag as ArchiveNode).Archive.Files);
+        }
+
+        private void reloadMenuItem_Click(object sender, EventArgs e)
+        {
+            var archiveNode = archiveContextMenu.Tag as ArchiveNode;
+            var index = archiveNode.Index;
+            var path = archiveNode.Archive.FullPath;
+
+            this.CloseArchive(archiveNode);
+            this.OpenArchive(path, false, index);
+
+            this.DoSearch();
         }
 
         private void openContainingFolderMenuItem_Click(object sender, EventArgs e)
@@ -1213,7 +1232,7 @@ namespace BSA_Browser
         /// </summary>
         /// <param name="path">The archive file path.</param>
         /// <param name="addToRecentFiles">True if archive should be added to recent files list.</param>
-        public void OpenArchive(string path, bool addToRecentFiles = false)
+        public void OpenArchive(string path, bool addToRecentFiles = false, int index = -1)
         {
             // Check if archive is already opened
             for (int i = 1; i < tvFolders.Nodes.Count; i++)
@@ -1239,7 +1258,11 @@ namespace BSA_Browser
             newNode.ContextMenu = archiveContextMenu;
             newNode.SubFiles = archive.Files.ToArray();
             newNode.Nodes.Add("empty");
-            tvFolders.Nodes.Add(newNode);
+
+            if (index < 1)
+                tvFolders.Nodes.Add(newNode);
+            else
+                tvFolders.Nodes.Insert(index, newNode);
 
             if (newNode.IsExpanded)
                 newNode.Collapse();
