@@ -1771,11 +1771,9 @@ namespace BSA_Browser
         /// <param name="file">The file to check.</param>
         private bool RecentListContains(string file)
         {
-            file = file.ToLower();
-
             return recentFilesMenuItem.MenuItems
                 .Cast<MenuItem>()
-                .Any(x => file == x.Tag?.ToString().ToLower());
+                .Any(x => file.ToLower() == x.Tag?.ToString().ToLower());
         }
 
         /// <summary>
@@ -1784,11 +1782,9 @@ namespace BSA_Browser
         /// <param name="file">The file to get <see cref="MenuItem"/> from.</param>
         private MenuItem RecentListGetItemByString(string file)
         {
-            file = file.ToLower();
-
             return recentFilesMenuItem.MenuItems
                 .Cast<MenuItem>()
-                .First(x => file == x.Tag?.ToString().ToLower());
+                .First(x => file.ToLower() == x.Tag?.ToString().ToLower());
         }
 
         private void RefreshIcons()
