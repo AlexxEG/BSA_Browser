@@ -1666,7 +1666,10 @@ namespace BSA_Browser
         /// </summary>
         private Archive FindArchive(string fullPath)
         {
-            return tvFolders.Nodes.OfType<ArchiveNode>().Skip(1).First(x => x.Archive.FullPath.ToLower() == fullPath.ToLower()).Archive;
+            return tvFolders.Nodes
+                .OfType<ArchiveNode>()
+                .Skip(1)
+                .First(x => x.Archive.FullPath.ToLower() == fullPath.ToLower()).Archive;
         }
 
         /// <summary>
