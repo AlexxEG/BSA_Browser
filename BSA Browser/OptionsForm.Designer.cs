@@ -55,7 +55,6 @@
             this.chbIconsFileList = new System.Windows.Forms.CheckBox();
             this.chbIconsFolderTree = new System.Windows.Forms.CheckBox();
             this.btnResetToDefault = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.chbSortBSADirectories = new System.Windows.Forms.CheckBox();
             this.chbRetrieveRealSize = new System.Windows.Forms.CheckBox();
             this.cbEncodings = new System.Windows.Forms.ComboBox();
@@ -64,7 +63,6 @@
             this.nudMaxRecentFiles = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.chbReplaceGNFExt = new System.Windows.Forms.CheckBox();
             this.chbMatchLastWriteTime = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -76,17 +74,17 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxRecentFiles)).BeginInit();
             this.tabPage4.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
@@ -256,20 +254,6 @@
             this.btnResetToDefault.UseVisualStyleBackColor = true;
             this.btnResetToDefault.Click += new System.EventHandler(this.btnResetToDefault_Click);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.chbSortBSADirectories);
-            this.groupBox2.Controls.Add(this.chbRetrieveRealSize);
-            this.groupBox2.Controls.Add(this.cbEncodings);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(13, 74);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(401, 112);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Archive Options";
-            // 
             // chbSortBSADirectories
             // 
             this.chbSortBSADirectories.AutoSize = true;
@@ -350,7 +334,7 @@
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.groupBox4);
+            this.tabPage4.Controls.Add(this.chbReplaceGNFExt);
             this.tabPage4.Controls.Add(this.chbMatchLastWriteTime);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
@@ -360,25 +344,14 @@
             this.tabPage4.Text = "Extraction";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.chbReplaceGNFExt);
-            this.groupBox4.Location = new System.Drawing.Point(13, 80);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(235, 100);
-            this.groupBox4.TabIndex = 1;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "PS4";
-            // 
             // chbReplaceGNFExt
             // 
             this.chbReplaceGNFExt.AutoSize = true;
-            this.chbReplaceGNFExt.Location = new System.Drawing.Point(6, 19);
+            this.chbReplaceGNFExt.Location = new System.Drawing.Point(13, 36);
             this.chbReplaceGNFExt.Name = "chbReplaceGNFExt";
-            this.chbReplaceGNFExt.Size = new System.Drawing.Size(197, 17);
+            this.chbReplaceGNFExt.Size = new System.Drawing.Size(220, 17);
             this.chbReplaceGNFExt.TabIndex = 1;
-            this.chbReplaceGNFExt.Text = "Extract textures with .GNF extension";
+            this.chbReplaceGNFExt.Text = "Extract PS4 textures with .GNF extension";
             this.chbReplaceGNFExt.UseVisualStyleBackColor = true;
             // 
             // chbMatchLastWriteTime
@@ -527,6 +500,20 @@
             this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnHeader3.Width = 120;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.chbSortBSADirectories);
+            this.groupBox2.Controls.Add(this.chbRetrieveRealSize);
+            this.groupBox2.Controls.Add(this.cbEncodings);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Location = new System.Drawing.Point(13, 74);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(401, 112);
+            this.groupBox2.TabIndex = 3;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Archive Options";
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOK;
@@ -552,16 +539,14 @@
             this.tabPage1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxRecentFiles)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -593,7 +578,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox chbCheckForUpdates;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnResetToDefault;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox chbIconsFileList;
@@ -601,7 +585,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.CheckBox chbMatchLastWriteTime;
-        private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox chbReplaceGNFExt;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
