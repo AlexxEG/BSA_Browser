@@ -1327,7 +1327,6 @@ namespace BSA_Browser
                 if (item == null)
                     return;
 
-                int index = recentFilesMenuItem.MenuItems.IndexOf(item);
                 recentFilesMenuItem.MenuItems.Remove(item);
                 recentFilesMenuItem.MenuItems.Add(2, item);
             }
@@ -1772,9 +1771,11 @@ namespace BSA_Browser
         /// <param name="file">The file to check.</param>
         private bool RecentListContains(string file)
         {
+            file = file.ToLower();
+
             return recentFilesMenuItem.MenuItems
                 .Cast<MenuItem>()
-                .Any(x => x.Tag != null && x.Tag.ToString() == file);
+                .Any(x => file == x.Tag?.ToString().ToLower());
         }
 
         /// <summary>
@@ -1783,9 +1784,11 @@ namespace BSA_Browser
         /// <param name="file">The file to get <see cref="MenuItem"/> from.</param>
         private MenuItem RecentListGetItemByString(string file)
         {
+            file = file.ToLower();
+
             return recentFilesMenuItem.MenuItems
                 .Cast<MenuItem>()
-                .First(x => x.Tag != null && x.Tag.ToString() == file);
+                .First(x => file == x.Tag?.ToString().ToLower());
         }
 
         private void RefreshIcons()
