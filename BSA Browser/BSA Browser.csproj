@@ -217,6 +217,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="all.png" />
     <Content Include="fomm01.ico" />
   </ItemGroup>
   <ItemGroup>

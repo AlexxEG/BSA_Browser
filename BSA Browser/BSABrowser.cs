@@ -69,7 +69,9 @@ namespace BSA_Browser
 
             var archiveNode = new ArchiveNode("All", null)
             {
-                SubFiles = new ArchiveEntry[0]
+                SubFiles = new ArchiveEntry[0],
+                ImageIndex = 4,
+                SelectedImageIndex = 4
             };
             tvFolders.Nodes.Add(archiveNode);
 
@@ -118,6 +120,7 @@ namespace BSA_Browser
             foldersImageList.Images.Add(SystemIcons.FolderSmall);
             foldersImageList.Images.Add(SystemIcons.Files);
             foldersImageList.Images.Add((System.Drawing.Icon)this.Icon.Clone());
+            foldersImageList.Images.Add(Resources.all);
 
             if (Settings.Default.Icons.HasFlag(Enums.Icons.FileList))
             {
