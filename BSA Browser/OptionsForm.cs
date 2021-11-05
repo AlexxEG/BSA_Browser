@@ -107,13 +107,21 @@ namespace BSA_Browser
             }
         }
 
-        private void btnResetToDefault_Click(object sender, EventArgs e)
+        private void btnResetToDefaultGeneral_Click(object sender, EventArgs e)
         {
             nudMaxRecentFiles.Value = 30;
             chbCheckForUpdates.Checked = true;
             chbSortBSADirectories.Checked = true;
             chbRetrieveRealSize.Checked = false;
             cbEncodings.SelectedIndex = 0;
+            chbIconsFileList.Checked = true;
+            chbIconsFolderTree.Checked = true;
+        }
+
+        private void btnResetToDefaultExtraction_Click(object sender, EventArgs e)
+        {
+            chbMatchLastWriteTime.Checked = false;
+            chbReplaceGNFExt.Checked = false;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
