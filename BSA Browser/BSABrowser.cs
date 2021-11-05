@@ -38,6 +38,7 @@ namespace BSA_Browser
     {
         private const string UpdateMarker = "(!) ";
 
+        int _limitSearchId = LimitedAction.GenerateId();
         OpenFolderDialog _openFolderDialog = new OpenFolderDialog();
         ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
         TreeNodeSorter _nodeSorter = new TreeNodeSorter();
@@ -569,7 +570,7 @@ namespace BSA_Browser
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            LimitedAction.RunAfter(1, 500, this.DoSearch);
+            LimitedAction.RunAfter(_limitSearchId, 500, this.DoSearch);
         }
 
         private void cbRegex_CheckedChanged(object sender, EventArgs e)
@@ -1429,7 +1430,7 @@ namespace BSA_Browser
         /// </summary>
         private void DoSearch()
         {
-            LimitedAction.Stop(1);
+            LimitedAction.Stop(_limitSearchId);
 
             if (tvFolders.SelectedNode == null)
                 return;

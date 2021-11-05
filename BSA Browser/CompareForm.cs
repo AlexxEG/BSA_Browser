@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Management.Automation;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -46,6 +48,7 @@ namespace BSA_Browser
         public List<CompareItem> Files { get; private set; } = new List<CompareItem>();
         public List<CompareItem> FilteredFiles { get; private set; } = new List<CompareItem>();
 
+        private int SearchLimitId = LimitedAction.GenerateId();
         private NaturalStringComparer NaturalStringComparer = new NaturalStringComparer();
 
         private CancellationTokenSource cancellationTokenSource;
@@ -66,6 +69,8 @@ namespace BSA_Browser
             LabelRemovedTextTemplate = lRemoved.Text;
             LabelChangedTextTemplate = lChanged.Text;
             FormTextOriginal = this.Text;
+
+            txtSearch.SetCue("Search term...");
 
             chbFilterUnique.Checked = Settings.Default.CompareFilterUnique;
             chbFilterChanged.Checked = Settings.Default.CompareFilterDifferent;
@@ -193,11 +198,7 @@ namespace BSA_Browser
 
         private void tvDirectories_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            lvArchive.BeginUpdate();
-            this.Filter(e.Node.FullPath);
-            lvArchive.VirtualListSize = this.FilteredFiles.Count;
-            lvArchive.Invalidate();
-            lvArchive.EndUpdate();
+            this.FilterAndUpdateUI(e.Node.FullPath);
         }
 
         private void lvArchive_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -261,6 +262,19 @@ namespace BSA_Browser
             newItem.ToolTipText = file.FullPath;
 
             e.Item = newItem;
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            LimitedAction.RunAfter(SearchLimitId, 500, () =>
+            {
+                this.FilterAndUpdateUI(tvDirectories.SelectedNode?.FullPath);
+            });
+        }
+
+        private void cbRegex_CheckedChanged(object sender, EventArgs e)
+        {
+            this.FilterAndUpdateUI(tvDirectories.SelectedNode?.FullPath);
         }
 
         private void lFilters_CheckedChanged(object sender, EventArgs e)
@@ -373,20 +387,70 @@ namespace BSA_Browser
 
         private void Filter(string subFolder = "")
         {
-            this.FilteredFiles.Clear();
+            LimitedAction.Stop(SearchLimitId);
 
+            this.FilteredFiles.Clear();
+            txtSearch.ForeColor = SystemColors.WindowText;
+
+            // Get selected types
             var types = GetFilteredTypes();
+
+            Regex regex = null;
+            WildcardPattern pattern = null;
+
+            try
+            {
+                if (cbRegex.Checked && !string.IsNullOrEmpty(txtSearch.Text))
+                {
+                    regex = new Regex(txtSearch.Text, RegexOptions.Compiled | RegexOptions.Singleline);
+                }
+                else if (!cbRegex.Checked && !string.IsNullOrEmpty(txtSearch.Text))
+                {
+                    // Escape special characters, then unescape wild card characters again
+                    string str = WildcardPattern.Escape(txtSearch.Text).Replace("`*", "*");
+                    pattern = new WildcardPattern($"*{str}*", WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
+                }
+            }
+            catch
+            {
+                // Set text color to red to indicate an error with the search pattern
+                txtSearch.ForeColor = Color.Red;
+                return;
+            }
 
             foreach (var file in Files)
             {
+                // Filter by selected folder, if any
                 if (!string.IsNullOrEmpty(subFolder))
                 {
                     if (!file.FullPath.StartsWith(subFolder, StringComparison.OrdinalIgnoreCase))
                         continue;
                 }
-                if (types.Contains(file.Type))
-                    this.FilteredFiles.Add(file);
+
+                // Filter by type
+                if (!types.Contains(file.Type))
+                    continue;
+
+                // Filter by search
+                if (!string.IsNullOrEmpty(txtSearch.Text))
+                {
+                    if (cbRegex.Checked
+                        ? !regex.IsMatch(file.FullPath)
+                        : !pattern.IsMatch(file.FullPath))
+                        continue;
+                }
+
+                this.FilteredFiles.Add(file);
             }
+        }
+
+        private void FilterAndUpdateUI(string subFolder = "")
+        {
+            lvArchive.BeginUpdate();
+            this.Filter(subFolder);
+            lvArchive.VirtualListSize = this.FilteredFiles.Count;
+            lvArchive.Invalidate();
+            lvArchive.EndUpdate();
         }
 
         private void BuildFolderTreeView(IEnumerable<string> folders)

@@ -6,7 +6,13 @@ namespace BSA_Browser.Classes
 {
     public class LimitedAction
     {
+        static int _incrementingId = 0;
         static Dictionary<int, Timer> _timers = new Dictionary<int, Timer>();
+
+        /// <summary>
+        /// Returns unique id, incrementing from 0.
+        /// </summary>
+        public static int GenerateId() => ++_incrementingId;
 
         /// <summary>
         /// Delays executing of <paramref name="action"/> everytime it's called, delaying by <paramref name="ms"/>.

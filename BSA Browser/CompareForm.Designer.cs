@@ -79,6 +79,8 @@
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.directoryTreeMenuItem = new System.Windows.Forms.MenuItem();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.cbRegex = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -124,6 +126,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.cbRegex);
+            this.splitContainer1.Panel2.Controls.Add(this.txtSearch);
             this.splitContainer1.Panel2.Controls.Add(this.lvArchive);
             this.splitContainer1.Size = new System.Drawing.Size(770, 292);
             this.splitContainer1.SplitterDistance = 256;
@@ -140,18 +144,21 @@
             // 
             // lvArchive
             // 
+            this.lvArchive.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvArchive.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
-            this.lvArchive.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvArchive.FullRowSelect = true;
             this.lvArchive.GridLines = true;
             this.lvArchive.HideSelection = false;
             this.lvArchive.LabelWrap = false;
             this.lvArchive.Location = new System.Drawing.Point(0, 0);
+            this.lvArchive.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.lvArchive.Name = "lvArchive";
             this.lvArchive.ShowItemToolTips = true;
-            this.lvArchive.Size = new System.Drawing.Size(510, 292);
+            this.lvArchive.Size = new System.Drawing.Size(510, 266);
             this.lvArchive.TabIndex = 1;
             this.lvArchive.UseCompatibleStateImageBehavior = false;
             this.lvArchive.View = System.Windows.Forms.View.Details;
@@ -635,6 +642,30 @@
             this.directoryTreeMenuItem.Text = "&Directory Tree";
             this.directoryTreeMenuItem.Click += new System.EventHandler(this.directoryTreeMenuItem_Click);
             // 
+            // txtSearch
+            // 
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.Location = new System.Drawing.Point(0, 272);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(0, 3, 3, 0);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(430, 20);
+            this.txtSearch.TabIndex = 5;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // cbRegex
+            // 
+            this.cbRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbRegex.AutoSize = true;
+            this.cbRegex.Location = new System.Drawing.Point(436, 274);
+            this.cbRegex.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.cbRegex.Name = "cbRegex";
+            this.cbRegex.Size = new System.Drawing.Size(74, 17);
+            this.cbRegex.TabIndex = 9;
+            this.cbRegex.Text = "Use regex";
+            this.cbRegex.UseVisualStyleBackColor = true;
+            this.cbRegex.CheckedChanged += new System.EventHandler(this.cbRegex_CheckedChanged);
+            // 
             // CompareForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -650,6 +681,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -712,5 +744,7 @@
         private System.Windows.Forms.MainMenu mainMenu1;
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem directoryTreeMenuItem;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.CheckBox cbRegex;
     }
 }
