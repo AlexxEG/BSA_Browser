@@ -38,5 +38,20 @@ namespace BSA_Browser.Extensions
                 }
             }
         }
+
+        /// <summary>
+        /// Returns the root node of the given <see cref="TreeNode"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="TreeNode"/> to get root node from.</param>
+        public static TreeNode GetRootNode(this TreeNode node)
+        {
+            if (node == null)
+                return null;
+
+            var rootNode = node;
+            while (rootNode.Parent != null)
+                rootNode = rootNode.Parent;
+            return rootNode;
+        }
     }
 }

@@ -46,7 +46,7 @@ namespace BSA_Browser
         /// <summary>
         /// Gets the selected <see cref="ArchiveNode"/>.
         /// </summary>
-        private ArchiveNode SelectedArchiveNode => this.GetRootNode(tvFolders.SelectedNode) as ArchiveNode;
+        private ArchiveNode SelectedArchiveNode => tvFolders.SelectedNode?.GetRootNode() as ArchiveNode;
 
         /// <summary>
         /// Gets list of <see cref="ArchiveEntry"/> currently visible.
@@ -577,7 +577,7 @@ namespace BSA_Browser
 
         private void tvFolders_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            var rootNode = this.GetRootNode(e.Node) as ArchiveNode;
+            var rootNode = e.Node.GetRootNode() as ArchiveNode;
 
             if (rootNode.Index == 0)
                 return;
@@ -646,7 +646,7 @@ namespace BSA_Browser
 
         private void tvFolders_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            var rootNode = this.GetRootNode(e.Node) as ArchiveNode;
+            var rootNode = e.Node.GetRootNode() as ArchiveNode;
 
             // If AllFiles is null, trigger event which will populate it
             if (!rootNode.Built)
@@ -1693,21 +1693,6 @@ namespace BSA_Browser
                 filesImageList.Images.Add(ext, SystemIcons.GetFileIcon(filepath));
 
             return filesImageList.Images.IndexOfKey(ext);
-        }
-
-        /// <summary>
-        /// Returns the root node of the given <see cref="TreeNode"/>.
-        /// </summary>
-        /// <param name="node">The <see cref="TreeNode"/> to get root node from.</param>
-        private TreeNode GetRootNode(TreeNode node)
-        {
-            if (node == null)
-                return null;
-
-            var rootNode = node;
-            while (rootNode.Parent != null)
-                rootNode = rootNode.Parent;
-            return rootNode;
         }
 
         /// <summary>
