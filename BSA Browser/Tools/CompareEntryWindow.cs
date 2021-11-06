@@ -242,7 +242,20 @@ namespace BSA_Browser.Tools
                                     "Texture"));
                                 break;
                             case BA2GNFEntry gnfTex:
+                                compareProperties.Add(new CompareProperty("Width",
+                                    gnfTex.width.ToString(),
+                                    (entry as BA2GNFEntry).width.ToString(),
+                                    "Texture"));
 
+                                compareProperties.Add(new CompareProperty("Height",
+                                    gnfTex.height.ToString(),
+                                    (entry as BA2GNFEntry).height.ToString(),
+                                    "Texture"));
+
+                                compareProperties.Add(new CompareProperty("Chunks",
+                                    gnfTex.numChunks.ToString(),
+                                    (entry as BA2GNFEntry).numChunks.ToString(),
+                                    "Texture"));
                                 break;
                         }
                     }
