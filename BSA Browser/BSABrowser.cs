@@ -550,7 +550,7 @@ namespace BSA_Browser
 
             var lvi = new ListViewItem(fullpath, GetFileIconIndex(fullpath));
 
-            if (_compareSourceIndex == e.ItemIndex)
+            if (_compareSource == file)
                 lvi.BackColor = System.Drawing.Color.LightGreen;
 
             lvi.SubItems.Add(Common.FormatBytes(file.DisplaySize));
@@ -1086,7 +1086,6 @@ namespace BSA_Browser
             lvFiles.SelectAllItems();
         }
 
-        int _compareSourceIndex = -1;
         ArchiveEntry _compareSource;
         Tools.CompareEntryWindow _compareEntryWindow;
 
@@ -1104,7 +1103,6 @@ namespace BSA_Browser
             if (_compareSource == null)
             {
                 _compareSource = VisibleFiles[lvFiles.SelectedIndices[0]];
-                _compareSourceIndex = lvFiles.SelectedIndices[0];
                 _compareEntryWindow.SetSource(_compareSource);
             }
             else
@@ -1121,10 +1119,12 @@ namespace BSA_Browser
 
         private void compareCancelMenuItem_Click(object sender, EventArgs e)
         {
+            int index = VisibleFiles.IndexOf(_compareSource);
             _compareSource = null;
-            int index = _compareSourceIndex;
-            _compareSourceIndex = -1;
-            lvFiles.RedrawItems(index, index, false);
+
+            if (index > -1)
+                lvFiles.RedrawItems(index, index, false);
+
             _compareEntryWindow.Close();
             _compareEntryWindow = null;
         }
