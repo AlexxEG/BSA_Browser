@@ -50,6 +50,7 @@ namespace BSA_Browser
 
         private int SearchLimitId = LimitedAction.GenerateId();
         private NaturalStringComparer NaturalStringComparer = new NaturalStringComparer();
+        private List<Control> DisableControls;
 
         private CancellationTokenSource cancellationTokenSource;
 
@@ -75,6 +76,16 @@ namespace BSA_Browser
             chbFilterUnique.Checked = Settings.Default.CompareFilterUnique;
             chbFilterChanged.Checked = Settings.Default.CompareFilterDifferent;
             chbFilterIdentical.Checked = Settings.Default.CompareFilterIdentical;
+
+            DisableControls = new List<Control>()
+            {
+                cbArchiveA, cbArchiveB,
+                tvDirectories,
+                lvArchive,
+                chbFilterUnique, chbFilterChanged, chbFilterIdentical,
+                txtSearch,
+                cbRegex
+            };
         }
 
         public CompareForm(ICollection<Archive> archives)
@@ -152,7 +163,7 @@ namespace BSA_Browser
             this.SetCompareColor(lFileCountA, lFileCountB, archA.FileCount != archB.FileCount);
             this.SetCompareColor(lChunksA, lChunksB, archA.Chunks != archB.Chunks);
 
-            cbArchiveA.Enabled = cbArchiveB.Enabled = tvDirectories.Enabled = lvArchive.Enabled = false;
+            DisableControls.ForEach(x => x.Enabled = false);
             lvArchive.BeginUpdate();
 
             try
@@ -193,7 +204,7 @@ namespace BSA_Browser
             if (Settings.Default.CompareDirectoryTree)
                 this.BuildFolderTreeView(archA.Files.Select(x => x.Folder).Union(archB.Files.Select(x => x.Folder)));
 
-            cbArchiveA.Enabled = cbArchiveB.Enabled = tvDirectories.Enabled = lvArchive.Enabled = true;
+            DisableControls.ForEach(x => x.Enabled = true);
         }
 
         private void tvDirectories_AfterSelect(object sender, TreeViewEventArgs e)
@@ -556,6 +567,8 @@ namespace BSA_Browser
             SetCompareColor(lFileCountA, lFileCountB, false);
             SetCompareColor(lChunksA, lChunksB, false);
 
+            DisableControls.ForEach(x => x.Enabled = false);
+
             lvArchive.BeginUpdate();
             this.Files.Clear();
 
@@ -582,6 +595,8 @@ namespace BSA_Browser
 
             if (Settings.Default.CompareDirectoryTree)
                 this.BuildFolderTreeView(archive.Files.Select(x => x.Folder).Distinct()); // Distinct helps performance
+
+            DisableControls.ForEach(x => x.Enabled = true);
         }
 
         private bool CompareStreams(Stream a, Stream b, ulong length)
