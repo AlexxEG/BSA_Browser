@@ -9,6 +9,7 @@ namespace SharpBSABA2.BA2Util
     {
         private const int GNF_HEADER_MAGIC = 0x20464E47;
         private const int GNF_HEADER_CONTENT_SIZE = 248;
+        private const int IntFirst14BitMask = (1 << 14) - 1;
 
         public List<BA2TextureChunk> Chunks { get; private set; } = new List<BA2TextureChunk>();
 
@@ -21,12 +22,17 @@ namespace SharpBSABA2.BA2Util
         /// </summary>
         private uint unk2 { get; set; }
         private uint align { get; set; }
-        private uint numChunks { get; set; }
+
+        public readonly uint numChunks;
+        public readonly uint dataFormat;
+        public readonly uint numFormat;
+        public readonly uint height;
+        public readonly uint width;
 
         /// <summary>
         /// Part of the header that will be in GNF file.
         /// </summary>
-        private byte[] GNFHeader { get; set; }
+        public byte[] GNFHeader { get; set; }
 
         public override uint DisplaySize
         {
@@ -56,6 +62,15 @@ namespace SharpBSABA2.BA2Util
             chunkHdrLen = ba2.BinaryReader.ReadUInt16();
 
             GNFHeader = ba2.BinaryReader.ReadBytes(32);
+
+            uint formatInfo = BitConverter.ToUInt32(GNFHeader.Skip(4).Take(4).ToArray(), 0);
+            dataFormat = formatInfo >> 20 & ((1 << 6) - 1); // Skip first 20 bits then take 6 next bits
+            numFormat = formatInfo >> 26 & ((1 << 4) - 1); // Skip first 26 bits then take 4 next bits
+
+            uint size = BitConverter.ToUInt32(GNFHeader.Skip(8).Take(4).ToArray(), 0);
+            width = (size & IntFirst14BitMask) + 1; // Get first 14 bits
+            height = (size >> 14 & IntFirst14BitMask) + 1; // Shifts past first 14 bits then get first 14 bits again
+
             Offset = ba2.BinaryReader.ReadUInt64();
             Size = ba2.BinaryReader.ReadUInt32();
             RealSize = ba2.BinaryReader.ReadUInt32();
@@ -76,6 +91,10 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(dirHash)}: {dirHash}\n" +
                 $"{nameof(numChunks)}: {numChunks}\n" +
                 $"{nameof(chunkHdrLen)}: {chunkHdrLen}\n" +
+                $"{nameof(dataFormat)}: {dataFormat}\n" +
+                $"{nameof(numFormat)}: {numFormat}\n" +
+                $"{nameof(width)}: {width}\n" +
+                $"{nameof(height)}: {height}\n" +
                 $"{nameof(Offset)}: {Offset}\n" +
                 $"{nameof(Size)}: {Size}\n" +
                 $"{nameof(RealSize)}: {RealSize}\n" +

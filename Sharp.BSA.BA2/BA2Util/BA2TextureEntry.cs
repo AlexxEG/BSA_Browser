@@ -93,8 +93,8 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(unk1)}: {unk1}\n" +
                 $"{nameof(numChunks)}: {numChunks}\n" +
                 $"{nameof(chunkHdrLen)}: {chunkHdrLen}\n" +
-                $"{nameof(height)}: {height}\n" +
                 $"{nameof(width)}: {width}\n" +
+                $"{nameof(height)}: {height}\n" +
                 $"{nameof(numMips)}: {numMips}\n" +
                 $"{nameof(format)}: {format}\n" +
                 $"{nameof(isCubemap)}: {isCubemap}\n" +
