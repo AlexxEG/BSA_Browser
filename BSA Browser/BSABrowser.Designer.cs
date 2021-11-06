@@ -100,11 +100,11 @@
             this.extractAllFilesMenuItem = new System.Windows.Forms.MenuItem();
             this.extractAllFoldersMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem8 = new System.Windows.Forms.MenuItem();
+            this.reloadMenuItem = new System.Windows.Forms.MenuItem();
             this.openContainingFolderMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem14 = new System.Windows.Forms.MenuItem();
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.reloadMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -453,6 +453,7 @@
             // 
             this.openFoldersMenuItem.Index = 3;
             this.openFoldersMenuItem.Text = "Open Folders";
+            this.openFoldersMenuItem.Click += new System.EventHandler(this.openFoldersMenuItem_Click);
             // 
             // helpMenuItem
             // 
@@ -661,6 +662,12 @@
             this.menuItem8.Index = 2;
             this.menuItem8.Text = "-";
             // 
+            // reloadMenuItem
+            // 
+            this.reloadMenuItem.Index = 3;
+            this.reloadMenuItem.Text = "Reload";
+            this.reloadMenuItem.Click += new System.EventHandler(this.reloadMenuItem_Click);
+            // 
             // openContainingFolderMenuItem
             // 
             this.openContainingFolderMenuItem.Index = 4;
@@ -677,12 +684,6 @@
             this.closeMenuItem.Index = 6;
             this.closeMenuItem.Text = "Close";
             this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
-            // 
-            // reloadMenuItem
-            // 
-            this.reloadMenuItem.Index = 3;
-            this.reloadMenuItem.Text = "Reload";
-            this.reloadMenuItem.Click += new System.EventHandler(this.reloadMenuItem_Click);
             // 
             // BSABrowser
             // 

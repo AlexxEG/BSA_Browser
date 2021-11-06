@@ -767,46 +767,7 @@ namespace BSA_Browser
 
         private void optionsMenuItem_Click(object sender, EventArgs e)
         {
-            bool replaceGNFExt = Settings.Default.ReplaceGNFExt;
-
-            using (var of = new OptionsForm())
-            {
-                if (of.ShowDialog(this) == DialogResult.OK)
-                {
-                    of.SaveChanges();
-                    Settings.Default.Save();
-
-                    // Sync changes to UI
-                    this.LoadQuickExtractPaths();
-
-                    this.RefreshIcons();
-
-                    // Add 2 to include the permanent menu items
-                    while (recentFilesMenuItem.MenuItems.Count > (Settings.Default.RecentFiles_MaxFiles + 2))
-                    {
-                        recentFilesMenuItem.MenuItems.RemoveAt(recentFilesMenuItem.MenuItems.Count - 1);
-                    }
-
-                    // Sync changes to archives already opened
-                    for (int i = 1; i < tvFolders.Nodes.Count; i++)
-                    {
-                        var archiveNode = (ArchiveNode)tvFolders.Nodes[i];
-                        archiveNode.Archive.MatchLastWriteTime = Settings.Default.MatchLastWriteTime;
-                    }
-
-                    if (Settings.Default.ReplaceGNFExt != replaceGNFExt)
-                    {
-                        lvFiles.BeginUpdate();
-                        foreach (var archive in tvFolders.Nodes
-                                                .Cast<ArchiveNode>().Skip(1)
-                                                .Where(x => x.Archive.Type == ArchiveTypes.BA2_GNMF))
-                        {
-                            Common.ReplaceGNFExtensions(archive.SubFiles.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
-                        }
-                        lvFiles.EndUpdate();
-                    }
-                }
-            }
+            this.ShowOptions();
         }
 
         private void recentFilesMenuItem_Popup(object sender, EventArgs e)
@@ -921,6 +882,11 @@ namespace BSA_Browser
                 _compareForm = new CompareForm(archives);
 
             _compareForm.Show(this);
+        }
+
+        private void openFoldersMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ShowOptions(2);
         }
 
         private void openFolderMenuItem_Click(object sender, EventArgs e)
@@ -1749,6 +1715,50 @@ namespace BSA_Browser
                     {
                         Tag = path
                     });
+            }
+        }
+
+        private void ShowOptions(int tabPage = 0)
+        {
+            bool replaceGNFExt = Settings.Default.ReplaceGNFExt;
+
+            using (var of = new OptionsForm(tabPage))
+            {
+                if (of.ShowDialog(this) == DialogResult.OK)
+                {
+                    of.SaveChanges();
+                    Settings.Default.Save();
+
+                    // Sync changes to UI
+                    this.LoadQuickExtractPaths();
+
+                    this.RefreshIcons();
+
+                    // Add 2 to include the permanent menu items
+                    while (recentFilesMenuItem.MenuItems.Count > (Settings.Default.RecentFiles_MaxFiles + 2))
+                    {
+                        recentFilesMenuItem.MenuItems.RemoveAt(recentFilesMenuItem.MenuItems.Count - 1);
+                    }
+
+                    // Sync changes to archives already opened
+                    for (int i = 1; i < tvFolders.Nodes.Count; i++)
+                    {
+                        var archiveNode = (ArchiveNode)tvFolders.Nodes[i];
+                        archiveNode.Archive.MatchLastWriteTime = Settings.Default.MatchLastWriteTime;
+                    }
+
+                    if (Settings.Default.ReplaceGNFExt != replaceGNFExt)
+                    {
+                        lvFiles.BeginUpdate();
+                        foreach (var archive in tvFolders.Nodes
+                                                .Cast<ArchiveNode>().Skip(1)
+                                                .Where(x => x.Archive.Type == ArchiveTypes.BA2_GNMF))
+                        {
+                            Common.ReplaceGNFExtensions(archive.SubFiles.OfType<BA2GNFEntry>(), Settings.Default.ReplaceGNFExt);
+                        }
+                        lvFiles.EndUpdate();
+                    }
+                }
             }
         }
 
