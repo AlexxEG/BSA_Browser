@@ -183,7 +183,15 @@ namespace BSA_Browser.Tools
             return await Task.Run(() =>
             {
                 if (this.Entry == entry)
-                    return new ArchiveEntryCompare(entry, false, null);
+                {
+                    var props = new List<CompareProperty>()
+                    {
+                        new CompareProperty("File Size",
+                            string.Format("{0:n0} bytes", this.Entry.Size),
+                            string.Format("{0:n0} bytes", this.Entry.Size))
+                    };
+                    return new ArchiveEntryCompare(entry, false, props);
+                }
 
                 bool diff = false;
                 var compareProperties = new List<CompareProperty>();
