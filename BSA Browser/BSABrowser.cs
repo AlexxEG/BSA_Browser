@@ -886,7 +886,8 @@ namespace BSA_Browser
 
         private void openFoldersMenuItem_Click(object sender, EventArgs e)
         {
-            this.ShowOptions(2);
+            if (openFoldersMenuItem.MenuItems.Count == 0)
+                this.ShowOptions(2);
         }
 
         private void openFolderMenuItem_Click(object sender, EventArgs e)
