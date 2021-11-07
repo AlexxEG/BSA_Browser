@@ -24,7 +24,7 @@ namespace SharpBSABA2.BA2Util
         private uint align { get; set; }
 
         public readonly uint numChunks;
-        public readonly uint dataFormat;
+        public readonly uint format;
         public readonly uint numFormat;
         public readonly uint height;
         public readonly uint width;
@@ -64,7 +64,7 @@ namespace SharpBSABA2.BA2Util
             GNFHeader = ba2.BinaryReader.ReadBytes(32);
 
             uint formatInfo = BitConverter.ToUInt32(GNFHeader.Skip(4).Take(4).ToArray(), 0);
-            dataFormat = formatInfo >> 20 & ((1 << 6) - 1); // Skip first 20 bits then take 6 next bits
+            format = formatInfo >> 20 & ((1 << 6) - 1); // Skip first 20 bits then take 6 next bits
             numFormat = formatInfo >> 26 & ((1 << 4) - 1); // Skip first 26 bits then take 4 next bits
 
             uint size = BitConverter.ToUInt32(GNFHeader.Skip(8).Take(4).ToArray(), 0);
@@ -91,7 +91,7 @@ namespace SharpBSABA2.BA2Util
                 $"{nameof(dirHash)}: {dirHash}\n" +
                 $"{nameof(numChunks)}: {numChunks}\n" +
                 $"{nameof(chunkHdrLen)}: {chunkHdrLen}\n" +
-                $"{nameof(dataFormat)}: {dataFormat}\n" +
+                $"{nameof(format)}: {format}\n" +
                 $"{nameof(numFormat)}: {numFormat}\n" +
                 $"{nameof(width)}: {width}\n" +
                 $"{nameof(height)}: {height}\n" +
