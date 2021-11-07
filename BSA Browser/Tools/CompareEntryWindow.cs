@@ -36,12 +36,32 @@ namespace BSA_Browser.Tools
             public string Right;
             public string CustomGroup;
 
-            public CompareProperty(string name, string left, string right, string customGroup = "")
+            private CompareProperty(string name, string customGroup)
             {
                 this.Name = name;
+                this.Left = this.Right = null;
+                this.CustomGroup = customGroup;
+            }
+
+            public CompareProperty(string name, string left, string right, string customGroup = "") : this(name, customGroup)
+            {
                 this.Left = left;
                 this.Right = right;
-                this.CustomGroup = customGroup;
+            }
+            public CompareProperty(string name, uint left, uint right, string customGroup = "") : this(name, customGroup)
+            {
+                this.Left = left.ToString();
+                this.Right = right.ToString();
+            }
+            public CompareProperty(string name, bool left, bool right, string customGroup = "") : this(name, customGroup)
+            {
+                this.Left = left ? bool.TrueString : bool.FalseString;
+                this.Right = right ? bool.TrueString : bool.FalseString;
+            }
+            public CompareProperty(string name, uint left, uint right, Type enumType, string customGroup = "") : this(name, customGroup)
+            {
+                this.Left = Enum.GetName(enumType, left);
+                this.Right = Enum.GetName(enumType, right);
             }
         }
 
@@ -184,81 +204,15 @@ namespace BSA_Browser.Tools
             {
                 if (this.Entry == entry)
                 {
-                    var props = new List<CompareProperty>()
-                    {
-                        new CompareProperty("File Size",
-                            string.Format("{0:n0} bytes", this.Entry.Size),
-                            string.Format("{0:n0} bytes", this.Entry.Size))
-                    };
-                    return new ArchiveEntryCompare(entry, false, props);
+                    return new ArchiveEntryCompare(entry, false, CompareProperties(this.Entry, entry));
                 }
 
                 bool diff = false;
-                var compareProperties = new List<CompareProperty>();
 
                 using (var compareMS = entry.GetRawDataStream())
                 {
                     byte[] compareBuffer;
                     int chunk = 0;
-
-                    compareProperties.Add(new CompareProperty("File Size",
-                        string.Format("{0:n0} bytes", this.Entry.Size),
-                        string.Format("{0:n0} bytes", compareMS.Length)));
-
-                    // These properties only gets compared if they're same type, since some properties only appear on those types
-                    if (this.Entry.GetType() == entry.GetType())
-                    {
-                        switch (this.Entry)
-                        {
-                            case BA2TextureEntry ba2Tex:
-                                compareProperties.Add(new CompareProperty("DXGI_FORMAT",
-                                    Enum.GetName(typeof(DXGI_FORMAT), ba2Tex.format),
-                                    Enum.GetName(typeof(DXGI_FORMAT), (entry as BA2TextureEntry).format),
-                                    "Texture"));
-
-                                compareProperties.Add(new CompareProperty("Width",
-                                    ba2Tex.width.ToString(),
-                                    (entry as BA2TextureEntry).width.ToString(),
-                                    "Texture"));
-
-                                compareProperties.Add(new CompareProperty("Height",
-                                    ba2Tex.height.ToString(),
-                                    (entry as BA2TextureEntry).height.ToString(),
-                                    "Texture"));
-
-                                compareProperties.Add(new CompareProperty("Chunks",
-                                    ba2Tex.numChunks.ToString(),
-                                    (entry as BA2TextureEntry).numChunks.ToString(),
-                                    "Texture"));
-
-                                compareProperties.Add(new CompareProperty("Mipmap Levels",
-                                    ba2Tex.numMips.ToString(),
-                                    (entry as BA2TextureEntry).numMips.ToString(),
-                                    "Texture"));
-
-                                compareProperties.Add(new CompareProperty("Cubemap",
-                                    ba2Tex.isCubemap == 1 ? bool.TrueString : bool.FalseString,
-                                    (entry as BA2TextureEntry).isCubemap == 1 ? bool.TrueString : bool.FalseString,
-                                    "Texture"));
-                                break;
-                            case BA2GNFEntry gnfTex:
-                                compareProperties.Add(new CompareProperty("Width",
-                                    gnfTex.width.ToString(),
-                                    (entry as BA2GNFEntry).width.ToString(),
-                                    "Texture"));
-
-                                compareProperties.Add(new CompareProperty("Height",
-                                    gnfTex.height.ToString(),
-                                    (entry as BA2GNFEntry).height.ToString(),
-                                    "Texture"));
-
-                                compareProperties.Add(new CompareProperty("Chunks",
-                                    gnfTex.numChunks.ToString(),
-                                    (entry as BA2GNFEntry).numChunks.ToString(),
-                                    "Texture"));
-                                break;
-                        }
-                    }
 
                     while ((compareBuffer = compareMS.ReadBytes(BufferSize)).Length > 0)
                     {
@@ -275,8 +229,100 @@ namespace BSA_Browser.Tools
                     }
                 }
 
-                return new ArchiveEntryCompare(entry, diff, compareProperties);
+                return new ArchiveEntryCompare(entry, diff, CompareProperties(this.Entry, entry));
             });
+        }
+
+        private List<CompareProperty> CompareProperties(ArchiveEntry a, ArchiveEntry b)
+        {
+            var compareProperties = new List<CompareProperty>();
+
+            compareProperties.Add(new CompareProperty("File Size",
+                        string.Format("{0:n0} bytes", a.Size),
+                        string.Format("{0:n0} bytes", b.Size)));
+
+            // These properties only gets compared if they're same type, since some properties only appear on those types
+            if (a.GetType() == b.GetType())
+            {
+                switch (a)
+                {
+                    case BA2TextureEntry aTex:
+                        var texCompare = (BA2TextureEntry)b;
+
+                        compareProperties.Add(new CompareProperty("DXIGI_FORMAT",
+                            aTex.format,
+                            texCompare.format,
+                            typeof(DXGI_FORMAT),
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("Format",
+                            aTex.format,
+                            texCompare.format,
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("Width",
+                            aTex.width,
+                            texCompare.width,
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("Height",
+                            aTex.height,
+                            texCompare.height,
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("Chunks",
+                            aTex.numChunks,
+                            texCompare.numChunks,
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("Mipmap Levels",
+                            aTex.numMips,
+                            texCompare.numMips,
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("Cubemap",
+                            aTex.isCubemap == 1,
+                            texCompare.isCubemap == 1,
+                            "Texture"));
+                        break;
+                    case BA2GNFEntry gnfTex:
+                        var gnfCompare = (BA2GNFEntry)b;
+
+                        compareProperties.Add(new CompareProperty("DXGI_FORMAT",
+                            gnfTex.format,
+                            gnfCompare.format,
+                            typeof(DXGI_FORMAT),
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("Format",
+                            gnfTex.format,
+                            gnfCompare.format,
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("numFormat",
+                            gnfTex.numFormat,
+                            gnfCompare.numFormat,
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("Width",
+                            gnfTex.width,
+                            gnfCompare.width,
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("Height",
+                            gnfTex.height,
+                            gnfCompare.height,
+                            "Texture"));
+
+                        compareProperties.Add(new CompareProperty("Chunks",
+                            gnfTex.numChunks,
+                            gnfCompare.numChunks,
+                            "Texture"));
+                        break;
+                }
+            }
+
+            return compareProperties;
         }
     }
 }
