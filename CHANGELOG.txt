@@ -1,4 +1,4 @@
-[1.13.2]
+[1.14.0]
 
 - Added better error message for when opening Archives fails
 - Added "Reload" context option to archives
@@ -11,6 +11,7 @@
 - Added previewing to Compare tool
 - Added extracting to Compare tool
 - Files are now sorted by file path then type in Compare tool
+- Added more properties to compare for GNF textures in Compare Entry tool
 - Fixed first level of folders not being sorted corretly in archive tree
 
 [1.13.1]
