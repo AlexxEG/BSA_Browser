@@ -139,6 +139,17 @@ namespace BSA_Browser
 
         private static Stopwatch _debugStopwatch = new Stopwatch();
 
+        /// <summary>
+        /// Returns <see cref="Archive"/> with the given file path from <see cref="tvFolders"/>.
+        /// </summary>
+        private Archive FindArchive(string fullPath)
+        {
+            return tvFolders.Nodes
+                .OfType<ArchiveNode>()
+                .Skip(1)
+                .First(x => x.Archive.FullPath.ToLower() == fullPath.ToLower()).Archive;
+        }
+
         private void SetupDebugTools()
         {
             lvFiles.Columns.Add("Extra", 200);
@@ -1630,17 +1641,6 @@ namespace BSA_Browser
         }
 
         #endregion
-
-        /// <summary>
-        /// Returns <see cref="Archive"/> with the given file path from <see cref="tvFolders"/>.
-        /// </summary>
-        private Archive FindArchive(string fullPath)
-        {
-            return tvFolders.Nodes
-                .OfType<ArchiveNode>()
-                .Skip(1)
-                .First(x => x.Archive.FullPath.ToLower() == fullPath.ToLower()).Archive;
-        }
 
         /// <summary>
         /// Returns index for file icon in <see cref="filesImageList"/>.
