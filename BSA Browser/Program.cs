@@ -128,9 +128,9 @@ namespace BSA_Browser
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
             finally
             {

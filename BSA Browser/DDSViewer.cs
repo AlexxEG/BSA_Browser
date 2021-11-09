@@ -29,9 +29,9 @@ namespace BSA_Browser
                 this.LoadImage(stream);
                 this.CalculateStartingSize();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 

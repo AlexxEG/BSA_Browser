@@ -255,10 +255,10 @@ namespace BSA_Browser_CLI
                 {
                     archive = OpenArchive(archivePath);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     if (!_arguments.IgnoreErrors)
-                        throw ex;
+                        throw;
                     else
                         Console.WriteLine($"An error occured opening '{Path.GetFileName(archivePath)}'. Skipping...");
                 }
@@ -309,10 +309,10 @@ namespace BSA_Browser_CLI
                             entry.Extract(destination, true);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (!_arguments.IgnoreErrors)
-                            throw ex;
+                            throw;
                         else
                             Console.WriteLine($"An error occured extracting '{entry.FullPath}'. Skipping...");
                     }
@@ -424,10 +424,10 @@ namespace BSA_Browser_CLI
                 {
                     archive = OpenArchive(archivePath);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     if (!_arguments.IgnoreErrors)
-                        throw ex;
+                        throw;
                     else
                         Console.WriteLine($"An error occured opening '{Path.GetFileName(archivePath)}'. Skipping...");
                 }

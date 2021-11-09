@@ -254,10 +254,10 @@ namespace SharpBSABA2.BSAUtil
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.BinaryReader?.Close();
-                throw ex;
+                throw;
             }
         }
 
