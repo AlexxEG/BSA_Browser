@@ -252,7 +252,7 @@ namespace BSA_Browser.Tools
                         compareProperties.Add(new CompareProperty("DXIGI_FORMAT",
                             aTex.format,
                             texCompare.format,
-                            typeof(DXGI_FORMAT),
+                            typeof(DXGI_FORMAT_FULL),
                             "Texture"));
 
                         compareProperties.Add(new CompareProperty("Format",
@@ -291,7 +291,7 @@ namespace BSA_Browser.Tools
                         compareProperties.Add(new CompareProperty("DXGI_FORMAT",
                             gnfTex.format,
                             gnfCompare.format,
-                            typeof(DXGI_FORMAT),
+                            typeof(DXGI_FORMAT_FULL),
                             "Texture"));
 
                         compareProperties.Add(new CompareProperty("Format",
