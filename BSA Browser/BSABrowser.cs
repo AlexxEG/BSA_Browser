@@ -1270,21 +1270,14 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Opens given archives and returns containing list of <see cref="ArchiveNode"/>.
+        /// Opens given archives and returns <see cref="List{T}"/> of <see cref="ArchiveNode"/>.
         /// </summary>
         /// <param name="addToRecentFiles">True if archives should be added to recent files list.</param>
         /// <param name="paths">Array of archive file paths.</param>
         public List<ArchiveNode> OpenArchives(bool addToRecentFiles, params string[] paths)
         {
-            var nodes = new List<ArchiveNode>(paths.Length);
-
-            foreach (string path in paths)
-            {
-                // Open and add new node to nodes list
-                nodes.Add(this.OpenArchive(path, addToRecentFiles));
-            }
-
-            return nodes;
+            // Open each path as archive
+            return paths.Select(x => this.OpenArchive(x, addToRecentFiles)).ToList();
         }
 
         /// <summary>
