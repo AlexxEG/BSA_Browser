@@ -39,7 +39,6 @@
             this.btnExtractAll = new System.Windows.Forms.Button();
             this.OpenArchiveDialog = new System.Windows.Forms.OpenFileDialog();
             this.btnExtractAllFolders = new System.Windows.Forms.Button();
-            this.btnPreview = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tvFolders = new System.Windows.Forms.TreeView();
@@ -105,6 +104,7 @@
             this.menuItem14 = new System.Windows.Forms.MenuItem();
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -176,11 +176,12 @@
             // 
             this.btnExtractAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExtractAll.Enabled = false;
-            this.btnExtractAll.Location = new System.Drawing.Point(192, 276);
+            this.btnExtractAll.Location = new System.Drawing.Point(168, 276);
             this.btnExtractAll.Name = "btnExtractAll";
             this.btnExtractAll.Size = new System.Drawing.Size(83, 23);
             this.btnExtractAll.TabIndex = 3;
-            this.btnExtractAll.Text = "Extract files";
+            this.btnExtractAll.Text = "Extract";
+            this.toolTip1.SetToolTip(this.btnExtractAll, "Extract all files currently shown directly into selected folder.");
             this.btnExtractAll.UseVisualStyleBackColor = true;
             this.btnExtractAll.Click += new System.EventHandler(this.btnExtractFiles_Click);
             // 
@@ -197,25 +198,15 @@
             // 
             this.btnExtractAllFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExtractAllFolders.Enabled = false;
-            this.btnExtractAllFolders.Location = new System.Drawing.Point(281, 276);
+            this.btnExtractAllFolders.Location = new System.Drawing.Point(257, 276);
             this.btnExtractAllFolders.Name = "btnExtractAllFolders";
-            this.btnExtractAllFolders.Size = new System.Drawing.Size(102, 23);
+            this.btnExtractAllFolders.Size = new System.Drawing.Size(126, 23);
             this.btnExtractAllFolders.TabIndex = 2;
-            this.btnExtractAllFolders.Text = "Extract folders";
+            this.btnExtractAllFolders.Text = "Extract with folders";
+            this.toolTip1.SetToolTip(this.btnExtractAllFolders, "Extract all files currently shown into selected folder with the folder tree intac" +
+        "t.");
             this.btnExtractAllFolders.UseVisualStyleBackColor = true;
             this.btnExtractAllFolders.Click += new System.EventHandler(this.btnExtractFolders_Click);
-            // 
-            // btnPreview
-            // 
-            this.btnPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnPreview.Enabled = false;
-            this.btnPreview.Location = new System.Drawing.Point(111, 276);
-            this.btnPreview.Name = "btnPreview";
-            this.btnPreview.Size = new System.Drawing.Size(75, 23);
-            this.btnPreview.TabIndex = 1;
-            this.btnPreview.Text = "Preview";
-            this.btnPreview.UseVisualStyleBackColor = true;
-            this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click);
             // 
             // txtSearch
             // 
@@ -685,18 +676,28 @@
             this.closeMenuItem.Text = "Close";
             this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(120, 281);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(42, 13);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "All files:";
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 340);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.lFileCount);
             this.Controls.Add(this.cbRegex);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.txtSearch);
-            this.Controls.Add(this.btnPreview);
             this.Controls.Add(this.btnExtractAllFolders);
             this.Controls.Add(this.btnExtractAll);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -724,7 +725,6 @@
         private System.Windows.Forms.OpenFileDialog OpenArchiveDialog;
         private System.Windows.Forms.ColumnHeader columnFilePath;
         private System.Windows.Forms.Button btnExtractAllFolders;
-        private System.Windows.Forms.Button btnPreview;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TreeView tvFolders;
@@ -793,6 +793,7 @@
         private System.Windows.Forms.MenuItem openContainingFolderMenuItem;
         private System.Windows.Forms.MenuItem menuItem14;
         private System.Windows.Forms.MenuItem reloadMenuItem;
+        private System.Windows.Forms.Label label2;
     }
 }
 

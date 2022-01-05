@@ -487,11 +487,6 @@ namespace BSA_Browser
             this.ExtractFilesTo(true, true, () => VisibleFiles);
         }
 
-        private void btnPreview_Click(object sender, EventArgs e)
-        {
-            this.PreviewSelected();
-        }
-
         private void lvFiles_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             var type = (ArchiveFileSortOrder)e.Column;
@@ -1263,7 +1258,6 @@ namespace BSA_Browser
 
             btnExtractAllFolders.Enabled = true;
             btnExtractAll.Enabled = true;
-            btnPreview.Enabled = true;
 
             if (addToRecentFiles)
                 this.AddToRecentFiles(path);
@@ -1355,7 +1349,6 @@ namespace BSA_Browser
 
             if (tvFolders.GetNodeCount(false) == 1)
             {
-                btnPreview.Enabled = false;
                 btnExtractAllFolders.Enabled = false;
                 btnExtractAll.Enabled = false;
             }
@@ -1379,7 +1372,7 @@ namespace BSA_Browser
             GC.Collect();
 
             // Disable buttons
-            btnPreview.Enabled = btnExtractAllFolders.Enabled = btnExtractAll.Enabled = false;
+            btnExtractAllFolders.Enabled = btnExtractAll.Enabled = false;
         }
 
         /// <summary>
