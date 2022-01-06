@@ -670,9 +670,10 @@ namespace BSA_Browser
             if (!rootNode.Built)
                 tvFolders_BeforeExpand(null, new TreeViewCancelEventArgs(e.Node, false, TreeViewAction.Unknown));
 
+            // First we collect entries that will be searched
             List<ArchiveEntry> lvis;
 
-            if (rootNode.Index == 0) // 'All' node is selected, show all files in all archives
+            if (rootNode.Index == 0) // 'All' node is selected, handle files in all archives
             {
                 lvis = new List<ArchiveEntry>(tvFolders.Nodes
                     .OfType<ArchiveNode>()
@@ -685,11 +686,11 @@ namespace BSA_Browser
                     lvis.AddRange((tvFolders.Nodes[i] as ArchiveNode).Archive.Files);
                 }
             }
-            else if (e.Node.Tag == null) // Root node is selected, so show all files
+            else if (e.Node.Tag == null) // Root node is selected, handle all files in selected archive
             {
                 lvis = new List<ArchiveEntry>(rootNode.Archive.Files);
             }
-            else
+            else // Handle all files in selected node
             {
                 // Ignore casing
                 string lowerPath = ((string)e.Node.Tag).ToLower();
