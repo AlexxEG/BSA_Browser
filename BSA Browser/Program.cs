@@ -169,7 +169,7 @@ namespace BSA_Browser
             }
         }
 
-        protected override void OnStartupNextInstance(MsVB.StartupNextInstanceEventArgs eventArgs)
+        protected override async void OnStartupNextInstance(MsVB.StartupNextInstanceEventArgs eventArgs)
         {
             base.OnStartupNextInstance(eventArgs);
 
@@ -186,7 +186,7 @@ namespace BSA_Browser
                 else
                 {
                     this.MainForm.Activate();
-                    (this.MainForm as BSABrowser).OpenArchives(true, parsed.Files.ToArray());
+                    await (this.MainForm as BSABrowser).OpenArchives(true, parsed.Files.ToArray());
                 }
             }
         }

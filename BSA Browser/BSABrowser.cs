@@ -1,11 +1,4 @@
-﻿using BSA_Browser.Classes;
-using BSA_Browser.Dialogs;
-using BSA_Browser.Extensions;
-using BSA_Browser.Properties;
-using SharpBSABA2;
-using SharpBSABA2.BA2Util;
-using SharpBSABA2.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -16,8 +9,16 @@ using System.Management.Automation;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BSA_Browser.Classes;
+using BSA_Browser.Dialogs;
+using BSA_Browser.Extensions;
+using BSA_Browser.Properties;
+using SharpBSABA2;
+using SharpBSABA2.BA2Util;
+using SharpBSABA2.Enums;
 
 namespace BSA_Browser
 {
@@ -43,6 +44,7 @@ namespace BSA_Browser
         ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
         TreeNodeSorter _nodeSorter = new TreeNodeSorter();
         CompareForm _compareForm;
+        string[] _args;
         bool _pauseFiltering = false;
 
         /// <summary>
@@ -382,11 +384,10 @@ namespace BSA_Browser
         public BSABrowser(string[] args)
             : this()
         {
-            if (args?.Length > 0)
-                this.OpenArchives(true, args);
+            _args = args;
         }
 
-        private void BSABrowser_Load(object sender, EventArgs e)
+        private async void BSABrowser_Load(object sender, EventArgs e)
         {
             // Initialize WindowStates if null
             Settings.Default.WindowStates = Settings.Default.WindowStates ?? new WindowStates();
@@ -409,6 +410,9 @@ namespace BSA_Browser
                 // Show ! in main menu if update is available
                 this.ShowUpdateNotification();
             }
+
+            if (_args?.Length > 0)
+                await this.OpenArchives(true, _args);
         }
 
         private void BSABrowser_FormClosed(object sender, FormClosedEventArgs e)
@@ -456,20 +460,20 @@ namespace BSA_Browser
             }
         }
 
-        private void File_DragDrop(object sender, DragEventArgs e)
+        private async void File_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
             if (files.All(this.IsSupportedFile))
             {
-                this.OpenArchives(true, files.Where(this.IsSupportedFile).ToArray());
+                await this.OpenArchives(true, files.Where(this.IsSupportedFile).ToArray());
             }
         }
 
-        private void btnOpen_Click(object sender, EventArgs e)
+        private async void btnOpen_Click(object sender, EventArgs e)
         {
             if (OpenArchiveDialog.ShowDialog(this) == DialogResult.OK)
-                this.OpenArchives(true, OpenArchiveDialog.FileNames);
+                await this.OpenArchives(true, OpenArchiveDialog.FileNames);
         }
 
         private void btnExtractFiles_Click(object sender, EventArgs e)
@@ -735,10 +739,10 @@ namespace BSA_Browser
             extractArchivesMenuItem.Enabled = tvFolders.Nodes.Count > 1;
         }
 
-        private void openArchiveMenuItem_Click(object sender, EventArgs e)
+        private async void openArchiveMenuItem_Click(object sender, EventArgs e)
         {
             if (OpenArchiveDialog.ShowDialog(this) == DialogResult.OK)
-                this.OpenArchives(true, OpenArchiveDialog.FileNames);
+                await this.OpenArchives(true, OpenArchiveDialog.FileNames);
         }
 
         private void closeSelectedArchiveMenuItem_Click(object sender, EventArgs e)
@@ -798,14 +802,14 @@ namespace BSA_Browser
                 recentFilesMenuItem.MenuItems.RemoveAt(i);
         }
 
-        private void recentFiles_Click(object sender, EventArgs e)
+        private async void recentFiles_Click(object sender, EventArgs e)
         {
             var item = sender as MenuItem;
             string file = item.Tag.ToString();
 
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
-                this.OpenArchive(file, true);
+                await this.OpenArchive(file, true);
             }
             else
             {
@@ -1172,7 +1176,7 @@ namespace BSA_Browser
             this.ExtractFilesTo(true, true, () => (archiveContextMenu.Tag as ArchiveNode).Archive.Files);
         }
 
-        private void reloadMenuItem_Click(object sender, EventArgs e)
+        private async void reloadMenuItem_Click(object sender, EventArgs e)
         {
             var archiveNode = archiveContextMenu.Tag as ArchiveNode;
             var index = archiveNode.Index;
@@ -1183,8 +1187,10 @@ namespace BSA_Browser
             var expansionState = archiveNode.Nodes.GetExpansionState();
             var isExpanded = archiveNode.IsExpanded;
 
+            _pauseFiltering = true;
             this.CloseArchive(archiveNode);
-            var newNode = this.OpenArchive(path, false, index);
+            _pauseFiltering = false;
+            var newNode = await this.OpenArchive(path, false, index);
 
             // Restore expanded nodes
             newNode.Nodes.SetExpansionState(expansionState);
@@ -1224,20 +1230,18 @@ namespace BSA_Browser
         /// <param name="path">The archive file path.</param>
         /// <param name="addToRecentFiles">True if archive should be added to recent files list.</param>
         /// <param name="index">Where to insert new node. Must be equal or more than 1, any other value defaults to last index.</param>
-        public ArchiveNode OpenArchive(string path, bool addToRecentFiles = false, int index = -1)
+        public async Task<ArchiveNode> OpenArchive(string path, bool addToRecentFiles = false, int index = -1, CancellationToken? cancellationToken = null)
         {
             // Check if archive is already opened
-            for (int i = 1; i < tvFolders.Nodes.Count; i++)
+            if (this.TryIndexOfArchive(path, out int archiveIndex))
             {
-                var node = (ArchiveNode)tvFolders.Nodes[i];
-                if (node.Archive.FullPath.ToLower() == path.ToLower())
-                {
-                    tvFolders.SelectedNode = node;
-                    return null;
-                }
+                tvFolders.SelectedNode = tvFolders.Nodes[archiveIndex];
+                return null;
             }
 
-            var archive = Common.OpenArchive(path, this);
+            cancellationToken?.ThrowIfCancellationRequested();
+
+            var archive = await Task.Run(() => Common.OpenArchive(path, this));
 
             // Return null if above returns null, errors are handled in the method
             if (archive == null)
@@ -1251,6 +1255,9 @@ namespace BSA_Browser
             newNode.ContextMenu = archiveContextMenu;
             newNode.SubFiles = archive.Files.ToArray();
             newNode.Nodes.Add("empty");
+
+            // Last chance before UI changes are made
+            cancellationToken?.ThrowIfCancellationRequested();
 
             if (index < 1)
                 tvFolders.Nodes.Add(newNode);
@@ -1278,15 +1285,71 @@ namespace BSA_Browser
         /// </summary>
         /// <param name="addToRecentFiles">True if archives should be added to recent files list.</param>
         /// <param name="paths">Array of archive file paths.</param>
-        public List<ArchiveNode> OpenArchives(bool addToRecentFiles, params string[] paths)
+        public async Task<List<ArchiveNode>> OpenArchives(bool addToRecentFiles, params string[] paths)
         {
-            _pauseFiltering = true;
-            // Open each path as archive, excluding last one which will be used to trigger filtering
-            var archives = paths.Take(paths.Length - 1).Select(x => this.OpenArchive(x, addToRecentFiles)).ToList();
-            _pauseFiltering = false;
-            // Open last path to trigger filtering
-            archives.Add(this.OpenArchive(paths.Last(), addToRecentFiles));
-            return archives;
+            // Create ProgressForm is there are more than 3 paths
+            var pf = paths.Length <= 3 ? null : new ProgressForm(paths.Length)
+            {
+                Header = "Opening archives...",
+                Footer = string.Empty,
+                Cancelable = true,
+                Owner = this
+            };
+
+            using (var cts = new CancellationTokenSource())
+            {
+                try
+                {
+                    if (pf != null)
+                    {
+                        pf.Canceled += delegate { cts.Cancel(); };
+                        pf.Show(this);
+                    }
+
+                    // Disable filtering during load so that filtering isn't triggered after each archive
+                    var nodes = new List<ArchiveNode>();
+
+                    _pauseFiltering = true;
+
+                    // Open each path as archive
+                    for (int i = 0; i < paths.Length; i++)
+                    {
+                        if (pf != null)
+                        {
+                            pf.Progress = i + 1;
+                            pf.Description = Path.GetFileName(paths[i]);
+                            pf.Footer = $"({pf.Progress}/{paths.Length})";
+                        }
+
+                        var a = await this.OpenArchive(paths[i], addToRecentFiles, cancellationToken: cts.Token);
+
+                        // Check if 'a' is null, indicates it's already opened
+                        if (a != null)
+                            nodes.Add(a);
+                    }
+
+                    return nodes;
+                }
+                catch (OperationCanceledException)
+                {
+                    Debug.WriteLine("Canceled opening archive(s).");
+                    return null;
+                }
+                finally
+                {
+                    _pauseFiltering = false;
+
+                    if (pf != null)
+                    {
+                        pf.Progress = paths.Length;
+                        pf.BlockClose = false;
+                        pf.Close();
+                    }
+
+                    // Manually trigger filtering
+                    tvFolders_AfterSelect(this, new TreeViewEventArgs(tvFolders.SelectedNode));
+                }
+            }
         }
 
         /// <summary>
@@ -1919,6 +1982,25 @@ namespace BSA_Browser
 
                 this.SortNodes(node, false);
             }
+        }
+
+        /// <summary>
+        /// Returns true if <paramref name="path"/> is open as a <see cref="ArchiveNode"/>. Parameter <paramref name="index"/> gets set to index of archive, or -1 if not found.
+        /// </summary>
+        private bool TryIndexOfArchive(string path, out int index)
+        {
+            // Start at 1 to skip 'All' node
+            for (int i = 1; i < tvFolders.Nodes.Count; i++)
+            {
+                var node = (ArchiveNode)tvFolders.Nodes[i];
+                if (node.Archive.FullPath.ToLower() == path.ToLower())
+                {
+                    index = i;
+                    return true;
+                }
+            }
+            index = -1;
+            return false;
         }
     }
 
