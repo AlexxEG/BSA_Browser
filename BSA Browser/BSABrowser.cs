@@ -43,6 +43,7 @@ namespace BSA_Browser
         ArchiveFileSorter _filesSorter = new ArchiveFileSorter();
         TreeNodeSorter _nodeSorter = new TreeNodeSorter();
         CompareForm _compareForm;
+        bool _pauseFiltering = false;
 
         /// <summary>
         /// Gets the selected <see cref="ArchiveNode"/>.
@@ -656,6 +657,9 @@ namespace BSA_Browser
 
         private void tvFolders_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            if (_pauseFiltering)
+                return;
+
             var rootNode = e.Node.GetRootNode() as ArchiveNode;
 
             // If AllFiles is null, trigger event which will populate it
@@ -1354,6 +1358,7 @@ namespace BSA_Browser
         {
             this.ClearList();
 
+            _pauseFiltering = true;
             for (int i = tvFolders.Nodes.Count - 1; i > 0; i--)
             {
                 ArchiveNode node = (ArchiveNode)tvFolders.Nodes[i];
@@ -1361,6 +1366,7 @@ namespace BSA_Browser
                 _compareForm?.RemoveArchive(node.Archive);
                 tvFolders.Nodes.RemoveAt(i);
             }
+            _pauseFiltering = false;
 
             GC.Collect();
 
