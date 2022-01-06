@@ -1280,8 +1280,13 @@ namespace BSA_Browser
         /// <param name="paths">Array of archive file paths.</param>
         public List<ArchiveNode> OpenArchives(bool addToRecentFiles, params string[] paths)
         {
-            // Open each path as archive
-            return paths.Select(x => this.OpenArchive(x, addToRecentFiles)).ToList();
+            _pauseFiltering = true;
+            // Open each path as archive, excluding last one which will be used to trigger filtering
+            var archives = paths.Take(paths.Length - 1).Select(x => this.OpenArchive(x, addToRecentFiles)).ToList();
+            _pauseFiltering = false;
+            // Open last path to trigger filtering
+            archives.Add(this.OpenArchive(paths.Last(), addToRecentFiles));
+            return archives;
         }
 
         /// <summary>
