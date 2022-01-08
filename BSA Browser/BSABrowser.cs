@@ -381,15 +381,21 @@ namespace BSA_Browser
 
         private void BenchmarkDoSearch_Click(object sender, EventArgs e)
         {
-            var sw = Stopwatch.StartNew();
+            var sw = new Stopwatch();
+            var elapsedTimes = new List<long>();
 
             for (int i = 0; i < 100; i++)
             {
+                sw.Start();
                 this.DoSearch();
+                sw.Restart();
+                elapsedTimes.Add(sw.ElapsedMilliseconds);
             }
 
-            sw.Stop();
-            MessageBox.Show(this, sw.ElapsedMilliseconds + "ms");
+            MessageBox.Show(this, "Average: " + elapsedTimes.Sum() / 100 + "ms\n" +
+                                  "Max: " + elapsedTimes.Max() + "ms\n" +
+                                  "Min: " + elapsedTimes.Min() + "ms\n" +
+                                  "Total: " + elapsedTimes.Sum() + "ms");
         }
 
         #endregion
