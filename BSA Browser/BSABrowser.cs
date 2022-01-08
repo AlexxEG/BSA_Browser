@@ -165,6 +165,7 @@ namespace BSA_Browser
             debugMenuItem.MenuItems.Add("Average extraction speed of files (multi-threaded)", ExtractionSpeedAverageFilesMultiThreaded_Click);
             debugMenuItem.MenuItems.Add("Check if all textures formats are supported", CheckTextureFormats_Click);
             debugMenuItem.MenuItems.Add("Show ProgressForm", ShowProgressForm_Click);
+            debugMenuItem.MenuItems.Add("Benchmark DoSearch", BenchmarkDoSearch_Click);
         }
 
         private void OpeningSpeedAverage_Click(object sender, EventArgs e)
@@ -376,6 +377,19 @@ namespace BSA_Browser
             };
 
             bw.RunWorkerAsync();
+        }
+
+        private void BenchmarkDoSearch_Click(object sender, EventArgs e)
+        {
+            var sw = Stopwatch.StartNew();
+
+            for (int i = 0; i < 100; i++)
+            {
+                this.DoSearch();
+            }
+
+            sw.Stop();
+            MessageBox.Show(this, sw.ElapsedMilliseconds + "ms");
         }
 
         #endregion
