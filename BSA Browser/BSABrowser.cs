@@ -14,27 +14,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BSA_Browser.Classes;
 using BSA_Browser.Dialogs;
+using BSA_Browser.Enums;
 using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
+using BSA_Browser.Sorting;
 using SharpBSABA2;
 using SharpBSABA2.BA2Util;
 using SharpBSABA2.Enums;
 
 namespace BSA_Browser
 {
-    public enum ArchiveFileSortOrder
-    {
-        FilePath,
-        FileSize,
-        Extra
-    }
-
-    public enum SystemErrorCodes : int
-    {
-        ERROR_CANCELLED = 0x4C7,
-        ERROR_NO_ASSOCIATION = 0x483
-    }
-
     public partial class BSABrowser : Form
     {
         private const string UpdateMarker = "(!) ";
@@ -2022,70 +2011,6 @@ namespace BSA_Browser
             }
             index = -1;
             return false;
-        }
-    }
-
-    public class ArchiveFileSorter : Comparer<ArchiveEntry>
-    {
-        internal static ArchiveFileSortOrder order = 0;
-        internal static bool desc = true;
-
-        public static void SetSorter(ArchiveFileSortOrder sortOrder, bool sortDesc)
-        {
-            order = sortOrder;
-            desc = sortDesc;
-        }
-
-        public override int Compare(ArchiveEntry a, ArchiveEntry b)
-        {
-            switch (order)
-            {
-                case ArchiveFileSortOrder.FilePath:
-                    if (a.Archive.HasNameTable)
-                        return desc ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
-                                      string.CompareOrdinal(b.LowerPath, a.LowerPath);
-                    else
-                        return desc ? a.Index.CompareTo(b.Index) :
-                                      b.Index.CompareTo(a.Index);
-
-                case ArchiveFileSortOrder.FileSize:
-                    return desc ? a.DisplaySize.CompareTo(b.DisplaySize) :
-                                  b.DisplaySize.CompareTo(a.DisplaySize);
-
-                case ArchiveFileSortOrder.Extra:
-                    if (a is BA2TextureEntry && b is BA2TextureEntry)
-                    {
-                        string af = Enum.GetName(typeof(DXGI_FORMAT), (a as BA2TextureEntry).format);
-                        string bf = Enum.GetName(typeof(DXGI_FORMAT), (b as BA2TextureEntry).format);
-                        return desc ? string.CompareOrdinal(af, bf) :
-                                      string.CompareOrdinal(bf, af);
-                    }
-                    else
-                    {
-                        // Sort by file path since Extra will be empty
-                        return desc ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
-                                      string.CompareOrdinal(b.LowerPath, a.LowerPath);
-                    }
-
-                default:
-                    return 0;
-            }
-        }
-    }
-
-    public class TreeNodeSorter : Comparer<TreeNode>
-    {
-        public override int Compare(TreeNode a, TreeNode b)
-        {
-            if (a == null)
-            {
-                return b == null ? 0 : -1;
-            }
-            else
-            {
-                // Sort in alphabetical order, except for "<Files>" node
-                return b == null ? 1 : a.Text == "<Files>" ? 0 : a.Text.CompareTo(b.Text);
-            }
         }
     }
 }

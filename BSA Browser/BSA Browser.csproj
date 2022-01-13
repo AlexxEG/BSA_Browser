@@ -86,6 +86,8 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Enums\ArchiveFileSortOrder.cs" />
+    <Compile Include="Sorting\ArchiveFileSorter.cs" />
     <Compile Include="BSABrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,12 +160,14 @@
     <Compile Include="Sorting\NaturalFileInfoNameComparer.cs" />
     <Compile Include="Sorting\NaturalStringComparer.cs" />
     <Compile Include="Sorting\SafeNativeMethods.cs" />
+    <Compile Include="Enums\SystemErrorCodes.cs" />
     <Compile Include="Tools\CompareEntryWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Tools\CompareEntryWindow.Designer.cs">
       <DependentUpon>CompareEntryWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sorting\TreeNodeSorter.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,10 +1,4 @@
-﻿using BSA_Browser.Dialogs;
-using BSA_Browser.Properties;
-using SharpBSABA2;
-using SharpBSABA2.BA2Util;
-using SharpBSABA2.BSAUtil;
-using SharpBSABA2.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -14,6 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using BSA_Browser.Dialogs;
+using BSA_Browser.Enums;
+using BSA_Browser.Properties;
+using SharpBSABA2;
+using SharpBSABA2.BA2Util;
+using SharpBSABA2.BSAUtil;
+using SharpBSABA2.Enums;
 
 namespace BSA_Browser.Classes
 {
