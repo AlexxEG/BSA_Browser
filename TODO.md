@@ -3,6 +3,8 @@
 - [ ] Detailed view for advanced mode or debug mode
 - [ ] Include xtexconv for converting XboxDDS to DDS
 - [ ] Look at BSABrowser.ExtractFiles and allow multiple extraction operations at same time (maybe limit to one per archive or actually check indiviual files)
+- [ ] Remember opened archives, list in archive tree but unloaded (Undecided)
+- [ ] Define workspaces (Undecided)
 
 ### Complete
 
