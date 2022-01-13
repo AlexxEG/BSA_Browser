@@ -1,4 +1,5 @@
 ﻿using BSA_Browser.Classes;
+using BSA_Browser.Dialogs;
 using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
 using BSA_Browser.Sorting;

@@ -100,7 +100,7 @@
     <Compile Include="Classes\ShellExecute.cs" />
     <Compile Include="Classes\SystemIcons.cs" />
     <Compile Include="Classes\LimitedAction.cs" />
-    <Compile Include="Classes\OpenFolderDialog.cs" />
+    <Compile Include="Dialogs\OpenFolderDialog.cs" />
     <Compile Include="Classes\QuickExtractPath.cs" />
     <Compile Include="Classes\QuickExtractPaths.cs" />
     <Compile Include="Classes\WindowState.cs" />
