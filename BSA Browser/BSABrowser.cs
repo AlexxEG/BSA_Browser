@@ -911,7 +911,7 @@ namespace BSA_Browser
         private void openFoldersMenuItem_Click(object sender, EventArgs e)
         {
             if (openFoldersMenuItem.MenuItems.Count == 0)
-                this.ShowOptions(2);
+                this.ShowOptions(OptionsForm.QuickExtractIndex);
         }
 
         private void openFolderMenuItem_Click(object sender, EventArgs e)
