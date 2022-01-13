@@ -1261,6 +1261,7 @@ namespace BSA_Browser
                 Path.GetFileNameWithoutExtension(path) + this.DetectGame(path),
                 archive);
 
+            newNode.ToolTipText = $"Path: {path}\nSize: {Common.FormatBytes(archive.FileSize)}";
             newNode.ImageIndex = newNode.SelectedImageIndex = 3;
             newNode.ContextMenu = archiveContextMenu;
             newNode.SubFiles = archive.Files.ToArray();

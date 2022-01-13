@@ -18,6 +18,8 @@ namespace SharpBSABA2
         public bool MatchLastWriteTime { get; set; }
         public bool RetrieveRealSize { get; protected set; }
 
+        public long FileSize { get; protected set; }
+
         public string FullPath { get; protected set; }
         public string FileName => Path.GetFileName(this.FullPath);
 
@@ -49,6 +51,7 @@ namespace SharpBSABA2
             this.LastWriteTime = File.GetLastWriteTime(this.FullPath);
             this.RetrieveRealSize = retrieveRealSize;
             this.BinaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read), encoding);
+            this.FileSize = this.BinaryReader.BaseStream.Length;
 
             this.Open(filePath);
         }

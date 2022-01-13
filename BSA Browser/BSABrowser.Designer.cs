@@ -235,6 +235,7 @@
             this.tvFolders.ItemHeight = 19;
             this.tvFolders.Location = new System.Drawing.Point(0, 0);
             this.tvFolders.Name = "tvFolders";
+            this.tvFolders.ShowNodeToolTips = true;
             this.tvFolders.Size = new System.Drawing.Size(107, 261);
             this.tvFolders.TabIndex = 0;
             this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
