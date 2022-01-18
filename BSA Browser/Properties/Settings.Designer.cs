@@ -12,7 +12,7 @@ namespace BSA_Browser.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.0.3.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.1.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -32,19 +32,6 @@ namespace BSA_Browser.Properties {
             }
             set {
                 this["LastUnpackPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
-            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />")]
-        public global::System.Collections.Specialized.StringCollection RecentFiles {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["RecentFiles"]));
-            }
-            set {
-                this["RecentFiles"] = value;
             }
         }
         
@@ -204,30 +191,6 @@ namespace BSA_Browser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>.dds</string>
-  <string>.bmp</string>
-  <string>.png</string>
-  <string>.jpg</string>
-  <string>.txt</string>
-  <string>.bat</string>
-  <string>.xml</string>
-  <string>.lst</string>
-  <string>.psc</string>
-  <string>.json</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection BuiltInPreviewing {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["BuiltInPreviewing"]));
-            }
-            set {
-                this["BuiltInPreviewing"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ReplaceGNFExt {
             get {
@@ -295,6 +258,43 @@ namespace BSA_Browser.Properties {
             }
             set {
                 this["CompareDirectoryTree"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
+            "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" />")]
+        public global::System.Collections.Specialized.StringCollection RecentFiles {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["RecentFiles"]));
+            }
+            set {
+                this["RecentFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <string>.dds</string>
+  <string>.bmp</string>
+  <string>.png</string>
+  <string>.jpg</string>
+  <string>.txt</string>
+  <string>.bat</string>
+  <string>.xml</string>
+  <string>.lst</string>
+  <string>.psc</string>
+  <string>.json</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection BuiltInPreviewing {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["BuiltInPreviewing"]));
+            }
+            set {
+                this["BuiltInPreviewing"] = value;
             }
         }
     }

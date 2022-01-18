@@ -5,10 +5,6 @@
     <Setting Name="LastUnpackPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\</Value>
     </Setting>
-    <Setting Name="RecentFiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Value>
-    </Setting>
     <Setting Name="RecentFiles_MaxFiles" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">30</Value>
     </Setting>
@@ -48,21 +44,6 @@
     <Setting Name="Icons" Type="BSA_Browser.Enums.Icons" Scope="User">
       <Value Profile="(Default)">FileList, FolderTree</Value>
     </Setting>
-    <Setting Name="BuiltInPreviewing" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string&gt;.dds&lt;/string&gt;
-  &lt;string&gt;.bmp&lt;/string&gt;
-  &lt;string&gt;.png&lt;/string&gt;
-  &lt;string&gt;.jpg&lt;/string&gt;
-  &lt;string&gt;.txt&lt;/string&gt;
-  &lt;string&gt;.bat&lt;/string&gt;
-  &lt;string&gt;.xml&lt;/string&gt;
-  &lt;string&gt;.lst&lt;/string&gt;
-  &lt;string&gt;.psc&lt;/string&gt;
-  &lt;string&gt;.json&lt;/string&gt;
-&lt;/ArrayOfString&gt;</Value>
-    </Setting>
     <Setting Name="ReplaceGNFExt" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -80,6 +61,25 @@
     </Setting>
     <Setting Name="CompareDirectoryTree" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="RecentFiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
+    </Setting>
+    <Setting Name="BuiltInPreviewing" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;string&gt;.dds&lt;/string&gt;
+  &lt;string&gt;.bmp&lt;/string&gt;
+  &lt;string&gt;.png&lt;/string&gt;
+  &lt;string&gt;.jpg&lt;/string&gt;
+  &lt;string&gt;.txt&lt;/string&gt;
+  &lt;string&gt;.bat&lt;/string&gt;
+  &lt;string&gt;.xml&lt;/string&gt;
+  &lt;string&gt;.lst&lt;/string&gt;
+  &lt;string&gt;.psc&lt;/string&gt;
+  &lt;string&gt;.json&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
     </Setting>
   </Settings>
 </SettingsFile>
