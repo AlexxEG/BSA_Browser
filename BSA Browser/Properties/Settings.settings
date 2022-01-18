@@ -21,7 +21,7 @@
     <Setting Name="SortDesc" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="SortType" Type="BSA_Browser.ArchiveFileSortOrder" Scope="User">
+    <Setting Name="SortType" Type="BSA_Browser.Enums.ArchiveFileSortOrder" Scope="User">
       <Value Profile="(Default)">FilePath</Value>
     </Setting>
     <Setting Name="QuickExtractPaths" Type="BSA_Browser.Classes.QuickExtractPaths" Scope="User">
