@@ -8,7 +8,7 @@ namespace BSA_Browser.Dialogs
 {
     public partial class ExtractArchivesDialog : Form
     {
-        public ICollection<Archive> Archives { get; set; }
+        public IEnumerable<Archive> Archives { get; set; }
         public ICollection<Archive> Selected
         {
             get
@@ -22,7 +22,7 @@ namespace BSA_Browser.Dialogs
             }
         }
 
-        public ExtractArchivesDialog(ICollection<Archive> archives)
+        public ExtractArchivesDialog(IEnumerable<Archive> archives)
         {
             InitializeComponent();
 
@@ -42,7 +42,7 @@ namespace BSA_Browser.Dialogs
             lvArchives.EnableVisualStyles();
         }
 
-        public static ExtractArchivesDialog ShowDialog(IWin32Window owner, ICollection<Archive> archives)
+        public static ExtractArchivesDialog ShowDialog(IWin32Window owner, IEnumerable<Archive> archives)
         {
             var dialog = new ExtractArchivesDialog(archives);
             dialog.ShowDialog(owner);

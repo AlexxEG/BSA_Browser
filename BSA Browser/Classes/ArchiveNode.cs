@@ -10,6 +10,14 @@ namespace BSA_Browser.Classes
         /// </summary>
         public bool Built { get; set; }
         /// <summary>
+        /// Gets or sets whether <see cref="Archive"/> has been loaded.
+        /// </summary>
+        public bool Loaded { get; set; } = false;
+        /// <summary>
+        /// Gets the file path to <see cref="Archive"/>.
+        /// </summary>
+        public string FilePath { get; private set; }
+        /// <summary>
         /// Gets associated <see cref="SharpBSABA2.Archive"/>.
         /// </summary>
         public Archive Archive { get; private set; }
@@ -22,6 +30,14 @@ namespace BSA_Browser.Classes
         {
             this.Text = text;
             this.Archive = archive;
+            this.FilePath = archive?.FullPath;
+            this.Loaded = archive != null;
+        }
+
+        public ArchiveNode(string text, string filePath)
+        {
+            this.Text = text;
+            this.FilePath = filePath;
         }
     }
 }

@@ -105,6 +105,11 @@
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.label2 = new System.Windows.Forms.Label();
+            this.unloadedArchiveContextMenu = new System.Windows.Forms.ContextMenu();
+            this.unloadedOpenContainingFolderMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem15 = new System.Windows.Forms.MenuItem();
+            this.unloadedLoadMenuItem = new System.Windows.Forms.MenuItem();
+            this.unloadedRemoveMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -687,6 +692,38 @@
             this.label2.TabIndex = 13;
             this.label2.Text = "All files:";
             // 
+            // unloadedArchiveContextMenu
+            // 
+            this.unloadedArchiveContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.unloadedOpenContainingFolderMenuItem,
+            this.menuItem15,
+            this.unloadedLoadMenuItem,
+            this.unloadedRemoveMenuItem});
+            this.unloadedArchiveContextMenu.Popup += new System.EventHandler(this.unloadedArchiveContextMenu_Popup);
+            // 
+            // unloadedOpenContainingFolderMenuItem
+            // 
+            this.unloadedOpenContainingFolderMenuItem.Index = 0;
+            this.unloadedOpenContainingFolderMenuItem.Text = "Open Containing Folder";
+            this.unloadedOpenContainingFolderMenuItem.Click += new System.EventHandler(this.unloadedOpenContainingFolderMenuItem_Click);
+            // 
+            // menuItem15
+            // 
+            this.menuItem15.Index = 1;
+            this.menuItem15.Text = "-";
+            // 
+            // unloadedLoadMenuItem
+            // 
+            this.unloadedLoadMenuItem.Index = 2;
+            this.unloadedLoadMenuItem.Text = "Load";
+            this.unloadedLoadMenuItem.Click += new System.EventHandler(this.unloadedLoadMenuItem_Click);
+            // 
+            // unloadedRemoveMenuItem
+            // 
+            this.unloadedRemoveMenuItem.Index = 3;
+            this.unloadedRemoveMenuItem.Text = "Remove";
+            this.unloadedRemoveMenuItem.Click += new System.EventHandler(this.unloadedRemoveMenuItem_Click);
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -795,6 +832,11 @@
         private System.Windows.Forms.MenuItem menuItem14;
         private System.Windows.Forms.MenuItem reloadMenuItem;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ContextMenu unloadedArchiveContextMenu;
+        private System.Windows.Forms.MenuItem unloadedOpenContainingFolderMenuItem;
+        private System.Windows.Forms.MenuItem menuItem15;
+        private System.Windows.Forms.MenuItem unloadedLoadMenuItem;
+        private System.Windows.Forms.MenuItem unloadedRemoveMenuItem;
     }
 }
 

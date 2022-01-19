@@ -89,11 +89,10 @@ namespace BSA_Browser
             };
         }
 
-        public CompareForm(ICollection<Archive> archives)
+        public CompareForm(IEnumerable<Archive> archives)
             : this()
         {
-            if (archives?.Count > 0)
-                this.Archives.AddRange(archives);
+            this.Archives.AddRange(archives);
         }
 
         private void CompareForm_Load(object sender, EventArgs e)

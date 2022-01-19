@@ -30,6 +30,7 @@ namespace BSA_Browser
 
             nudMaxRecentFiles.Value = Settings.Default.RecentFiles_MaxFiles;
             chbCheckForUpdates.Checked = Settings.Default.CheckForUpdates;
+            chbRememberArchives.Checked = Settings.Default.RememberArchives;
             chbSortBSADirectories.Checked = Settings.Default.SortArchiveDirectories;
             chbRetrieveRealSize.Checked = Settings.Default.RetrieveRealSize;
 
@@ -179,6 +180,7 @@ namespace BSA_Browser
         {
             Settings.Default.RecentFiles_MaxFiles = (int)nudMaxRecentFiles.Value;
             Settings.Default.CheckForUpdates = chbCheckForUpdates.Checked;
+            Settings.Default.RememberArchives = chbRememberArchives.Checked;
             Settings.Default.SortArchiveDirectories = chbSortBSADirectories.Checked;
             Settings.Default.RetrieveRealSize = chbRetrieveRealSize.Checked;
             Settings.Default.EncodingCodePage = (cbEncodings.SelectedItem as Encoding).CodePage;

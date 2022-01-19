@@ -68,14 +68,15 @@
             this.chbReplaceGNFExt = new System.Windows.Forms.CheckBox();
             this.chbMatchLastWriteTime = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.lvQuickExtract = new L0ki.Controls.ReordableItemListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lvPreviewing = new System.Windows.Forms.ListView();
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chbRememberArchives = new System.Windows.Forms.CheckBox();
+            this.lvQuickExtract = new L0ki.Controls.ReordableItemListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -185,6 +186,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.chbRememberArchives);
             this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.btnResetToDefaultGeneral);
             this.tabPage1.Controls.Add(this.groupBox2);
@@ -204,7 +206,7 @@
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.chbIconsFileList);
             this.groupBox3.Controls.Add(this.chbIconsFolderTree);
-            this.groupBox3.Location = new System.Drawing.Point(13, 198);
+            this.groupBox3.Location = new System.Drawing.Point(13, 221);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(177, 85);
@@ -261,7 +263,7 @@
             this.groupBox2.Controls.Add(this.chbRetrieveRealSize);
             this.groupBox2.Controls.Add(this.cbEncodings);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(13, 74);
+            this.groupBox2.Location = new System.Drawing.Point(13, 97);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(401, 112);
@@ -312,7 +314,7 @@
             // chbCheckForUpdates
             // 
             this.chbCheckForUpdates.AutoSize = true;
-            this.chbCheckForUpdates.Location = new System.Drawing.Point(13, 39);
+            this.chbCheckForUpdates.Location = new System.Drawing.Point(13, 60);
             this.chbCheckForUpdates.Name = "chbCheckForUpdates";
             this.chbCheckForUpdates.Size = new System.Drawing.Size(177, 17);
             this.chbCheckForUpdates.TabIndex = 2;
@@ -321,7 +323,7 @@
             // 
             // nudMaxRecentFiles
             // 
-            this.nudMaxRecentFiles.Location = new System.Drawing.Point(94, 13);
+            this.nudMaxRecentFiles.Location = new System.Drawing.Point(94, 34);
             this.nudMaxRecentFiles.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.nudMaxRecentFiles.Minimum = new decimal(new int[] {
             1,
@@ -340,7 +342,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 15);
+            this.label2.Location = new System.Drawing.Point(10, 36);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 13);
@@ -405,42 +407,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Quick Extract";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // lvQuickExtract
-            // 
-            this.lvQuickExtract.AllowDrop = true;
-            this.lvQuickExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvQuickExtract.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.lvQuickExtract.FullRowSelect = true;
-            this.lvQuickExtract.HideSelection = false;
-            this.lvQuickExtract.Location = new System.Drawing.Point(6, 99);
-            this.lvQuickExtract.Name = "lvQuickExtract";
-            this.lvQuickExtract.ShowGroups = false;
-            this.lvQuickExtract.Size = new System.Drawing.Size(600, 188);
-            this.lvQuickExtract.TabIndex = 1;
-            this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
-            this.lvQuickExtract.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 120;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Path";
-            this.columnHeader2.Width = 282;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Maintain folder path";
-            this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader3.Width = 120;
             // 
             // tabPage3
             // 
@@ -527,6 +493,52 @@
             this.columnHeader4.Text = "File Type";
             this.columnHeader4.Width = 240;
             // 
+            // chbRememberArchives
+            // 
+            this.chbRememberArchives.AutoSize = true;
+            this.chbRememberArchives.Location = new System.Drawing.Point(13, 13);
+            this.chbRememberArchives.Name = "chbRememberArchives";
+            this.chbRememberArchives.Size = new System.Drawing.Size(121, 17);
+            this.chbRememberArchives.TabIndex = 6;
+            this.chbRememberArchives.Text = "Remember Archives";
+            this.chbRememberArchives.UseVisualStyleBackColor = true;
+            // 
+            // lvQuickExtract
+            // 
+            this.lvQuickExtract.AllowDrop = true;
+            this.lvQuickExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvQuickExtract.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.lvQuickExtract.FullRowSelect = true;
+            this.lvQuickExtract.HideSelection = false;
+            this.lvQuickExtract.Location = new System.Drawing.Point(6, 99);
+            this.lvQuickExtract.Name = "lvQuickExtract";
+            this.lvQuickExtract.ShowGroups = false;
+            this.lvQuickExtract.Size = new System.Drawing.Size(600, 188);
+            this.lvQuickExtract.TabIndex = 1;
+            this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
+            this.lvQuickExtract.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 120;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Path";
+            this.columnHeader2.Width = 282;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Maintain folder path";
+            this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader3.Width = 120;
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOK;
@@ -601,5 +613,6 @@
         private System.Windows.Forms.CheckBox chbReplaceGNFExt;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnResetToDefaultExtraction;
+        private System.Windows.Forms.CheckBox chbRememberArchives;
     }
 }

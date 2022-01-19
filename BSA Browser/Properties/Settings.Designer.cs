@@ -297,5 +297,28 @@ namespace BSA_Browser.Properties {
                 this["BuiltInPreviewing"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RememberArchives {
+            get {
+                return ((bool)(this["RememberArchives"]));
+            }
+            set {
+                this["RememberArchives"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection RememberedArchives {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["RememberedArchives"]));
+            }
+            set {
+                this["RememberedArchives"] = value;
+            }
+        }
     }
 }
