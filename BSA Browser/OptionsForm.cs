@@ -110,19 +110,28 @@ namespace BSA_Browser
 
         private void btnResetToDefaultGeneral_Click(object sender, EventArgs e)
         {
-            nudMaxRecentFiles.Value = 30;
-            chbCheckForUpdates.Checked = true;
-            chbSortBSADirectories.Checked = true;
-            chbRetrieveRealSize.Checked = false;
-            cbEncodings.SelectedIndex = 0;
-            chbIconsFileList.Checked = true;
-            chbIconsFolderTree.Checked = true;
+            var s = Settings.Default;
+
+            nudMaxRecentFiles.Value = GetDefaultPropertyValueInt(nameof(s.RecentFiles_MaxFiles));
+            chbCheckForUpdates.Checked = GetDefaultPropertyValueBool(nameof(s.CheckForUpdates));
+            chbRememberArchives.Checked = GetDefaultPropertyValueBool(nameof(s.RememberArchives));
+            chbSortBSADirectories.Checked = GetDefaultPropertyValueBool(nameof(s.SortArchiveDirectories));
+            chbRetrieveRealSize.Checked = GetDefaultPropertyValueBool(nameof(s.RetrieveRealSize));
+
+            cbEncodings.SelectedIndex =
+                cbEncodings.Items.IndexOf(Encoding.GetEncoding(GetDefaultPropertyValueInt(nameof(s.EncodingCodePage))));
+
+            var icons = (Enums.Icons)Enum.Parse(typeof(Enums.Icons), GetDefaultPropertyValue(nameof(s.Icons)));
+            chbIconsFileList.Checked = icons.HasFlag(Enums.Icons.FileList);
+            chbIconsFolderTree.Checked = icons.HasFlag(Enums.Icons.FolderTree);
         }
 
         private void btnResetToDefaultExtraction_Click(object sender, EventArgs e)
         {
-            chbMatchLastWriteTime.Checked = false;
-            chbReplaceGNFExt.Checked = false;
+            var s = Settings.Default;
+
+            chbMatchLastWriteTime.Checked = GetDefaultPropertyValueBool(nameof(s.MatchLastWriteTime));
+            chbReplaceGNFExt.Checked = GetDefaultPropertyValueBool(nameof(s.ReplaceGNFExt));
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -200,6 +209,21 @@ namespace BSA_Browser
             Settings.Default.BuiltInPreviewing.Clear();
             Settings.Default.BuiltInPreviewing.AddRange(lvPreviewing.Items
                 .Cast<ListViewItem>().Where(x => x.Checked).Select(x => x.Text).ToArray());
+        }
+
+        private string GetDefaultPropertyValue(string propertyName)
+        {
+            return Settings.Default.Properties[propertyName].DefaultValue.ToString();
+        }
+
+        private bool GetDefaultPropertyValueBool(string propertyName)
+        {
+            return bool.Parse(GetDefaultPropertyValue(propertyName));
+        }
+
+        private int GetDefaultPropertyValueInt(string propertyName)
+        {
+            return int.Parse(GetDefaultPropertyValue(propertyName));
         }
     }
 }
