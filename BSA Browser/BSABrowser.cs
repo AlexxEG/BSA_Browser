@@ -1471,7 +1471,7 @@ namespace BSA_Browser
 
                 var filename = Path.GetFileNameWithoutExtension(archivePath);
                 var newNode = new ArchiveNode(
-                    $"{filename}{this.DetectGame(archivePath)} (Unloaded)",
+                    $"{filename}{this.DetectGame(archivePath)}",
                     archivePath);
 
                 newNode.ForeColor = System.Drawing.SystemColors.GrayText;
