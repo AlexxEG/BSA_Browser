@@ -221,6 +221,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\unloaded.png" />
     <None Include="all.png" />
     <Content Include="fomm01.ico" />
   </ItemGroup>

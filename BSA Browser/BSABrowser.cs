@@ -115,6 +115,7 @@ namespace BSA_Browser
             foldersImageList.Images.Add(SystemIcons.Files);
             foldersImageList.Images.Add((System.Drawing.Icon)this.Icon.Clone());
             foldersImageList.Images.Add(Resources.all);
+            foldersImageList.Images.Add(Resources.unloaded);
 
             if (Settings.Default.Icons.HasFlag(Enums.Icons.FileList))
             {
@@ -1475,7 +1476,7 @@ namespace BSA_Browser
 
                 newNode.ForeColor = System.Drawing.SystemColors.GrayText;
                 newNode.ToolTipText = $"Path: {archivePath}\nSize: Unloaded";
-                newNode.ImageIndex = newNode.SelectedImageIndex = 3;
+                newNode.ImageIndex = newNode.SelectedImageIndex = 5;
                 newNode.ContextMenu = unloadedArchiveContextMenu;
                 newNode.Nodes.Add("empty");
 
