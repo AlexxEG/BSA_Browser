@@ -1287,7 +1287,7 @@ namespace BSA_Browser
         {
             try
             {
-                Process.Start("explorer.exe", "/select, \"" + (archiveContextMenu.Tag as ArchiveNode).Archive.FullPath);
+                Process.Start("explorer.exe", "/select, \"" + (unloadedArchiveContextMenu.Tag as ArchiveNode).FilePath);
             }
             catch (Exception ex)
             {
