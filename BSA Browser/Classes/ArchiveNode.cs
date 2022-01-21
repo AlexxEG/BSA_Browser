@@ -1,5 +1,6 @@
-﻿using SharpBSABA2;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
+using BSA_Browser.Sorting;
+using SharpBSABA2;
 
 namespace BSA_Browser.Classes
 {
@@ -25,6 +26,8 @@ namespace BSA_Browser.Classes
         /// Gets or sets all the files in the selected sub directory.
         /// </summary>
         public ArchiveEntry[] SubFiles { get; set; }
+
+        public SortingConfig? SortingConfig { get; set; } = null;
 
         public ArchiveNode(string text, Archive archive)
         {

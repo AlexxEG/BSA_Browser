@@ -8,29 +8,27 @@ namespace BSA_Browser.Sorting
 {
     public class ArchiveFileSorter : Comparer<ArchiveEntry>
     {
-        internal static ArchiveFileSortOrder order = 0;
-        internal static bool desc = true;
+        public static SortingConfig SortingConfig { get; set; } = new SortingConfig(true, 0);
 
         public static void SetSorter(ArchiveFileSortOrder sortOrder, bool sortDesc)
         {
-            order = sortOrder;
-            desc = sortDesc;
+            SortingConfig = new SortingConfig(sortDesc, sortOrder);
         }
 
         public override int Compare(ArchiveEntry a, ArchiveEntry b)
         {
-            switch (order)
+            switch (SortingConfig.Order)
             {
                 case ArchiveFileSortOrder.FilePath:
                     if (a.Archive.HasNameTable)
-                        return desc ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
+                        return SortingConfig.Descending ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
                                       string.CompareOrdinal(b.LowerPath, a.LowerPath);
                     else
-                        return desc ? a.Index.CompareTo(b.Index) :
+                        return SortingConfig.Descending ? a.Index.CompareTo(b.Index) :
                                       b.Index.CompareTo(a.Index);
 
                 case ArchiveFileSortOrder.FileSize:
-                    return desc ? a.DisplaySize.CompareTo(b.DisplaySize) :
+                    return SortingConfig.Descending ? a.DisplaySize.CompareTo(b.DisplaySize) :
                                   b.DisplaySize.CompareTo(a.DisplaySize);
 
                 case ArchiveFileSortOrder.Extra:
@@ -38,13 +36,13 @@ namespace BSA_Browser.Sorting
                     {
                         string af = Enum.GetName(typeof(DXGI_FORMAT), (a as BA2TextureEntry).format);
                         string bf = Enum.GetName(typeof(DXGI_FORMAT), (b as BA2TextureEntry).format);
-                        return desc ? string.CompareOrdinal(af, bf) :
+                        return SortingConfig.Descending ? string.CompareOrdinal(af, bf) :
                                       string.CompareOrdinal(bf, af);
                     }
                     else
                     {
                         // Sort by file path since Extra will be empty
-                        return desc ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
+                        return SortingConfig.Descending ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
                                       string.CompareOrdinal(b.LowerPath, a.LowerPath);
                     }
 

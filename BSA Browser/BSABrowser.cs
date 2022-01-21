@@ -637,6 +637,7 @@ namespace BSA_Browser
             var nodes = new Dictionary<string, TreeNode>();
             // Initial sorting
             rootNode.Archive.Files.Sort(_filesSorter);
+            rootNode.SortingConfig = ArchiveFileSorter.SortingConfig;
 
             // Keep track of directories with files directly under them
             var directoriesWithFiles = new List<string>();
@@ -761,7 +762,11 @@ namespace BSA_Browser
                 lvis.TrimExcess();
             }
 
-            lvis.Sort(_filesSorter);
+            if (rootNode.Index == 0 || rootNode.SortingConfig != ArchiveFileSorter.SortingConfig)
+            {
+                lvis.Sort(_filesSorter);
+                rootNode.SortingConfig = ArchiveFileSorter.SortingConfig;
+            }
             rootNode.SubFiles = lvis.ToArray();
 
             lvFiles.ScrollToTop();
@@ -2094,6 +2099,10 @@ namespace BSA_Browser
 
             // Sort the archive so it only needs to be done once
             this.SelectedArchiveNode?.Archive?.Files.Sort(_filesSorter);
+            if (this.SelectedArchiveNode != null)
+            {
+                this.SelectedArchiveNode.SortingConfig = ArchiveFileSorter.SortingConfig;
+            }
 
             // Repopulate 'SelectedArchiveNode.Files' with sorted list by triggering this event
             if (this.SelectedArchiveNode != null)

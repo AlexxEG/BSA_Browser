@@ -161,6 +161,7 @@
     <Compile Include="Sorting\NaturalStringComparer.cs" />
     <Compile Include="Sorting\SafeNativeMethods.cs" />
     <Compile Include="Enums\SystemErrorCodes.cs" />
+    <Compile Include="Sorting\SortingConfig.cs" />
     <Compile Include="Tools\CompareEntryWindow.cs">
       <SubType>Form</SubType>
     </Compile>
