@@ -186,7 +186,7 @@ namespace BSA_Browser
                 else
                 {
                     this.MainForm.Activate();
-                    await (this.MainForm as BSABrowser).OpenArchives(true, parsed.Files.ToArray());
+                    await (this.MainForm as BSABrowser).OpenArchives(true, parsed.Files);
                 }
             }
         }

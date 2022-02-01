@@ -1390,11 +1390,21 @@ namespace BSA_Browser
         /// Opens given archives and returns <see cref="List{T}"/> of <see cref="ArchiveNode"/>.
         /// </summary>
         /// <param name="addToRecentFiles">True if archives should be added to recent files list.</param>
-        /// <param name="paths">Array of archive file paths.</param>
-        public async Task<List<ArchiveNode>> OpenArchives(bool addToRecentFiles, params string[] paths)
+        /// <param name="paths">Sequence of archive file paths.</param>
+        public async Task<List<ArchiveNode>> OpenArchives(bool addToRecentFiles, IEnumerable<string> paths)
+        {
+            return await this.OpenArchives(addToRecentFiles, (List<string>)paths);
+        }
+
+        /// <summary>
+        /// Opens given archives and returns <see cref="List{T}"/> of <see cref="ArchiveNode"/>.
+        /// </summary>
+        /// <param name="addToRecentFiles">True if archives should be added to recent files list.</param>
+        /// <param name="paths">List of archive file paths.</param>
+        public async Task<List<ArchiveNode>> OpenArchives(bool addToRecentFiles, List<string> paths)
         {
             // Create ProgressForm is there are more than 3 paths
-            var pf = paths.Length <= 3 ? null : new ProgressForm(paths.Length)
+            var pf = paths.Count <= 3 ? null : new ProgressForm(paths.Count)
             {
                 Header = "Opening archives...",
                 Footer = string.Empty,
@@ -1418,13 +1428,13 @@ namespace BSA_Browser
                     _pauseFiltering = true;
 
                     // Open each path as archive
-                    for (int i = 0; i < paths.Length; i++)
+                    for (int i = 0; i < paths.Count; i++)
                     {
                         if (pf != null)
                         {
                             pf.Progress = i + 1;
                             pf.Description = Path.GetFileName(paths[i]);
-                            pf.Footer = $"({pf.Progress}/{paths.Length})";
+                            pf.Footer = $"({pf.Progress}/{paths.Count})";
                         }
 
                         var a = await this.OpenArchive(paths[i], addToRecentFiles, cancellationToken: cts.Token);
@@ -1447,7 +1457,7 @@ namespace BSA_Browser
 
                     if (pf != null)
                     {
-                        pf.Progress = paths.Length;
+                        pf.Progress = paths.Count;
                         pf.BlockClose = false;
                         pf.Close();
                     }
