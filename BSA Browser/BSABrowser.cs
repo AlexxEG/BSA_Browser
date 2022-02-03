@@ -477,12 +477,12 @@ namespace BSA_Browser
 
         private void File_DragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+                return;
 
-                e.Effect = files.All(this.IsSupportedFile) ? DragDropEffects.Link : DragDropEffects.Scroll;
-            }
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            e.Effect = files.All(this.IsSupportedFile) ? DragDropEffects.Link : DragDropEffects.Scroll;
         }
 
         private async void File_DragDrop(object sender, DragEventArgs e)
