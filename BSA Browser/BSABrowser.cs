@@ -1337,7 +1337,10 @@ namespace BSA_Browser
         /// <param name="path">The archive file path.</param>
         /// <param name="addToRecentFiles">True if archive should be added to recent files list.</param>
         /// <param name="index">Where to insert new node. Must be equal or more than 1, any other value defaults to last index.</param>
-        public async Task<ArchiveNode> OpenArchive(string path, bool addToRecentFiles = false, int index = -1, CancellationToken? cancellationToken = null)
+        public async Task<ArchiveNode> OpenArchive(string path,
+                                                   bool addToRecentFiles = false,
+                                                   int index = -1,
+                                                   CancellationToken? cancellationToken = null)
         {
             // Check if archive is already opened
             if (this.TryIndexOfArchive(path, out int archiveIndex))
@@ -1722,7 +1725,13 @@ namespace BSA_Browser
         /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
         /// <param name="gui">True to show a <see cref="ProgressForm"/>.</param>
         /// <param name="files">The files in the selected archive to extract.</param>
-        public static void ExtractFiles(Form owner, string folder, bool useFolderPath, bool gui, IList<ArchiveEntry> files, ProgressForm progressForm = null, bool titleProgress = false)
+        public static void ExtractFiles(Form owner,
+                                        string folder,
+                                        bool useFolderPath,
+                                        bool gui,
+                                        IList<ArchiveEntry> files,
+                                        ProgressForm progressForm = null,
+                                        bool titleProgress = false)
         {
             // Store all unique archives to prevent extracting same archive across multiple operations at the same time
             var archives = files.Select(x => x.Archive.FullPath.ToLower()).Distinct();
