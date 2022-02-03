@@ -1634,60 +1634,30 @@ namespace BSA_Browser
             if (SelectedArchiveNode.Loaded == false)
                 return;
 
-            string str = txtSearch.Text;
-
             // Reset text color
             txtSearch.ForeColor = System.Drawing.SystemColors.WindowText;
-
             VisibleFiles.Clear();
 
-            if (str.Length == 0)
-                VisibleFiles.AddRange(this.SelectedArchiveNode.SubFiles);
-            else if (cbRegex.Checked)
+            try
             {
-                Regex regex;
-
-                try
+                if (txtSearch.Text.Length == 0)
                 {
-                    regex = new Regex(str, RegexOptions.Compiled | RegexOptions.Singleline);
+                    VisibleFiles.AddRange(this.SelectedArchiveNode.SubFiles);
                 }
-                catch
+                else if (cbRegex.Checked)
                 {
-                    // Set text color to red to indicate an error with the search pattern
-                    txtSearch.ForeColor = System.Drawing.Color.Red;
-                    return;
+                    VisibleFiles.AddRange(this.DoSearchRegex(txtSearch.Text));
                 }
-
-                for (int i = 0; i < this.SelectedArchiveNode.SubFiles.Length; i++)
+                else
                 {
-                    var file = this.SelectedArchiveNode.SubFiles[i];
-
-                    if (regex.IsMatch(file.FullPath))
-                        VisibleFiles.Add(file);
+                    VisibleFiles.AddRange(this.DoSearchSimple(txtSearch.Text));
                 }
             }
-            else
+            catch
             {
-                // Escape special characters, then unescape wild card characters again
-                str = WildcardPattern.Escape(str).Replace("`*", "*");
-                var pattern = new WildcardPattern($"*{str}*", WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
-
-                try
-                {
-                    for (int i = 0; i < this.SelectedArchiveNode.SubFiles.Length; i++)
-                    {
-                        var file = this.SelectedArchiveNode.SubFiles[i];
-
-                        if (pattern.IsMatch(file.FullPath))
-                            VisibleFiles.Add(file);
-                    }
-                }
-                catch
-                {
-                    // Set text color to red to indicate an error with the search term
-                    txtSearch.ForeColor = System.Drawing.Color.Red;
-                    return;
-                }
+                // Set text color to red to indicate an error with the search pattern
+                txtSearch.ForeColor = System.Drawing.Color.Red;
+                return;
             }
 
             // Refresh list items
@@ -1697,6 +1667,28 @@ namespace BSA_Browser
             lvFiles.EndUpdate();
 
             lFileCount.Text = string.Format("{0:n0} files", VisibleFiles.Count);
+        }
+
+        private IEnumerable<ArchiveEntry> DoSearchRegex(string searchString)
+        {
+            var regex = new Regex(searchString, RegexOptions.Compiled | RegexOptions.Singleline);
+            foreach (var entry in this.SelectedArchiveNode.SubFiles)
+            {
+                if (regex.IsMatch(entry.FullPath))
+                    yield return entry;
+            }
+        }
+
+        private IEnumerable<ArchiveEntry> DoSearchSimple(string searchString)
+        {
+            // Escape special characters, then unescape wild card characters again
+            searchString = WildcardPattern.Escape(searchString).Replace("`*", "*");
+            var pattern = new WildcardPattern($"*{searchString}*", WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
+            foreach (var entry in this.SelectedArchiveNode.SubFiles)
+            {
+                if (pattern.IsMatch(entry.FullPath))
+                    yield return entry;
+            }
         }
 
         /// <summary>
