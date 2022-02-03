@@ -517,7 +517,7 @@ namespace BSA_Browser
             if (this.SelectedArchiveNode == null)
                 return;
 
-            this.ExtractFilesTo(false, true, () => VisibleFiles);
+            this.ExtractFilesTo(false, true, this.VisibleFiles);
         }
 
         private void btnExtractFolders_Click(object sender, EventArgs e)
@@ -525,7 +525,7 @@ namespace BSA_Browser
             if (this.SelectedArchiveNode == null)
                 return;
 
-            this.ExtractFilesTo(true, true, () => VisibleFiles);
+            this.ExtractFilesTo(true, true, this.VisibleFiles);
         }
 
         private void lvFiles_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -828,17 +828,11 @@ namespace BSA_Browser
             if (dialog.DialogResult != DialogResult.OK)
                 return;
 
-            this.ExtractFilesTo(true, true, () =>
-            {
-                var files = new List<ArchiveEntry>();
+            var files = dialog.Selected
+                .Select(x => x.Files)
+                .SelectMany(x => x);
 
-                foreach (Archive archive in dialog.Selected)
-                    files.AddRange(archive.Files);
-
-                return files;
-            });
-
-            var test = dialog.Selected.Select(x => x.Files);
+            this.ExtractFilesTo(true, true, files);
         }
 
         private void optionsMenuItem_Click(object sender, EventArgs e)
@@ -1081,7 +1075,11 @@ namespace BSA_Browser
         {
             if (lvFiles.SelectedIndices.Count > 0)
             {
-                this.ExtractFilesTo(false, true, () => lvFiles.SelectedIndices.Cast<int>().Select(index => VisibleFiles[index]));
+                var files = lvFiles.SelectedIndices
+                    .Cast<int>()
+                    .Select(index => this.VisibleFiles[index]);
+
+                this.ExtractFilesTo(false, true, files);
             }
         }
 
@@ -1089,7 +1087,11 @@ namespace BSA_Browser
         {
             if (lvFiles.SelectedIndices.Count > 0)
             {
-                this.ExtractFilesTo(true, true, () => lvFiles.SelectedIndices.Cast<int>().Select(index => VisibleFiles[index]));
+                var files = lvFiles.SelectedIndices
+                    .Cast<int>()
+                    .Select(index => VisibleFiles[index]);
+
+                this.ExtractFilesTo(true, true, files);
             }
         }
 
@@ -1231,12 +1233,12 @@ namespace BSA_Browser
 
         private void extractAllFilesMenuItem_Click(object sender, EventArgs e)
         {
-            this.ExtractFilesTo(false, true, () => (archiveContextMenu.Tag as ArchiveNode).Archive.Files);
+            this.ExtractFilesTo(false, true, (archiveContextMenu.Tag as ArchiveNode).Archive.Files);
         }
 
         private void extractAllFoldersMenuItem_Click(object sender, EventArgs e)
         {
-            this.ExtractFilesTo(true, true, () => (archiveContextMenu.Tag as ArchiveNode).Archive.Files);
+            this.ExtractFilesTo(true, true, (archiveContextMenu.Tag as ArchiveNode).Archive.Files);
         }
 
         private async void reloadMenuItem_Click(object sender, EventArgs e)
@@ -1812,8 +1814,8 @@ namespace BSA_Browser
         /// </summary>
         /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
         /// <param name="gui">True to show a progression dialog.</param>
-        /// <param name="selector">The files in the selected archive to extract.</param>
-        private void ExtractFilesTo(bool useFolderPath, bool gui, Func<IEnumerable<ArchiveEntry>> selector)
+        /// <param name="files">The files in the selected archive to extract.</param>
+        private void ExtractFilesTo(bool useFolderPath, bool gui, IEnumerable<ArchiveEntry> files)
         {
             var archive = this.SelectedArchiveNode.Archive?.FullPath;
 
@@ -1825,7 +1827,7 @@ namespace BSA_Browser
                     _openFolderDialog.Folder,
                     useFolderPath,
                     gui,
-                    selector.Invoke().ToList(),
+                    files.ToList(),
                     titleProgress: true);
             }
         }
