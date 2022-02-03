@@ -1481,6 +1481,9 @@ namespace BSA_Browser
             }
         }
 
+        /// <summary>
+        /// Adds archives to tree view as unloaded.
+        /// </summary>
         private void AddRememberedArchivesToList()
         {
             // Make sure 'RememberedArchives' is not null
@@ -1957,6 +1960,10 @@ namespace BSA_Browser
             }
         }
 
+        /// <summary>
+        /// Shows <see cref="OptionsForm"/>, optionally at specified tab page.
+        /// </summary>
+        /// <param name="tabPage"></param>
         private void ShowOptions(int tabPage = 0)
         {
             bool replaceGNFExt = Settings.Default.ReplaceGNFExt;
@@ -2048,6 +2055,9 @@ namespace BSA_Browser
                 .First(x => file.ToLower() == x.Tag?.ToString().ToLower());
         }
 
+        /// <summary>
+        /// Refreshes icons in tree view and list view.
+        /// </summary>
         private void RefreshIcons()
         {
             bool requiresReloadFiles = (!Settings.Default.Icons.HasFlag(Icons.FileList) && lvFiles.SmallImageList != null) ||
