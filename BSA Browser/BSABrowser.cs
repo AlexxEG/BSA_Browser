@@ -1635,7 +1635,7 @@ namespace BSA_Browser
         }
 
         /// <summary>
-        /// Searches files list, filtering out not-matching files.
+        /// Searches file list, filtering out not-matching files.
         /// </summary>
         private void DoSearch()
         {
@@ -1682,6 +1682,10 @@ namespace BSA_Browser
             lFileCount.Text = string.Format("{0:n0} files", VisibleFiles.Count);
         }
 
+        /// <summary>
+        /// Searches file list using regex.
+        /// </summary>
+        /// <param name="searchString">Regex expression to match.</param>
         private IEnumerable<ArchiveEntry> DoSearchRegex(string searchString)
         {
             var regex = new Regex(searchString, RegexOptions.Compiled | RegexOptions.Singleline);
@@ -1692,6 +1696,10 @@ namespace BSA_Browser
             }
         }
 
+        /// <summary>
+        /// Searches file list using simple pattern match.
+        /// </summary>
+        /// <param name="searchString">Pattern to match.</param>
         private IEnumerable<ArchiveEntry> DoSearchSimple(string searchString)
         {
             // Escape special characters, then unescape wild card characters again
