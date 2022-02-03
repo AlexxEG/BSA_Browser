@@ -487,12 +487,25 @@ namespace BSA_Browser
 
         private async void File_DragDrop(object sender, DragEventArgs e)
         {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+                return;
+
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-            if (files.All(this.IsSupportedFile))
+            if (files.Any(x => !this.IsSupportedFile(x)))
             {
-                await this.OpenArchives(true, files.Where(this.IsSupportedFile).ToArray());
+                MessageBox.Show(this,
+                    "One or more files not supported, only opening supported.\n\nUnsupported format(s): " +
+                        string.Join(", ", files
+                            .Where(x => !this.IsSupportedFile(x))
+                            .Select(Path.GetExtension)),
+                    "Unsupported File(s)",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
             }
+
+            await this.OpenArchives(true, files.Where(this.IsSupportedFile));
         }
 
         private async void btnOpen_Click(object sender, EventArgs e)
