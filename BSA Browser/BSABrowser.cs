@@ -128,9 +128,8 @@ namespace BSA_Browser
             }
         }
 
-#if DEBUG
         #region Debug Tools
-
+#if DEBUG
         private static Stopwatch _debugStopwatch = new Stopwatch();
 
         /// <summary>
@@ -388,9 +387,8 @@ namespace BSA_Browser
                                   "Min: " + elapsedTimes.Min() + "ms\n" +
                                   "Total: " + elapsedTimes.Sum() + "ms");
         }
-
-        #endregion
 #endif
+        #endregion
 
         public BSABrowser(string[] args)
             : this()
