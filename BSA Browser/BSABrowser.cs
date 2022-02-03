@@ -1718,7 +1718,11 @@ namespace BSA_Browser
 
             if (ExtractingArchives.Any(x => archives.Contains(x)))
             {
-                MessageBox.Show(owner, "One or more archives are already being extracted from, try again later.", "BSA Browser", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(owner,
+                    "One or more archives are already being extracted from, try again later.",
+                    "BSA Browser",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
             }
 
@@ -2038,10 +2042,10 @@ namespace BSA_Browser
 
         private void RefreshIcons()
         {
-            bool requiresReloadFiles = (!Settings.Default.Icons.HasFlag(Enums.Icons.FileList) && lvFiles.SmallImageList != null) ||
-                                       (Settings.Default.Icons == Enums.Icons.None && lvFiles.SmallImageList != null);
-            bool requiresReloadFolders = (!Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree) && tvFolders.ImageList != null) ||
-                                         (Settings.Default.Icons == Enums.Icons.None && tvFolders.ImageList != null);
+            bool requiresReloadFiles = (!Settings.Default.Icons.HasFlag(Icons.FileList) && lvFiles.SmallImageList != null) ||
+                                       (Settings.Default.Icons == Icons.None && lvFiles.SmallImageList != null);
+            bool requiresReloadFolders = (!Settings.Default.Icons.HasFlag(Icons.FolderTree) && tvFolders.ImageList != null) ||
+                                         (Settings.Default.Icons == Icons.None && tvFolders.ImageList != null);
 
             if (requiresReloadFiles)
             {
@@ -2059,12 +2063,12 @@ namespace BSA_Browser
                 tvFolders.ImageList = null;
             }
 
-            if (Settings.Default.Icons.HasFlag(Enums.Icons.FileList))
+            if (Settings.Default.Icons.HasFlag(Icons.FileList))
             {
                 lvFiles.SmallImageList = filesImageList;
             }
 
-            if (Settings.Default.Icons.HasFlag(Enums.Icons.FolderTree))
+            if (Settings.Default.Icons.HasFlag(Icons.FolderTree))
             {
                 tvFolders.ImageList = foldersImageList;
             }
