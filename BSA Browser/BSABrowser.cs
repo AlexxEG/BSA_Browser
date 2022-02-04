@@ -561,11 +561,11 @@ namespace BSA_Browser
 
             var obj = new DataObject();
             var sc = new StringCollection();
+            string dest = Program.CreateTempDirectory();
 
             foreach (int index in lvFiles.SelectedIndices)
             {
                 var fe = VisibleFiles[index];
-                string dest = Program.CreateTempDirectory();
 
                 fe.Extract(dest, false);
                 sc.Add(Path.Combine(dest, fe.FileName));
