@@ -1409,7 +1409,7 @@ namespace BSA_Browser
         /// <param name="paths">Sequence of archive file paths.</param>
         public async Task<List<ArchiveNode>> OpenArchives(bool addToRecentFiles, IEnumerable<string> paths)
         {
-            return await this.OpenArchives(addToRecentFiles, (List<string>)paths);
+            return await this.OpenArchives(addToRecentFiles, new List<string>(paths));
         }
 
         /// <summary>
