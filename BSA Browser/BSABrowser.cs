@@ -567,8 +567,8 @@ namespace BSA_Browser
             {
                 var fe = VisibleFiles[index];
 
-                fe.Extract(dest, false);
-                sc.Add(Path.Combine(dest, fe.FileName));
+                fe.Extract(dest, true);
+                sc.Add(Path.Combine(dest, fe.FullPath));
             }
 
             obj.SetFileDropList(sc);
