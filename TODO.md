@@ -3,8 +3,10 @@
 - [ ] Detailed view for advanced mode or debug mode
 - [ ] Include xtexconv for converting XboxDDS to DDS
 - [ ] Look at BSABrowser.ExtractFiles and allow multiple extraction operations at same time (maybe limit to one per archive or actually check indiviual files)
-- [ ] Remember opened archives, list in archive tree but unloaded (Undecided)
 - [ ] Define workspaces (Undecided)
+- [ ] Preview max starting size, for example scale everything above 1080p to 1080p
+- [ ] Preview loading cursor during load
+- [ ] Allow multiple previews at a time
 
 ### Complete
 
@@ -26,3 +28,4 @@
 - [X] ~~Compare tool: Change existing Extract to specify it's selected files only~~
 - [X] ~~Compare tool: Async comparing, show progress in title~~
 - [X] ~~Compare tool: Compare only files under specified nodes~~
+- [X] ~~Remember opened archives, list in archive tree but unloaded (Undecided)~~
