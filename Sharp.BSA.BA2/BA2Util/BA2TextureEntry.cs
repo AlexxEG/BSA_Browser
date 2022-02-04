@@ -176,6 +176,7 @@ namespace SharpBSABA2.BA2Util
                 case DXGI_FORMAT.BC3_UNORM_SRGB:
                 case DXGI_FORMAT.BC4_UNORM:
                 case DXGI_FORMAT.BC5_SNORM:
+                case DXGI_FORMAT.BC6H_UF16:
                 case DXGI_FORMAT.BC7_UNORM:
                 case DXGI_FORMAT.BC7_UNORM_SRGB:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
@@ -241,6 +242,7 @@ namespace SharpBSABA2.BA2Util
                 case DXGI_FORMAT.BC3_UNORM_SRGB:
                 case DXGI_FORMAT.BC4_UNORM:
                 case DXGI_FORMAT.BC5_SNORM:
+                case DXGI_FORMAT.BC6H_UF16:
                 case DXGI_FORMAT.BC7_UNORM:
                 case DXGI_FORMAT.BC7_UNORM_SRGB:
                     new DDS_HEADER_DXT10()
