@@ -88,12 +88,11 @@ namespace SharpBSABA2.BSAUtil
 
         public override string GetToolTipText()
         {
-            return $"{nameof(Version)}: {Version}\n" +
-                $"{nameof(FullPath)}: {FullPath}\n" +
-                $"{nameof(Offset)}: {Offset}\n" +
-                $"{nameof(Size)}: {Size}\n" +
-                $"{nameof(RealSize)}: {RealSize}\n" +
-                $"{nameof(Compressed)}: {Compressed}";
+            return $"Version:\t\t {Version}\n" +
+                $"Offset:\t\t {Offset}\n" +
+                $"Size:\t\t {Size}\n" +
+                $"Real Size:\t {RealSize}\n" +
+                $"Compressed:\t {Compressed}";
         }
 
         protected override void WriteDataToStream(Stream stream, SharedExtractParams extractParams, bool decompress)
