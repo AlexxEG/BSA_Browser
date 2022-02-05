@@ -490,6 +490,9 @@ namespace BSA_Browser
 
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
+            if (files.All(x => x.StartsWith(Program.tmpPath)))
+                return;
+
             if (files.Any(x => !this.IsSupportedFile(x)))
             {
                 MessageBox.Show(this,
