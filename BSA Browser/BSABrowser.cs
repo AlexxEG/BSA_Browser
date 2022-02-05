@@ -563,12 +563,10 @@ namespace BSA_Browser
             var sc = new StringCollection();
             string dest = Program.CreateTempDirectory();
 
-            foreach (int index in lvFiles.SelectedIndices)
+            foreach (var entry in this.GetSelectedEntries())
             {
-                var fe = VisibleFiles[index];
-
-                fe.Extract(dest, true);
-                sc.Add(Path.Combine(dest, fe.FullPath));
+                entry.Extract(dest, true);
+                sc.Add(Path.Combine(dest, entry.FullPath));
             }
 
             obj.SetFileDropList(sc);
@@ -1073,26 +1071,18 @@ namespace BSA_Browser
 
         private void extractMenuItem_Click(object sender, EventArgs e)
         {
-            if (lvFiles.SelectedIndices.Count > 0)
-            {
-                var files = lvFiles.SelectedIndices
-                    .Cast<int>()
-                    .Select(index => this.VisibleFiles[index]);
+            if (lvFiles.SelectedIndices.Count == 0)
+                return;
 
-                this.ExtractFilesTo(false, true, files);
-            }
+            this.ExtractFilesTo(false, true, this.GetSelectedEntries());
         }
 
         private void extractFoldersMenuItem_Click(object sender, EventArgs e)
         {
-            if (lvFiles.SelectedIndices.Count > 0)
-            {
-                var files = lvFiles.SelectedIndices
-                    .Cast<int>()
-                    .Select(index => VisibleFiles[index]);
+            if (lvFiles.SelectedIndices.Count == 0)
+                return;
 
-                this.ExtractFilesTo(true, true, files);
-            }
+            this.ExtractFilesTo(true, true, this.GetSelectedEntries());
         }
 
         private void previewMenuItem_Click(object sender, EventArgs e)
@@ -1137,10 +1127,7 @@ namespace BSA_Browser
                 Directory.CreateDirectory(path.Path);
             }
 
-            var files = new List<ArchiveEntry>();
-
-            foreach (int index in lvFiles.SelectedIndices)
-                files.Add(VisibleFiles[index]);
+            var files = this.GetSelectedEntries().ToList();
 
             ExtractFiles(this, path.Path, path.UseFolderPath, true, files, titleProgress: true);
         }
@@ -1186,10 +1173,7 @@ namespace BSA_Browser
             }
             else
             {
-                var entries = new List<ArchiveEntry>();
-                foreach (int i in lvFiles.SelectedIndices)
-                    entries.Add(VisibleFiles[i]);
-                _compareEntryWindow.SetEntries(entries);
+                _compareEntryWindow.SetEntries(this.GetSelectedEntries());
             }
 
             if (!_compareEntryWindow.Visible)
@@ -1913,6 +1897,16 @@ namespace BSA_Browser
                 filesImageList.Images.Add(ext, SystemIcons.GetFileIcon(filepath));
 
             return filesImageList.Images.IndexOfKey(ext);
+        }
+
+        /// <summary>
+        /// Returns selected <see cref="ArchiveEntry"/> in list view.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<ArchiveEntry> GetSelectedEntries()
+        {
+            foreach (int index in lvFiles.SelectedIndices)
+                yield return this.VisibleFiles[index];
         }
 
         /// <summary>

@@ -135,6 +135,11 @@ namespace BSA_Browser.Tools
             label1.Text = this.Entry.FullPath;
         }
 
+        public void SetEntries(IEnumerable<ArchiveEntry> entries)
+        {
+            this.SetEntries(entries.ToList());
+        }
+
         public void SetEntries(List<ArchiveEntry> entries)
         {
             this.Entries = entries;
