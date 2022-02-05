@@ -1,4 +1,4 @@
-﻿namespace BSA_Browser.Dialogs
+﻿namespace BSA_Browser.Preview
 {
     partial class TextViewer
     {

@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using BSA_Browser.Dialogs;
 using BSA_Browser.Enums;
+using BSA_Browser.Preview;
 using BSA_Browser.Properties;
 using SharpBSABA2;
 using SharpBSABA2.BA2Util;

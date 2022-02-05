@@ -1,4 +1,4 @@
-﻿namespace BSA_Browser
+﻿namespace BSA_Browser.Tools
 {
     partial class CompareForm
     {

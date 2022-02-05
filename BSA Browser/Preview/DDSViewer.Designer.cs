@@ -1,4 +1,4 @@
-﻿namespace BSA_Browser
+﻿namespace BSA_Browser.Preview
 {
     partial class DDSViewer
     {

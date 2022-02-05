@@ -18,6 +18,7 @@ using BSA_Browser.Enums;
 using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
 using BSA_Browser.Sorting;
+using BSA_Browser.Tools;
 using SharpBSABA2;
 using SharpBSABA2.BA2Util;
 using SharpBSABA2.Enums;

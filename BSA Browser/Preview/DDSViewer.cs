@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using BSA_Browser.Properties;
 using Pfim;
 
-namespace BSA_Browser
+namespace BSA_Browser.Preview
 {
     public partial class DDSViewer : Form
     {

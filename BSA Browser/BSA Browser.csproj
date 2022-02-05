@@ -37,7 +37,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>fomm01.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\fomm01.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -105,10 +105,10 @@
     <Compile Include="Classes\QuickExtractPaths.cs" />
     <Compile Include="Classes\WindowState.cs" />
     <Compile Include="Classes\WindowStates.cs" />
-    <Compile Include="CompareForm.cs">
+    <Compile Include="Tools\CompareForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CompareForm.Designer.cs">
+    <Compile Include="Tools\CompareForm.Designer.cs">
       <DependentUpon>CompareForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ReorderableItemListView.cs">
@@ -117,10 +117,10 @@
     <Compile Include="Enums\Icons.cs" />
     <Compile Include="Extensions\TreeViewExtensions.cs" />
     <Compile Include="Extensions\VisualStyleExtensions.cs" />
-    <Compile Include="DDSViewer.cs">
+    <Compile Include="Preview\DDSViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DDSViewer.Designer.cs">
+    <Compile Include="Preview\DDSViewer.Designer.cs">
       <DependentUpon>DDSViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\ExtractArchivesDialog.cs">
@@ -135,10 +135,10 @@
     <Compile Include="Dialogs\QuickExtractDialog.Designer.cs">
       <DependentUpon>QuickExtractDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\TextViewer.cs">
+    <Compile Include="Preview\TextViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\TextViewer.Designer.cs">
+    <Compile Include="Preview\TextViewer.Designer.cs">
       <DependentUpon>TextViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ListViewExtensions.cs" />
@@ -175,10 +175,10 @@
     <EmbeddedResource Include="BSABrowser.resx">
       <DependentUpon>BSABrowser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CompareForm.resx">
+    <EmbeddedResource Include="Tools\CompareForm.resx">
       <DependentUpon>CompareForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DDSViewer.resx">
+    <EmbeddedResource Include="Preview\DDSViewer.resx">
       <DependentUpon>DDSViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ExtractArchivesDialog.resx">
@@ -187,7 +187,7 @@
     <EmbeddedResource Include="Dialogs\QuickExtractDialog.resx">
       <DependentUpon>QuickExtractDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\TextViewer.resx">
+    <EmbeddedResource Include="Preview\TextViewer.resx">
       <DependentUpon>TextViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsForm.resx">
@@ -223,8 +223,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\unloaded.png" />
-    <None Include="all.png" />
-    <Content Include="fomm01.ico" />
+    <None Include="Resources\all.png" />
+    <Content Include="Resources\fomm01.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sharp.BSA.BA2\Sharp.BSA.BA2.csproj">

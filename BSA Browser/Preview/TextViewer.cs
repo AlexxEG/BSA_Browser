@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace BSA_Browser.Dialogs
+namespace BSA_Browser.Preview
 {
     public partial class TextViewer : Form
     {
