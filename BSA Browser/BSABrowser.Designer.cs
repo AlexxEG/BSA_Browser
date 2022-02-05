@@ -110,6 +110,8 @@
             this.menuItem15 = new System.Windows.Forms.MenuItem();
             this.unloadedLoadMenuItem = new System.Windows.Forms.MenuItem();
             this.unloadedRemoveMenuItem = new System.Windows.Forms.MenuItem();
+            this.optionsMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -304,8 +306,6 @@
             this.closeAllArchivesMenuItem,
             this.menuItem4,
             this.extractArchivesMenuItem,
-            this.menuItem1,
-            this.optionsMenuItem,
             this.menuItem6,
             this.recentFilesMenuItem,
             this.menuItem10,
@@ -343,25 +343,14 @@
             this.extractArchivesMenuItem.Text = "Extract Archives...";
             this.extractArchivesMenuItem.Click += new System.EventHandler(this.extractArchivesMenuItem_Click);
             // 
-            // menuItem1
-            // 
-            this.menuItem1.Index = 5;
-            this.menuItem1.Text = "-";
-            // 
-            // optionsMenuItem
-            // 
-            this.optionsMenuItem.Index = 6;
-            this.optionsMenuItem.Text = "Options...";
-            this.optionsMenuItem.Click += new System.EventHandler(this.optionsMenuItem_Click);
-            // 
             // menuItem6
             // 
-            this.menuItem6.Index = 7;
+            this.menuItem6.Index = 5;
             this.menuItem6.Text = "-";
             // 
             // recentFilesMenuItem
             // 
-            this.recentFilesMenuItem.Index = 8;
+            this.recentFilesMenuItem.Index = 6;
             this.recentFilesMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.emptyListMenuItem,
             this.menuItem9});
@@ -381,12 +370,12 @@
             // 
             // menuItem10
             // 
-            this.menuItem10.Index = 9;
+            this.menuItem10.Index = 7;
             this.menuItem10.Text = "-";
             // 
             // exitMenuItem
             // 
-            this.exitMenuItem.Index = 10;
+            this.exitMenuItem.Index = 8;
             this.exitMenuItem.Text = "Exit";
             this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
             // 
@@ -437,12 +426,14 @@
             // 
             this.toolsMenuItem.Index = 2;
             this.toolsMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.optionsMenuItem,
+            this.menuItem1,
             this.compareArchivesMenuItem});
             this.toolsMenuItem.Text = "Tools";
             // 
             // compareArchivesMenuItem
             // 
-            this.compareArchivesMenuItem.Index = 0;
+            this.compareArchivesMenuItem.Index = 2;
             this.compareArchivesMenuItem.Text = "Compare Archives...";
             this.compareArchivesMenuItem.Click += new System.EventHandler(this.compareArchivesMenuItem_Click);
             // 
@@ -724,6 +715,17 @@
             this.unloadedRemoveMenuItem.Text = "Remove";
             this.unloadedRemoveMenuItem.Click += new System.EventHandler(this.unloadedRemoveMenuItem_Click);
             // 
+            // optionsMenuItem
+            // 
+            this.optionsMenuItem.Index = 0;
+            this.optionsMenuItem.Text = "Options...";
+            this.optionsMenuItem.Click += new System.EventHandler(this.optionsMenuItem_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 1;
+            this.menuItem1.Text = "-";
+            // 
             // BSABrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -779,7 +781,6 @@
         private System.Windows.Forms.MenuItem menuItem9;
         private System.Windows.Forms.MenuItem menuItem10;
         private System.Windows.Forms.MenuItem exitMenuItem;
-        private System.Windows.Forms.MenuItem optionsMenuItem;
         private System.Windows.Forms.MenuItem quickExtractsMenuItem;
         private System.Windows.Forms.MenuItem menuItem5;
         private System.Windows.Forms.MenuItem copyPathMenuItem1;
@@ -793,7 +794,6 @@
         private System.Windows.Forms.MenuItem aboutMenuItem;
         private System.Windows.Forms.Label lFileCount;
         private System.Windows.Forms.ColumnHeader columnFileSize;
-        private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem openFoldersMenuItem;
         private System.Windows.Forms.MenuItem checkForUpdateMenuItem;
         private System.Windows.Forms.MenuItem menuItem3;
@@ -837,6 +837,8 @@
         private System.Windows.Forms.MenuItem menuItem15;
         private System.Windows.Forms.MenuItem unloadedLoadMenuItem;
         private System.Windows.Forms.MenuItem unloadedRemoveMenuItem;
+        private System.Windows.Forms.MenuItem optionsMenuItem;
+        private System.Windows.Forms.MenuItem menuItem1;
     }
 }
 
