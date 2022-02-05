@@ -41,7 +41,7 @@
             this.btnExtractAllFolders = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.tvFolders = new System.Windows.Forms.TreeView();
+            this.tvFolders = new BSA_Browser.Controls.ReorderableTreeView();
             this.foldersImageList = new System.Windows.Forms.ImageList(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.cbRegex = new System.Windows.Forms.CheckBox();
@@ -243,6 +243,7 @@
             this.tvFolders.ShowNodeToolTips = true;
             this.tvFolders.Size = new System.Drawing.Size(107, 261);
             this.tvFolders.TabIndex = 0;
+            this.tvFolders.TopAllowedDragIndex = 1;
             this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
             this.tvFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterSelect);
             this.tvFolders.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
@@ -765,7 +766,7 @@
         private System.Windows.Forms.Button btnExtractAllFolders;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TreeView tvFolders;
+        private BSA_Browser.Controls.ReorderableTreeView tvFolders;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.CheckBox cbRegex;
         private System.Windows.Forms.MainMenu mainMenu1;
