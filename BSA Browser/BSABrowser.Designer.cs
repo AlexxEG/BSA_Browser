@@ -52,8 +52,6 @@
             this.closeAllArchivesMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
             this.extractArchivesMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.optionsMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem6 = new System.Windows.Forms.MenuItem();
             this.recentFilesMenuItem = new System.Windows.Forms.MenuItem();
             this.emptyListMenuItem = new System.Windows.Forms.MenuItem();
