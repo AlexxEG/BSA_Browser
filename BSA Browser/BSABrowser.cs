@@ -1364,14 +1364,15 @@ namespace BSA_Browser
             if (archive == null)
                 return null;
 
-            var newNode = new ArchiveNode(
-                Path.GetFileNameWithoutExtension(path) + this.DetectGame(path),
-                archive);
-
-            newNode.ToolTipText = $"Path: {path}\nSize: {Common.FormatBytes(archive.FileSize)}";
-            newNode.ImageIndex = newNode.SelectedImageIndex = 3;
-            newNode.ContextMenu = archiveContextMenu;
-            newNode.SubFiles = archive.Files.ToArray();
+            var text = Path.GetFileNameWithoutExtension(path) + this.DetectGame(path);
+            var newNode = new ArchiveNode(text, archive)
+            {
+                ContextMenu = archiveContextMenu,
+                ImageIndex = 3,
+                SelectedImageIndex = 3,
+                SubFiles = archive.Files.ToArray(),
+                ToolTipText = $"Path: {path}\nSize: {Common.FormatBytes(archive.FileSize)}"
+            };
             newNode.Nodes.Add("empty");
 
             // Last chance before UI changes are made
