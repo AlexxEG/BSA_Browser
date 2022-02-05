@@ -85,21 +85,20 @@ namespace SharpBSABA2.BA2Util
 
         public override string GetToolTipText()
         {
-            return $"{nameof(nameHash)}: {nameHash}\n" +
-                $"{nameof(FullPath)}: {FullPath}\n" +
-                $"{nameof(Extension)}: {Extension.TrimEnd('\0')}\n" +
-                $"{nameof(dirHash)}: {dirHash}\n" +
-                $"{nameof(numChunks)}: {numChunks}\n" +
-                $"{nameof(chunkHdrLen)}: {chunkHdrLen}\n" +
-                $"{nameof(format)}: {format}\n" +
-                $"{nameof(numFormat)}: {numFormat}\n" +
-                $"{nameof(width)}: {width}\n" +
-                $"{nameof(height)}: {height}\n" +
-                $"{nameof(Offset)}: {Offset}\n" +
-                $"{nameof(Size)}: {Size}\n" +
-                $"{nameof(RealSize)}: {RealSize}\n" +
-                $"{nameof(unk2)}: {unk2}\n" +
-                $"{nameof(align)}: {align}";
+            string dxgi = Enum.GetName(typeof(DXGI_FORMAT_FULL), format);
+
+            return $"Name hash:\t {nameHash}\n" +
+                $"Directory hash:\t {dirHash}\n" +
+                $"DXGI format:\t {dxgi} ({format})\n" +
+                $"Resolution:\t {width}x{height}\n" +
+                $"Chunks:\t\t {numChunks}\n" +
+                $"Chunk header len:\t {chunkHdrLen}\n" +
+                $"Num format:\t {numFormat}\n" +
+                $"Offset:\t\t {Offset}\n" +
+                $"Size:\t\t {Size}\n" +
+                $"Real Size:\t {RealSize}\n" +
+                $"Align:\t\t {align:X}\n\n" +
+                $"{nameof(unk2)}:\t\t {unk2}";
         }
 
         protected override void WriteDataToStream(Stream stream, SharedExtractParams extractParams, bool decompress)

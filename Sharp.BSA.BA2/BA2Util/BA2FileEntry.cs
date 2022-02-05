@@ -40,15 +40,13 @@ namespace SharpBSABA2.BA2Util
 
         public override string GetToolTipText()
         {
-            return $"{nameof(nameHash)}: {nameHash}\n" +
-                $"{nameof(FullPath)}: {FullPath}\n" +
-                $"{nameof(Extension)}: {Extension.TrimEnd('\0')}\n" +
-                $"{nameof(dirHash)}: {dirHash}\n" +
-                $"{nameof(flags)}: {flags}\n" +
-                $"{nameof(Offset)}: {Offset}\n" +
-                $"{nameof(Size)}: {Size}\n" +
-                $"{nameof(RealSize)}: {RealSize}\n" +
-                $"{nameof(align)}: {align}";
+            return $"Name hash:\t {nameHash}\n" +
+                $"Directory hash:\t {dirHash}\n" +
+                $"Flags:\t\t {flags:X}\n" +
+                $"Offset:\t\t {Offset}\n" +
+                $"Size:\t\t {Size}\n" +
+                $"Real Size:\t {RealSize}\n" +
+                $"Align:\t\t {align:X}";
         }
 
         protected override void WriteDataToStream(Stream stream, SharedExtractParams extractParams, bool decompress)

@@ -86,19 +86,18 @@ namespace SharpBSABA2.BA2Util
 
         public override string GetToolTipText()
         {
-            return $"{nameof(nameHash)}: {nameHash}\n" +
-                $"{nameof(FullPath)}: {FullPath}\n" +
-                $"{nameof(Extension)}: {Extension.TrimEnd('\0')}\n" +
-                $"{nameof(dirHash)}: {dirHash}\n" +
-                $"{nameof(unk1)}: {unk1}\n" +
-                $"{nameof(numChunks)}: {numChunks}\n" +
-                $"{nameof(chunkHdrLen)}: {chunkHdrLen}\n" +
-                $"{nameof(width)}: {width}\n" +
-                $"{nameof(height)}: {height}\n" +
-                $"{nameof(numMips)}: {numMips}\n" +
-                $"{nameof(format)}: {format}\n" +
-                $"{nameof(isCubemap)}: {isCubemap}\n" +
-                $"{nameof(tileMode)}: {tileMode}";
+            string dxgi = Enum.GetName(typeof(DXGI_FORMAT_FULL), format);
+
+            return $"Name hash:\t {nameHash}\n" +
+                $"Directory hash:\t {dirHash}\n" +
+                $"DXGI format:\t {dxgi} ({format})\n" +
+                $"Resolution:\t {width}x{height}\n" +
+                $"Chunks:\t\t {numChunks}\n" +
+                $"Chunk header len:\t {chunkHdrLen}\n" +
+                $"Mipmaps:\t {numMips}\n" +
+                $"Cubemap:\t {Convert.ToBoolean(isCubemap)}\n" +
+                $"Tile mode:\t {tileMode}\n\n" +
+                $"{nameof(unk1)}:\t\t {unk1}";
         }
 
         public bool IsFormatSupported()
