@@ -3,7 +3,9 @@ using BSA_Browser.Dialogs;
 using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
 using System;
+using System.Collections.Specialized;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -55,6 +57,9 @@ namespace BSA_Browser
 
             lvQuickExtract.EnableVisualStyles();
             lvPreviewing.EnableVisualStyles();
+
+            nudMaxResolutionW.Value = Settings.Default.PreviewMaxResolution.Width;
+            nudMaxResolutionH.Value = Settings.Default.PreviewMaxResolution.Height;
 
             foreach (ListViewItem item in lvPreviewing.Items)
             {
@@ -134,6 +139,27 @@ namespace BSA_Browser
             chbReplaceGNFExt.Checked = GetDefaultPropertyValueBool(nameof(s.ReplaceGNFExt));
         }
 
+        private void btnResetToDefaultPreview_Click(object sender, EventArgs e)
+        {
+            var s = Settings.Default;
+            Size maxResolution = this.ParseSizeString(s.Properties[nameof(s.PreviewMaxResolution)].DefaultValue.ToString());
+
+            nudMaxResolutionW.Value = maxResolution.Width;
+            nudMaxResolutionH.Value = maxResolution.Height;
+
+            var builtInPreviewing = s.Properties[nameof(s.BuiltInPreviewing)].DefaultValue.ToString();
+            var serializer = new System.Xml.Serialization.XmlSerializer(typeof(StringCollection));
+            var stringReader = new StringReader(builtInPreviewing);
+            var sc = (StringCollection)serializer.Deserialize(stringReader);
+
+            foreach (string str in sc)
+            {
+                lvPreviewing.Items
+                    .Cast<ListViewItem>()
+                    .First(x => x.Text == str).Checked = true;
+            }
+        }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             using (var cpd = new QuickExtractDialog())
@@ -206,6 +232,10 @@ namespace BSA_Browser
             Settings.Default.QuickExtractPaths.AddRange(lvQuickExtract.Items
                 .Cast<ListViewItem>().Select(x => (QuickExtractPath)x.Tag));
 
+            Settings.Default.PreviewMaxResolution = new Size(
+                (int)nudMaxResolutionW.Value,
+                (int)nudMaxResolutionH.Value);
+
             Settings.Default.BuiltInPreviewing.Clear();
             Settings.Default.BuiltInPreviewing.AddRange(lvPreviewing.Items
                 .Cast<ListViewItem>().Where(x => x.Checked).Select(x => x.Text).ToArray());
@@ -224,6 +254,12 @@ namespace BSA_Browser
         private int GetDefaultPropertyValueInt(string propertyName)
         {
             return int.Parse(GetDefaultPropertyValue(propertyName));
+        }
+
+        private Size ParseSizeString(string stringToParse)
+        {
+            string[] parts = stringToParse.Replace(" ", "").Split(',');
+            return new Size(int.Parse(parts[0]), int.Parse(parts[1]));
         }
     }
 }

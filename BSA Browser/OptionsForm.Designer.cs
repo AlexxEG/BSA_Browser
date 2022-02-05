@@ -50,6 +50,7 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.chbRememberArchives = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.chbIconsFileList = new System.Windows.Forms.CheckBox();
@@ -69,10 +70,15 @@
             this.chbMatchLastWriteTime = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.nudMaxResolutionW = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lvPreviewing = new System.Windows.Forms.ListView();
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chbRememberArchives = new System.Windows.Forms.CheckBox();
+            this.nudMaxResolutionH = new System.Windows.Forms.NumericUpDown();
+            this.btnResetToDefaultPreview = new System.Windows.Forms.Button();
             this.lvQuickExtract = new L0ki.Controls.ReordableItemListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -86,7 +92,9 @@
             this.tabPage4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxResolutionW)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxResolutionH)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOK
@@ -200,6 +208,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // chbRememberArchives
+            // 
+            this.chbRememberArchives.AutoSize = true;
+            this.chbRememberArchives.Location = new System.Drawing.Point(13, 13);
+            this.chbRememberArchives.Name = "chbRememberArchives";
+            this.chbRememberArchives.Size = new System.Drawing.Size(121, 17);
+            this.chbRememberArchives.TabIndex = 6;
+            this.chbRememberArchives.Text = "Remember Archives";
+            this.chbRememberArchives.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -410,6 +428,12 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.btnResetToDefaultPreview);
+            this.tabPage3.Controls.Add(this.nudMaxResolutionH);
+            this.tabPage3.Controls.Add(this.label7);
+            this.tabPage3.Controls.Add(this.label6);
+            this.tabPage3.Controls.Add(this.nudMaxResolutionW);
+            this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Controls.Add(this.groupBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
@@ -419,15 +443,65 @@
             this.tabPage3.Text = "Preview";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(79, 65);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(38, 13);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Height";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(79, 38);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(35, 13);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Width";
+            // 
+            // nudMaxResolutionW
+            // 
+            this.nudMaxResolutionW.Location = new System.Drawing.Point(25, 36);
+            this.nudMaxResolutionW.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudMaxResolutionW.Minimum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            0});
+            this.nudMaxResolutionW.Name = "nudMaxResolutionW";
+            this.nudMaxResolutionW.Size = new System.Drawing.Size(48, 20);
+            this.nudMaxResolutionW.TabIndex = 2;
+            this.nudMaxResolutionW.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 12);
+            this.label5.Margin = new System.Windows.Forms.Padding(3);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(83, 13);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "Max Resolution:";
+            // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.lvPreviewing);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(320, 12);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(9);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(588, 288);
+            this.groupBox1.Size = new System.Drawing.Size(280, 298);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Built-in Previewing";
@@ -483,7 +557,7 @@
             listViewItem10});
             this.lvPreviewing.Location = new System.Drawing.Point(6, 19);
             this.lvPreviewing.Name = "lvPreviewing";
-            this.lvPreviewing.Size = new System.Drawing.Size(576, 263);
+            this.lvPreviewing.Size = new System.Drawing.Size(268, 273);
             this.lvPreviewing.TabIndex = 0;
             this.lvPreviewing.UseCompatibleStateImageBehavior = false;
             this.lvPreviewing.View = System.Windows.Forms.View.Details;
@@ -493,15 +567,38 @@
             this.columnHeader4.Text = "File Type";
             this.columnHeader4.Width = 240;
             // 
-            // chbRememberArchives
+            // nudMaxResolutionH
             // 
-            this.chbRememberArchives.AutoSize = true;
-            this.chbRememberArchives.Location = new System.Drawing.Point(13, 13);
-            this.chbRememberArchives.Name = "chbRememberArchives";
-            this.chbRememberArchives.Size = new System.Drawing.Size(121, 17);
-            this.chbRememberArchives.TabIndex = 6;
-            this.chbRememberArchives.Text = "Remember Archives";
-            this.chbRememberArchives.UseVisualStyleBackColor = true;
+            this.nudMaxResolutionH.Location = new System.Drawing.Point(25, 63);
+            this.nudMaxResolutionH.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudMaxResolutionH.Minimum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            0});
+            this.nudMaxResolutionH.Name = "nudMaxResolutionH";
+            this.nudMaxResolutionH.Size = new System.Drawing.Size(48, 20);
+            this.nudMaxResolutionH.TabIndex = 6;
+            this.nudMaxResolutionH.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            // 
+            // btnResetToDefaultPreview
+            // 
+            this.btnResetToDefaultPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnResetToDefaultPreview.Location = new System.Drawing.Point(190, 287);
+            this.btnResetToDefaultPreview.Name = "btnResetToDefaultPreview";
+            this.btnResetToDefaultPreview.Size = new System.Drawing.Size(118, 23);
+            this.btnResetToDefaultPreview.TabIndex = 7;
+            this.btnResetToDefaultPreview.Text = "Reset to Default";
+            this.btnResetToDefaultPreview.UseVisualStyleBackColor = true;
+            this.btnResetToDefaultPreview.Click += new System.EventHandler(this.btnResetToDefaultPreview_Click);
             // 
             // lvQuickExtract
             // 
@@ -571,7 +668,10 @@
             this.tabPage4.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxResolutionW)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxResolutionH)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -614,5 +714,11 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnResetToDefaultExtraction;
         private System.Windows.Forms.CheckBox chbRememberArchives;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown nudMaxResolutionW;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown nudMaxResolutionH;
+        private System.Windows.Forms.Button btnResetToDefaultPreview;
     }
 }

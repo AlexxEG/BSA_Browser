@@ -320,5 +320,17 @@ namespace BSA_Browser.Properties {
                 this["RememberedArchives"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1024, 1024")]
+        public global::System.Drawing.Size PreviewMaxResolution {
+            get {
+                return ((global::System.Drawing.Size)(this["PreviewMaxResolution"]));
+            }
+            set {
+                this["PreviewMaxResolution"] = value;
+            }
+        }
     }
 }

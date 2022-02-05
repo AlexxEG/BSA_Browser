@@ -87,5 +87,8 @@
     <Setting Name="RememberedArchives" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="PreviewMaxResolution" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">1024, 1024</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

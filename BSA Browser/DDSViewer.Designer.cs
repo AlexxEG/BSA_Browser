@@ -50,13 +50,13 @@
             this.BackColor = System.Drawing.Color.LightGray;
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.ImageBox);
+            this.MinimumSize = new System.Drawing.Size(300, 300);
             this.Name = "DDSViewer";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Preview";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DDSViewer_FormClosing);
             this.Load += new System.EventHandler(this.DDSViewer_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.DDSViewer_Paint);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DDSViewer_KeyUp);
             this.Resize += new System.EventHandler(this.DDSViewer_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.ImageBox)).EndInit();

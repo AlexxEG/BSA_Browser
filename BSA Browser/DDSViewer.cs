@@ -1,10 +1,11 @@
-﻿using Pfim;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using BSA_Browser.Properties;
+using Pfim;
 
 namespace BSA_Browser
 {
@@ -16,6 +17,7 @@ namespace BSA_Browser
         public string Filename { get; private set; }
 
         public Size ImageSize { get; private set; }
+        public Size ImageSizeOriginal { get; private set; }
 
         private DDSViewer(string filename, Stream stream)
         {
@@ -33,12 +35,17 @@ namespace BSA_Browser
             {
                 throw;
             }
+
+            this.CreateBackground();
         }
 
         private void DDSViewer_Load(object sender, EventArgs e)
         {
             string pixelFormat = string.IsNullOrEmpty(this.DDSFormat) ? string.Empty : this.DDSFormat + " - ";
-            this.Text += $" - {pixelFormat}{ImageSize.Width}x{ImageSize.Height}";
+            this.Text += $" - {pixelFormat}{ImageSizeOriginal.Width}x{ImageSizeOriginal.Height}";
+
+            if (ImageSize != ImageSizeOriginal)
+                this.Text += $" - Scaled {ImageSize.Width}x{ImageSize.Height}";
         }
 
         private void DDSViewer_FormClosing(object sender, FormClosingEventArgs e)
@@ -54,29 +61,6 @@ namespace BSA_Browser
             }
         }
 
-        private void DDSViewer_Paint(object sender, PaintEventArgs e)
-        {
-            int top = ImageBox.DisplayRectangle.Top;
-            int left = ImageBox.DisplayRectangle.Left;
-            Graphics g = e.Graphics;
-            Brush brush = Brushes.White;
-            Brush start_brush = brush;
-
-            while (top < ImageBox.DisplayRectangle.Bottom)
-            {
-                while (left < ImageBox.DisplayRectangle.Right)
-                {
-                    brush = brush == Brushes.White ? Brushes.LightGray : Brushes.White;
-                    g.FillRectangle(brush, left, top, BackgroundBoxSize, BackgroundBoxSize);
-                    left += BackgroundBoxSize;
-                }
-                top += BackgroundBoxSize;
-                left = 0;
-                start_brush = start_brush == Brushes.White ? Brushes.LightGray : Brushes.White;
-                brush = start_brush;
-            }
-        }
-
         private void DDSViewer_Resize(object sender, EventArgs e)
         {
             if (ImageBox.Size.Height < ImageSize.Height || ImageBox.Size.Width < ImageSize.Width)
@@ -87,6 +71,22 @@ namespace BSA_Browser
             {
                 ImageBox.SizeMode = PictureBoxSizeMode.CenterImage;
             }
+        }
+
+        private void CreateBackground()
+        {
+            var bitmap = new Bitmap(32, 32, PixelFormat.Format32bppArgb);
+
+            using (var g = Graphics.FromImage(bitmap))
+            {
+                g.FillRectangle(Brushes.White, 0, 0, BackgroundBoxSize, BackgroundBoxSize);
+                g.FillRectangle(Brushes.LightGray, 16, 0, BackgroundBoxSize, BackgroundBoxSize);
+                g.FillRectangle(Brushes.LightGray, 0, 16, BackgroundBoxSize, BackgroundBoxSize);
+                g.FillRectangle(Brushes.White, 16, 16, BackgroundBoxSize, BackgroundBoxSize);
+            }
+
+            this.BackgroundImage = bitmap;
+            this.BackgroundImageLayout = ImageLayout.Tile;
         }
 
         private void CalculateStartingSize()
@@ -108,7 +108,7 @@ namespace BSA_Browser
             {
                 windowWidth = Math.Min(
                     windowWidth,
-                    workingArea.Height - 100);
+                    workingArea.Width - 100);
                 double dbl = (double)ImageSize.Width / (double)ImageSize.Height;
                 windowHeight = Convert.ToInt32(windowWidth * dbl);
             }
@@ -118,6 +118,8 @@ namespace BSA_Browser
 
         private void LoadImage(Stream stream)
         {
+            Size maxReso = Settings.Default.PreviewMaxResolution;
+
             if (Path.GetExtension(this.Filename).ToLower() == ".dds")
             {
                 PixelFormat format;
@@ -143,8 +145,14 @@ namespace BSA_Browser
                 {
                     var data = Marshal.UnsafeAddrOfPinnedArrayElement(image.Data, 0);
                     var bitmap = new Bitmap(image.Width, image.Height, image.Stride, format, data);
-                    this.ImageSize = new Size(bitmap.Width, bitmap.Height);
-                    this.ImageBox.Image = bitmap;
+                    this.ImageSizeOriginal = new Size(bitmap.Width, bitmap.Height);
+                    var resized = this.ResizeBitmap(bitmap, maxReso.Width, maxReso.Height);
+
+                    if (bitmap != resized)
+                        bitmap.Dispose();
+
+                    this.ImageSize = new Size(resized.Width, resized.Height);
+                    this.ImageBox.Image = resized;
                 }
                 finally
                 {
@@ -154,9 +162,45 @@ namespace BSA_Browser
             else
             {
                 var bitmap = new Bitmap(stream);
-                this.ImageSize = new Size(bitmap.Width, bitmap.Height);
-                this.ImageBox.Image = bitmap;
+                this.ImageSizeOriginal = new Size(bitmap.Width, bitmap.Height);
+                var resized = this.ResizeBitmap(bitmap, maxReso.Width, maxReso.Height);
+
+                if (bitmap != resized)
+                    bitmap.Dispose();
+
+                this.ImageSize = new Size(resized.Width, resized.Height);
+                this.ImageBox.Image = resized;
             }
+        }
+
+        private Bitmap ResizeBitmap(Bitmap bitmap, int maxWidth, int maxHeight)
+        {
+            if (bitmap.Width <= maxWidth && bitmap.Height <= maxHeight)
+                return bitmap;
+
+            var newSize = this.CalculateNewSize(bitmap.Size, new Size(maxWidth, maxHeight));
+
+            return new Bitmap(bitmap, newSize);
+        }
+
+        private Size CalculateNewSize(Size size, Size maxSize)
+        {
+            if (size.Width <= maxSize.Width && size.Height <= maxSize.Height)
+                return size;
+
+            // Taken from: https://stackoverflow.com/questions/1940581/c-sharp-image-resizing-to-different-size-while-preserving-aspect-ratio
+
+            // Figure out the ratio
+            double ratioX = (double)maxSize.Width / (double)size.Width;
+            double ratioY = (double)maxSize.Height / (double)size.Height;
+            // use whichever multiplier is smaller
+            double ratio = ratioX < ratioY ? ratioX : ratioY;
+
+            // now we can get the new height and width
+            int newHeight = Convert.ToInt32(size.Height * ratio);
+            int newWidth = Convert.ToInt32(size.Width * ratio);
+
+            return new Size(newWidth, newHeight);
         }
 
         public static DialogResult ShowDialog(IWin32Window owner, string filename, byte[] data)
