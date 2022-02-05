@@ -33,6 +33,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tvDirectories = new System.Windows.Forms.TreeView();
+            this.cbRegex = new System.Windows.Forms.CheckBox();
+            this.txtSearch = new System.Windows.Forms.TextBox();
             this.lvArchive = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -79,8 +81,6 @@
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.directoryTreeMenuItem = new System.Windows.Forms.MenuItem();
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.cbRegex = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -141,6 +141,30 @@
             this.tvDirectories.Size = new System.Drawing.Size(256, 292);
             this.tvDirectories.TabIndex = 2;
             this.tvDirectories.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvDirectories_AfterSelect);
+            // 
+            // cbRegex
+            // 
+            this.cbRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbRegex.AutoSize = true;
+            this.cbRegex.Location = new System.Drawing.Point(436, 274);
+            this.cbRegex.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.cbRegex.Name = "cbRegex";
+            this.cbRegex.Size = new System.Drawing.Size(74, 17);
+            this.cbRegex.TabIndex = 9;
+            this.cbRegex.Text = "Use regex";
+            this.cbRegex.UseVisualStyleBackColor = true;
+            this.cbRegex.CheckedChanged += new System.EventHandler(this.cbRegex_CheckedChanged);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.Location = new System.Drawing.Point(0, 272);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(0, 3, 3, 0);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(430, 20);
+            this.txtSearch.TabIndex = 5;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // lvArchive
             // 
@@ -641,30 +665,6 @@
             this.directoryTreeMenuItem.Index = 0;
             this.directoryTreeMenuItem.Text = "&Directory Tree";
             this.directoryTreeMenuItem.Click += new System.EventHandler(this.directoryTreeMenuItem_Click);
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Location = new System.Drawing.Point(0, 272);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(0, 3, 3, 0);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(430, 20);
-            this.txtSearch.TabIndex = 5;
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
-            // cbRegex
-            // 
-            this.cbRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbRegex.AutoSize = true;
-            this.cbRegex.Location = new System.Drawing.Point(436, 274);
-            this.cbRegex.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.cbRegex.Name = "cbRegex";
-            this.cbRegex.Size = new System.Drawing.Size(74, 17);
-            this.cbRegex.TabIndex = 9;
-            this.cbRegex.Text = "Use regex";
-            this.cbRegex.UseVisualStyleBackColor = true;
-            this.cbRegex.CheckedChanged += new System.EventHandler(this.cbRegex_CheckedChanged);
             // 
             // CompareForm
             // 
