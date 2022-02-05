@@ -558,7 +558,7 @@ namespace BSA_Browser
             this.PreviewSelected();
         }
 
-        private void lvFiles_ItemDrag(object sender, ItemDragEventArgs e)
+        private async void lvFiles_ItemDrag(object sender, ItemDragEventArgs e)
         {
             if (!(lvFiles.SelectedIndices.Count >= 1))
                 return;
@@ -566,12 +566,20 @@ namespace BSA_Browser
             var obj = new DataObject();
             var sc = new StringCollection();
             string dest = Program.CreateTempDirectory();
+            var entries = this.GetSelectedEntries().ToList();
 
-            foreach (var entry in this.GetSelectedEntries())
+            this.UseWaitCursor = true;
+
+            await Task.Run(() =>
             {
-                entry.Extract(dest, true);
-                sc.Add(Path.Combine(dest, entry.FullPath));
-            }
+                foreach (var entry in entries)
+                {
+                    entry.Extract(dest, true);
+                    sc.Add(Path.Combine(dest, entry.FullPath));
+                }
+            });
+
+            this.UseWaitCursor = false;
 
             obj.SetFileDropList(sc);
             lvFiles.DoDragDrop(obj, DragDropEffects.Move);
