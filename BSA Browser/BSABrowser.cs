@@ -496,7 +496,8 @@ namespace BSA_Browser
                     "One or more files not supported, only opening supported.\n\nUnsupported format(s): " +
                         string.Join(", ", files
                             .Where(x => !this.IsSupportedFile(x))
-                            .Select(Path.GetExtension)),
+                            .Select(Path.GetExtension)
+                            .Distinct(StringComparer.OrdinalIgnoreCase)),
                     "Unsupported File(s)",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
