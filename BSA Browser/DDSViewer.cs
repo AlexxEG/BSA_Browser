@@ -203,6 +203,17 @@ namespace BSA_Browser
             return new Size(newWidth, newHeight);
         }
 
+        public static void Show(IWin32Window owner, string filename, byte[] data)
+        {
+            Show(owner, filename, new MemoryStream(data));
+        }
+
+        public static void Show(IWin32Window owner, string filename, Stream stream)
+        {
+            var form = new DDSViewer(filename, stream);
+            form.Show(owner);
+        }
+
         public static DialogResult ShowDialog(IWin32Window owner, string filename, byte[] data)
         {
             return ShowDialog(owner, filename, new MemoryStream(data));

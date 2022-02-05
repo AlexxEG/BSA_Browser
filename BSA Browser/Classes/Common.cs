@@ -172,7 +172,7 @@ namespace BSA_Browser.Classes
 
                     try
                     {
-                        DDSViewer.ShowDialog(owner, entry.FileName, entry.GetDataStream());
+                        DDSViewer.Show(owner, entry.FileName, entry.GetDataStream());
                     }
                     catch (Exception ex)
                     {
