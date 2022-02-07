@@ -1806,8 +1806,6 @@ namespace BSA_Browser
                 {
                     foreach (var fe in files)
                         fe.Extract(folder, useFolderPath);
-
-                    ExtractingArchives.AddRange(archives);
                 }
                 catch (Exception ex)
                 {
