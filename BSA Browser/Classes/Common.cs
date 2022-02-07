@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using BSA_Browser.Dialogs;
 using BSA_Browser.Enums;
 using BSA_Browser.Preview;
 using BSA_Browser.Properties;
@@ -27,6 +26,134 @@ namespace BSA_Browser.Classes
         public static bool CheckForUnsupportedTextures(IList<ArchiveEntry> entries)
         {
             return entries.Any(x => (x as BA2TextureEntry)?.IsFormatSupported() == false);
+        }
+
+        #region ExtractFiles variables
+
+#if DEBUG
+        private static Stopwatch _debugStopwatch = new Stopwatch();
+#endif
+
+        private static List<string> ExtractingArchives = new List<string>();
+
+        private static void ExtractOperation_StateChange(ExtractOperation sender, StateChangeEventArgs e)
+        {
+            sender.ProgressForm.Description = e.FileName + '\n' + Common.FormatTimeRemaining(sender.EstimateTimeRemaining);
+            sender.ProgressForm.Footer = $"({e.Count}/{e.FilesTotal}) {Common.FormatBytes(sender.SpeedBytes)}/s";
+        }
+
+        private static void ExtractOperation_ProgressPercentageUpdate(ExtractOperation sender, ProgressPercentageUpdateEventArgs e)
+        {
+            if (sender.ProgressForm.Owner != null && sender.TitleProgress)
+                sender.ProgressForm.Owner.Text = $"{e.ProgressPercentage}% - {sender.OriginalTitle}";
+
+            sender.ProgressForm.Progress = e.ProgressPercentage;
+            sender.ProgressForm.Description = sender.ProgressForm.Description.Split('\n')[0] + "\n" + Common.FormatTimeRemaining(e.RemainingEstimate);
+        }
+
+        private static void ExtractOperation_Completed(ExtractOperation sender, CompletedEventArgs e)
+        {
+#if DEBUG
+            _debugStopwatch.Stop();
+            Console.WriteLine($"Extraction complete. {_debugStopwatch.ElapsedMilliseconds}ms elapsed");
+#endif
+
+            ExtractingArchives.RemoveAll(x => sender.Archives.Contains(x));
+
+            sender.ProgressForm.BlockClose = false;
+            sender.ProgressForm.Close();
+
+            if (sender.ProgressForm.Owner != null && sender.TitleProgress)
+                sender.ProgressForm.Owner.Text = sender.OriginalTitle;
+
+            // Save exceptions to _report.txt file in destination path
+            if (e?.Exceptions.Count > 0)
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine($"{sender.Files[0].Archive.FileName} - RetrieveRealSize: {sender.Files[0].Archive.RetrieveRealSize}");
+                sb.AppendLine();
+
+                foreach (var ex in e.Exceptions)
+                    sb.AppendLine($"{ex.ArchiveEntry.FullPath}{Environment.NewLine}{ex.Exception}{Environment.NewLine}");
+
+                File.WriteAllText(Path.Combine(sender.Folder, "_report.txt"), sb.ToString());
+                MessageBox.Show(sender.ProgressForm.Owner, $"{e.Exceptions.Count} file(s) failed to extract. See report file in destination for details.", "Error");
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Extracts the given file(s) to the given path.
+        /// </summary>
+        /// <param name="folder">The path to extract files to.</param>
+        /// <param name="useFolderPath">True to use full folder path for files, false to extract straight to path.</param>
+        /// <param name="gui">True to show a <see cref="ProgressForm"/>.</param>
+        /// <param name="files">The files in the selected archive to extract.</param>
+        public static void ExtractFiles(Form owner,
+                                        string folder,
+                                        bool useFolderPath,
+                                        bool gui,
+                                        List<ArchiveEntry> files,
+                                        ProgressForm progressForm = null,
+                                        bool titleProgress = false)
+        {
+            // Store all unique archives to prevent extracting same archive across multiple operations at the same time
+            var archives = files.Select(x => x.Archive.FullPath.ToLower()).Distinct();
+
+            if (ExtractingArchives.Any(x => archives.Contains(x)))
+            {
+                MessageBox.Show(owner,
+                    "One or more archives are already being extracted from, try again later.",
+                    "BSA Browser",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+            // Check for unsupported textures and prompt the user what to do if there is any
+            if (CheckAndHandleUnsupportedTextures(owner, files) == DialogResult.Cancel)
+                return;
+
+            if (gui)
+            {
+                progressForm = progressForm ?? new ProgressForm(files.Count);
+
+                var operation = new ExtractOperation(folder, files, useFolderPath)
+                {
+                    Archives = archives,
+                    ProgressForm = progressForm,
+                    TitleProgress = titleProgress,
+                    OriginalTitle = owner?.Text
+                };
+                operation.StateChange += ExtractOperation_StateChange;
+                operation.ProgressPercentageUpdate += ExtractOperation_ProgressPercentageUpdate;
+                operation.Completed += ExtractOperation_Completed;
+
+                progressForm.Owner = owner;
+                progressForm.Canceled += delegate { operation.Cancel(); };
+
+#if DEBUG
+                // Track extraction speed
+                _debugStopwatch.Restart();
+#endif
+
+                operation.Start();
+                progressForm.Show(owner);
+                ExtractingArchives.AddRange(archives);
+            }
+            else
+            {
+                try
+                {
+                    foreach (var fe in files)
+                        fe.Extract(folder, useFolderPath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(owner, ex.Message, "Error");
+                }
+            }
         }
 
         /// <summary>
@@ -238,6 +365,35 @@ namespace BSA_Browser.Classes
                     entry.FullPath = entry.FullPathOriginal;
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks and handles user preference on how to handle unsupported textures.
+        /// </summary>
+        private static DialogResult CheckAndHandleUnsupportedTextures(IWin32Window owner, List<ArchiveEntry> files)
+        {
+            if (!Common.CheckForUnsupportedTextures(files))
+                return DialogResult.Cancel;
+
+            DialogResult result = MessageBox.Show(owner,
+                "There are unsupported textures about to be extracted. These are missing DDS headers that can't be generated.\n\n" +
+                "Do you want to extract the raw data without DDS header? Selecting 'No' will skip these textures.",
+                "Unsupported Textures", MessageBoxButtons.YesNoCancel);
+
+            if (result == DialogResult.No)
+            {
+                // Remove unsupported textures
+                files.RemoveAll(x => (x as BA2TextureEntry)?.IsFormatSupported() == false);
+            }
+            else if (result == DialogResult.Yes)
+            {
+                foreach (var fe in files.OfType<BA2TextureEntry>().Where(x => x.IsFormatSupported() == false))
+                {
+                    fe.GenerateTextureHeader = false;
+                }
+            }
+
+            return result;
         }
     }
 

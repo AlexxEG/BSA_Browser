@@ -645,7 +645,7 @@ namespace BSA_Browser.Tools
             {
                 if (ofd.ShowDialog(this) == DialogResult.OK)
                 {
-                    BSABrowser.ExtractFiles(this,
+                    Common.ExtractFiles(this,
                         ofd.Folder,
                         true,
                         true,
