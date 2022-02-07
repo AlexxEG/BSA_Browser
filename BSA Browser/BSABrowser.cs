@@ -1727,7 +1727,7 @@ namespace BSA_Browser
                                         string folder,
                                         bool useFolderPath,
                                         bool gui,
-                                        IList<ArchiveEntry> files,
+                                        List<ArchiveEntry> files,
                                         ProgressForm progressForm = null,
                                         bool titleProgress = false)
         {
@@ -1758,11 +1758,7 @@ namespace BSA_Browser
                 if (result == DialogResult.No)
                 {
                     // Remove unsupported textures
-                    for (int i = files.Count; i-- > 0;)
-                    {
-                        if ((files[i] as BA2TextureEntry)?.IsFormatSupported() == false)
-                            files.RemoveAt(i);
-                    }
+                    files.RemoveAll(x => (x as BA2TextureEntry)?.IsFormatSupported() == false);
                 }
                 else if (result == DialogResult.Yes)
                 {
