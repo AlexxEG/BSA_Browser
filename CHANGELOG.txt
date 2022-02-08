@@ -1,3 +1,20 @@
+[1.15.0]
+
+- Added progress dialog when opening multiple archives (currently when opening more than 3 at a time, but open to suggestions)
+- Added ability to cancel opening archives in new progress dialog
+- Added 'All files' label before extract buttons to hopefully indicate behaviour bit clearer
+- Added archive path and file size in tool tip when hovering over archive in tree view
+- Added new setting to remember open archives, will be shown as transparent to indicate it's not currently loaded
+- Added support for BC6H_UF16 format
+- Added option to set a max resolution for previews, default value is 1024x1024. Helps with performance, especially when resizing the window
+- Allow multiple previews at a time
+- Added ability to reorder archives in tree view
+- Improved opening & closing archives performance, especially if they have a lot of files
+- Improved performance of Preview window during resizing
+- Removed 'Preview' button
+- Moved 'Options' to 'Tools' menu
+- Updated .NET Framework to 4.8
+
 [1.14.1]
 
 - Fixed extracting, accidentally broke a lot of it in 1.14.0
