@@ -6,6 +6,10 @@ namespace BSA_Browser.Classes
 {
     public class QuickExtractPath : IXmlSerializable
     {
+        private const string AttributeName = "name";
+        private const string AttributePath = "path";
+        private const string AttributeUseFolderPath = "useFolderPath";
+
         public string Name { get; set; }
         public string Path { get; set; }
         public bool UseFolderPath { get; set; }
@@ -40,9 +44,9 @@ namespace BSA_Browser.Classes
         /// <param name="reader">The stream from which the object will be deserialized.</param>
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            this.Name = reader.GetAttribute("name");
-            this.Path = reader.GetAttribute("path");
-            this.UseFolderPath = bool.Parse(reader.GetAttribute("useFolderPath"));
+            this.Name = reader.GetAttribute(AttributeName);
+            this.Path = reader.GetAttribute(AttributePath);
+            this.UseFolderPath = bool.Parse(reader.GetAttribute(AttributeUseFolderPath));
 
             reader.Read();
         }
@@ -53,9 +57,9 @@ namespace BSA_Browser.Classes
         /// <param name="writer">The stream to which this object will be serialized.</param>
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            writer.WriteAttributeString("name", this.Name);
-            writer.WriteAttributeString("path", this.Path);
-            writer.WriteAttributeString("useFolderPath", this.UseFolderPath.ToString());
+            writer.WriteAttributeString(AttributeName, this.Name);
+            writer.WriteAttributeString(AttributePath, this.Path);
+            writer.WriteAttributeString(AttributeUseFolderPath, this.UseFolderPath.ToString());
         }
 
         #endregion
