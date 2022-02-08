@@ -432,8 +432,8 @@ namespace BSA_Browser
             for (int i = Application.OpenForms.Count; i-- > 0;)
             {
                 Form form = Application.OpenForms[i];
-                if (form is ProgressForm)
-                    (form as ProgressForm).ForceCancel();
+                if (form is ProgressForm pf)
+                    pf.ForceCancel();
                 else
                     form.Close();
             }
@@ -615,8 +615,8 @@ namespace BSA_Browser
             lvi.Tag = file;
 
 #if DEBUG
-            if (file is BA2TextureEntry)
-                lvi.SubItems.Add(Enum.GetName(typeof(DXGI_FORMAT), (file as BA2TextureEntry).format));
+            if (file is BA2TextureEntry ba2Tex)
+                lvi.SubItems.Add(Enum.GetName(typeof(DXGI_FORMAT), ba2Tex.format));
             else
                 lvi.SubItems.Add(string.Empty);
 #endif

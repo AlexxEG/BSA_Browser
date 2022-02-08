@@ -102,14 +102,14 @@ namespace BSA_Browser
 
         private void cbEncodings_Format(object sender, ListControlConvertEventArgs e)
         {
-            if (e.ListItem is Encoding)
+            if (e.ListItem is Encoding encoding)
             {
-                if (e.ListItem == Encoding.UTF7)
+                if (encoding == Encoding.UTF7)
                     e.Value = "UTF-7 (Default)";
-                else if (e.ListItem == Encoding.Default)
-                    e.Value = "System Default (" + ((Encoding)e.ListItem).BodyName + ")";
+                else if (encoding == Encoding.Default)
+                    e.Value = "System Default (" + encoding.BodyName + ")";
                 else
-                    e.Value = ((Encoding)e.ListItem).EncodingName;
+                    e.Value = encoding.EncodingName;
             }
         }
 
