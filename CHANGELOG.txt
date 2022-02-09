@@ -1,3 +1,7 @@
+[1.15.1]
+
+- Fixed extraction button and context menu not working (only drag & drop worked)
+
 [1.15.0]
 
 - Added progress dialog when opening multiple archives (currently when opening more than 3 at a time, but open to suggestions)
