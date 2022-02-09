@@ -373,7 +373,7 @@ namespace BSA_Browser.Classes
         private static DialogResult CheckAndHandleUnsupportedTextures(IWin32Window owner, List<ArchiveEntry> files)
         {
             if (!Common.CheckForUnsupportedTextures(files))
-                return DialogResult.Cancel;
+                return DialogResult.No;
 
             DialogResult result = MessageBox.Show(owner,
                 "There are unsupported textures about to be extracted. These are missing DDS headers that can't be generated.\n\n" +
