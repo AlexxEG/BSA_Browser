@@ -714,7 +714,7 @@ namespace BSA_Browser
 
         private void tvFolders_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (_pauseFiltering)
+            if (_pauseFiltering || e.Node == null)
                 return;
 
             var rootNode = e.Node.GetRootNode() as ArchiveNode;
