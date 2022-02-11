@@ -224,7 +224,7 @@ namespace BSA_Browser.Classes
                     case ".dat":
                         if (BSA.IsSupportedVersion(file, encoding) == false)
                         {
-                            if (MessageBox.Show(owner,
+                            if (Common.ShowMessageBoxInvoke(owner,
                                     "Archive has an unknown version number.\n" + "Attempt to open anyway?",
                                     "Warning",
                                     MessageBoxButtons.YesNo) != DialogResult.Yes)
@@ -254,7 +254,7 @@ namespace BSA_Browser.Classes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(owner,
+                Common.ShowMessageBoxInvoke(owner,
                     "An error occured trying to open the archive. Changing the Encoding in Options can help, please try before reporting.\n\n" + ex.ToStringInvariant(),
                     "Error",
                     MessageBoxButtons.OK,
@@ -394,6 +394,24 @@ namespace BSA_Browser.Classes
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Shows <see cref="MessageBox"/>, invoking if required by <paramref name="owner"/>.
+        /// </summary>
+        private static DialogResult ShowMessageBoxInvoke(IWin32Window owner,
+                                                         string text,
+                                                         string title,
+                                                         MessageBoxButtons buttons = MessageBoxButtons.OK,
+                                                         MessageBoxIcon icon = MessageBoxIcon.None)
+        {
+            var msgBoxFunc = new Func<DialogResult>(() => MessageBox.Show(owner, text, title, buttons, icon));
+
+            if (owner is Form form)
+                return (DialogResult)form.Invoke(msgBoxFunc);
+
+            // 'owner' is either null or not a Form, so just try
+            return msgBoxFunc();
         }
     }
 
