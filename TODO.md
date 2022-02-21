@@ -4,6 +4,7 @@
 - [ ] Include xtexconv for converting XboxDDS to DDS
 - [ ] Look at BSABrowser.ExtractFiles and allow multiple extraction operations at same time (maybe limit to one per archive or actually check indiviual files)
 - [ ] Define workspaces (Undecided)
+- [ ] Option to install and uninstall shell context menu integration
 
 ### Complete
 
