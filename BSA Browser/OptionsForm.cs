@@ -2,8 +2,11 @@
 using BSA_Browser.Dialogs;
 using BSA_Browser.Extensions;
 using BSA_Browser.Properties;
+using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -25,6 +28,9 @@ namespace BSA_Browser
             Encoding.UTF32,
             Encoding.UTF8
         };
+
+        private readonly bool _fileAssociationInitialValue;
+        private readonly bool _shellIntegrationInitialValue;
 
         public OptionsForm()
         {
@@ -65,6 +71,10 @@ namespace BSA_Browser
             {
                 item.Checked = Settings.Default.BuiltInPreviewing.Contains(item.Text);
             }
+
+            cbAssociateFiles.Checked = _fileAssociationInitialValue = FileAssociation.GetFileAssociationEnabled();
+            cbShellIntegration.Checked = _shellIntegrationInitialValue = FileAssociation.GetShellIntegrationEnabled();
+            cbShellIntegration.Enabled = cbAssociateFiles.Checked;
         }
 
         public OptionsForm(int tabPage)
@@ -111,6 +121,11 @@ namespace BSA_Browser
                 else
                     e.Value = encoding.EncodingName;
             }
+        }
+
+        private void cbAssociateFiles_CheckedChanged(object sender, EventArgs e)
+        {
+            cbShellIntegration.Enabled = cbAssociateFiles.Checked;
         }
 
         private void btnResetToDefaultGeneral_Click(object sender, EventArgs e)
@@ -239,6 +254,66 @@ namespace BSA_Browser
             Settings.Default.BuiltInPreviewing.Clear();
             Settings.Default.BuiltInPreviewing.AddRange(lvPreviewing.Items
                 .Cast<ListViewItem>().Where(x => x.Checked).Select(x => x.Text).ToArray());
+
+            if (this.CheckAssociationAndIntegrationChanged())
+            {
+                MessageBox.Show(this,
+                    "File association and shell integration requires administrative rights.\n\nPrompt will be shown automatically.",
+                    "BSA Browser",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                // If file association is disabled we don't care whether shell integration has changed or not
+                bool? shellIntegration = null;
+                if (cbAssociateFiles.Checked)
+                    shellIntegration = cbShellIntegration.Checked;
+
+                this.ToggleAssociateAndIntegration(cbAssociateFiles.Checked, shellIntegration);
+            }
+        }
+
+        private bool CheckAssociationAndIntegrationChanged()
+        {
+            // If file association is disabled we don't care whether shell integration has changed or not
+            bool? shellIntegration = null;
+            if (cbAssociateFiles.Checked)
+                shellIntegration = cbShellIntegration.Checked;
+
+            return cbAssociateFiles.Checked != _fileAssociationInitialValue
+                || shellIntegration != null && shellIntegration != _shellIntegrationInitialValue;
+        }
+
+        private bool ToggleAssociateAndIntegration(bool fileAssociation, bool? shellIntegration)
+        {
+            var args = new List<string>();
+
+            if (fileAssociation != _fileAssociationInitialValue)
+                args.Add(fileAssociation ? "--associate" : "--associate-disable");
+
+            // Ignore 'shellIntegration' if it's null, don't even compare to cached
+            if (shellIntegration != null && shellIntegration != _shellIntegrationInitialValue)
+                args.Add(shellIntegration == true ? "--integration" : "--integration-disable");
+
+            if (args.Count == 0)
+                return false;
+
+            if (FileAssociation.HasAdminPrivileges())
+            {
+                FileAssociation.ToggleAssociationAndIntegration(args.ToArray());
+            }
+            else
+            {
+                // Prompt for admin privileges
+                var process = Process.Start(new ProcessStartInfo(Application.ExecutablePath)
+                {
+                    Arguments = string.Join(" ", args),
+                    UseShellExecute = true,
+                    Verb = "runas"
+                });
+                process.WaitForExit();
+            }
+
+            return true;
         }
 
         private string GetDefaultPropertyValue(string propertyName)

@@ -33,6 +33,9 @@ namespace BSA_Browser
         [STAThread]
         static void Main(string[] args)
         {
+            if (FileAssociation.ToggleAssociationAndIntegration(args))
+                return;
+
             if (Environment.OSVersion.Version.Major >= 6)
                 SetProcessDPIAware();
 

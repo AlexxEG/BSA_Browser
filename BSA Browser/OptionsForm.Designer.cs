@@ -50,6 +50,8 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cbAssociateFiles = new System.Windows.Forms.CheckBox();
+            this.cbShellIntegration = new System.Windows.Forms.CheckBox();
             this.chbRememberArchives = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -69,7 +71,13 @@
             this.chbReplaceGNFExt = new System.Windows.Forms.CheckBox();
             this.chbMatchLastWriteTime = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.lvQuickExtract = new L0ki.Controls.ReordableItemListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnResetToDefaultPreview = new System.Windows.Forms.Button();
+            this.nudMaxResolutionH = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.nudMaxResolutionW = new System.Windows.Forms.NumericUpDown();
@@ -77,12 +85,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lvPreviewing = new System.Windows.Forms.ListView();
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.nudMaxResolutionH = new System.Windows.Forms.NumericUpDown();
-            this.btnResetToDefaultPreview = new System.Windows.Forms.Button();
-            this.lvQuickExtract = new L0ki.Controls.ReordableItemListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -92,9 +94,9 @@
             this.tabPage4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxResolutionH)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxResolutionW)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMaxResolutionH)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOK
@@ -194,6 +196,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.cbAssociateFiles);
+            this.tabPage1.Controls.Add(this.cbShellIntegration);
             this.tabPage1.Controls.Add(this.chbRememberArchives);
             this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.btnResetToDefaultGeneral);
@@ -208,6 +212,27 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cbAssociateFiles
+            // 
+            this.cbAssociateFiles.AutoSize = true;
+            this.cbAssociateFiles.Location = new System.Drawing.Point(363, 13);
+            this.cbAssociateFiles.Name = "cbAssociateFiles";
+            this.cbAssociateFiles.Size = new System.Drawing.Size(236, 17);
+            this.cbAssociateFiles.TabIndex = 8;
+            this.cbAssociateFiles.Text = "Associate BSA Browser with .bsa && .ba2 files";
+            this.cbAssociateFiles.UseVisualStyleBackColor = true;
+            this.cbAssociateFiles.CheckedChanged += new System.EventHandler(this.cbAssociateFiles_CheckedChanged);
+            // 
+            // cbShellIntegration
+            // 
+            this.cbShellIntegration.AutoSize = true;
+            this.cbShellIntegration.Location = new System.Drawing.Point(381, 36);
+            this.cbShellIntegration.Name = "cbShellIntegration";
+            this.cbShellIntegration.Size = new System.Drawing.Size(168, 17);
+            this.cbShellIntegration.TabIndex = 7;
+            this.cbShellIntegration.Text = "Shell context menu integration";
+            this.cbShellIntegration.UseVisualStyleBackColor = true;
             // 
             // chbRememberArchives
             // 
@@ -426,6 +451,42 @@
             this.tabPage2.Text = "Quick Extract";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // lvQuickExtract
+            // 
+            this.lvQuickExtract.AllowDrop = true;
+            this.lvQuickExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvQuickExtract.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.lvQuickExtract.FullRowSelect = true;
+            this.lvQuickExtract.HideSelection = false;
+            this.lvQuickExtract.Location = new System.Drawing.Point(6, 99);
+            this.lvQuickExtract.Name = "lvQuickExtract";
+            this.lvQuickExtract.ShowGroups = false;
+            this.lvQuickExtract.Size = new System.Drawing.Size(600, 188);
+            this.lvQuickExtract.TabIndex = 1;
+            this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
+            this.lvQuickExtract.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 120;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Path";
+            this.columnHeader2.Width = 282;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Maintain folder path";
+            this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader3.Width = 120;
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.btnResetToDefaultPreview);
@@ -442,6 +503,39 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Preview";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btnResetToDefaultPreview
+            // 
+            this.btnResetToDefaultPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnResetToDefaultPreview.Location = new System.Drawing.Point(190, 287);
+            this.btnResetToDefaultPreview.Name = "btnResetToDefaultPreview";
+            this.btnResetToDefaultPreview.Size = new System.Drawing.Size(118, 23);
+            this.btnResetToDefaultPreview.TabIndex = 7;
+            this.btnResetToDefaultPreview.Text = "Reset to Default";
+            this.btnResetToDefaultPreview.UseVisualStyleBackColor = true;
+            this.btnResetToDefaultPreview.Click += new System.EventHandler(this.btnResetToDefaultPreview_Click);
+            // 
+            // nudMaxResolutionH
+            // 
+            this.nudMaxResolutionH.Location = new System.Drawing.Point(25, 63);
+            this.nudMaxResolutionH.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudMaxResolutionH.Minimum = new decimal(new int[] {
+            128,
+            0,
+            0,
+            0});
+            this.nudMaxResolutionH.Name = "nudMaxResolutionH";
+            this.nudMaxResolutionH.Size = new System.Drawing.Size(48, 20);
+            this.nudMaxResolutionH.TabIndex = 6;
+            this.nudMaxResolutionH.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
             // 
             // label7
             // 
@@ -567,75 +661,6 @@
             this.columnHeader4.Text = "File Type";
             this.columnHeader4.Width = 240;
             // 
-            // nudMaxResolutionH
-            // 
-            this.nudMaxResolutionH.Location = new System.Drawing.Point(25, 63);
-            this.nudMaxResolutionH.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.nudMaxResolutionH.Minimum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
-            this.nudMaxResolutionH.Name = "nudMaxResolutionH";
-            this.nudMaxResolutionH.Size = new System.Drawing.Size(48, 20);
-            this.nudMaxResolutionH.TabIndex = 6;
-            this.nudMaxResolutionH.Value = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            0});
-            // 
-            // btnResetToDefaultPreview
-            // 
-            this.btnResetToDefaultPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnResetToDefaultPreview.Location = new System.Drawing.Point(190, 287);
-            this.btnResetToDefaultPreview.Name = "btnResetToDefaultPreview";
-            this.btnResetToDefaultPreview.Size = new System.Drawing.Size(118, 23);
-            this.btnResetToDefaultPreview.TabIndex = 7;
-            this.btnResetToDefaultPreview.Text = "Reset to Default";
-            this.btnResetToDefaultPreview.UseVisualStyleBackColor = true;
-            this.btnResetToDefaultPreview.Click += new System.EventHandler(this.btnResetToDefaultPreview_Click);
-            // 
-            // lvQuickExtract
-            // 
-            this.lvQuickExtract.AllowDrop = true;
-            this.lvQuickExtract.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvQuickExtract.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.lvQuickExtract.FullRowSelect = true;
-            this.lvQuickExtract.HideSelection = false;
-            this.lvQuickExtract.Location = new System.Drawing.Point(6, 99);
-            this.lvQuickExtract.Name = "lvQuickExtract";
-            this.lvQuickExtract.ShowGroups = false;
-            this.lvQuickExtract.Size = new System.Drawing.Size(600, 188);
-            this.lvQuickExtract.TabIndex = 1;
-            this.lvQuickExtract.UseCompatibleStateImageBehavior = false;
-            this.lvQuickExtract.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 120;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Path";
-            this.columnHeader2.Width = 282;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Maintain folder path";
-            this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader3.Width = 120;
-            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOK;
@@ -669,9 +694,9 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxResolutionH)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxResolutionW)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudMaxResolutionH)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -720,5 +745,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown nudMaxResolutionH;
         private System.Windows.Forms.Button btnResetToDefaultPreview;
+        private System.Windows.Forms.CheckBox cbShellIntegration;
+        private System.Windows.Forms.CheckBox cbAssociateFiles;
     }
 }
