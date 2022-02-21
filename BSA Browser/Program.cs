@@ -1,13 +1,13 @@
-﻿using BSA_Browser.Classes;
-using BSA_Browser.Properties;
-using Microsoft.VisualBasic.Devices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using BSA_Browser.Classes;
+using BSA_Browser.Properties;
+using Microsoft.VisualBasic.Devices;
 using MsVB = Microsoft.VisualBasic.ApplicationServices;
 
 namespace BSA_Browser
@@ -42,11 +42,11 @@ namespace BSA_Browser
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 #endif
-            if (ShouldResetSettings())
-            {
-                Settings.Default.Reset();
-                SettingsReset = true;
-            }
+
+            HandleSettingsReset();
+
+            if (HandleSettingsUpgrade() == false)
+                return; // User doesn't want to reset settings, can't continue
 
             try
             {
@@ -55,6 +55,44 @@ namespace BSA_Browser
             catch (MsVB.NoStartupFormException)
             {
                 // Do nothing
+            }
+        }
+
+        static void HandleSettingsReset()
+        {
+            if (ShouldResetSettings() == false)
+                return;
+
+            Settings.Default.Reset();
+            SettingsReset = true;
+        }
+
+        static bool HandleSettingsUpgrade()
+        {
+            if (Settings.Default.UpdateSettings == false)
+                return true;
+
+            try
+            {
+                Settings.Default.Upgrade();
+                Settings.Default.UpdateSettings = false;
+                Settings.Default.Save();
+                return true;
+            }
+            catch (System.Configuration.ConfigurationException)
+            {
+                var result = MessageBox.Show("Upgrading settings failed, can\'t continue without reset.\n\nDo you want to reset settings?",
+                    "Settings Error",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    Settings.Default.Reset();
+                    SettingsReset = true;
+                }
+
+                return result == DialogResult.Yes;
             }
         }
 
