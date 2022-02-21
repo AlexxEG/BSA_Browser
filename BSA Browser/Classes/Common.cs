@@ -20,14 +20,6 @@ namespace BSA_Browser.Classes
 {
     public class Common
     {
-        /// <summary>
-        /// Returns true if there are any unsupported textures.
-        /// </summary>
-        public static bool CheckForUnsupportedTextures(IList<ArchiveEntry> entries)
-        {
-            return entries.Any(x => (x as BA2TextureEntry)?.IsFormatSupported() == false);
-        }
-
         #region ExtractFiles variables
 
 #if DEBUG
@@ -372,22 +364,24 @@ namespace BSA_Browser.Classes
         /// </summary>
         private static DialogResult CheckAndHandleUnsupportedTextures(IWin32Window owner, List<ArchiveEntry> files)
         {
-            if (!Common.CheckForUnsupportedTextures(files))
+            var unsupported = files.OfType<BA2TextureEntry>().Where(x => x.IsFormatSupported() == false);
+
+            // Check if there are any unsupported
+            if (unsupported == null || !unsupported.Any())
                 return DialogResult.No;
 
-            DialogResult result = MessageBox.Show(owner,
-                "There are unsupported textures about to be extracted. These are missing DDS headers that can't be generated.\n\n" +
-                "Do you want to extract the raw data without DDS header? Selecting 'No' will skip these textures.",
-                "Unsupported Textures", MessageBoxButtons.YesNoCancel);
+            var dialog = new Dialogs.UnsupportedTexturesMessageBox(unsupported);
+            var result = dialog.ShowDialog(owner);
 
             if (result == DialogResult.No)
             {
-                // Remove unsupported textures
+                // Remove unsupported to skip them
                 files.RemoveAll(x => (x as BA2TextureEntry)?.IsFormatSupported() == false);
             }
             else if (result == DialogResult.Yes)
             {
-                foreach (var fe in files.OfType<BA2TextureEntry>().Where(x => x.IsFormatSupported() == false))
+                // Disable header generation for unsupported
+                foreach (var fe in unsupported)
                 {
                     fe.GenerateTextureHeader = false;
                 }

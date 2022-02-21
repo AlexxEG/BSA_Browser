@@ -90,6 +90,12 @@
     <Compile Include="Controls\ReorderableTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Dialogs\UnsupportedTexturesMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\UnsupportedTexturesMessageBox.Designer.cs">
+      <DependentUpon>UnsupportedTexturesMessageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Enums\ArchiveFileSortOrder.cs" />
     <Compile Include="Sorting\ArchiveFileSorter.cs" />
     <Compile Include="BSABrowser.cs">
@@ -178,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BSABrowser.resx">
       <DependentUpon>BSABrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\UnsupportedTexturesMessageBox.resx">
+      <DependentUpon>UnsupportedTexturesMessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\CompareForm.resx">
       <DependentUpon>CompareForm.cs</DependentUpon>
