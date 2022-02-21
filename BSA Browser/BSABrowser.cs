@@ -72,13 +72,6 @@ namespace BSA_Browser
 
             lvFiles.ContextMenu = contextMenu1;
 
-            if (Settings.Default.UpdateSettings)
-            {
-                Settings.Default.Upgrade();
-                Settings.Default.UpdateSettings = false;
-                Settings.Default.Save();
-            }
-
             // Restore last path for OpenFolderDialog
             if (!string.IsNullOrEmpty(Settings.Default.LastUnpackPath))
                 _openFolderDialog.InitialFolder = Settings.Default.LastUnpackPath;
