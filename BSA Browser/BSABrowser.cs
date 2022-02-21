@@ -638,7 +638,8 @@ namespace BSA_Browser
             if (!rootNode.Loaded)
             {
                 rootNode = await this.OpenArchive(rootNode.FilePath, true);
-                rootNode.Expand();
+                rootNode?.Expand();
+                e.Cancel = rootNode == null;
                 return;
             }
 
@@ -1330,6 +1331,12 @@ namespace BSA_Browser
                                                    int index = -1,
                                                    CancellationToken? cancellationToken = null)
         {
+            if (!File.Exists(path))
+            {
+                MessageBox.Show(this, "File not found. Make sure it exists then try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
             // Check if archive is already opened
             if (this.TryIndexOfArchive(path, out int archiveIndex))
             {
@@ -1487,9 +1494,6 @@ namespace BSA_Browser
             foreach (var archivePath in Settings.Default.RememberedArchives)
             {
                 if (string.IsNullOrEmpty(archivePath))
-                    continue;
-
-                if (!File.Exists(archivePath))
                     continue;
 
                 var filename = Path.GetFileNameWithoutExtension(archivePath);
