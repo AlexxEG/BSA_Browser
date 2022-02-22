@@ -4,7 +4,6 @@
 - [ ] Include xtexconv for converting XboxDDS to DDS
 - [ ] Look at BSABrowser.ExtractFiles and allow multiple extraction operations at same time (maybe limit to one per archive or actually check indiviual files)
 - [ ] Define workspaces (Undecided)
-- [ ] Option to install and uninstall shell context menu integration
 
 ### Complete
 
@@ -30,3 +29,4 @@
 - [X] ~~Preview max starting size, for example scale everything above 1080p to 1080p~~
 - [X] ~~Preview loading cursor during load~~
 - [X] ~~Allow multiple previews at a time~~
+- [X] ~~Option to install and uninstall shell context menu integration~~
