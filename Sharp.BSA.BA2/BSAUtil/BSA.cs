@@ -269,17 +269,14 @@ namespace SharpBSABA2.BSAUtil
                 uint type = br.ReadUInt32();
                 int version = br.ReadInt32();
 
+                // Only Oblivion/Fallout BSAs needs this version check, so if it's neither always return true
                 if (type != BSA_HEADER_MAGIC)
-                    return true; // Only Oblivion/Fallout BSAs needs this version check,
-                                 // so if it's neither just always return true.
+                    return true;
 
-                if (version != OB_HEADER_VERSION &&
-                    version != F3_HEADER_VERSION &&
-                    version != SSE_HEADER_VERSION)
-                    return false;
+                return version == OB_HEADER_VERSION
+                    || version == F3_HEADER_VERSION
+                    || version == SSE_HEADER_VERSION;
             }
-
-            return true;
         }
     }
 }
