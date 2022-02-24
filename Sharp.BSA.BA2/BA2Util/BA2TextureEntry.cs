@@ -1,8 +1,9 @@
-﻿using SharpBSABA2.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SharpBSABA2.Extensions;
+using SharpBSABA2.Utils;
 
 namespace SharpBSABA2.BA2Util
 {
@@ -301,18 +302,18 @@ namespace SharpBSABA2.BA2Util
 
                 if (!decompress || !isCompressed)
                 {
-                    Archive.WriteSectionToStream(reader.BaseStream,
-                                                 Chunks[i].fullSz,
-                                                 stream,
-                                                 bytesWritten => this.BytesWritten = prev + bytesWritten);
+                    StreamUtils.WriteSectionToStream(reader.BaseStream,
+                        Chunks[i].fullSz,
+                        stream,
+                        bytesWritten => this.BytesWritten = prev + bytesWritten);
                 }
                 else
                 {
-                    Archive.Decompress(reader.BaseStream,
-                                       this.Chunks[i].packSz,
-                                       stream,
-                                       bytesWritten => this.BytesWritten = prev + bytesWritten,
-                                       extractParams);
+                    CompressionUtils.Decompress(reader.BaseStream,
+                        this.Chunks[i].packSz,
+                        stream,
+                        bytesWritten => this.BytesWritten = prev + bytesWritten,
+                        extractParams);
                 }
             }
 

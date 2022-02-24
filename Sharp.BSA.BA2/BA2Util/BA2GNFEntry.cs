@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SharpBSABA2.Utils;
 
 namespace SharpBSABA2.BA2Util
 {
@@ -110,10 +111,10 @@ namespace SharpBSABA2.BA2Util
 
             if (!decompress)
             {
-                Archive.WriteSectionToStream(reader.BaseStream,
-                                             Math.Max(this.Size, this.RealSize), // Lazy hack, only one should be set when not compressed
-                                             stream,
-                                             bytesWritten => this.BytesWritten = bytesWritten);
+                StreamUtils.WriteSectionToStream(reader.BaseStream,
+                    Math.Max(this.Size, this.RealSize), // Lazy hack, only one should be set when not compressed
+                    stream,
+                    bytesWritten => this.BytesWritten = bytesWritten);
             }
             else
             {
@@ -121,11 +122,11 @@ namespace SharpBSABA2.BA2Util
 
                 try
                 {
-                    Archive.Decompress(reader.BaseStream,
-                                       this.Size,
-                                       stream,
-                                       bytesWritten => this.BytesWritten = bytesWritten,
-                                       extractParams);
+                    CompressionUtils.Decompress(reader.BaseStream,
+                        this.Size,
+                        stream,
+                        bytesWritten => this.BytesWritten = bytesWritten,
+                        extractParams);
                 }
                 catch (Exception ex)
                 {
@@ -148,19 +149,19 @@ namespace SharpBSABA2.BA2Util
                 if (!decompress)
                 {
                     ulong prev = this.BytesWritten;
-                    Archive.WriteSectionToStream(reader.BaseStream,
-                                                 Math.Max(Chunks[i].packSz, Chunks[i].fullSz),  // Lazy hack, only one should be set when not compressed
-                                                 stream,
-                                                 bytesWritten => this.BytesWritten = prev + bytesWritten);
+                    StreamUtils.WriteSectionToStream(reader.BaseStream,
+                        Math.Max(Chunks[i].packSz, Chunks[i].fullSz),  // Lazy hack, only one should be set when not compressed
+                        stream,
+                        bytesWritten => this.BytesWritten = prev + bytesWritten);
                 }
                 else
                 {
                     ulong prev = this.BytesWritten;
-                    Archive.Decompress(reader.BaseStream,
-                                       this.Chunks[i].packSz,
-                                       stream,
-                                       bytesWritten => this.BytesWritten = prev + bytesWritten,
-                                       extractParams);
+                    CompressionUtils.Decompress(reader.BaseStream,
+                        this.Chunks[i].packSz,
+                        stream,
+                        bytesWritten => this.BytesWritten = prev + bytesWritten,
+                        extractParams);
                 }
             }
         }

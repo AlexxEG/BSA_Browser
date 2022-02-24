@@ -1,5 +1,6 @@
-﻿using SharpBSABA2.Enums;
-using System.IO;
+﻿using System.IO;
+using SharpBSABA2.Enums;
+using SharpBSABA2.Utils;
 
 namespace SharpBSABA2.BSAUtil
 {
@@ -123,17 +124,17 @@ namespace SharpBSABA2.BSAUtil
 
                 if (!decompress)
                 {
-                    Archive.WriteSectionToStream(reader.BaseStream,
-                                                 filesz,
-                                                 stream,
-                                                 bytesWritten => this.BytesWritten = bytesWritten);
+                    StreamUtils.WriteSectionToStream(reader.BaseStream,
+                        filesz,
+                        stream,
+                        bytesWritten => this.BytesWritten = bytesWritten);
                 }
                 else
                 {
-                    this.Archive.DecompressLZ4(reader.BaseStream,
-                                               (uint)filesz,
-                                               stream,
-                                               bytesWritten => this.BytesWritten = bytesWritten);
+                    CompressionUtils.DecompressLZ4(reader.BaseStream,
+                        (uint)filesz,
+                        stream,
+                        bytesWritten => this.BytesWritten = bytesWritten);
                 }
             }
             else
@@ -144,21 +145,21 @@ namespace SharpBSABA2.BSAUtil
 
                 if (!decompress)
                 {
-                    Archive.WriteSectionToStream(reader.BaseStream,
-                                                 this.Size,
-                                                 stream,
-                                                 bytesWritten => this.BytesWritten = bytesWritten);
+                    StreamUtils.WriteSectionToStream(reader.BaseStream,
+                        this.Size,
+                        stream,
+                        bytesWritten => this.BytesWritten = bytesWritten);
                 }
                 else
                 {
                     if (this.Compressed)
                         reader.ReadUInt32(); // Skip
 
-                    Archive.Decompress(reader.BaseStream,
-                                       this.Size - 4,
-                                       stream,
-                                       bytesWriten => this.BytesWritten = bytesWriten,
-                                       extractParams);
+                    CompressionUtils.Decompress(reader.BaseStream,
+                        this.Size - 4,
+                        stream,
+                        bytesWriten => this.BytesWritten = bytesWriten,
+                        extractParams);
                 }
             }
         }

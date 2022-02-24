@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using SharpBSABA2.Utils;
 
 namespace SharpBSABA2.BA2Util
 {
@@ -59,18 +60,18 @@ namespace SharpBSABA2.BA2Util
 
             if (!decompress || !this.Compressed)
             {
-                Archive.WriteSectionToStream(reader.BaseStream,
-                                             len,
-                                             stream,
-                                             bytesWritten => this.BytesWritten = bytesWritten);
+                StreamUtils.WriteSectionToStream(reader.BaseStream,
+                    len,
+                    stream,
+                    bytesWritten => this.BytesWritten = bytesWritten);
             }
             else
             {
-                Archive.Decompress(reader.BaseStream,
-                                   len,
-                                   stream,
-                                   bytesWritten => this.BytesWritten = bytesWritten,
-                                   extractParams);
+                CompressionUtils.Decompress(reader.BaseStream,
+                    len,
+                    stream,
+                    bytesWritten => this.BytesWritten = bytesWritten,
+                    extractParams);
             }
         }
     }
