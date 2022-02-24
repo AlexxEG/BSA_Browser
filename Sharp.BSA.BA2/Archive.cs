@@ -56,15 +56,6 @@ namespace SharpBSABA2
         }
 
         /// <summary>
-        /// Returns a new <see cref="Inflater"/> with default settings.
-        /// </summary>
-        public Inflater CloneInflater() => new Inflater();
-        /// <summary>
-        /// Returns a new <see cref="BinaryReader"/> for <see cref="Archive"/> with default settings.
-        /// </summary>
-        public BinaryReader CloneReader() => new BinaryReader(new FileStream(FullPath, FileMode.Open, FileAccess.Read), Encoding);
-
-        /// <summary>
         /// Returns a <see cref="SharedExtractParams"/> with <see cref="BinaryReader"/> and <see cref="Inflater"/> originally used for multi threading.
         /// </summary>
         /// <param name="reader">True if a new <see cref="BinaryReader"/> should be created.</param>
