@@ -25,7 +25,7 @@ namespace SharpBSABA2.BSAUtil
                 switch (this.Magic)
                 {
                     case BSA_HEADER_MAGIC:
-                        return ((Header as BSAHeader).ArchiveFlags & OB_BSAARCHIVE_COMPRESSFILES) > 0;
+                        return (((BSAHeader)Header).ArchiveFlags & OB_BSAARCHIVE_COMPRESSFILES) > 0;
                     case MW_HEADER_MAGIC:
                     default:
                         return false;
@@ -39,7 +39,7 @@ namespace SharpBSABA2.BSAUtil
                 switch (this.Magic)
                 {
                     case BSA_HEADER_MAGIC:
-                        BSAHeader header = this.Header as BSAHeader;
+                        var header = (BSAHeader)Header;
 
                         if (header.Version == F3_HEADER_VERSION || header.Version == SSE_HEADER_VERSION)
                             return (header.ArchiveFlags & F3_BSAARCHIVE_PREFIXFULLFILENAMES) > 0;
@@ -63,7 +63,7 @@ namespace SharpBSABA2.BSAUtil
                 switch (Magic)
                 {
                     case BSA_HEADER_MAGIC:
-                        BSAHeader header = Header as BSAHeader;
+                        var header = (BSAHeader)Header;
                         return (header.ArchiveFlags & 0x1) > 0 && (header.ArchiveFlags & 0x2) > 0; // Should always be true
                     case MW_HEADER_MAGIC:
                         return hasNameTableMW;
@@ -79,9 +79,9 @@ namespace SharpBSABA2.BSAUtil
                 switch (this.Magic)
                 {
                     case MW_HEADER_MAGIC:
-                        return (Header as BSAHeaderMW).Version.ToString("X");
+                        return ((BSAHeaderMW)Header).Version.ToString("X");
                     case BSA_HEADER_MAGIC:
-                        return (Header as BSAHeader).Version.ToString();
+                        return ((BSAHeader)Header).Version.ToString();
                     default:
                         return "None";
                 }
@@ -96,7 +96,7 @@ namespace SharpBSABA2.BSAUtil
                     case MW_HEADER_MAGIC:
                         return ArchiveTypes.BSA_MW;
                     case BSA_HEADER_MAGIC:
-                        return (Header as BSAHeader).Version == SSE_HEADER_VERSION ? ArchiveTypes.BSA_SE : ArchiveTypes.BSA;
+                        return ((BSAHeader)Header).Version == SSE_HEADER_VERSION ? ArchiveTypes.BSA_SE : ArchiveTypes.BSA;
                     default:
                         return ArchiveTypes.DAT_F2;
                 }

@@ -2,7 +2,7 @@
 
 namespace SharpBSABA2.BSAUtil
 {
-    public class BSAHeaderMW
+    public struct BSAHeaderMW
     {
         public const uint Size = 12;
 

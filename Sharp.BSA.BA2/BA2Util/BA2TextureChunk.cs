@@ -2,7 +2,7 @@
 
 namespace SharpBSABA2.BA2Util
 {
-    public class BA2TextureChunk
+    public struct BA2TextureChunk
     {
         public ulong offset;
         public uint packSz;

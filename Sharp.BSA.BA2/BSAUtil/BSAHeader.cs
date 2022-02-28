@@ -2,7 +2,7 @@
 
 namespace SharpBSABA2.BSAUtil
 {
-    public class BSAHeader
+    public struct BSAHeader
     {
         public uint Version { get; private set; }
         public uint FolderRecordOffset { get; private set; }
