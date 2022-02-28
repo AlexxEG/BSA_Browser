@@ -19,7 +19,7 @@
 - [X] ~~Compare tool: Toggle overlapping files (only show different files) OR check boxes for each type~~
 - [X] ~~Compare tool: Improve sorting~~
 - [X] ~~Compare tool: Add ability to preview files~~
-- [X] ~~Compare tool: Add ability to extract files https://ibb.co/n7Xrscb~~
+- [X] ~~Compare tool: Add ability to extract files~~
 - [X] ~~Compare tool: Add option to extract entire side regardless of selection~~
 - [X] ~~Compare tool: Change existing Extract to specify it's selected files only~~
 - [X] ~~Compare tool: Async comparing, show progress in title~~
