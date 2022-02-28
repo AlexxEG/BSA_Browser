@@ -21,7 +21,7 @@ namespace BSA_Browser.Sorting
 
         public override bool Equals(object obj)
         {
-            return obj is SortingConfig && this.Equals((SortingConfig)obj);
+            return obj is SortingConfig sc && this.Equals(sc);
         }
 
         public override int GetHashCode()
