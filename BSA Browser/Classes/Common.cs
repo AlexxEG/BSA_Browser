@@ -257,6 +257,18 @@ namespace BSA_Browser.Classes
             return archive;
         }
 
+        public static void OpenContainingDirectory(IWin32Window owner, string file)
+        {
+            try
+            {
+                Process.Start("explorer.exe", $"/select, \"{file}\"");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(owner, "Error opening containing folder:\n\n" + ex.ToString());
+            }
+        }
+
         public static void PreviewTexture(IWin32Window owner, ArchiveEntry entry)
         {
             if (entry == null)

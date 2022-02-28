@@ -1256,14 +1256,8 @@ namespace BSA_Browser
 
         private void openContainingFolderMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Process.Start("explorer.exe", "/select, \"" + (archiveContextMenu.Tag as ArchiveNode).Archive.FullPath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, "Error opening containing folder:\n\n" + ex.ToString());
-            }
+            Common.OpenContainingDirectory(this,
+                (archiveContextMenu.Tag as ArchiveNode).Archive.FullPath);
         }
 
         private void closeMenuItem_Click(object sender, EventArgs e)
@@ -1293,14 +1287,8 @@ namespace BSA_Browser
 
         private void unloadedOpenContainingFolderMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Process.Start("explorer.exe", "/select, \"" + (unloadedArchiveContextMenu.Tag as ArchiveNode).FilePath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, "Error opening containing folder:\n\n" + ex.ToString());
-            }
+            Common.OpenContainingDirectory(this,
+                (unloadedArchiveContextMenu.Tag as ArchiveNode).FilePath);
         }
 
         private async void unloadedLoadMenuItem_Click(object sender, EventArgs e)
