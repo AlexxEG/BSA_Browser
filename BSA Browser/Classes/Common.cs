@@ -319,7 +319,20 @@ namespace BSA_Browser.Classes
                 case ".psc":
                 case ".json":
                     if (!Settings.Default.BuiltInPreviewing.Contains(extension))
+                    {
+                        // Don't launch .bat files, just to be safe
+                        if (extension == ".bat")
+                        {
+                            MessageBox.Show(owner,
+                                "Can only preview batch scripts with built-in text viewer, you can enable it in Options.",
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                            break;
+                        }
+
                         goto default;
+                    }
 
                     new TextViewer(entry).Show(owner);
                     break;
