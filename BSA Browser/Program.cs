@@ -241,6 +241,7 @@ namespace BSA_Browser
 
             var progressForm = new ProgressForm(archive.Files.Count)
             {
+                Cancelable = true,
                 StartPosition = FormStartPosition.CenterScreen
             };
 
