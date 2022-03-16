@@ -21,6 +21,7 @@ namespace BSA_Browser
         public const string VersionUrl = "https://raw.githubusercontent.com/AlexxEG/BSA_Browser/master/VERSION";
 
         public static bool SettingsReset = false;
+        public static bool Simulate = false;
 
         public static readonly string tmpPath = Path.Combine(Path.GetTempPath(), "bsa_browser");
 
@@ -50,6 +51,9 @@ namespace BSA_Browser
 
             if (HandleSettingsUpgrade() == false)
                 return; // User doesn't want to reset settings, can't continue
+
+            if (args.Contains("/s", StringComparer.OrdinalIgnoreCase))
+                Program.Simulate = true;
 
             try
             {

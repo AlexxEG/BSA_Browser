@@ -203,7 +203,10 @@ namespace BSA_Browser.Classes
                 {
                     if (this.UseFolderPath)
                     {
-                        entry.Extract(this.Folder, this.UseFolderPath);
+                        if (Program.Simulate == false)
+                            entry.Extract(this.Folder, this.UseFolderPath);
+                        else
+                            entry.GetDataStream().Close();
                     }
                     else
                     {
@@ -212,14 +215,20 @@ namespace BSA_Browser.Classes
                         {
                             string filename = Path.GetFileNameWithoutExtension(entry.FileName);
                             string extension = Path.GetExtension(entry.FileName);
+                            string newName = $"{filename} ({++extracted[entry.FileName]}){extension}";
 
-                            entry.Extract(this.Folder,
-                                this.UseFolderPath,
-                                $"{filename} ({++extracted[entry.FileName]}){extension}");
+                            if (Program.Simulate == false)
+                                entry.Extract(this.Folder, this.UseFolderPath, newName);
+                            else
+                                entry.GetDataStream().Close();
                         }
                         else
                         {
-                            entry.Extract(this.Folder, this.UseFolderPath);
+                            if (Program.Simulate == false)
+                                entry.Extract(this.Folder, this.UseFolderPath);
+                            else
+                                entry.GetDataStream().Close();
+
                             extracted.Add(entry.FileName, 0);
                         }
                     }
