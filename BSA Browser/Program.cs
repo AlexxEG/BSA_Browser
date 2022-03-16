@@ -249,7 +249,10 @@ namespace BSA_Browser
             if (destination == ExtractDestinations.Directory)
                 folder = Path.Combine(folder, Path.GetFileNameWithoutExtension(file));
 
-            Common.ExtractFiles(this.MainForm, folder, true, true, archive.Files, progressForm);
+            // Make sure there is a MainForm set otherwise UI progress won't work correctly
+            this.MainForm = this.MainForm ?? progressForm;
+
+            Common.ExtractFiles(null, folder, true, true, archive.Files, progressForm);
         }
     }
 
