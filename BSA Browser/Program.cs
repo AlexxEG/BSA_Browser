@@ -103,18 +103,6 @@ namespace BSA_Browser
             }
         }
 
-#if (!DEBUG)
-        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            Program.SaveException(e.ExceptionObject as Exception);
-        }
-
-        private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
-        {
-            Program.SaveException(e.Exception);
-        }
-#endif
-
         internal static string CreateTempDirectory()
         {
             string tmp;
@@ -144,17 +132,14 @@ namespace BSA_Browser
         }
 
 #if (!DEBUG)
-        private static bool HasWriteAccess(string folderPath)
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            try
-            {
-                System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(folderPath);
-                return true;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
-            }
+            Program.SaveException(e.ExceptionObject as Exception);
+        }
+
+        private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            Program.SaveException(e.Exception);
         }
 
         private static void SaveException(Exception exception)
