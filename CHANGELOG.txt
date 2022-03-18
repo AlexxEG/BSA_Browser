@@ -1,3 +1,13 @@
+[1.16.0]
+
+- Added options to enable/disable file association and shell integration in Options. Will prompt for administrative rights if it doesn't already have
+- Added option to reset settings if upgrading settings (after an update) fails
+- Added proper file check for unloaded archives
+- Added unsupported textures message box which lists the unsupported files
+- Added ability to cancel extraction started from Windows Explorer context menu
+- Disallow running batch scripts automatically when built-in preview is disabled, for safety reasons
+- Fixed progress dialog not updating and freezing when extracting from Explorer context menu
+
 [1.15.1]
 
 - Fixed extraction button and context menu not working (only drag & drop worked)
