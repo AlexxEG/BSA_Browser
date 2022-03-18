@@ -257,11 +257,14 @@ namespace BSA_Browser
 
             if (this.CheckAssociationAndIntegrationChanged())
             {
-                MessageBox.Show(this,
-                    "File association and shell integration requires administrative rights.\n\nPrompt will be shown automatically.",
-                    "BSA Browser",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                if (FileAssociation.HasAdminPrivileges() == false)
+                {
+                    MessageBox.Show(this,
+                        "File association and shell integration requires administrative rights.\n\nPrompt will be shown automatically.",
+                        "BSA Browser",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
 
                 // If file association is disabled we don't care whether shell integration has changed or not
                 bool? shellIntegration = null;
