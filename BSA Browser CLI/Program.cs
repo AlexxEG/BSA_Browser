@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using BSA_Browser_CLI.Filtering;
 using SharpBSABA2;
 using SharpBSABA2.BA2Util;
@@ -315,6 +316,7 @@ namespace BSA_Browser_CLI
 
         static void PrintHelp()
         {
+            Console.WriteLine("BSA Browser CLI - " + Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
             Console.WriteLine("Extract or list files inside .bsa and .ba2 archives.");
             Console.WriteLine();
             Console.WriteLine("bsab [OPTIONS] FILE [FILE...] [DESTINATION]");
@@ -327,17 +329,18 @@ namespace BSA_Browser_CLI
             Console.WriteLine("                           F   Prepend each line with full archive file path");
             Console.WriteLine("                           S   Display file size");
             Console.WriteLine("  -o, --overwrite        Overwrite existing files");
-            Console.WriteLine("  -f FILTER              Simple filtering. Wildcard supported");
-            Console.WriteLine("  --exclude FILTER       Exclude files using simple filtering. Wildcard supported");
-            Console.WriteLine("  --regex REGEX          Regex filtering");
+            Console.WriteLine("  -f FILTER              Simple filtering. Wildcard supported. Case-insensitive");
+            Console.WriteLine("  --exclude FILTER       Exclude using simple filtering. Wildcard supported. Case-insensitive");
+            Console.WriteLine("  --regex REGEX          Regex filtering. Case-sensitive");
             Console.WriteLine("  --encoding ENCODING    Set encoding to use");
             Console.WriteLine("     encodings             utf7     (Default)");
-            Console.WriteLine("                           system   Use System's default encoding");
+            Console.WriteLine("                           system   Use system default encoding");
             Console.WriteLine("                           ascii");
             Console.WriteLine("                           unicode");
             Console.WriteLine("                           utf32");
             Console.WriteLine("                           utf8");
             Console.WriteLine("  --noheaders            Extract unsupported textures without DDS header instead of skipping");
+            Console.WriteLine("  --mtc                  Match time changed on extracted files with archive");
             Console.WriteLine();
             Console.WriteLine("Multiple filters can be defined and mixed. Filters are matched from first to last.");
             Console.WriteLine();
