@@ -88,6 +88,10 @@ namespace BSA_Browser_CLI
                         case "--encoding":
                             this.Encoding = this.ParseEncoding(args[++i]);
                             break;
+                        case "--exclude":
+                        case "/exclude":
+                            filters.Add(new Filter(FilteringTypes.SimpleExclude, args[++i]));
+                            break;
                         case "/mtc":
                         case "--mtc":
                             this.MatchTimeChanged = true;
@@ -183,6 +187,9 @@ namespace BSA_Browser_CLI
                 {
                     case FilteringTypes.Simple:
                         _filters.Add(new FilterPredicateSimple(filter.Pattern));
+                        break;
+                    case FilteringTypes.SimpleExclude:
+                        _filters.Add(new FilterPredicateSimpleExclude(filter.Pattern));
                         break;
                     case FilteringTypes.Regex:
                         try
@@ -463,6 +470,7 @@ namespace BSA_Browser_CLI
             Console.WriteLine("                           S   Display file size");
             Console.WriteLine("  -o, --overwrite        Overwrite existing files");
             Console.WriteLine("  -f FILTER              Simple filtering. Wildcard supported");
+            Console.WriteLine("  --exclude FILTER       Exclude files using simple filtering. Wildcard supported");
             Console.WriteLine("  --regex REGEX          Regex filtering");
             Console.WriteLine("  --encoding ENCODING    Set encoding to use");
             Console.WriteLine("     encodings             utf7     (Default)");

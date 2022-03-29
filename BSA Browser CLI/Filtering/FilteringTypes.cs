@@ -4,6 +4,7 @@
     {
         None, 
         Simple,
+        SimpleExclude,
         Regex
     }
 }
