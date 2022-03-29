@@ -3,14 +3,11 @@
 - [ ] Detailed view for advanced mode or debug mode
 - [ ] Include xtexconv for converting XboxDDS to DDS
 - [ ] Define workspaces (Undecided)
-- [ ] CLI: Allow defining multiple filters/regex (including combining simple and regex), run each filter one after another.
-		Example: bsab -f "Meshes" -f "Weapons" -f "*.nif" ".\TribalPack - Main.bsa"
 - [ ] CLI: Handle \ in args, messes with escaping characters. For example "Meshes\*\Weapons\" will escape last " and cause an "unrecognized argument".
 		Examples to fix:	- bsab -f "\Weapons\" ".\TribalPack - Main.bsa"
 							- bsab -f "Meshes\\*Weapons\\" ".\TribalPack - Main.bsa"
 							- bsab -f "Meshes\\*\\Weapons\\" ".\TribalPack - Main.bsa"
 							- bsab -f "Meshes\\*Weapons\\" ".\TribalPack - Main.bsa"
-- [ ] CLI: Exclude simple filter
 
 ### Complete
 
@@ -38,3 +35,5 @@
 - [X] ~~Allow multiple previews at a time~~
 - [X] ~~Option to install and uninstall shell context menu integration~~
 - [X] ~~Allow multiple extraction operations at same time (maybe limit to one per archive or actually check indiviual files)~~
+- [X] ~~CLI: Allow defining multiple filters/regex (including combining simple and regex), run each filter one after another.~~
+- [X] ~~CLI: Exclude simple filter~~
