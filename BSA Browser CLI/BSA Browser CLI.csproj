@@ -62,6 +62,11 @@ Only *.allowedextension files will be included, which doesn't exist in my case.
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filtering\Filter.cs" />
+    <Compile Include="Filtering\FilteringTypes.cs" />
+    <Compile Include="Filtering\FilterPredicateRegex.cs" />
+    <Compile Include="Filtering\FilterPredicateSimple.cs" />
+    <Compile Include="Filtering\IFilterPredicate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

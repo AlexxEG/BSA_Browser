@@ -1,20 +1,14 @@
-﻿using SharpBSABA2;
-using SharpBSABA2.BA2Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Management.Automation;
 using System.Text;
-using System.Text.RegularExpressions;
+using BSA_Browser_CLI.Filtering;
+using SharpBSABA2;
+using SharpBSABA2.BA2Util;
 
 namespace BSA_Browser_CLI
 {
-    enum Filtering
-    {
-        None, Simple, Regex
-    }
-
     [Flags]
     enum ListOptions
     {
@@ -34,19 +28,19 @@ namespace BSA_Browser_CLI
         public bool MatchTimeChanged { get; private set; }
         public bool NoHeaders { get; private set; }
 
-        public Filtering Filtering { get; private set; } = Filtering.None;
         public ListOptions ListOptions { get; private set; } = ListOptions.None;
 
         public string Destination { get; private set; }
-        public string FilterString { get; private set; }
 
         public Encoding Encoding { get; private set; } = Encoding.UTF7;
 
         public IReadOnlyCollection<string> Inputs { get; private set; }
+        public IReadOnlyCollection<Filter> Filters { get; private set; }
 
         public Arguments(string[] args)
         {
             var input = new List<string>();
+            var filters = new List<Filter>();
 
             for (int i = 0; i < args.Length; i++)
             {
@@ -67,8 +61,7 @@ namespace BSA_Browser_CLI
                             break;
                         case "/f":
                         case "-f":
-                            this.Filtering = Filtering.Simple;
-                            this.FilterString = args[++i];
+                            filters.Add(new Filter(FilteringTypes.Simple, args[++i]));
                             break;
                         case "/i":
                         case "-i":
@@ -87,8 +80,7 @@ namespace BSA_Browser_CLI
                             break;
                         case "/regex":
                         case "--regex":
-                            this.Filtering = Filtering.Regex;
-                            this.FilterString = args[++i];
+                            filters.Add(new Filter(FilteringTypes.Regex, args[++i]));
                             break;
                         case "/enc":
                         case "--enc":
@@ -135,6 +127,7 @@ namespace BSA_Browser_CLI
             }
 
             this.Inputs = input.AsReadOnly();
+            this.Filters = filters.AsReadOnly();
         }
 
         private Encoding ParseEncoding(string encoding)
@@ -161,8 +154,7 @@ namespace BSA_Browser_CLI
         private const int ERROR_BAD_ARGUMENTS = 160;
 
         static Arguments _arguments;
-        static Regex _regex;
-        static WildcardPattern _pattern;
+        static List<IFilterPredicate> _filters = new List<IFilterPredicate>();
 
         static void Main(string[] args)
         {
@@ -184,27 +176,28 @@ namespace BSA_Browser_CLI
                 goto exit;
             }
 
-            // Setup filtering
-            if (_arguments.Filtering != Filtering.None)
+            // Setup filters
+            foreach (var filter in _arguments.Filters)
             {
-                if (_arguments.Filtering == Filtering.Simple)
+                switch (filter.Type)
                 {
-                    _pattern = new WildcardPattern(
-                        $"*{WildcardPattern.Escape(_arguments.FilterString).Replace("`*", "*")}*",
-                        WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
-                }
-                else if (_arguments.Filtering == Filtering.Regex)
-                {
-                    try
-                    {
-                        _regex = new Regex(_arguments.FilterString, RegexOptions.Compiled | RegexOptions.Singleline);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Invalid regex filter string");
-                        Environment.ExitCode = ERROR_BAD_ARGUMENTS;
-                        goto exit;
-                    }
+                    case FilteringTypes.Simple:
+                        _filters.Add(new FilterPredicateSimple(filter.Pattern));
+                        break;
+                    case FilteringTypes.Regex:
+                        try
+                        {
+                            _filters.Add(new FilterPredicateRegex(filter.Pattern));
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Invalid regex filter string");
+                            Environment.ExitCode = ERROR_BAD_ARGUMENTS;
+                            goto exit;
+                        }
+                        break;
+                    default:
+                        throw new Exception("Unknown filter type: " + filter.Type);
                 }
             }
 
@@ -373,13 +366,10 @@ namespace BSA_Browser_CLI
 
         static bool Filter(string input)
         {
-            if (_arguments.Filtering == Filtering.Simple)
+            foreach (var filter in _filters)
             {
-                return _pattern.IsMatch(input);
-            }
-            else if (_arguments.Filtering == Filtering.Regex)
-            {
-                return _regex.IsMatch(input);
+                if (filter.Match(input) == false)
+                    return false;
             }
 
             return true;
