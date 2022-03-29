@@ -123,10 +123,10 @@ namespace BSA_Browser_CLI
                 }
 
                 int count = 0;
-                int total = archive.Files.Count(x => Filter(x.FullPath));
                 int line = -1;
                 int prevLength = 0;
                 int skipped = 0;
+                var files = archive.Files.Where(x => Filter(x.FullPath)).ToList();
 
                 // Some Console properties might not be available in certain situations, 
                 // e.g. when redirecting stdout. To prevent crashing, setting the cursor position should only
@@ -137,14 +137,11 @@ namespace BSA_Browser_CLI
                 }
                 catch (IOException) { }
 
-                HandleUnsupportedTextures(archive.Files);
+                HandleUnsupportedTextures(files);
 
-                foreach (var entry in archive.Files)
+                foreach (var entry in files)
                 {
-                    if (!Filter(entry.FullPath))
-                        continue;
-
-                    string output = $"Extracting: {++count}/{total} - {entry.FullPath}".PadRight(prevLength);
+                    string output = $"Extracting: {++count}/{files.Count} - {entry.FullPath}".PadRight(prevLength);
 
                     if (line > -1)
                     {
