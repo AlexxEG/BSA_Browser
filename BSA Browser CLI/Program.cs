@@ -222,6 +222,8 @@ namespace BSA_Browser_CLI
                 int skipped = 0;
                 var files = archive.Files.Where(x => Filter(x.FullPath)).ToList();
 
+                HandleUnsupportedTextures(files);
+
                 // Some Console properties might not be available in certain situations, 
                 // e.g. when redirecting stdout. To prevent crashing, setting the cursor position should only
                 // be done if there actually is a cursor to be set.
@@ -230,8 +232,6 @@ namespace BSA_Browser_CLI
                     line = Console.CursorTop;
                 }
                 catch (IOException) { }
-
-                HandleUnsupportedTextures(files);
 
                 foreach (var entry in files)
                 {
@@ -311,23 +311,14 @@ namespace BSA_Browser_CLI
 
         static void HandleUnsupportedTextures(List<ArchiveEntry> files)
         {
-            if (files.All(x => (x as BA2TextureEntry)?.IsFormatSupported() != false))
-                return;
-
-            if (_arguments.NoHeaders)
+            for (int i = files.Count; i-- > 0;)
             {
-                foreach (var fe in files.Where(x => (x as BA2TextureEntry)?.IsFormatSupported() == false))
+                if (files[i] is BA2TextureEntry tex && tex.IsFormatSupported() == false)
                 {
-                    (fe as BA2TextureEntry).GenerateTextureHeader = false;
-                }
-            }
-            else
-            {
-                // Remove unsupported textures to skip them
-                for (int i = files.Count; i-- > 0;)
-                {
-                    if ((files[i] as BA2TextureEntry)?.IsFormatSupported() == false)
-                        files.RemoveAt(i);
+                    if (_arguments.NoHeaders)
+                        tex.GenerateTextureHeader = false;
+                    else
+                        files.RemoveAt(i); // Remove unsupported textures to skip them
                 }
             }
         }
