@@ -481,6 +481,8 @@ namespace BSA_Browser_CLI
             Console.WriteLine("                           utf8");
             Console.WriteLine("  --noheaders            Extract unsupported textures without DDS header instead of skipping");
             Console.WriteLine();
+            Console.WriteLine("Multiple filters can be defined and mixed. Filters are matched from first to last.");
+            Console.WriteLine();
         }
     }
 }
