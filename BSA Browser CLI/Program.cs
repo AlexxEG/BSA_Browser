@@ -285,23 +285,12 @@ namespace BSA_Browser_CLI
                         Console.WriteLine($"An error occured opening '{Path.GetFileName(archivePath)}'. Skipping...");
                 }
 
-                bool filesize = false;
-                string prefix = string.Empty;
+                bool filesize = options.HasFlag(ListOptions.FileSize);
+                string prefix = FormatPrefix(options, archive);
+                string indent = string.IsNullOrEmpty(prefix) && archives.Count > 1 ? "\t" : string.Empty;
 
-                if (options.HasFlag(ListOptions.Archive))
-                    prefix = Path.GetFileName(archive.FullPath);
-
-                if (options.HasFlag(ListOptions.FullPath))
-                    prefix = Path.GetFullPath(archive.FullPath);
-
-                filesize = options.HasFlag(ListOptions.FileSize);
-
-                foreach (var entry in archive.Files)
+                foreach (var entry in archive.Files.Where(x => Filter(x.FullPath)))
                 {
-                    if (!Filter(entry.FullPath))
-                        continue;
-
-                    string indent = string.IsNullOrEmpty(prefix) && archives.Count > 1 ? "\t" : string.Empty;
                     string filesizeString = filesize ? entry.RealSize + "\t\t" : string.Empty;
 
                     Console.WriteLine($"{indent}{filesizeString}{Path.Combine(prefix, entry.FullPath)}");
@@ -309,6 +298,18 @@ namespace BSA_Browser_CLI
 
                 Console.WriteLine();
             });
+        }
+
+        static string FormatPrefix(ListOptions options, Archive archive)
+        {
+            string prefix = string.Empty;
+
+            if (options.HasFlag(ListOptions.Archive))
+                prefix = Path.GetFileName(archive.FullPath);
+
+            if (options.HasFlag(ListOptions.FullPath))
+                prefix = Path.GetFullPath(archive.FullPath);
+            return prefix;
         }
 
         static void PrintHelp()
