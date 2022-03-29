@@ -104,6 +104,100 @@ namespace BSA_Browser_CLI
 #endif
         }
 
+        static Arguments ParseArguments(params string[] args)
+        {
+            try
+            {
+                return new Arguments(args);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Environment.ExitCode = ERROR_BAD_ARGUMENTS;
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("Input file not found: " + ex.FileName);
+                Environment.ExitCode = ERROR_FILE_NOT_FOUND;
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Environment.ExitCode = ERROR_PATH_NOT_FOUND;
+            }
+
+            return null;
+        }
+
+        static void PrintHelp()
+        {
+            Console.WriteLine("BSA Browser CLI - " + Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
+            Console.WriteLine("Extract or list files inside .bsa and .ba2 archives.");
+            Console.WriteLine();
+            Console.WriteLine("bsab [OPTIONS] FILE [FILE...] [DESTINATION]");
+            Console.WriteLine();
+            Console.WriteLine("  -h, --help             Display this help page");
+            Console.WriteLine("  -i                     Ignore errors with opening archives or extracting files");
+            Console.WriteLine("  -e                     Extract all files. Options:");
+            Console.WriteLine("  -l:[OPTIONS]           List all files");
+            Console.WriteLine("     options               A   Prepend each line with archive filename");
+            Console.WriteLine("                           F   Prepend each line with full archive file path");
+            Console.WriteLine("                           S   Display file size");
+            Console.WriteLine("  -o, --overwrite        Overwrite existing files");
+            Console.WriteLine("  -f FILTER              Simple filtering. Wildcard supported. Case-insensitive");
+            Console.WriteLine("  --exclude FILTER       Exclude using simple filtering. Wildcard supported. Case-insensitive");
+            Console.WriteLine("  --regex REGEX          Regex filtering. Case-sensitive");
+            Console.WriteLine("  --encoding ENCODING    Set encoding to use");
+            Console.WriteLine("     encodings             utf7     (Default)");
+            Console.WriteLine("                           system   Use system default encoding");
+            Console.WriteLine("                           ascii");
+            Console.WriteLine("                           unicode");
+            Console.WriteLine("                           utf32");
+            Console.WriteLine("                           utf8");
+            Console.WriteLine("  --noheaders            Extract unsupported textures without DDS header instead of skipping");
+            Console.WriteLine("  --mtc                  Match time changed on extracted files with archive");
+            Console.WriteLine();
+            Console.WriteLine("Multiple filters can be defined and mixed. Filters are matched from first to last.");
+            Console.WriteLine();
+        }
+
+        static void PrintFileList(List<string> archives, ListOptions options)
+        {
+            archives.ForEach(archivePath =>
+            {
+                // If there are multiple archives print archive filename to differentiate
+                if (archives.Count > 1)
+                    Console.WriteLine($"{Path.GetFileName(archivePath)}:");
+
+                Archive archive = null;
+
+                try
+                {
+                    archive = OpenArchive(archivePath);
+                }
+                catch (Exception)
+                {
+                    if (!_arguments.IgnoreErrors)
+                        throw;
+                    else
+                        Console.WriteLine($"An error occured opening '{Path.GetFileName(archivePath)}'. Skipping...");
+                }
+
+                bool filesize = options.HasFlag(ListOptions.FileSize);
+                string prefix = FormatPrefix(options, archive);
+                string indent = string.IsNullOrEmpty(prefix) && archives.Count > 1 ? "\t" : string.Empty;
+
+                foreach (var entry in archive.Files.Where(x => Filter(x.FullPath)))
+                {
+                    string filesizeString = filesize ? entry.RealSize + "\t\t" : string.Empty;
+
+                    Console.WriteLine($"{indent}{filesizeString}{Path.Combine(prefix, entry.FullPath)}");
+                }
+
+                Console.WriteLine();
+            });
+        }
+
         static void ExtractFiles(List<string> archives, string destination, bool overwrite)
         {
             archives.ForEach(archivePath =>
@@ -181,27 +275,15 @@ namespace BSA_Browser_CLI
             });
         }
 
-        static void HandleUnsupportedTextures(List<ArchiveEntry> files)
+        static bool Filter(string input)
         {
-            if (files.All(x => (x as BA2TextureEntry)?.IsFormatSupported() != false))
-                return;
+            foreach (var filter in _filters)
+            {
+                if (filter.Match(input) == false)
+                    return false;
+            }
 
-            if (_arguments.NoHeaders)
-            {
-                foreach (var fe in files.Where(x => (x as BA2TextureEntry)?.IsFormatSupported() == false))
-                {
-                    (fe as BA2TextureEntry).GenerateTextureHeader = false;
-                }
-            }
-            else
-            {
-                // Remove unsupported textures to skip them
-                for (int i = files.Count; i-- > 0;)
-                {
-                    if ((files[i] as BA2TextureEntry)?.IsFormatSupported() == false)
-                        files.RemoveAt(i);
-                }
-            }
+            return true;
         }
 
         static Archive OpenArchive(string file)
@@ -227,77 +309,27 @@ namespace BSA_Browser_CLI
             return archive;
         }
 
-        static bool Filter(string input)
+        static void HandleUnsupportedTextures(List<ArchiveEntry> files)
         {
-            foreach (var filter in _filters)
-            {
-                if (filter.Match(input) == false)
-                    return false;
-            }
+            if (files.All(x => (x as BA2TextureEntry)?.IsFormatSupported() != false))
+                return;
 
-            return true;
-        }
-
-        static Arguments ParseArguments(params string[] args)
-        {
-            try
+            if (_arguments.NoHeaders)
             {
-                return new Arguments(args);
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Environment.ExitCode = ERROR_BAD_ARGUMENTS;
-            }
-            catch (FileNotFoundException ex)
-            {
-                Console.WriteLine("Input file not found: " + ex.FileName);
-                Environment.ExitCode = ERROR_FILE_NOT_FOUND;
-            }
-            catch (DirectoryNotFoundException ex)
-            {
-                Console.WriteLine(ex.Message);
-                Environment.ExitCode = ERROR_PATH_NOT_FOUND;
-            }
-
-            return null;
-        }
-
-        static void PrintFileList(List<string> archives, ListOptions options)
-        {
-            archives.ForEach(archivePath =>
-            {
-                // If there are multiple archives print archive filename to differentiate
-                if (archives.Count > 1)
-                    Console.WriteLine($"{Path.GetFileName(archivePath)}:");
-
-                Archive archive = null;
-
-                try
+                foreach (var fe in files.Where(x => (x as BA2TextureEntry)?.IsFormatSupported() == false))
                 {
-                    archive = OpenArchive(archivePath);
+                    (fe as BA2TextureEntry).GenerateTextureHeader = false;
                 }
-                catch (Exception)
+            }
+            else
+            {
+                // Remove unsupported textures to skip them
+                for (int i = files.Count; i-- > 0;)
                 {
-                    if (!_arguments.IgnoreErrors)
-                        throw;
-                    else
-                        Console.WriteLine($"An error occured opening '{Path.GetFileName(archivePath)}'. Skipping...");
+                    if ((files[i] as BA2TextureEntry)?.IsFormatSupported() == false)
+                        files.RemoveAt(i);
                 }
-
-                bool filesize = options.HasFlag(ListOptions.FileSize);
-                string prefix = FormatPrefix(options, archive);
-                string indent = string.IsNullOrEmpty(prefix) && archives.Count > 1 ? "\t" : string.Empty;
-
-                foreach (var entry in archive.Files.Where(x => Filter(x.FullPath)))
-                {
-                    string filesizeString = filesize ? entry.RealSize + "\t\t" : string.Empty;
-
-                    Console.WriteLine($"{indent}{filesizeString}{Path.Combine(prefix, entry.FullPath)}");
-                }
-
-                Console.WriteLine();
-            });
+            }
         }
 
         static string FormatPrefix(ListOptions options, Archive archive)
@@ -310,38 +342,6 @@ namespace BSA_Browser_CLI
             if (options.HasFlag(ListOptions.FullPath))
                 prefix = Path.GetFullPath(archive.FullPath);
             return prefix;
-        }
-
-        static void PrintHelp()
-        {
-            Console.WriteLine("BSA Browser CLI - " + Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
-            Console.WriteLine("Extract or list files inside .bsa and .ba2 archives.");
-            Console.WriteLine();
-            Console.WriteLine("bsab [OPTIONS] FILE [FILE...] [DESTINATION]");
-            Console.WriteLine();
-            Console.WriteLine("  -h, --help             Display this help page");
-            Console.WriteLine("  -i                     Ignore errors with opening archives or extracting files");
-            Console.WriteLine("  -e                     Extract all files. Options:");
-            Console.WriteLine("  -l:[OPTIONS]           List all files");
-            Console.WriteLine("     options               A   Prepend each line with archive filename");
-            Console.WriteLine("                           F   Prepend each line with full archive file path");
-            Console.WriteLine("                           S   Display file size");
-            Console.WriteLine("  -o, --overwrite        Overwrite existing files");
-            Console.WriteLine("  -f FILTER              Simple filtering. Wildcard supported. Case-insensitive");
-            Console.WriteLine("  --exclude FILTER       Exclude using simple filtering. Wildcard supported. Case-insensitive");
-            Console.WriteLine("  --regex REGEX          Regex filtering. Case-sensitive");
-            Console.WriteLine("  --encoding ENCODING    Set encoding to use");
-            Console.WriteLine("     encodings             utf7     (Default)");
-            Console.WriteLine("                           system   Use system default encoding");
-            Console.WriteLine("                           ascii");
-            Console.WriteLine("                           unicode");
-            Console.WriteLine("                           utf32");
-            Console.WriteLine("                           utf8");
-            Console.WriteLine("  --noheaders            Extract unsupported textures without DDS header instead of skipping");
-            Console.WriteLine("  --mtc                  Match time changed on extracted files with archive");
-            Console.WriteLine();
-            Console.WriteLine("Multiple filters can be defined and mixed. Filters are matched from first to last.");
-            Console.WriteLine();
         }
     }
 }
