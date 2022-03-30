@@ -70,15 +70,7 @@ namespace BSA_Browser_CLI
                         case "/l":
                         case "-l":
                             this.List = true;
-
-                            char[] options = arg.Split(':', '=').Last().ToLower().ToCharArray();
-
-                            if (options.Contains('a')) this.ListOptions = ListOptions.Archive;
-                            if (options.Contains('f')) this.ListOptions |= ListOptions.FullPath;
-                            if (options.Contains('n')) this.ListOptions |= ListOptions.Filename;
-                            if (options.Contains('s')) this.ListOptions |= ListOptions.FileSize;
-                            if (options.Contains('x')) this.ListOptions |= ListOptions.FileSizeFormat;
-
+                            this.ListOptions = ParseListOptions(arg);
                             break;
                         case "/regex":
                         case "--regex":
@@ -134,6 +126,38 @@ namespace BSA_Browser_CLI
 
             this.Inputs = input.AsReadOnly();
             this.Filters = filters.AsReadOnly();
+        }
+
+        private ListOptions ParseListOptions(string arg)
+        {
+            const string AllowedOptions = "afnsx";
+
+            // Check if there is any sub options
+            if (!arg.Contains(':') && !arg.Contains('='))
+                return ListOptions.None;
+
+            // Get chars after : or =
+            var options = arg.Split(':', '=').Last().ToLower().ToCharArray();
+
+            // Check that all sub options are valid
+            if (options.Any(x => AllowedOptions.Contains(x) == false))
+                throw new ArgumentException("Unknown -l sub options: " + new string(options) + "\nSee --help page for valid options.");
+
+            var value = ListOptions.None;
+
+            foreach (char c in options)
+            {
+                switch (c)
+                {
+                    case 'a': value |= ListOptions.Archive; break;
+                    case 'f': value |= ListOptions.FullPath; break;
+                    case 'n': value |= ListOptions.Filename; break;
+                    case 's': value |= ListOptions.FileSize; break;
+                    case 'x': value |= ListOptions.FileSizeFormat; break;
+                }
+            }
+
+            return value;
         }
 
         private Encoding ParseEncoding(string encoding)
