@@ -139,9 +139,10 @@ namespace BSA_Browser_CLI
             Console.WriteLine("  -h, --help             Display this help page");
             Console.WriteLine("  -i                     Ignore errors with opening archives or extracting files");
             Console.WriteLine("  -e                     Extract all files. Options:");
-            Console.WriteLine("  -l:[OPTIONS]           List all files");
+            Console.WriteLine("  -l:[OPTIONS]           List files");
             Console.WriteLine("     options               A   Prepend each line with archive filename");
             Console.WriteLine("                           F   Prepend each line with full archive file path");
+            Console.WriteLine("                           N   Display filename only");
             Console.WriteLine("                           S   Display file size");
             Console.WriteLine("  -o, --overwrite        Overwrite existing files");
             Console.WriteLine("  -f FILTER              Simple filtering. Wildcard supported. Case-insensitive");
@@ -183,6 +184,7 @@ namespace BSA_Browser_CLI
                         Console.WriteLine($"An error occured opening '{Path.GetFileName(archivePath)}'. Skipping...");
                 }
 
+                bool filename = options.HasFlag(ListOptions.Filename);
                 bool filesize = options.HasFlag(ListOptions.FileSize);
                 string prefix = FormatPrefix(options, archive);
                 string indent = string.IsNullOrEmpty(prefix) && archives.Count > 1 ? "\t" : string.Empty;
@@ -191,7 +193,10 @@ namespace BSA_Browser_CLI
                 {
                     string filesizeString = filesize ? entry.RealSize + "\t\t" : string.Empty;
 
-                    Console.WriteLine($"{indent}{filesizeString}{Path.Combine(prefix, entry.FullPath)}");
+                    Console.WriteLine("{0}{1}{2}",
+                        indent,
+                        filesizeString,
+                        Path.Combine(prefix, filename ? entry.FileName : entry.FullPath));
                 }
 
                 Console.WriteLine();

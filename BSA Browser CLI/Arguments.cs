@@ -13,7 +13,8 @@ namespace BSA_Browser_CLI
         None = 0,
         Archive = 1,
         FullPath = 2,
-        FileSize = 4
+        Filename = 4,
+        FileSize = 8
     }
 
     internal class Arguments
@@ -73,6 +74,7 @@ namespace BSA_Browser_CLI
 
                             if (options.Contains('a')) this.ListOptions = ListOptions.Archive;
                             if (options.Contains('f')) this.ListOptions |= ListOptions.FullPath;
+                            if (options.Contains('n')) this.ListOptions |= ListOptions.Filename;
                             if (options.Contains('s')) this.ListOptions |= ListOptions.FileSize;
 
                             break;
