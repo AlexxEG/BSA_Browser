@@ -143,7 +143,8 @@ namespace BSA_Browser_CLI
             Console.WriteLine("     options               A   Prepend each line with archive filename");
             Console.WriteLine("                           F   Prepend each line with full archive file path");
             Console.WriteLine("                           N   Display filename only");
-            Console.WriteLine("                           S   Display file size");
+            Console.WriteLine("                           S   Display file size (bytes)");
+            Console.WriteLine("                           X   Display file size (humanize)");
             Console.WriteLine("  -o, --overwrite        Overwrite existing files");
             Console.WriteLine("  -f FILTER              Simple filtering. Wildcard supported. Case-insensitive");
             Console.WriteLine("  --exclude FILTER       Exclude using simple filtering. Wildcard supported. Case-insensitive");
@@ -186,12 +187,14 @@ namespace BSA_Browser_CLI
 
                 bool filename = options.HasFlag(ListOptions.Filename);
                 bool filesize = options.HasFlag(ListOptions.FileSize);
+                bool filesizeFormat = options.HasFlag(ListOptions.FileSizeFormat);
                 string prefix = FormatPrefix(options, archive);
                 string indent = string.IsNullOrEmpty(prefix) && archives.Count > 1 ? "\t" : string.Empty;
 
                 foreach (var entry in archive.Files.Where(x => Filter(x.FullPath)))
                 {
-                    string filesizeString = filesize ? entry.RealSize + "\t\t" : string.Empty;
+                    string filesizeString = filesizeFormat ? FormatBytes(entry.RealSize).PadLeft(12) + "\t" :
+                                                  filesize ? entry.RealSize.ToString("N0").PadLeft(12) + "\t" : string.Empty;
 
                     Console.WriteLine("{0}{1}{2}",
                         indent,
@@ -326,6 +329,22 @@ namespace BSA_Browser_CLI
                         files.RemoveAt(i); // Remove unsupported textures to skip them
                 }
             }
+        }
+
+        static string FormatBytes(long bytes)
+        {
+            const int scale = 1024;
+            string[] orders = new string[] { "GB", "MB", "KB", " B" };
+            long max = (long)Math.Pow(scale, orders.Length - 1);
+
+            foreach (string order in orders)
+            {
+                if (bytes > max)
+                    return string.Format("{0:#.00} {1}", decimal.Divide(bytes, max), order);
+
+                max /= scale;
+            }
+            return "0 Bytes";
         }
 
         static string FormatPrefix(ListOptions options, Archive archive)

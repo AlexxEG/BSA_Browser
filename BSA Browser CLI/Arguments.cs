@@ -14,7 +14,8 @@ namespace BSA_Browser_CLI
         Archive = 1,
         FullPath = 2,
         Filename = 4,
-        FileSize = 8
+        FileSize = 8,
+        FileSizeFormat = 16
     }
 
     internal class Arguments
@@ -76,6 +77,7 @@ namespace BSA_Browser_CLI
                             if (options.Contains('f')) this.ListOptions |= ListOptions.FullPath;
                             if (options.Contains('n')) this.ListOptions |= ListOptions.Filename;
                             if (options.Contains('s')) this.ListOptions |= ListOptions.FileSize;
+                            if (options.Contains('x')) this.ListOptions |= ListOptions.FileSizeFormat;
 
                             break;
                         case "/regex":
