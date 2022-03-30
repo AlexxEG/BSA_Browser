@@ -193,8 +193,8 @@ namespace BSA_Browser_CLI
 
                 foreach (var entry in archive.Files.Where(x => Filter(x.FullPath)))
                 {
-                    string filesizeString = filesizeFormat ? FormatBytes(entry.RealSize).PadLeft(12) + "\t" :
-                                                  filesize ? entry.RealSize.ToString("N0").PadLeft(12) + "\t" : string.Empty;
+                    string filesizeString = filesizeFormat ? FormatBytes(Math.Max(entry.RealSize, entry.Size)).PadLeft(12) + "\t" :
+                                                  filesize ? Math.Max(entry.RealSize, entry.Size).ToString("N0").PadLeft(12) + "\t" : string.Empty;
 
                     Console.WriteLine("{0}{1}{2}",
                         indent,
