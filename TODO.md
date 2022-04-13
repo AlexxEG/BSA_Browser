@@ -3,13 +3,6 @@
 - [ ] Detailed view for advanced mode or debug mode
 - [ ] Include xtexconv for converting XboxDDS to DDS
 - [ ] Define workspaces (Undecided)
-- [ ] CLI: Handle \ in args, messes with escaping characters. For example "Meshes\*\Weapons\" will escape last " and cause an "unrecognized argument".
-		
-        Examples to fix:
-        - bsab -f "\Weapons\" ".\TribalPack - Main.bsa"
-        - bsab -f "Meshes\\*Weapons\\" ".\TribalPack - Main.bsa"
-        - bsab -f "Meshes\\*\\Weapons\\" ".\TribalPack - Main.bsa"
-		- bsab -f "Meshes\\*Weapons\\" ".\TribalPack - Main.bsa"
 
 ### Complete
 
