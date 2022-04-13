@@ -138,7 +138,8 @@ namespace BSA_Browser_CLI
             Console.WriteLine();
             Console.WriteLine("  -h, --help             Display this help page");
             Console.WriteLine("  -i                     Ignore errors with opening archives or extracting files");
-            Console.WriteLine("  -e                     Extract all files. Options:");
+            Console.WriteLine("  -e:[OPTIONS]           Extract files");
+            Console.WriteLine("     options               N   Extract files directly into destination, without directories");
             Console.WriteLine("  -l:[OPTIONS]           List files");
             Console.WriteLine("     options               A   Prepend each line with archive filename");
             Console.WriteLine("                           F   Prepend each line with full archive file path");
@@ -264,7 +265,7 @@ namespace BSA_Browser_CLI
                         }
                         else
                         {
-                            entry.Extract(destination, true);
+                            entry.Extract(destination, _arguments.ExtractOptions.HasFlag(ExtractOptions.Directory));
                         }
                     }
                     catch (Exception)

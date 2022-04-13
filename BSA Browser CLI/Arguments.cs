@@ -8,6 +8,20 @@ using BSA_Browser_CLI.Filtering;
 namespace BSA_Browser_CLI
 {
     [Flags]
+    internal enum ExtractOptions
+    {
+        None = 0,
+        /// <summary>
+        /// Extract into destination with directory.
+        /// </summary>
+        Directory = 1,
+        /// <summary>
+        /// Extract into destination without directory.
+        /// </summary>
+        NoDirectory = 2
+    }
+
+    [Flags]
     internal enum ListOptions
     {
         None = 0,
@@ -28,6 +42,7 @@ namespace BSA_Browser_CLI
         public bool MatchTimeChanged { get; private set; }
         public bool NoHeaders { get; private set; }
 
+        public ExtractOptions ExtractOptions { get; private set; } = ExtractOptions.Directory;
         public ListOptions ListOptions { get; private set; } = ListOptions.None;
 
         public string Destination { get; private set; }
@@ -58,6 +73,7 @@ namespace BSA_Browser_CLI
                         case "/e":
                         case "-e":
                             this.Extract = true;
+                            this.ExtractOptions = ParseExtractOptions(arg);
                             break;
                         case "/f":
                         case "-f":
@@ -126,6 +142,29 @@ namespace BSA_Browser_CLI
 
             this.Inputs = input.AsReadOnly();
             this.Filters = filters.AsReadOnly();
+        }
+
+        private ExtractOptions ParseExtractOptions(string arg)
+        {
+            const string AllowedOptions = "n";
+
+            // Check if there is any sub options
+            if (!arg.Contains(':') && !arg.Contains('='))
+                return ExtractOptions.Directory;
+
+            // Get chars after : or =
+            var options = arg.Split(':', '=').Last().ToLower().ToCharArray();
+
+            // Check that all sub options are valid
+            if (options.Any(x => AllowedOptions.Contains(x) == false))
+                throw new ArgumentException("Unknown -e sub options: " + new string(options) + "\nSee --help page for valid options.");
+
+            var value = ExtractOptions.Directory;
+
+            if (options.Contains('n'))
+                value = ExtractOptions.NoDirectory;
+
+            return value;
         }
 
         private ListOptions ParseListOptions(string arg)
