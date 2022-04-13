@@ -89,8 +89,8 @@ namespace SharpBSABA2.BA2Util
         {
             string dxgi = Enum.GetName(typeof(DXGI_FORMAT_FULL), format);
 
-            return $"Name hash:\t {nameHash}\n" +
-                $"Directory hash:\t {dirHash}\n" +
+            return $"Name hash:\t {nameHash:X}\n" +
+                $"Directory hash:\t {dirHash:X}\n" +
                 $"DXGI format:\t {dxgi} ({format})\n" +
                 $"Resolution:\t {width}x{height}\n" +
                 $"Chunks:\t\t {numChunks}\n" +

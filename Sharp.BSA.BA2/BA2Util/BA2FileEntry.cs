@@ -41,8 +41,8 @@ namespace SharpBSABA2.BA2Util
 
         public override string GetToolTipText()
         {
-            return $"Name hash:\t {nameHash}\n" +
-                $"Directory hash:\t {dirHash}\n" +
+            return $"Name hash:\t {nameHash:X}\n" +
+                $"Directory hash:\t {dirHash:X}\n" +
                 $"Flags:\t\t {flags:X}\n" +
                 $"Offset:\t\t {Offset}\n" +
                 $"Size:\t\t {Size}\n" +
