@@ -797,7 +797,7 @@ namespace BSA_Browser
 
         private void fileMenuItem_Popup(object sender, EventArgs e)
         {
-            extractArchivesMenuItem.Enabled = tvFolders.Nodes.Cast<ArchiveNode>().Any(x => x.Loaded);
+            extractArchivesMenuItem.Enabled = tvFolders.Nodes.Cast<ArchiveNode>().Skip(1).Any(x => x.Loaded);
         }
 
         private async void openArchiveMenuItem_Click(object sender, EventArgs e)
