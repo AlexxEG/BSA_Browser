@@ -1058,6 +1058,7 @@ namespace BSA_Browser
 
             extractMenuItem.Enabled = hasSelectedItems;
             extractFoldersMenuItem.Enabled = hasSelectedItems;
+            previewMenuItem.Enabled = hasSelectedItems;
 
             quickExtractsMenuItem.Enabled = hasSelectedItems;
             copyMenuItem1.Enabled = hasSelectedItems;
