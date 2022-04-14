@@ -1007,16 +1007,26 @@ namespace BSA_Browser
                 }
                 else
                 {
-                    MessageBox.Show(this, "You have the latest version.");
+                    MessageBox.Show(this, "You have the latest version.",
+                        "Update",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
             }
             catch (Win32Exception)
             {
-                MessageBox.Show(this, "Couldn't open the BSA Browser NexusMods page.");
+                MessageBox.Show(this, "Couldn't open the Nexus Mods page.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "Error checking for update.\n\n" + ex.Message);
+                MessageBox.Show(this,
+                    "Error checking for update.\n\nException: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
