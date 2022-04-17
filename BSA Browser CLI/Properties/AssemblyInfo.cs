@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Alexander Ellingsen")]
 [assembly: AssemblyProduct("BSA Browser CLI")]
-[assembly: AssemblyCopyright("Copyright ©  2019-2020 Alexander Ellingsen")]
+[assembly: AssemblyCopyright("Copyright ©  2019-2022 Alexander Ellingsen")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
