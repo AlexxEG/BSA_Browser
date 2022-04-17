@@ -7,7 +7,7 @@ BSA Browser started as a fork of [Fallout Mod Manager](https://sourceforge.net/p
 
 Read more at [BSA Browser](https://www.nexusmods.com/skyrimspecialedition/mods/1756) on Nexus Mods.
 
-Requires .NET Framework 4.7.2
+Requires .NET Framework 4.8
 
 ### Features
  - Browse & extract files from .BSA/.BA2/.DAT archives
