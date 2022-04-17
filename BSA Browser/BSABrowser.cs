@@ -59,7 +59,7 @@ namespace BSA_Browser
             this.Menu = mainMenu1;
 
             // Show application version in title
-            this.Text += $" ({Program.GetVersion()})";
+            this.Text += $" ({Program.Version})";
 
             var archiveNode = new ArchiveNode("All", archive: null)
             {

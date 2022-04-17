@@ -23,6 +23,7 @@ namespace BSA_Browser
         public static bool SettingsReset = false;
         public static bool Simulate = false;
 
+        public static readonly string Version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
         public static readonly string tmpPath = Path.Combine(Path.GetTempPath(), "bsa_browser");
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -116,13 +117,6 @@ namespace BSA_Browser
                 }
             }
             throw new Exception("Could not create temp folder because directory is full");
-        }
-
-        public static string GetVersion()
-        {
-            Version v = Assembly.GetExecutingAssembly().GetName().Version;
-
-            return $"{v.Major}.{v.Minor}.{v.Build}";
         }
 
         private static bool ShouldResetSettings()
