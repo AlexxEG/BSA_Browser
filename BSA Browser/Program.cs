@@ -24,7 +24,7 @@ namespace BSA_Browser
         public static bool Simulate = false;
 
         public static readonly string Version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
-        public static readonly string tmpPath = Path.Combine(Path.GetTempPath(), "bsa_browser");
+        public static readonly string TempPath = Path.Combine(Path.GetTempPath(), "bsa_browser");
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
@@ -109,7 +109,7 @@ namespace BSA_Browser
             string tmp;
             for (int i = 0; i < 32000; i++)
             {
-                tmp = Path.Combine(tmpPath, i.ToString());
+                tmp = Path.Combine(TempPath, i.ToString());
                 if (!Directory.Exists(tmp))
                 {
                     Directory.CreateDirectory(tmp);
