@@ -1,5 +1,4 @@
 ﻿using SharpBSABA2.Extensions;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,8 +9,6 @@ namespace SharpBSABA2.Utils
         private const string FileName = "mw_hash_table.bin";
 
         private static Dictionary<ulong, string> NameTable = new Dictionary<ulong, string>();
-
-        private static Random _Random = new Random();
 
         static MorrowindNameTable()
         {
@@ -25,9 +22,6 @@ namespace SharpBSABA2.Utils
 
                 for (int i = 0; i < count; i++)
                 {
-                    if (_Random.NextDouble() > 0.2)
-                        continue; // Skip for testing purposes
-
                     NameTable.Add(file.ReadUInt64(), file.ReadStringTo('\0'));
                 }
             }
