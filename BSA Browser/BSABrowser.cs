@@ -594,7 +594,7 @@ namespace BSA_Browser
             var fullpath = Path.Combine(file.Folder, file.FileName);
 
             // Prepend 1-based indexing if there is no name table
-            if (!file.Archive.HasNameTable)
+            if (!file.Archive.HasNameTable && !file.HadHashTranslated)
                 fullpath = $"({file.Index + 1}) {fullpath}";
 
             var lvi = new ListViewItem(fullpath, GetFileIconIndex(fullpath));

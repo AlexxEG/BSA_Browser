@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using BSA_Browser.Enums;
+﻿using BSA_Browser.Enums;
 using SharpBSABA2;
 using SharpBSABA2.BA2Util;
+using System;
+using System.Collections.Generic;
 
 namespace BSA_Browser.Sorting
 {
@@ -20,12 +20,21 @@ namespace BSA_Browser.Sorting
             switch (SortingConfig.Order)
             {
                 case ArchiveFileSortOrder.FilePath:
-                    if (a.Archive.HasNameTable)
+                    if (a.Archive.HasNameTable || a.HadHashTranslated && b.HadHashTranslated)
+                    {
                         return SortingConfig.Descending ? string.CompareOrdinal(a.LowerPath, b.LowerPath) :
                                       string.CompareOrdinal(b.LowerPath, a.LowerPath);
+                    }
+                    else if (a.HadHashTranslated != b.HadHashTranslated)
+                    {
+                        // Only one was translated, sort hash last always
+                        return a.HadHashTranslated ? -1 : 1;
+                    }
                     else
+                    {
                         return SortingConfig.Descending ? a.Index.CompareTo(b.Index) :
                                       b.Index.CompareTo(a.Index);
+                    }
 
                 case ArchiveFileSortOrder.FileSize:
                     return SortingConfig.Descending ? a.DisplaySize.CompareTo(b.DisplaySize) :

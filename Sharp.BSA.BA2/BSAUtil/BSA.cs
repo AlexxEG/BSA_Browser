@@ -1,5 +1,6 @@
 ﻿using SharpBSABA2.Enums;
 using SharpBSABA2.Extensions;
+using SharpBSABA2.Utils;
 using System;
 using System.IO;
 using System.Text;
@@ -147,7 +148,21 @@ namespace SharpBSABA2.BSAUtil
                         if (hasNameTableMW)
                             this.Files[i].FullPath = this.BinaryReader.ReadStringTo('\0');
                         else
-                            this.Files[i].FullPath = string.Format("{0:X}", this.BinaryReader.ReadUInt64());
+                        {
+                            ulong hash = this.BinaryReader.ReadUInt64();
+
+                            if (MorrowindNameTable.Contains(hash))
+                            {
+                                this.Files[i].FullPath = MorrowindNameTable.Get(hash);
+                                this.Files[i].HadHashTranslated = true;
+                            }
+                            else
+                            {
+                                this.Files[i].FullPath = string.Format("{0:X}", hash);
+                            }
+
+                            (this.Files[i] as BSAFileEntry).mwNameHash = hash;
+                        }
 
                         this.Files[i].FullPathOriginal = this.Files[i].FullPath;
                     }

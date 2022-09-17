@@ -13,6 +13,11 @@ namespace SharpBSABA2
         /// </summary>
         public int Index { get; internal set; } = -1;
 
+        /// <summary>
+        /// Gets whether hash was translated back into a filename.
+        /// </summary>
+        public bool HadHashTranslated { get; internal set; }
+
         public uint nameHash { get; protected set; }
         public uint dirHash { get; protected set; }
 

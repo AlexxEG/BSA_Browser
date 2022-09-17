@@ -1,6 +1,6 @@
-﻿using System.IO;
-using SharpBSABA2.Enums;
+﻿using SharpBSABA2.Enums;
 using SharpBSABA2.Utils;
+using System.IO;
 
 namespace SharpBSABA2.BSAUtil
 {
@@ -13,6 +13,8 @@ namespace SharpBSABA2.BSAUtil
 
     public class BSAFileEntry : ArchiveEntry
     {
+        public ulong mwNameHash;
+
         public new BSA Archive => base.Archive as BSA;
         public override uint DisplaySize
         {

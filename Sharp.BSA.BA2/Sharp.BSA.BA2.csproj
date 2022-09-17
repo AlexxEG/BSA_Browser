@@ -73,6 +73,7 @@
     <Compile Include="SharedExtractParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CompressionUtils.cs" />
+    <Compile Include="Utils\MorrowindNameTable.cs" />
     <Compile Include="Utils\StreamUtils.cs" />
   </ItemGroup>
   <ItemGroup>
