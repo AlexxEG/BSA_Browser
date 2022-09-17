@@ -65,6 +65,8 @@
             this.copyFileNameMenuItem = new System.Windows.Forms.MenuItem();
             this.selectAllMenuItem = new System.Windows.Forms.MenuItem();
             this.toolsMenuItem = new System.Windows.Forms.MenuItem();
+            this.optionsMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.compareArchivesMenuItem = new System.Windows.Forms.MenuItem();
             this.openFoldersMenuItem = new System.Windows.Forms.MenuItem();
             this.helpMenuItem = new System.Windows.Forms.MenuItem();
@@ -108,8 +110,9 @@
             this.menuItem15 = new System.Windows.Forms.MenuItem();
             this.unloadedLoadMenuItem = new System.Windows.Forms.MenuItem();
             this.unloadedRemoveMenuItem = new System.Windows.Forms.MenuItem();
-            this.optionsMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.foldersContextMenu = new System.Windows.Forms.ContextMenu();
+            this.removeLoadedMenuItem = new System.Windows.Forms.MenuItem();
+            this.removeUnloadedMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -430,6 +433,17 @@
             this.compareArchivesMenuItem});
             this.toolsMenuItem.Text = "Tools";
             // 
+            // optionsMenuItem
+            // 
+            this.optionsMenuItem.Index = 0;
+            this.optionsMenuItem.Text = "Options...";
+            this.optionsMenuItem.Click += new System.EventHandler(this.optionsMenuItem_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 1;
+            this.menuItem1.Text = "-";
+            // 
             // compareArchivesMenuItem
             // 
             this.compareArchivesMenuItem.Index = 2;
@@ -714,16 +728,23 @@
             this.unloadedRemoveMenuItem.Text = "Remove";
             this.unloadedRemoveMenuItem.Click += new System.EventHandler(this.unloadedRemoveMenuItem_Click);
             // 
-            // optionsMenuItem
+            // foldersContextMenu
             // 
-            this.optionsMenuItem.Index = 0;
-            this.optionsMenuItem.Text = "Options...";
-            this.optionsMenuItem.Click += new System.EventHandler(this.optionsMenuItem_Click);
+            this.foldersContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.removeLoadedMenuItem,
+            this.removeUnloadedMenuItem});
             // 
-            // menuItem1
+            // removeLoadedMenuItem
             // 
-            this.menuItem1.Index = 1;
-            this.menuItem1.Text = "-";
+            this.removeLoadedMenuItem.Index = 0;
+            this.removeLoadedMenuItem.Text = "Remove Loaded";
+            this.removeLoadedMenuItem.Click += new System.EventHandler(this.removeLoadedMenuItem_Click);
+            // 
+            // removeUnloadedMenuItem
+            // 
+            this.removeUnloadedMenuItem.Index = 1;
+            this.removeUnloadedMenuItem.Text = "Remove Unloaded";
+            this.removeUnloadedMenuItem.Click += new System.EventHandler(this.removeUnloadedMenuItem_Click);
             // 
             // BSABrowser
             // 
@@ -838,6 +859,9 @@
         private System.Windows.Forms.MenuItem unloadedRemoveMenuItem;
         private System.Windows.Forms.MenuItem optionsMenuItem;
         private System.Windows.Forms.MenuItem menuItem1;
+        private System.Windows.Forms.ContextMenu foldersContextMenu;
+        private System.Windows.Forms.MenuItem removeLoadedMenuItem;
+        private System.Windows.Forms.MenuItem removeUnloadedMenuItem;
     }
 }
 

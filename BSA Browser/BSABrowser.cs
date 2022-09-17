@@ -1,4 +1,14 @@
-﻿using System;
+﻿using BSA_Browser.Classes;
+using BSA_Browser.Dialogs;
+using BSA_Browser.Enums;
+using BSA_Browser.Extensions;
+using BSA_Browser.Properties;
+using BSA_Browser.Sorting;
+using BSA_Browser.Tools;
+using SharpBSABA2;
+using SharpBSABA2.BA2Util;
+using SharpBSABA2.Enums;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -12,16 +22,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BSA_Browser.Classes;
-using BSA_Browser.Dialogs;
-using BSA_Browser.Enums;
-using BSA_Browser.Extensions;
-using BSA_Browser.Properties;
-using BSA_Browser.Sorting;
-using BSA_Browser.Tools;
-using SharpBSABA2;
-using SharpBSABA2.BA2Util;
-using SharpBSABA2.Enums;
 
 namespace BSA_Browser
 {
@@ -69,6 +69,7 @@ namespace BSA_Browser
             };
             archiveNode.Loaded = true;
             tvFolders.Nodes.Add(archiveNode);
+            tvFolders.ContextMenu = foldersContextMenu;
 
             lvFiles.ContextMenu = contextMenu1;
 
@@ -1321,6 +1322,29 @@ namespace BSA_Browser
 
         #endregion
 
+        #region foldersContextMenu
+
+        private void removeLoadedMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CloseArchives(true);
+        }
+
+        private void removeUnloadedMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = tvFolders.Nodes.Count - 1; i > 0; i--)
+            {
+                if (!(tvFolders.Nodes[i] as ArchiveNode).Loaded)
+                    this.CloseArchive((ArchiveNode)tvFolders.Nodes[i]);
+            }
+
+            if (tvFolders.Nodes.Count == 1)
+                this.ClearList();
+            else
+                this.DoSearch();
+        }
+
+        #endregion
+
         /// <summary>
         /// Opens the given archive, adding it to the <see cref="tvFolders"/> and making it browsable, then returns containing <see cref="ArchiveNode"/>.
         /// </summary>
@@ -1588,14 +1612,18 @@ namespace BSA_Browser
         /// <summary>
         /// Closes all open archives, clearing the <see cref="TreeView"/>.
         /// </summary>
-        private void CloseArchives()
+        private void CloseArchives(bool loadedOnly = false)
         {
-            this.ClearList();
+            if (!loadedOnly || this.SelectedArchiveNode.Loaded)
+                this.ClearList();
 
             _pauseFiltering = true;
             for (int i = tvFolders.Nodes.Count - 1; i > 0; i--)
             {
                 var node = (ArchiveNode)tvFolders.Nodes[i];
+
+                if (loadedOnly && !node.Loaded)
+                    continue;
 
                 if (node.Loaded)
                 {
@@ -1610,7 +1638,11 @@ namespace BSA_Browser
             GC.Collect();
 
             // Disable buttons
-            btnExtractAllFolders.Enabled = btnExtractAll.Enabled = false;
+            if (tvFolders.GetNodeCount(false) == 1)
+            {
+                btnExtractAllFolders.Enabled = false;
+                btnExtractAll.Enabled = false;
+            }
         }
 
         /// <summary>
