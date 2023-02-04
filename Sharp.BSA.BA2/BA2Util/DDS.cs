@@ -54,6 +54,7 @@ namespace SharpBSABA2.BA2Util
         BC4_UNORM = 80,
         BC5_UNORM = 83,
         BC5_SNORM = 84,
+        B5G6R5_UNORM = 85,
         B8G8R8A8_UNORM = 87,
         B8G8R8X8_UNORM = 88,
         BC6H_UF16 = 95,

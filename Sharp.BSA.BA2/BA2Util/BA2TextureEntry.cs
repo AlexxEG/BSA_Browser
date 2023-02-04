@@ -193,6 +193,14 @@ namespace SharpBSABA2.BA2Util
                     ddsHeader.PixelFormat.dwABitMask = 0xFF000000;
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height * 4); // 32bpp
                     break;
+                case DXGI_FORMAT.B5G6R5_UNORM:
+                    ddsHeader.PixelFormat.dwFlags = DDS.DDS_RGB;
+                    ddsHeader.PixelFormat.dwRGBBitCount = 16;
+                    ddsHeader.PixelFormat.dwRBitMask = 0x0000f800;
+                    ddsHeader.PixelFormat.dwGBitMask = 0x000007e0;
+                    ddsHeader.PixelFormat.dwBBitMask = 0x0000001f;
+                    ddsHeader.dwPitchOrLinearSize = (uint)(width * height * 2); // 16bpp
+                    break;
                 case DXGI_FORMAT.B8G8R8A8_UNORM:
                 case DXGI_FORMAT.B8G8R8X8_UNORM:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_RGBA;
