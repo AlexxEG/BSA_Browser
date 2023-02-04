@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Alexander Ellingsen")]
 [assembly: AssemblyProduct("Sharp.BSA.BA2")]
-[assembly: AssemblyCopyright("Copyright ©  2016-2022 Alexander")]
+[assembly: AssemblyCopyright("Copyright ©  2016-2023 Alexander")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
