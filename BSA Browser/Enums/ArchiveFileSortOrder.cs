@@ -4,6 +4,7 @@
     {
         FilePath,
         FileSize,
+        Archive,
         Extra
     }
 }

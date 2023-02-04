@@ -40,6 +40,11 @@ namespace BSA_Browser.Sorting
                     return SortingConfig.Descending ? a.DisplaySize.CompareTo(b.DisplaySize) :
                                   b.DisplaySize.CompareTo(a.DisplaySize);
 
+                case ArchiveFileSortOrder.Archive:
+                    return SortingConfig.Descending
+                        ? string.CompareOrdinal(a.Archive.FileName.ToLower(), b.Archive.FileName.ToLower())
+                        : string.CompareOrdinal(b.Archive.FileName.ToLower(), a.Archive.FileName.ToLower());
+
                 case ArchiveFileSortOrder.Extra:
                     if (a is BA2TextureEntry && b is BA2TextureEntry)
                     {
