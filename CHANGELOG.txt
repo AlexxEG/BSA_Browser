@@ -1,3 +1,14 @@
+[1.17.0]
+
+- Added right click menu options to remove all loaded or unloaded archives
+- Added support for B5G6R5_UNORM textures
+- BSA Browser will now attempt to translate hashes in Morrowind.bsa archives without name table (e.g. Xbox)
+- CLI: Added --exclude option, same as -f option but opposite
+- CLI: Multiple filters can now be defined and mixed (simple, exclude, regex). Runs from first to last
+- CLI: Added sub option to -l to display filename only
+- CLI: Added sub option to -l to humanize file size
+- CLI: Added sub option to -e to extract files directly into destination, without directories
+
 [1.16.0]
 
 - Added options to enable/disable file association and shell integration in Options. Will prompt for administrative rights if it doesn't already have
