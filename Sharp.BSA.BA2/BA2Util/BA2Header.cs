@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace SharpBSABA2.BA2Util
 {
@@ -10,6 +11,8 @@ namespace SharpBSABA2.BA2Util
         public BA2HeaderType Type { get; private set; }
         public uint NumFiles { get; private set; }
         public ulong NameTableOffset { get; private set; }
+        public uint Unknown1 { get; private set; }
+        public uint Unknown2 { get; private set; }
 
         public BA2Header(BinaryReader br)
         {
@@ -18,6 +21,8 @@ namespace SharpBSABA2.BA2Util
             Type = ParseType(br.ReadChars(4));
             NumFiles = br.ReadUInt32();
             NameTableOffset = br.ReadUInt64();
+            Unknown1 = (Version >= 2 ) ? br.ReadUInt32() : 0;
+            Unknown2 = (Version >= 2) ? br.ReadUInt32() : 0;
         }
 
         private static BA2HeaderMagic ParseMagic(char[] chars)
