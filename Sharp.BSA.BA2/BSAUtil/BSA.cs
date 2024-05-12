@@ -146,7 +146,7 @@ namespace SharpBSABA2.BSAUtil
                     for (int i = 0; i < header.FileCount; i++)
                     {
                         if (hasNameTableMW)
-                            this.Files[i].FullPath = this.BinaryReader.ReadStringTo('\0');
+                            this.Files[i].FullPath = PathUtils.NormalizePath(this.BinaryReader.ReadStringTo('\0'));
                         else
                         {
                             ulong hash = this.BinaryReader.ReadUInt64();
@@ -237,9 +237,8 @@ namespace SharpBSABA2.BSAUtil
                     // Read name table
                     for (int i = 0; i < header.FileCount; i++)
                     {
-                        this.Files[i].FullPath = Path.Combine(
-                            this.Files[i].FullPath,
-                            this.BinaryReader.ReadStringTo('\0'));
+                        string fullPath = Path.Combine(this.Files[i].FullPath, this.BinaryReader.ReadStringTo('\0'));
+                        this.Files[i].FullPath = PathUtils.NormalizePath(fullPath);
                         this.Files[i].FullPathOriginal = this.Files[i].FullPath;
                     }
                 }

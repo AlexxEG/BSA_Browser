@@ -1,5 +1,6 @@
 ﻿using SharpBSABA2.Enums;
 using SharpBSABA2.Extensions;
+using SharpBSABA2.Utils;
 using System;
 using System.IO;
 using System.Text;
@@ -48,7 +49,9 @@ namespace SharpBSABA2.BA2Util
                 for (int i = 0; i < this.FileCount; i++)
                     try
                     {
-                        this.Files[i].FullPath = BinaryReader.ReadString(BinaryReader.ReadInt16());
+                        string fullPath = BinaryReader.ReadString(BinaryReader.ReadInt16());
+
+                        this.Files[i].FullPath = PathUtils.NormalizePath(fullPath);
                         this.Files[i].FullPathOriginal = this.Files[i].FullPath;
                     }
                     catch (Exception ex)
