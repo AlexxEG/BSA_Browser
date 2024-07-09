@@ -1712,6 +1712,84 @@ namespace BSA_Browser
             lvFiles.EndUpdate();
 
             lFileCount.Text = string.Format("{0:n0} files", VisibleFiles.Count);
+
+            _ = this.HighlightContainingSearchResultsAsync();
+        }
+
+        private async Task HighlightContainingSearchResultsAsync()
+        {
+            await Task.Run(() =>
+            {
+                var sw = Stopwatch.StartNew();
+
+                var allMatchingFiles = tvFolders.Nodes
+                    .Cast<ArchiveNode>()
+                    .Skip(1)
+                    .Where(x => x.Loaded)
+                    .SelectMany(x => x.Archive.Files);
+                HashSet<string> paths = null;
+
+                if (txtSearch.Text.Length != 0)
+                {
+                    if (cbRegex.Checked)
+                    {
+                        allMatchingFiles = this.DoSearchRegex(txtSearch.Text, allMatchingFiles);
+                    }
+                    else
+                    {
+                        allMatchingFiles = this.DoSearchSimple(txtSearch.Text, allMatchingFiles);
+                    }
+
+                    paths = allMatchingFiles.SelectMany((file) =>
+                    {
+                        // Prepend archive name so that only the node under it gets highlighted and not other archives with same node but no matches
+                        var parts = file.FullPath.ToLower()
+                            .Split(Path.DirectorySeparatorChar)
+                            .Prepend(Path.GetFileNameWithoutExtension(file.Archive.FileName).ToLower())
+                            .ToArray();
+
+                        return parts
+                            .SelectMany((part, index) =>
+                            {
+                                string path = string.Join(Path.DirectorySeparatorChar.ToString(), parts.Take(index + 1));
+
+                                // If second to last item, return both the folder and the folder with <files> appended to highlist the <Files> node
+                                if (index == parts.Length - 2)
+                                {
+                                    return new[] { path, path + Path.DirectorySeparatorChar + "<files>" };
+                                }
+
+                                return new[] { path };
+                            })
+                            .Prepend(Path.GetFileNameWithoutExtension(file.Archive.FileName.ToLower()));
+                    }).ToHashSet();
+                }
+
+                tvFolders.Invoke(new Action(() =>
+                {
+                    tvFolders.TraverseNodes(node =>
+                    {
+                        if (string.IsNullOrEmpty(txtSearch.Text))
+                        {
+                            node.ForeColor = System.Drawing.Color.Empty;
+                            node.NodeFont = null;
+                        }
+                        else if (paths.Contains(node.FullPath.ToLower()))
+                        {
+                            node.ForeColor = System.Drawing.SystemColors.Highlight;
+                            node.NodeFont = null;
+                        }
+                        else
+                        {
+                            node.ForeColor = System.Drawing.SystemColors.GrayText;
+                            node.NodeFont = new System.Drawing.Font(tvFolders.Font, System.Drawing.FontStyle.Strikeout);
+                        }
+                    });
+                }));
+
+                sw.Stop();
+                Debug.WriteLine($"Highlighting took {sw.ElapsedMilliseconds} ms");
+            });
         }
 
         /// <summary>
@@ -1720,8 +1798,17 @@ namespace BSA_Browser
         /// <param name="searchString">Regex expression to match.</param>
         private IEnumerable<ArchiveEntry> DoSearchRegex(string searchString)
         {
+            return this.DoSearchRegex(searchString, this.SelectedArchiveNode.SubFiles);
+        }
+
+        /// <summary>
+        /// Searches file list using regex.
+        /// </summary>
+        /// <param name="searchString">Regex expression to match.</param>
+        private IEnumerable<ArchiveEntry> DoSearchRegex(string searchString, IEnumerable<ArchiveEntry> files)
+        {
             var regex = new Regex(searchString, RegexOptions.Compiled | RegexOptions.Singleline);
-            foreach (var entry in this.SelectedArchiveNode.SubFiles)
+            foreach (var entry in files)
             {
                 if (regex.IsMatch(entry.FullPath))
                     yield return entry;
@@ -1734,10 +1821,19 @@ namespace BSA_Browser
         /// <param name="searchString">Pattern to match.</param>
         private IEnumerable<ArchiveEntry> DoSearchSimple(string searchString)
         {
+            return this.DoSearchSimple(searchString, this.SelectedArchiveNode.SubFiles);
+        }
+
+        /// <summary>
+        /// Searches file list using simple pattern match.
+        /// </summary>
+        /// <param name="searchString">Pattern to match.</param>
+        private IEnumerable<ArchiveEntry> DoSearchSimple(string searchString, IEnumerable<ArchiveEntry> files)
+        {
             // Escape special characters, then unescape wild card characters again
             searchString = WildcardPattern.Escape(searchString).Replace("`*", "*");
             var pattern = new WildcardPattern($"*{searchString}*", WildcardOptions.Compiled | WildcardOptions.IgnoreCase);
-            foreach (var entry in this.SelectedArchiveNode.SubFiles)
+            foreach (var entry in files)
             {
                 if (pattern.IsMatch(entry.FullPath))
                     yield return entry;
