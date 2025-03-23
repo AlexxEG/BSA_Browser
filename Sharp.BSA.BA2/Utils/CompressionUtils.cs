@@ -1,8 +1,7 @@
-﻿using System;
+﻿using SharpBSABA2.Extensions;
+using System;
 using System.Diagnostics;
 using System.IO;
-using lz4;
-using SharpBSABA2.Extensions;
 
 namespace SharpBSABA2.Utils
 {
@@ -62,38 +61,19 @@ namespace SharpBSABA2.Utils
         /// <param name="progressInterval">The interval at which to invoke <paramref name="progressReport"/>.</param>
         public static void DecompressLZ4(Stream input,
                                          uint length,
+                                         uint uncompressedLength,
                                          Stream output,
                                          Action<ulong> progressReport,
                                          long progressInterval = DefaultProgressInterval)
         {
-            int count;
-            ulong written = 0;
-            byte[] buffer = new byte[BufferSize];
+            byte[] data = input.ReadBytes((int)length);
+            byte[] decompressed = new byte[uncompressedLength];
 
-            byte[] data = new byte[length];
-            input.Read(data, 0, data.Length);
+            int written = K4os.Compression.LZ4.LZ4Codec.Decode(data, decompressed);
 
-            using (var ms = new MemoryStream(data, false))
-            using (var lz4Stream = LZ4Stream.CreateDecompressor(ms, LZ4StreamMode.Read))
-            {
-                var sw = Stopwatch.StartNew();
+            output.Write(decompressed, 0, written);
 
-                while ((count = lz4Stream.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    output.Write(buffer, 0, count);
-                    written += (ulong)count;
-
-                    if (sw.ElapsedMilliseconds >= progressInterval)
-                    {
-                        progressReport?.Invoke(written);
-                        sw.Restart();
-                    }
-                }
-
-                sw.Stop();
-            }
-
-            progressReport?.Invoke(written);
+            progressReport?.Invoke((ulong)written);
         }
     }
 }

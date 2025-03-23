@@ -135,6 +135,7 @@ namespace SharpBSABA2.BSAUtil
                 {
                     CompressionUtils.DecompressLZ4(reader.BaseStream,
                         (uint)filesz,
+                        filesize,
                         stream,
                         bytesWritten => this.BytesWritten = bytesWritten);
                 }

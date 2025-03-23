@@ -28,8 +28,9 @@ namespace SharpBSABA2.BA2Util
         public const int DDS_HEADER_FLAGS_MIPMAP = 0x00020000; // DDSD_MIPMAPCOUNT
         public const int DDS_HEADER_FLAGS_LINEARSIZE = 0x00080000; // DDSD_LINEARSIZE
 
-        public const int DDS_SURFACE_FLAGS_TEXTURE = 0x00001000; // DDSCAPS_TEXTURE
-        public const int DDS_SURFACE_FLAGS_MIPMAP = 0x00400008; // DDSCAPS_COMPLEX | DDSCAPS_MIPMAP
+        public const int DDS_SURFACE_FLAGS_TEXTURE = 0x1000;
+        public const int DDS_SURFACE_FLAGS_COMPLEX = 0x8;
+        public const int DDS_SURFACE_FLAGS_MIPMAP = 0x400000;
 
         public const int DDS_ALPHA_MODE_UNKNOWN = 0x0;
 
@@ -43,8 +44,12 @@ namespace SharpBSABA2.BA2Util
     /// </summary>
     public enum DXGI_FORMAT
     {
+        R32G32B32A32_FLOAT = 2,
+        R16G16B16A16_FLOAT = 10,
+        R16G16B16A16_UNORM = 11,
         R8G8B8A8_UNORM = 28,
         R8G8B8A8_UNORM_SRGB = 29,
+        R8G8B8A8_SNORM = 31,
         R8_UNORM = 61,
         BC1_UNORM = 71,
         BC1_UNORM_SRGB = 72,
