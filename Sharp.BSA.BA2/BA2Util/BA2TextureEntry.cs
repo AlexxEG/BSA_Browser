@@ -387,7 +387,7 @@ namespace SharpBSABA2.BA2Util
                 }
                 else
                 {
-                    if ((this.Archive as BA2).Header.Version == 3)
+                    if ((this.Archive as BA2).Header.CompressionFormat == CompressionFormat.LZ4)
                     {
                         CompressionUtils.DecompressLZ4(reader.BaseStream,
                             this.Chunks[i].packSz,
