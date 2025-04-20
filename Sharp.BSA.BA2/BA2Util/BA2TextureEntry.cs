@@ -291,6 +291,14 @@ namespace SharpBSABA2.BA2Util
                 ddsHeader.dwSurfaceFlags |= DDS.DDS_SURFACE_FLAGS_COMPLEX;
             }
 
+            // Version 7 has 0xFE00 added to surface flags when files have multiple mipmaps and are cubemaps.
+            // Unknown what 0xFE00 means currently.
+            if ((this.Archive as BA2).Header.Version == 7 && numMips > 1 && isCubemap == 1)
+            {
+                ddsHeader.dwSurfaceFlags |= 0xFE00;
+                ddsHeader.dwCubemapFlags = 0x0; // This is also reset for some reason
+            }
+
             // If tileMode is NOT TILE_MODE_DEFAULT assume Xbox format
             if (tileMode != TILE_MODE_DEFAULT)
             {
