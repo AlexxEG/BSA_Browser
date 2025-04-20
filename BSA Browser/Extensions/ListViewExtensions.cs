@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -149,7 +150,7 @@ namespace BSA_Browser.Extensions
 
             try
             {
-                listView.TopItem = listView.Items[0];
+                // listView.TopItem = listView.Items[0];
             }
             catch
             {

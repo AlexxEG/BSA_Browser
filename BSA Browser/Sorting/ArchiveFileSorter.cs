@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace BSA_Browser.Sorting
 {
-    public class ArchiveFileSorter : Comparer<ArchiveEntry>
+    public class ArchiveFileSorter : IComparer<ArchiveEntry>
     {
         public static SortingConfig SortingConfig { get; set; } = new SortingConfig(true, 0);
 
@@ -15,7 +15,7 @@ namespace BSA_Browser.Sorting
             SortingConfig = new SortingConfig(sortDesc, sortOrder);
         }
 
-        public override int Compare(ArchiveEntry a, ArchiveEntry b)
+        public int Compare(ArchiveEntry a, ArchiveEntry b)
         {
             switch (SortingConfig.Order)
             {

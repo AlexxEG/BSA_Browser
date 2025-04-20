@@ -41,13 +41,13 @@
             this.btnExtractAllFolders = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.tvFolders = new BSA_Browser.Controls.ReorderableTreeView();
             this.foldersImageList = new System.Windows.Forms.ImageList(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tlvFolders = new BrightIdeasSoftware.TreeListView();
             this.cbRegex = new System.Windows.Forms.CheckBox();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.fileMenuItem = new System.Windows.Forms.MenuItem();
-            this.openArchiveMnuItem = new System.Windows.Forms.MenuItem();
+            this.openArchiveMenuItem = new System.Windows.Forms.MenuItem();
             this.closeSelectedArchiveMenuItem = new System.Windows.Forms.MenuItem();
             this.closeAllArchivesMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
@@ -98,25 +98,27 @@
             this.archiveContextMenu = new System.Windows.Forms.ContextMenu();
             this.extractAllFilesMenuItem = new System.Windows.Forms.MenuItem();
             this.extractAllFoldersMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem8 = new System.Windows.Forms.MenuItem();
+            this.loadedSeparatorMenuItem1 = new System.Windows.Forms.MenuItem();
             this.reloadMenuItem = new System.Windows.Forms.MenuItem();
             this.openContainingFolderMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem14 = new System.Windows.Forms.MenuItem();
+            this.loadedSeparatorMenuItem2 = new System.Windows.Forms.MenuItem();
             this.closeMenuItem = new System.Windows.Forms.MenuItem();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label2 = new System.Windows.Forms.Label();
-            this.unloadedArchiveContextMenu = new System.Windows.Forms.ContextMenu();
-            this.unloadedOpenContainingFolderMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem15 = new System.Windows.Forms.MenuItem();
-            this.unloadedLoadMenuItem = new System.Windows.Forms.MenuItem();
-            this.unloadedRemoveMenuItem = new System.Windows.Forms.MenuItem();
-            this.foldersContextMenu = new System.Windows.Forms.ContextMenu();
+            this.alwaysHideSeparatorMenuItem1 = new System.Windows.Forms.MenuItem();
             this.removeLoadedMenuItem = new System.Windows.Forms.MenuItem();
             this.removeUnloadedMenuItem = new System.Windows.Forms.MenuItem();
+            this.alwaysHideSeparatorMenuItem2 = new System.Windows.Forms.MenuItem();
+            this.unloadedOpenContainingFolderMenuItem = new System.Windows.Forms.MenuItem();
+            this.unloadedSeparatorMenuItem1 = new System.Windows.Forms.MenuItem();
+            this.unloadedLoadMenuItem = new System.Windows.Forms.MenuItem();
+            this.unloadedRemoveMenuItem = new System.Windows.Forms.MenuItem();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label2 = new System.Windows.Forms.Label();
+            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tlvFolders)).BeginInit();
             this.SuspendLayout();
             // 
             // lvFiles
@@ -235,23 +237,6 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "Search";
             // 
-            // tvFolders
-            // 
-            this.tvFolders.AllowDrop = true;
-            this.tvFolders.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvFolders.HideSelection = false;
-            this.tvFolders.ItemHeight = 19;
-            this.tvFolders.Location = new System.Drawing.Point(0, 0);
-            this.tvFolders.Name = "tvFolders";
-            this.tvFolders.ShowNodeToolTips = true;
-            this.tvFolders.Size = new System.Drawing.Size(107, 261);
-            this.tvFolders.TabIndex = 0;
-            this.tvFolders.TopAllowedDragIndex = 1;
-            this.tvFolders.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFolders_BeforeExpand);
-            this.tvFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolders_AfterSelect);
-            this.tvFolders.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
-            this.tvFolders.DragOver += new System.Windows.Forms.DragEventHandler(this.File_DragOver);
-            // 
             // foldersImageList
             // 
             this.foldersImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
@@ -269,7 +254,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tvFolders);
+            this.splitContainer1.Panel1.Controls.Add(this.tlvFolders);
             // 
             // splitContainer1.Panel2
             // 
@@ -277,6 +262,29 @@
             this.splitContainer1.Size = new System.Drawing.Size(610, 261);
             this.splitContainer1.SplitterDistance = 107;
             this.splitContainer1.TabIndex = 10;
+            // 
+            // tlvFolders
+            // 
+            this.tlvFolders.AllColumns.Add(this.olvColumn1);
+            this.tlvFolders.CellEditUseWholeCell = false;
+            this.tlvFolders.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumn1});
+            this.tlvFolders.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlvFolders.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.tlvFolders.HideSelection = false;
+            this.tlvFolders.Location = new System.Drawing.Point(0, 0);
+            this.tlvFolders.MultiSelect = false;
+            this.tlvFolders.Name = "tlvFolders";
+            this.tlvFolders.ShowGroups = false;
+            this.tlvFolders.ShowItemToolTips = true;
+            this.tlvFolders.Size = new System.Drawing.Size(107, 261);
+            this.tlvFolders.TabIndex = 14;
+            this.tlvFolders.UseCellFormatEvents = true;
+            this.tlvFolders.UseCompatibleStateImageBehavior = false;
+            this.tlvFolders.UseOverlays = false;
+            this.tlvFolders.View = System.Windows.Forms.View.Details;
+            this.tlvFolders.VirtualMode = true;
+            this.tlvFolders.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.tlvFolders_ItemSelectionChanged);
             // 
             // cbRegex
             // 
@@ -303,7 +311,7 @@
             // 
             this.fileMenuItem.Index = 0;
             this.fileMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.openArchiveMnuItem,
+            this.openArchiveMenuItem,
             this.closeSelectedArchiveMenuItem,
             this.closeAllArchivesMenuItem,
             this.menuItem4,
@@ -315,12 +323,12 @@
             this.fileMenuItem.Text = "File";
             this.fileMenuItem.Popup += new System.EventHandler(this.fileMenuItem_Popup);
             // 
-            // openArchiveMnuItem
+            // openArchiveMenuItem
             // 
-            this.openArchiveMnuItem.Index = 0;
-            this.openArchiveMnuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
-            this.openArchiveMnuItem.Text = "Open Archive...";
-            this.openArchiveMnuItem.Click += new System.EventHandler(this.openArchiveMenuItem_Click);
+            this.openArchiveMenuItem.Index = 0;
+            this.openArchiveMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
+            this.openArchiveMenuItem.Text = "Open Archive...";
+            this.openArchiveMenuItem.Click += new System.EventHandler(this.openArchiveMenuItem_Click);
             // 
             // closeSelectedArchiveMenuItem
             // 
@@ -639,11 +647,19 @@
             this.archiveContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.extractAllFilesMenuItem,
             this.extractAllFoldersMenuItem,
-            this.menuItem8,
+            this.loadedSeparatorMenuItem1,
             this.reloadMenuItem,
             this.openContainingFolderMenuItem,
-            this.menuItem14,
-            this.closeMenuItem});
+            this.loadedSeparatorMenuItem2,
+            this.closeMenuItem,
+            this.alwaysHideSeparatorMenuItem1,
+            this.removeLoadedMenuItem,
+            this.removeUnloadedMenuItem,
+            this.alwaysHideSeparatorMenuItem2,
+            this.unloadedOpenContainingFolderMenuItem,
+            this.unloadedSeparatorMenuItem1,
+            this.unloadedLoadMenuItem,
+            this.unloadedRemoveMenuItem});
             this.archiveContextMenu.Popup += new System.EventHandler(this.archiveContextMenu_Popup);
             // 
             // extractAllFilesMenuItem
@@ -658,10 +674,10 @@
             this.extractAllFoldersMenuItem.Text = "Extract All Folders";
             this.extractAllFoldersMenuItem.Click += new System.EventHandler(this.extractAllFoldersMenuItem_Click);
             // 
-            // menuItem8
+            // loadedSeparatorMenuItem1
             // 
-            this.menuItem8.Index = 2;
-            this.menuItem8.Text = "-";
+            this.loadedSeparatorMenuItem1.Index = 2;
+            this.loadedSeparatorMenuItem1.Text = "-";
             // 
             // reloadMenuItem
             // 
@@ -675,16 +691,61 @@
             this.openContainingFolderMenuItem.Text = "Open Containing Folder";
             this.openContainingFolderMenuItem.Click += new System.EventHandler(this.openContainingFolderMenuItem_Click);
             // 
-            // menuItem14
+            // loadedSeparatorMenuItem2
             // 
-            this.menuItem14.Index = 5;
-            this.menuItem14.Text = "-";
+            this.loadedSeparatorMenuItem2.Index = 5;
+            this.loadedSeparatorMenuItem2.Text = "-";
             // 
             // closeMenuItem
             // 
             this.closeMenuItem.Index = 6;
             this.closeMenuItem.Text = "Close";
             this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
+            // 
+            // alwaysHideSeparatorMenuItem1
+            // 
+            this.alwaysHideSeparatorMenuItem1.Index = 7;
+            this.alwaysHideSeparatorMenuItem1.Text = "-";
+            // 
+            // removeLoadedMenuItem
+            // 
+            this.removeLoadedMenuItem.Index = 8;
+            this.removeLoadedMenuItem.Text = "Remove Loaded";
+            this.removeLoadedMenuItem.Click += new System.EventHandler(this.removeLoadedMenuItem_Click);
+            // 
+            // removeUnloadedMenuItem
+            // 
+            this.removeUnloadedMenuItem.Index = 9;
+            this.removeUnloadedMenuItem.Text = "Remove Unloaded";
+            this.removeUnloadedMenuItem.Click += new System.EventHandler(this.removeUnloadedMenuItem_Click);
+            // 
+            // alwaysHideSeparatorMenuItem2
+            // 
+            this.alwaysHideSeparatorMenuItem2.Index = 10;
+            this.alwaysHideSeparatorMenuItem2.Text = "-";
+            // 
+            // unloadedOpenContainingFolderMenuItem
+            // 
+            this.unloadedOpenContainingFolderMenuItem.Index = 11;
+            this.unloadedOpenContainingFolderMenuItem.Text = "Open Containing Folder";
+            this.unloadedOpenContainingFolderMenuItem.Click += new System.EventHandler(this.unloadedOpenContainingFolderMenuItem_Click);
+            // 
+            // unloadedSeparatorMenuItem1
+            // 
+            this.unloadedSeparatorMenuItem1.Index = 12;
+            this.unloadedSeparatorMenuItem1.Text = "-";
+            // 
+            // unloadedLoadMenuItem
+            // 
+            this.unloadedLoadMenuItem.Index = 13;
+            this.unloadedLoadMenuItem.Text = "Load";
+            this.unloadedLoadMenuItem.Click += new System.EventHandler(this.unloadedLoadMenuItem_Click);
+            // 
+            // unloadedRemoveMenuItem
+            // 
+            this.unloadedRemoveMenuItem.Index = 14;
+            this.unloadedRemoveMenuItem.Text = "Remove";
+            this.unloadedRemoveMenuItem.Click += new System.EventHandler(this.unloadedRemoveMenuItem_Click);
             // 
             // label2
             // 
@@ -696,55 +757,12 @@
             this.label2.TabIndex = 13;
             this.label2.Text = "All files:";
             // 
-            // unloadedArchiveContextMenu
+            // olvColumn1
             // 
-            this.unloadedArchiveContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.unloadedOpenContainingFolderMenuItem,
-            this.menuItem15,
-            this.unloadedLoadMenuItem,
-            this.unloadedRemoveMenuItem});
-            this.unloadedArchiveContextMenu.Popup += new System.EventHandler(this.unloadedArchiveContextMenu_Popup);
-            // 
-            // unloadedOpenContainingFolderMenuItem
-            // 
-            this.unloadedOpenContainingFolderMenuItem.Index = 0;
-            this.unloadedOpenContainingFolderMenuItem.Text = "Open Containing Folder";
-            this.unloadedOpenContainingFolderMenuItem.Click += new System.EventHandler(this.unloadedOpenContainingFolderMenuItem_Click);
-            // 
-            // menuItem15
-            // 
-            this.menuItem15.Index = 1;
-            this.menuItem15.Text = "-";
-            // 
-            // unloadedLoadMenuItem
-            // 
-            this.unloadedLoadMenuItem.Index = 2;
-            this.unloadedLoadMenuItem.Text = "Load";
-            this.unloadedLoadMenuItem.Click += new System.EventHandler(this.unloadedLoadMenuItem_Click);
-            // 
-            // unloadedRemoveMenuItem
-            // 
-            this.unloadedRemoveMenuItem.Index = 3;
-            this.unloadedRemoveMenuItem.Text = "Remove";
-            this.unloadedRemoveMenuItem.Click += new System.EventHandler(this.unloadedRemoveMenuItem_Click);
-            // 
-            // foldersContextMenu
-            // 
-            this.foldersContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.removeLoadedMenuItem,
-            this.removeUnloadedMenuItem});
-            // 
-            // removeLoadedMenuItem
-            // 
-            this.removeLoadedMenuItem.Index = 0;
-            this.removeLoadedMenuItem.Text = "Remove Loaded";
-            this.removeLoadedMenuItem.Click += new System.EventHandler(this.removeLoadedMenuItem_Click);
-            // 
-            // removeUnloadedMenuItem
-            // 
-            this.removeUnloadedMenuItem.Index = 1;
-            this.removeUnloadedMenuItem.Text = "Remove Unloaded";
-            this.removeUnloadedMenuItem.Click += new System.EventHandler(this.removeUnloadedMenuItem_Click);
+            this.olvColumn1.AspectName = "Name";
+            this.olvColumn1.FillsFreeSpace = true;
+            this.olvColumn1.Text = "Name";
+            this.olvColumn1.Width = 200;
             // 
             // BSABrowser
             // 
@@ -772,6 +790,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tlvFolders)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -787,13 +806,12 @@
         private System.Windows.Forms.Button btnExtractAllFolders;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label label1;
-        private BSA_Browser.Controls.ReorderableTreeView tvFolders;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.CheckBox cbRegex;
         private System.Windows.Forms.MainMenu mainMenu1;
         private System.Windows.Forms.ContextMenu contextMenu1;
         private System.Windows.Forms.MenuItem fileMenuItem;
-        private System.Windows.Forms.MenuItem openArchiveMnuItem;
+        private System.Windows.Forms.MenuItem openArchiveMenuItem;
         private System.Windows.Forms.MenuItem closeSelectedArchiveMenuItem;
         private System.Windows.Forms.MenuItem menuItem6;
         private System.Windows.Forms.MenuItem recentFilesMenuItem;
@@ -829,7 +847,7 @@
         private System.Windows.Forms.ContextMenu archiveContextMenu;
         private System.Windows.Forms.MenuItem extractAllFilesMenuItem;
         private System.Windows.Forms.MenuItem extractAllFoldersMenuItem;
-        private System.Windows.Forms.MenuItem menuItem8;
+        private System.Windows.Forms.MenuItem loadedSeparatorMenuItem1;
         private System.Windows.Forms.MenuItem closeMenuItem;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.MenuItem menuItem4;
@@ -849,19 +867,21 @@
         private System.Windows.Forms.MenuItem compareMenuItem;
         private System.Windows.Forms.MenuItem compareCancelMenuItem;
         private System.Windows.Forms.MenuItem openContainingFolderMenuItem;
-        private System.Windows.Forms.MenuItem menuItem14;
+        private System.Windows.Forms.MenuItem loadedSeparatorMenuItem2;
         private System.Windows.Forms.MenuItem reloadMenuItem;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ContextMenu unloadedArchiveContextMenu;
-        private System.Windows.Forms.MenuItem unloadedOpenContainingFolderMenuItem;
-        private System.Windows.Forms.MenuItem menuItem15;
-        private System.Windows.Forms.MenuItem unloadedLoadMenuItem;
-        private System.Windows.Forms.MenuItem unloadedRemoveMenuItem;
         private System.Windows.Forms.MenuItem optionsMenuItem;
         private System.Windows.Forms.MenuItem menuItem1;
-        private System.Windows.Forms.ContextMenu foldersContextMenu;
+        private BrightIdeasSoftware.TreeListView tlvFolders;
+        private System.Windows.Forms.MenuItem alwaysHideSeparatorMenuItem1;
         private System.Windows.Forms.MenuItem removeLoadedMenuItem;
         private System.Windows.Forms.MenuItem removeUnloadedMenuItem;
+        private System.Windows.Forms.MenuItem alwaysHideSeparatorMenuItem2;
+        private System.Windows.Forms.MenuItem unloadedOpenContainingFolderMenuItem;
+        private System.Windows.Forms.MenuItem unloadedSeparatorMenuItem1;
+        private System.Windows.Forms.MenuItem unloadedLoadMenuItem;
+        private System.Windows.Forms.MenuItem unloadedRemoveMenuItem;
+        private BrightIdeasSoftware.OLVColumn olvColumn1;
     }
 }
 

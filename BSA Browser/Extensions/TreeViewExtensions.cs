@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -66,6 +67,32 @@ namespace BSA_Browser.Extensions
             foreach (TreeNode childNode in node.Nodes)
             {
                 TraverseNode(childNode, action);
+            }
+        }
+
+        public static void TraverseNodes(this TreeListView treeListView, Action<ArchiveNodeTree> action)
+        {
+            foreach (ArchiveNodeTree node in treeListView.Objects)
+            {
+                TraverseNode(node, action);
+            }
+        }
+
+        private static void TraverseNode(ArchiveNodeTree node, Action<ArchiveNodeTree> action)
+        {
+            action(node);
+
+            foreach (ArchiveNodeTree childNode in node.SubNodes)
+            {
+                TraverseNode(childNode, action);
+            }
+        }
+
+        public static void TraverseNodes(this IEnumerable<ArchiveNodeTree> nodes, Action<ArchiveNodeTree> action)
+        {
+            foreach (ArchiveNodeTree node in nodes)
+            {
+                TraverseNode(node, action);
             }
         }
 
