@@ -3,6 +3,12 @@ using System.IO;
 
 namespace SharpBSABA2.BA2Util
 {
+    public enum CompressionFormat
+    {
+        Zip,
+        LZ4
+    }
+
     public struct BA2Header
     {
         public BA2HeaderMagic Magic { get; private set; }
@@ -13,6 +19,8 @@ namespace SharpBSABA2.BA2Util
         public uint Unknown1 { get; private set; }
         public uint Unknown2 { get; private set; }
         public uint Unknown3 { get; private set; }
+
+        public CompressionFormat CompressionFormat { get; private set; }
 
         public BA2Header(BinaryReader br)
         {
@@ -39,7 +47,15 @@ namespace SharpBSABA2.BA2Util
                 Unknown3 = br.ReadUInt32();
             }
 
-            Console.WriteLine("Unknown3: " + Unknown3);
+            // If version is 3, then Unknown1 means which compression format is used. TODO: Consider renaming Unknown1
+            if (Version == 3)
+            {
+                CompressionFormat = Unknown1 == 1 ? CompressionFormat.LZ4 : CompressionFormat.Zip;
+            }
+            else
+            {
+                CompressionFormat = CompressionFormat.Zip;
+            }
         }
 
         private static BA2HeaderMagic ParseMagic(char[] chars)
