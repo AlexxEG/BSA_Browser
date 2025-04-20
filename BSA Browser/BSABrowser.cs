@@ -1426,7 +1426,7 @@ namespace BSA_Browser
         /// <param name="path">The archive file path.</param>
         /// <param name="addToRecentFiles">True if archive should be added to recent files list.</param>
         /// <param name="index">Where to insert new node. Must be equal or more than 1, any other value defaults to last index.</param>
-        public async Task<ArchiveNodeTree> OpenArchive(string path, bool addToRecentFiles = false, int index = -1, CancellationToken? cancellationToken = null)
+        public async Task<ArchiveNodeTree> OpenArchive(string path, bool addToRecentFiles = false, int index = -1, CancellationToken? cancellationToken = null, bool fireSelectEvent = true)
         {
             if (!File.Exists(path))
             {
@@ -1493,6 +1493,13 @@ namespace BSA_Browser
 
             AddArchiveToTree(archive, newNode);
 
+            if (fireSelectEvent)
+            {
+                var olvItemIndex = index > -1 ? index : tlvFolders.GetItemCount() - 1;
+                var olvItem = tlvFolders.GetItem(olvItemIndex);
+                this.tlvFolders_ItemSelectionChanged(null, new ListViewItemSelectionChangedEventArgs(olvItem, olvItemIndex, true));
+            }
+
             return newNode;
         }
 
@@ -1547,7 +1554,12 @@ namespace BSA_Browser
                             pf.Footer = $"({pf.Progress}/{paths.Count})";
                         }
 
-                        var a = await this.OpenArchive(paths[i], addToRecentFiles, cancellationToken: cts.Token);
+                        bool lastItem = i == paths.Count - 1;
+
+                        if (lastItem)
+                            _pauseFiltering = false;
+
+                        var a = await this.OpenArchive(paths[i], addToRecentFiles, cancellationToken: cts.Token, fireSelectEvent: lastItem);
 
                         // Check if 'a' is null, indicates it's already opened
                         if (a != null)
