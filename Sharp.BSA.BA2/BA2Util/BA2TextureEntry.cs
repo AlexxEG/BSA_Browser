@@ -160,7 +160,7 @@ namespace SharpBSABA2.BA2Util
                     break;
                 case DXGI_FORMAT.BC5_UNORM:
                     ddsHeader.PixelFormat.dwFlags = DDS.DDS_FOURCC;
-                    ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('A', 'T', 'I', '2');
+                    ddsHeader.PixelFormat.dwFourCC = DDS.MAKEFOURCC('B', 'C', '5', 'U');
                     ddsHeader.dwPitchOrLinearSize = (uint)(width * height); // 8bpp
                     break;
                 case DXGI_FORMAT.BC1_UNORM_SRGB:
