@@ -44,6 +44,7 @@
             this.foldersImageList = new System.Windows.Forms.ImageList(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tlvFolders = new BrightIdeasSoftware.TreeListView();
+            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cbRegex = new System.Windows.Forms.CheckBox();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.fileMenuItem = new System.Windows.Forms.MenuItem();
@@ -113,7 +114,6 @@
             this.unloadedRemoveMenuItem = new System.Windows.Forms.MenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.label2 = new System.Windows.Forms.Label();
-            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -266,6 +266,7 @@
             // tlvFolders
             // 
             this.tlvFolders.AllColumns.Add(this.olvColumn1);
+            this.tlvFolders.AllowDrop = true;
             this.tlvFolders.CellEditUseWholeCell = false;
             this.tlvFolders.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn1});
@@ -285,6 +286,15 @@
             this.tlvFolders.View = System.Windows.Forms.View.Details;
             this.tlvFolders.VirtualMode = true;
             this.tlvFolders.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.tlvFolders_ItemSelectionChanged);
+            this.tlvFolders.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
+            this.tlvFolders.DragOver += new System.Windows.Forms.DragEventHandler(this.File_DragOver);
+            // 
+            // olvColumn1
+            // 
+            this.olvColumn1.AspectName = "Name";
+            this.olvColumn1.FillsFreeSpace = true;
+            this.olvColumn1.Text = "Name";
+            this.olvColumn1.Width = 200;
             // 
             // cbRegex
             // 
@@ -756,13 +766,6 @@
             this.label2.Size = new System.Drawing.Size(42, 13);
             this.label2.TabIndex = 13;
             this.label2.Text = "All files:";
-            // 
-            // olvColumn1
-            // 
-            this.olvColumn1.AspectName = "Name";
-            this.olvColumn1.FillsFreeSpace = true;
-            this.olvColumn1.Text = "Name";
-            this.olvColumn1.Width = 200;
             // 
             // BSABrowser
             // 
