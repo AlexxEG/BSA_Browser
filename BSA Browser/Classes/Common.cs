@@ -228,6 +228,13 @@ namespace BSA_Browser.Classes
                             MatchLastWriteTime = Settings.Default.MatchLastWriteTime
                         };
                         break;
+                    case ".snd":
+                    case ".sav":
+                        archive = new BSA(file, encoding, Settings.Default.RetrieveRealSize)
+                        {
+                            MatchLastWriteTime = Settings.Default.MatchLastWriteTime
+                        };
+                        break;
                     case ".ba2":
                         archive = new BA2(file, encoding, Settings.Default.RetrieveRealSize)
                         {

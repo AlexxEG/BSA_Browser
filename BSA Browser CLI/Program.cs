@@ -132,7 +132,7 @@ namespace BSA_Browser_CLI
         static void PrintHelp()
         {
             Console.WriteLine("BSA Browser CLI - " + Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
-            Console.WriteLine("Extract or list files inside .bsa and .ba2 archives.");
+            Console.WriteLine("Extract or list files inside .bsa, .snd, .sav and .ba2 archives.");
             Console.WriteLine();
             Console.WriteLine("bsab [OPTIONS] FILE [FILE...] [DESTINATION]");
             Console.WriteLine();
@@ -304,6 +304,8 @@ namespace BSA_Browser_CLI
             {
                 case ".bsa":
                 case ".dat":
+                case ".snd":
+                case ".sav":
                     archive = new SharpBSABA2.BSAUtil.BSA(file, _arguments.Encoding);
                     break;
                 case ".ba2":

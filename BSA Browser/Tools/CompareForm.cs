@@ -684,6 +684,7 @@ namespace BSA_Browser.Tools
                 case ArchiveTypes.BA2_GNMF: return "BA2 Texture (GNF)";
                 case ArchiveTypes.BA2_GNRL: return "BA2 General";
                 case ArchiveTypes.BSA: return "BSA";
+                case ArchiveTypes.BSA_XN: return "BSA XnGine";
                 case ArchiveTypes.BSA_MW: return "BSA Morrowind";
                 case ArchiveTypes.BSA_SE: return "BSA Special Edition";
                 case ArchiveTypes.DAT_F2: return "DAT Fallout 2";

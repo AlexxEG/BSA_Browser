@@ -197,8 +197,8 @@
             // 
             // OpenArchiveDialog
             // 
-            this.OpenArchiveDialog.Filter = "All supported files|*.bsa;*.ba2;*.dat|Fallout or Oblivion BSA archives|*.bsa|Fall" +
-    "out 4 BA2 archives|*.ba2|Fallout 2 dat archive|*.dat";
+                this.OpenArchiveDialog.Filter = "All supported files|*.bsa;*.ba2;*.dat;*.snd;*.sav|Bethesda/Classic BSA archives|*.bsa|XnGine S" +
+            "ound archives|*.snd|XnGine save archives|*.sav|Fallout 4 BA2 archives|*.ba2|Fallout 2 dat archive|*.dat";
             this.OpenArchiveDialog.Multiselect = true;
             this.OpenArchiveDialog.RestoreDirectory = true;
             this.OpenArchiveDialog.Title = "Select archive to open";

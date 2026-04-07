@@ -255,6 +255,10 @@ namespace BSA_Browser
 
                             new SharpBSABA2.BSAUtil.BSA(path, encoding, Settings.Default.RetrieveRealSize);
                             break;
+                        case ".snd":
+                        case ".sav":
+                            new SharpBSABA2.BSAUtil.BSA(path, encoding, Settings.Default.RetrieveRealSize);
+                            break;
                         case ".ba2":
                             new SharpBSABA2.BA2Util.BA2(path, encoding, Settings.Default.RetrieveRealSize);
                             break;
@@ -2031,6 +2035,8 @@ namespace BSA_Browser
                 case ".bsa":
                 case ".ba2":
                 case ".dat":
+                case ".snd":
+                case ".sav":
                     return true;
             }
 

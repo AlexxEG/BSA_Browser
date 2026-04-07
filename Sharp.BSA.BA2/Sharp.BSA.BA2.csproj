@@ -88,6 +88,7 @@
     <Compile Include="BA2Util\BA2TextureEntry.cs" />
     <Compile Include="BSAUtil\BSA.cs" />
     <Compile Include="BSAUtil\BSAFileEntry.cs" />
+    <Compile Include="BSAUtil\XNGBSAFileEntry.cs" />
     <Compile Include="BA2Util\DDS.cs" />
     <Compile Include="BA2Util\BA2Enums.cs" />
     <Compile Include="BSAUtil\BSAFileInfo.cs" />

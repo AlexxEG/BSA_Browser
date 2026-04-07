@@ -1,5 +1,6 @@
 ﻿using SharpBSABA2.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -74,6 +75,59 @@ namespace SharpBSABA2.Utils
             output.Write(decompressed, 0, written);
 
             progressReport?.Invoke((ulong)written);
+        }
+
+        public static byte[] DecompressBattlespireLzss(byte[] input)
+        {
+            byte[] window = new byte[4096];
+
+            for (int i = 0; i < 4078; i++)
+                window[i] = 0x20;
+
+            int windowPos = 4078;
+            int pos = 0;
+            var output = new List<byte>(input.Length * 2);
+
+            while (pos < input.Length)
+            {
+                byte marker = input[pos++];
+
+                for (int bit = 0; bit < 8; bit++)
+                {
+                    bool rawByte = ((marker >> bit) & 0x1) != 0;
+
+                    if (rawByte)
+                    {
+                        if (pos >= input.Length)
+                            return output.ToArray();
+
+                        byte value = input[pos++];
+                        window[windowPos] = value;
+                        windowPos = (windowPos + 1) & 0x0FFF;
+                        output.Add(value);
+                    }
+                    else
+                    {
+                        if (pos + 1 >= input.Length)
+                            return output.ToArray();
+
+                        byte b0 = input[pos++];
+                        byte b1 = input[pos++];
+                        int offset = b0 | ((b1 & 0xF0) << 4);
+                        int length = (b1 & 0x0F) + 3;
+
+                        for (int i = 0; i < length; i++)
+                        {
+                            byte value = window[(offset + i) & 0x0FFF];
+                            window[windowPos] = value;
+                            windowPos = (windowPos + 1) & 0x0FFF;
+                            output.Add(value);
+                        }
+                    }
+                }
+            }
+
+            return output.ToArray();
         }
     }
 }

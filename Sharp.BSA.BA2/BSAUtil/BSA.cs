@@ -2,13 +2,29 @@
 using SharpBSABA2.Extensions;
 using SharpBSABA2.Utils;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace SharpBSABA2.BSAUtil
 {
     public class BSA : Archive
     {
+        private enum XnGineIndexType : ushort
+        {
+            NameRecord = 0x0100,
+            NumberRecord = 0x0200
+        }
+
+        private class XnGineDescriptor
+        {
+            public string Name;
+            public ushort RecordId;
+            public short Compressed;
+            public int Size;
+        }
+
         public const int MW_HEADER_MAGIC = 0x00000100;  // Magic for Morrowind BSA
         public const int BSA_HEADER_MAGIC = 0x00415342; // Magic for Oblivion BSA, the literal string "BSA\0".
 
@@ -19,10 +35,17 @@ namespace SharpBSABA2.BSAUtil
         public const int OB_BSAARCHIVE_COMPRESSFILES = 0x4;
         public const int F3_BSAARCHIVE_PREFIXFULLFILENAMES = 0x100;
 
+        private bool isXnGineArchive;
+        private bool xnGineHasCompressed;
+        private XnGineIndexType xnGineIndexType = XnGineIndexType.NameRecord;
+
         public bool Compressed
         {
             get
             {
+                if (this.isXnGineArchive)
+                    return this.xnGineHasCompressed;
+
                 switch (this.Magic)
                 {
                     case BSA_HEADER_MAGIC:
@@ -61,6 +84,9 @@ namespace SharpBSABA2.BSAUtil
         {
             get
             {
+                if (this.isXnGineArchive)
+                    return this.xnGineIndexType == XnGineIndexType.NameRecord;
+
                 switch (Magic)
                 {
                     case BSA_HEADER_MAGIC:
@@ -77,6 +103,9 @@ namespace SharpBSABA2.BSAUtil
         {
             get
             {
+                if (this.isXnGineArchive)
+                    return this.xnGineIndexType.ToString();
+
                 switch (this.Magic)
                 {
                     case MW_HEADER_MAGIC:
@@ -92,6 +121,9 @@ namespace SharpBSABA2.BSAUtil
         {
             get
             {
+                if (this.isXnGineArchive)
+                    return ArchiveTypes.BSA_XN;
+
                 switch (this.Magic)
                 {
                     case MW_HEADER_MAGIC:
@@ -112,6 +144,10 @@ namespace SharpBSABA2.BSAUtil
         {
             try
             {
+                this.isXnGineArchive = false;
+                this.xnGineHasCompressed = false;
+                this.xnGineIndexType = XnGineIndexType.NameRecord;
+
                 this.Magic = this.BinaryReader.ReadUInt32();
 
                 if (this.Magic == MW_HEADER_MAGIC) // Morrowind uses this as version
@@ -242,6 +278,10 @@ namespace SharpBSABA2.BSAUtil
                         this.Files[i].FullPathOriginal = this.Files[i].FullPath;
                     }
                 }
+                else if (TryOpenXnGineBsa(filePath))
+                {
+                    // Parsed in helper.
+                }
                 else
                 {
                     // Assume it's a Fallout 2 DAT
@@ -273,6 +313,150 @@ namespace SharpBSABA2.BSAUtil
                 this.BinaryReader?.Close();
                 throw;
             }
+        }
+
+        private bool TryOpenXnGineBsa(string filePath)
+        {
+            string extension = Path.GetExtension(filePath);
+            bool isBsa = string.Equals(extension, ".bsa", StringComparison.OrdinalIgnoreCase);
+            bool isSnd = string.Equals(extension, ".snd", StringComparison.OrdinalIgnoreCase);
+            bool isSav = string.Equals(extension, ".sav", StringComparison.OrdinalIgnoreCase);
+
+            if (!isBsa && !isSnd && !isSav)
+                return false;
+
+            var stream = this.BinaryReader.BaseStream;
+            if (stream.Length < 2)
+                return false;
+
+            stream.Position = 0;
+            ushort recordCount = this.BinaryReader.ReadUInt16();
+            ushort typeRaw = (ushort)XnGineIndexType.NameRecord;
+            long dataStartOffset = 4;
+
+            if (stream.Length >= 4)
+                typeRaw = this.BinaryReader.ReadUInt16();
+            else
+                dataStartOffset = 2;
+
+            XnGineIndexType type;
+            if (typeRaw == (ushort)XnGineIndexType.NameRecord)
+            {
+                type = XnGineIndexType.NameRecord;
+            }
+            else if (typeRaw == (ushort)XnGineIndexType.NumberRecord)
+            {
+                type = XnGineIndexType.NumberRecord;
+            }
+            else
+            {
+                // Only .bsa should allow the legacy headerless variant (Arena GLOBAL.BSA style).
+                // .snd/.sav must have an explicit XnGine index type marker.
+                if (!isBsa)
+                    return false;
+
+                type = XnGineIndexType.NameRecord;
+                dataStartOffset = 2;
+            }
+
+            int descriptorSize = type == XnGineIndexType.NameRecord ? 18 : 8;
+            long footerSize = (long)recordCount * descriptorSize;
+            long footerOffset = stream.Length - footerSize;
+
+            if (footerOffset < dataStartOffset)
+                return false;
+
+            if (!stream.CanSeek)
+                return false;
+
+            stream.Position = footerOffset;
+            var descriptors = new List<XnGineDescriptor>(recordCount);
+
+            for (int i = 0; i < recordCount; i++)
+            {
+                var descriptor = new XnGineDescriptor();
+
+                if (type == XnGineIndexType.NameRecord)
+                {
+                    byte[] nameRaw = this.BinaryReader.ReadBytes(12);
+                    if (nameRaw.Length != 12)
+                        return false;
+
+                    int nullPos = Array.IndexOf(nameRaw, (byte)0);
+                    if (nullPos < 0)
+                        nullPos = nameRaw.Length;
+
+                    descriptor.Name = Encoding.ASCII.GetString(nameRaw, 0, nullPos);
+                    descriptor.Compressed = this.BinaryReader.ReadInt16();
+                    descriptor.Size = this.BinaryReader.ReadInt32();
+                }
+                else
+                {
+                    descriptor.RecordId = this.BinaryReader.ReadUInt16();
+                    descriptor.Compressed = this.BinaryReader.ReadInt16();
+                    descriptor.Size = this.BinaryReader.ReadInt32();
+                }
+
+                if (descriptor.Size < 0)
+                    return false;
+
+                descriptors.Add(descriptor);
+            }
+
+            long recordOffset = dataStartOffset;
+            var parsedEntries = new List<XNGBSAFileEntry>(recordCount);
+
+            for (int i = 0; i < descriptors.Count; i++)
+            {
+                var descriptor = descriptors[i];
+                long size = descriptor.Size;
+
+                if (recordOffset + size > footerOffset)
+                    return false;
+
+                string fullPath;
+                if (type == XnGineIndexType.NameRecord)
+                {
+                    fullPath = descriptor.Name;
+                    if (string.IsNullOrWhiteSpace(fullPath))
+                        fullPath = string.Format("{0:D6}.bin", i);
+
+                    fullPath = PathUtils.NormalizePath(fullPath);
+                }
+                else
+                {
+                    fullPath = string.Format("{0:D5}_{1:D6}.bin", descriptor.RecordId, i);
+                }
+
+                var entry = new XNGBSAFileEntry(this,
+                                                fullPath,
+                                                (ulong)recordOffset,
+                                                (uint)descriptor.Size,
+                                                descriptor.Compressed != 0,
+                                                descriptor.RecordId)
+                {
+                    Index = i,
+                    FullPathOriginal = fullPath
+                };
+
+                parsedEntries.Add(entry);
+                recordOffset += size;
+            }
+
+            if (recordOffset != footerOffset)
+                return false;
+
+            this.FileCount = recordCount;
+            this.Files.Clear();
+            this.Files.Capacity = this.FileCount;
+            this.Files.AddRange(parsedEntries.Cast<ArchiveEntry>());
+
+            this.isXnGineArchive = true;
+            this.xnGineHasCompressed = parsedEntries.Any(x => x.Compressed);
+            this.xnGineIndexType = type;
+            this.Header = null;
+
+            return true;
         }
 
         public static bool IsSupportedVersion(string filePath) => IsSupportedVersion(filePath, Encoding.UTF7);
