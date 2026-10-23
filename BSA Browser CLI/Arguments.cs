@@ -63,7 +63,7 @@ namespace BSA_Browser_CLI
 
                 if (arg.StartsWith("/") || arg.StartsWith("-") || arg.StartsWith("--"))
                 {
-                    switch (arg.ToLower().Split(':', '=')[0])
+                    switch (arg.ToLowerInvariant().Split(':', '=')[0])
                     {
                         case "/?":
                         case "-h":
@@ -153,7 +153,7 @@ namespace BSA_Browser_CLI
                 return ExtractOptions.Directory;
 
             // Get chars after : or =
-            var options = arg.Split(':', '=').Last().ToLower().ToCharArray();
+            var options = arg.Split(':', '=').Last().ToLowerInvariant().ToCharArray();
 
             // Check that all sub options are valid
             if (options.Any(x => AllowedOptions.Contains(x) == false))
@@ -176,7 +176,7 @@ namespace BSA_Browser_CLI
                 return ListOptions.None;
 
             // Get chars after : or =
-            var options = arg.Split(':', '=').Last().ToLower().ToCharArray();
+            var options = arg.Split(':', '=').Last().ToLowerInvariant().ToCharArray();
 
             // Check that all sub options are valid
             if (options.Any(x => AllowedOptions.Contains(x) == false))
@@ -201,7 +201,7 @@ namespace BSA_Browser_CLI
 
         private Encoding ParseEncoding(string encoding)
         {
-            switch (encoding.ToLower())
+            switch (encoding.ToLowerInvariant())
             {
                 case "utf7": return Encoding.UTF7;
                 case "system": return Encoding.Default;
